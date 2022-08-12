@@ -10,10 +10,16 @@
     'GRAD' 0,
     'opsz' 40
   }
-    .gap-logo{
+  .gap-logo{
       margin-left: .5em;
       margin-top: 0.3em
     }
+  table th{
+    text-align: center;
+  }
+  table td{
+    text-align: center;
+  }
   </style>
 @endsection
 
@@ -63,14 +69,14 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="table-responsive py-4">
-              <table class="table table-flush" id="TblSim">
+            <div class="table-responsive">
+              <table class="table" id="TblSim">
                 <thead class="thead-light">
                   <tr>
-                    <th><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></th>
+                    <th><input type="checkbox" id="cek-all-sim"></th>
                     <th>Active</th>
                     <th>SIM</th>
-                    {{-- <th>Edit</th> --}}
+                    <th>Edit</th>
                   </tr>
                 </thead>
               </table>

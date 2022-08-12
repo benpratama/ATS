@@ -24063,7 +24063,7 @@ textarea[resize='horizontal']
 
 .table .custom-toggle
 {
-    display: block;
+    /* display: block; */
 }
 
 .table-action

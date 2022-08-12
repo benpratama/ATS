@@ -4,19 +4,27 @@ $( document ).ready(function() {
 
 function loadTblSIM(){
     $('#TblSim').DataTable({
-        "scrollY":        "350px",
+        "scrollY":        "400px",
         "scrollCollapse": true,
+        pageLength : 5,
         ajax: {
         url: "/hrdats/mt/show/sim",
                 data:{},
                 dataSrc:""
             },
-        "paging": false,
+        "paging":true,
         "bInfo" : false,
+        "lengthChange": false,
+        language: {
+            paginate: {
+                previous: "<i class='fas fa-angle-left'>",
+                next: "<i class='fas fa-angle-right'>"
+            }
+        },
         columns: [
             {
                 render: (data, type, row, meta)=> {
-                    return '<input class="form-check-input" type="checkbox" id="test" value="'+row.id+'">'
+                    return '<input type="checkbox" id="cek-sim" value="'+row.id+'">'
                 }
             },
             {
@@ -47,13 +55,13 @@ function loadTblSIM(){
             {
                 data: 'nama',
                 defaultContent: ''
+            },
+            {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+                    return '<a href="/admin/detail/'+row.id+'" type="button" class="btn btn-outline-info btn-fw" >Edit</a>'
+                }
             }
-            // {
-            //     defaultContent: '',
-            //     render: (data, type, row, meta)=> {
-            //         return '<a href="/admin/detail/'+row.id+'" type="button" class="btn btn-outline-info btn-fw" >Details</a>'
-            //     }
-            // },
             // {
             //     defaultContent: '',
             //     render: (data, type, row, meta)=> {
@@ -61,7 +69,6 @@ function loadTblSIM(){
   
             //     }
             // }
-        ]
-        
+        ] 
     });
 }
