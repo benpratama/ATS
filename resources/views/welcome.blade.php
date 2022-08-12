@@ -81,11 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-<<<<<<< HEAD
-                    Laravel2
-=======
-                    haiii
->>>>>>> refs/remotes/origin/main
+                    Laravel
                 </div>
 
                 <div class="links">

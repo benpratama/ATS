@@ -19,4 +19,15 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/hrdats/dashboard/hrd', 'HomeController@index')->name('home');
+
+//Master Table Internal
+Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');
+
+//Master Table Form
+Route::get('/hrdats/mt/form', 'MasterTableController@indexForm')->name('mt.form');
+//--SIM--
+Route::get('/hrdats/mt/show/sim', 'MasterTableController@ShowSim')->name('mt.showSim');
+
+//Master Table Vendor
+Route::get('/hrdats/mt/vendor', 'MasterTableController@indexVendor')->name('mt.vendor');
