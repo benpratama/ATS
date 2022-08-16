@@ -391,17 +391,93 @@
         <div class="card">
           <div class="card-header bg-transparent">
             <div class="row align-items-center">
-              <div class="col">
+              <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">form</h6>
                 <h5 class="h3 mb-0">Status FPTK</h5>
+              </div>
+              <div class="d-flex col-8">
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-sfptk">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah</span>
+                </button>
+                <button id="btnDel-sfptk" type="button" class="btn btn-danger d-flex">
+                  <span class="material-symbols-outlined">delete</span>
+                  <span class="gap-logo">Hapus</span>
+                </button>
               </div>
             </div>
           </div>
           <div class="card-body">
-
+            <div class="table-responsive">
+              <table class="table" id="TblSfptk">
+                <thead class="thead-light">
+                  <tr>
+                    <th><input type="checkbox" id="cekAll-sfptk"></th>
+                    <th>Active</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+      {{--!!START MODAL TAMBAH!!--}}
+      <div class="modal fade bd-example-modal-lg modal-tambah-sfptk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Status FPTK</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="new-sfptk" class="col-md-2 col-form-label form-control-label">Status FPTK</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="new-sfptk">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnAdd-sfptk" type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL TAMBAH!!--}}
+
+      {{--!!START MODAL EDIT!!--}}
+      <div class="modal fade bd-example-modal-lg modal-edit-sfptk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Status FPTK</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="edit-sfptk" class="col-md-2 col-form-label form-control-label">Status FPTK</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-sfptk">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnEdit-sfptk" type="button" class="btn btn-primary" value="">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL EDIT!!--}}
     </div>
 
     {{-- !! STATUS MCU !! --}}
@@ -410,17 +486,93 @@
         <div class="card">
           <div class="card-header bg-transparent">
             <div class="row align-items-center">
-              <div class="col">
+              <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">form</h6>
                 <h5 class="h3 mb-0">Status MCU</h5>
+              </div>
+              <div class="d-flex col-8">
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-smcu">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah</span>
+                </button>
+                <button id="btnDel-smcu" type="button" class="btn btn-danger d-flex">
+                  <span class="material-symbols-outlined">delete</span>
+                  <span class="gap-logo">Hapus</span>
+                </button>
               </div>
             </div>
           </div>
           <div class="card-body">
-
+            <div class="table-responsive">
+              <table class="table" id="TblSmcu">
+                <thead class="thead-light">
+                  <tr>
+                    <th><input type="checkbox" id="cekAll-smcu"></th>
+                    <th>Active</th>
+                    <th>Keterangan</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+      {{--!!START MODAL TAMBAH!!--}}
+      <div class="modal fade bd-example-modal-lg modal-tambah-smcu" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Status MCU</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="new-smcu" class="col-md-2 col-form-label form-control-label">Status MCU</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="new-smcu">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnAdd-smcu" type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL TAMBAH!!--}}
+
+      {{--!!START MODAL EDIT!!--}}
+      <div class="modal fade bd-example-modal-lg modal-edit-smcu" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Status MCU</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="edit-smcu" class="col-md-2 col-form-label form-control-label">Status MCU</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-smcu">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnEdit-smcu" type="button" class="btn btn-primary" value="">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL EDIT!!--}}
     </div>
 
     {{-- !! STATUS Test !! --}}
@@ -429,17 +581,93 @@
         <div class="card">
           <div class="card-header bg-transparent">
             <div class="row align-items-center">
-              <div class="col">
+              <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">form</h6>
                 <h5 class="h3 mb-0">Status Test</h5>
+              </div>
+              <div class="d-flex col-8">
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-stest">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah</span>
+                </button>
+                <button id="btnDel-stest" type="button" class="btn btn-danger d-flex">
+                  <span class="material-symbols-outlined">delete</span>
+                  <span class="gap-logo">Hapus</span>
+                </button>
               </div>
             </div>
           </div>
           <div class="card-body">
-
+            <div class="table-responsive">
+              <table class="table" id="TblStest">
+                <thead class="thead-light">
+                  <tr>
+                    <th><input type="checkbox" id="cekAll-stest"></th>
+                    <th>Active</th>
+                    <th>Keterangan</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+      {{--!!START MODAL TAMBAH!!--}}
+      <div class="modal fade bd-example-modal-lg modal-tambah-stest" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Status Test</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="new-stest" class="col-md-2 col-form-label form-control-label">Status Test</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="new-stest">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnAdd-stest" type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL TAMBAH!!--}}
+
+      {{--!!START MODAL EDIT!!--}}
+      <div class="modal fade bd-example-modal-lg modal-edit-stest" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Status Test</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="edit-stest" class="col-md-2 col-form-label form-control-label">Status Test</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-stest">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnEdit-stest" type="button" class="btn btn-primary" value="">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL EDIT!!--}}
     </div>
 
     {{-- !! STATUS Kandidat !! --}}
@@ -448,19 +676,94 @@
         <div class="card">
           <div class="card-header bg-transparent">
             <div class="row align-items-center">
-              <div class="col">
+              <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">form</h6>
                 <h5 class="h3 mb-0">Status Rekrutmen</h5>
+              </div>
+              <div class="d-flex col-8">
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-srek">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah</span>
+                </button>
+                <button id="btnDel-srek" type="button" class="btn btn-danger d-flex">
+                  <span class="material-symbols-outlined">delete</span>
+                  <span class="gap-logo">Hapus</span>
+                </button>
               </div>
             </div>
           </div>
           <div class="card-body">
-            
+            <div class="table-responsive">
+              <table class="table" id="TblSrek">
+                <thead class="thead-light">
+                  <tr>
+                    <th><input type="checkbox" id="cekAll-srek"></th>
+                    <th>Active</th>
+                    <th>Proses</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    {{--!!START MODAL TAMBAH!!--}}
+    <div class="modal fade bd-example-modal-lg modal-tambah-srek" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Tambah Status Rekrutmen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label for="new-srek" class="col-md-2 col-form-label form-control-label">Status Rekrutmen</label>
+              <div class="col-md-10">
+                <input class="form-control" type="text" id="new-srek">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <button id="btnAdd-srek" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{--!!END MODAL TAMBAH!!--}}
 
+    {{--!!START MODAL EDIT!!--}}
+    <div class="modal fade bd-example-modal-lg modal-edit-srek" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Status Rekrutmen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label for="edit-srek" class="col-md-2 col-form-label form-control-label">Status Rekrutmen</label>
+              <div class="col-md-10">
+                <input class="form-control" type="text" id="edit-srek">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <button id="btnEdit-srek" type="button" class="btn btn-primary" value="">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{--!!END MODAL EDIT!!--}}
   </div>
 {{-- !!!!!!! END  DIKOPI DARI SINI !!!!!!! --}}
 

@@ -159,6 +159,198 @@ class MasterTableController extends Controller
         return true;
     }
 
+    //----STATUS FPTK----
+    public function ShowSFptk(){
+        $S_FPTK = DB::table('M_StatusFPTK')
+            ->select('id','keterangan','active','deleted')
+            ->where('deleted',0)
+            ->get();
+        return $S_FPTK;
+    }
+    public function DelSFptk(Request $request){
+        $delted =1;
+        $active =0;
+        for ($i=0; $i <count($request->arrId_sfptk) ; $i++) { 
+            DB::table('M_StatusFPTK')
+                ->where('id',$request->arrId_sfptk[$i])
+                ->update(['deleted'=>$delted,'active'=>$active]);
+        }
+        return true;
+    }
+    public function AddSFptk(Request $request){
+        DB::table('M_StatusFPTK')
+            ->insert([
+                'keterangan'=>$request->new_sfptk,
+                'active'=>'1',
+                'deleted'=>'0'
+            ]);
+        return true;
+    }
+    public function ModalSFptk($id){
+        $sfptk = DB::table('M_StatusFPTK')
+            ->select('keterangan')
+            ->where('id',$id)
+            ->get();
+        return $sfptk;
+    }
+    public function EditSFptk(Request $request){
+        DB::table('M_StatusFPTK')
+        ->where('id',$request->id_sfptk)
+        ->update(['keterangan'=>$request->Edit_keterangan]);
+        return true;
+    }
+    public function ActiveSFptk(Request $request){
+        DB::table('M_StatusFPTK')
+            ->where('id',$request->id_sfptk)
+            ->update(['active'=>$request->active]);
+        return true;
+    }
+
+    //----STATUS MCU----
+    public function ShowSMcu(){
+        $S_MCU = DB::table('M_MCUandTest')
+            ->select('id','keterangan','active','deleted')
+            ->where('jenis','MCU')
+            ->where('deleted',0)
+            ->get();
+        return $S_MCU;
+    }
+    public function DelSMcu(Request $request){
+        $delted =1;
+        $active =0;
+        for ($i=0; $i <count($request->arrId_smcu) ; $i++) { 
+            DB::table('M_MCUandTest')
+                ->where('id',$request->arrId_smcu[$i])
+                ->update(['deleted'=>$delted,'active'=>$active]);
+        }
+        return true;
+    }
+    public function AddSMcu(Request $request){
+        DB::table('M_MCUandTest')
+            ->insert([
+                'keterangan'=>$request->new_smcu,
+                'jenis'=>'MCU',
+                'active'=>'1',
+                'deleted'=>'0'
+            ]);
+        return true;
+    }
+    public function ModalSMcu($id){
+        $smcu = DB::table('M_MCUandTest')
+            ->select('keterangan')
+            ->where('id',$id)
+            ->get();
+        return $smcu;
+    }
+    public function ActiveSMcu(Request $request){
+        DB::table('M_MCUandTest')
+            ->where('id',$request->id_smcu)
+            ->update(['active'=>$request->active]);
+        return true;
+    }
+    public function EditSMcu(Request $request){
+        DB::table('M_MCUandTest')
+        ->where('id',$request->id_smcu)
+        ->update(['keterangan'=>$request->Edit_keterangan]);
+        return true;
+    }
+
+    //----STATUS TEST----
+    public function ShowSTest(){
+        $S_Test = DB::table('M_MCUandTest')
+            ->select('id','keterangan','active','deleted')
+            ->where('jenis','PSIKOTEST')
+            ->where('deleted',0)
+            ->get();
+        return $S_Test;
+    }
+    public function DelSTest(Request $request){
+        $delted =1;
+        $active =0;
+        for ($i=0; $i <count($request->arrId_stest) ; $i++) { 
+            DB::table('M_MCUandTest')
+                ->where('id',$request->arrId_stest[$i])
+                ->update(['deleted'=>$delted,'active'=>$active]);
+        }
+        return true;
+    }
+    public function AddSTest(Request $request){
+        DB::table('M_MCUandTest')
+            ->insert([
+                'keterangan'=>$request->new_stest,
+                'jenis'=>'PSIKOTEST',
+                'active'=>'1',
+                'deleted'=>'0'
+            ]);
+        return true;
+    }
+    public function ModalSTest($id){
+        $stest = DB::table('M_MCUandTest')
+            ->select('keterangan')
+            ->where('id',$id)
+            ->get();
+        return $stest;
+    }
+    public function ActiveSTest(Request $request){
+        DB::table('M_MCUandTest')
+            ->where('id',$request->id_stest)
+            ->update(['active'=>$request->active]);
+        return true;
+    }
+    public function EditSTest(Request $request){
+        DB::table('M_MCUandTest')
+        ->where('id',$request->id_stest)
+        ->update(['keterangan'=>$request->Edit_keterangan]);
+        return true;
+    }
+
+    //----STATUS TEST----
+    public function ShowSRek(){
+        $S_Test = DB::table('M_Rekrutmen')
+            ->select('id','proses','active','deleted')
+            ->where('deleted',0)
+            ->get();
+        return $S_Test;
+    }
+    public function DelSRek(Request $request){
+        $delted =1;
+        $active =0;
+        for ($i=0; $i <count($request->arrId_srek) ; $i++) { 
+            DB::table('M_Rekrutmen')
+                ->where('id',$request->arrId_srek[$i])
+                ->update(['deleted'=>$delted,'active'=>$active]);
+        }
+        return true;
+    }
+    public function AddSRek(Request $request){
+        DB::table('M_Rekrutmen')
+            ->insert([
+                'proses'=>$request->new_srek,
+                'active'=>'1',
+                'deleted'=>'0'
+            ]);
+        return true;
+    }
+    public function ModalSRek($id){
+        $srek = DB::table('M_Rekrutmen')
+            ->select('proses')
+            ->where('id',$id)
+            ->get();
+        return $srek;
+    }
+    public function ActiveSRek(Request $request){
+        DB::table('M_Rekrutmen')
+            ->where('id',$request->id_srek)
+            ->update(['active'=>$request->active]);
+        return true;
+    }
+    public function EditSRek(Request $request){
+        DB::table('M_Rekrutmen')
+        ->where('id',$request->id_srek)
+        ->update(['proses'=>$request->Edit_keterangan]);
+        return true;
+    }
+
     //MASTER TABLE VENDOR
     public function indexVendor(){
         return view('master table/mt_vendor');

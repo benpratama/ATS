@@ -14,7 +14,27 @@ $( document ).ready(function() {
     loadTbl_PERKAWINAN();
     delete_PERKAWINAN();
     add_PERKAWINAN();
-    Edit_PERKAWINAN()
+    Edit_PERKAWINAN();
+
+    loadTbl_SFPTK();
+    delete_SFPTK();
+    add_SFPTK();
+    Edit_SFPTK();
+
+    loadTbl_SMCU();
+    delete_SMCU();
+    add_SMCU();
+    Edit_SMCU();
+
+    loadTbl_STEST();
+    delete_STEST();
+    add_STEST();
+    Edit_STEST();
+
+    loadTbl_SREK();
+    delete_SREK();
+    add_SREK();
+    Edit_SREK();
 });
 
 function clearModal(){
@@ -44,6 +64,38 @@ function clearModal(){
         $('#edit-perkawinan').val('');
         $('#edit-keterangan').val('');
         $('#btnEdit-perkawinan').val('');
+    })
+
+    $('.modal-tambah-sfptk').on('hide.bs.modal', function() {
+        $('#new-sfptk').val('');
+    })
+    $('.modal-edit-sfptk').on('hide.bs.modal', function() {
+        $('#edit-sfptk').val('');
+        $('#btnEdit-sfptk').val('');
+    })
+
+    $('.modal-tambah-smcu').on('hide.bs.modal', function() {
+        $('#new-smcu').val('');
+    })
+    $('.modal-edit-smcu').on('hide.bs.modal', function() {
+        $('#edit-smcu').val('');
+        $('#btnEdit-smcu').val('');
+    })
+
+    $('.modal-tambah-stest').on('hide.bs.modal', function() {
+        $('#new-stest').val('');
+    })
+    $('.modal-edit-stest').on('hide.bs.modal', function() {
+        $('#edit-stest').val('');
+        $('#btnEdit-stest').val('');
+    })
+
+    $('.modal-tambah-srek').on('hide.bs.modal', function() {
+        $('#new-srek').val('');
+    })
+    $('.modal-edit-srek').on('hide.bs.modal', function() {
+        $('#edit-srek').val('');
+        $('#btnEdit-srek').val('');
     })
 }
 
@@ -655,6 +707,798 @@ function Edit_PERKAWINAN(){
           }).done((data) => {
             $(".modal-edit-perkawinan").modal('hide');
             $('#TblPerkawinan').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+        });
+    });
+}
+
+//----STATUS FPTK----
+function loadTbl_SFPTK(){
+    $('#TblSfptk').DataTable({
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        pageLength : 5,
+        ajax: {
+        url: "/hrdats/mt/show/sfptk",
+                data:{},
+                dataSrc:""
+            },
+        "paging":true,
+        "bInfo" : false,
+        "lengthChange": false,
+        language: {
+            paginate: {
+                previous: "<i class='fas fa-angle-left'>",
+                next: "<i class='fas fa-angle-right'>"
+            }
+        },
+        columns: [
+            {
+                render: (data, type, row, meta)=> {
+                    return '<input type="checkbox" class="cek-sfptk" value="'+row.id+'">'
+                }
+            },
+            {
+                data: 'active',
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+  
+                    switch(data){
+                        case'1':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkSfptk(this)" checked value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        case'0':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkSfptk(this)" value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        default:
+                            return data;
+                            break;
+                    }
+                    
+                }
+            },
+            {
+                data: 'keterangan',
+                defaultContent: ''
+            },
+            {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+                    return '<button type="button" class="btn btn-info" onclick="Modal_sfptk(value)" data-toggle="modal" data-target=".modal-edit-sfptk" value="'+row.id+'">Edit</button>'
+                }
+            }
+        ] 
+    });
+
+    //buat check
+    $('#cekAll-sfptk').change(function(){
+        $("input.cek-sfptk:checkbox").prop("checked",$(this).prop("checked"));
+    })
+}
+
+function delete_SFPTK(){
+    $('#btnDel-sfptk').on('click', function() {
+        //ini buat ambil ID-nya
+        var arrId_sfptk=[];
+        var cek = $('.cek-sfptk')
+        for(var i=0; cek[i]; ++i){
+            if(cek[i].checked){
+                arrId_sfptk.push(cek[i].value);
+            }
+        }
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/del/sfptk',
+            type: 'post',
+            data: {
+                arrId_sfptk:arrId_sfptk
+            }
+          }).done((data) => {
+            $('#TblSfptk').DataTable().ajax.reload();
+            // console.log(JSON.stringify(data));
+          });
+    })
+}
+
+function add_SFPTK(){
+    $('#btnAdd-sfptk').on('click', function() {
+        var new_sfptk = $('#new-sfptk').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/add/sfptk',
+            type: 'post',
+            data: {
+                new_sfptk:new_sfptk
+            }
+          }).done((data) => {
+            $(".modal-tambah-sfptk").modal('hide');
+            $('#TblSfptk').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+          });
+    })
+}
+
+function Modal_sfptk(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/modal/sfptk/'+id,
+        type: 'get'
+      }).done((data) => {
+        $('#btnEdit-sfptk').val(id);
+        $('#edit-sfptk').val(data[0].keterangan);
+        console.log(JSON.stringify(data));
+      });
+}
+
+function checkSfptk(obj){
+    if (obj.checked==false) {
+        console.log('nonactive')
+        var active=0;
+    } else {
+        console.log('active')
+        var active=1;
+    }
+    
+    var id_sfptk= obj.value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/active/sfptk',
+        type: 'post',
+        data: {
+            active:active,
+            id_sfptk:id_sfptk
+        }
+      }).done((data) => {
+        $('#TblSfptk').DataTable().ajax.reload();
+        console.log(JSON.stringify(data));
+    });
+
+}
+
+function Edit_SFPTK(){
+    $('#btnEdit-sfptk').on('click', function() {
+        var Edit_keterangan = $('#edit-sfptk').val();
+        var id_sfptk = $('#btnEdit-sfptk').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/edit/sfptk',
+            type: 'post',
+            data: {
+                Edit_keterangan:Edit_keterangan,
+                id_sfptk:id_sfptk
+            }
+          }).done((data) => {
+            $(".modal-edit-sfptk").modal('hide');
+            $('#TblSfptk').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+        });
+    });
+}
+
+//----STATUS MCU----
+function loadTbl_SMCU(){
+    $('#TblSmcu').DataTable({
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        pageLength : 5,
+        ajax: {
+        url: "/hrdats/mt/show/smcu",
+                data:{},
+                dataSrc:""
+            },
+        "paging":true,
+        "bInfo" : false,
+        "lengthChange": false,
+        language: {
+            paginate: {
+                previous: "<i class='fas fa-angle-left'>",
+                next: "<i class='fas fa-angle-right'>"
+            }
+        },
+        columns: [
+            {
+                render: (data, type, row, meta)=> {
+                    return '<input type="checkbox" class="cek-smcu" value="'+row.id+'">'
+                }
+            },
+            {
+                data: 'active',
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+  
+                    switch(data){
+                        case'1':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkSmcu(this)" checked value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        case'0':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkSmcu(this)" value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        default:
+                            return data;
+                            break;
+                    }
+                    
+                }
+            },
+            {
+                data: 'keterangan',
+                defaultContent: ''
+            },
+            {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+                    return '<button type="button" class="btn btn-info" onclick="Modal_smcu(value)" data-toggle="modal" data-target=".modal-edit-smcu" value="'+row.id+'">Edit</button>'
+                }
+            }
+        ] 
+    });
+
+    //buat check
+    $('#cekAll-smcu').change(function(){
+        $("input.cek-smcu:checkbox").prop("checked",$(this).prop("checked"));
+    })
+}
+
+function delete_SMCU(){
+    $('#btnDel-smcu').on('click', function() {
+        //ini buat ambil ID-nya
+        var arrId_smcu=[];
+        var cek = $('.cek-smcu')
+        for(var i=0; cek[i]; ++i){
+            if(cek[i].checked){
+                arrId_smcu.push(cek[i].value);
+            }
+        }
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/del/smcu',
+            type: 'post',
+            data: {
+                arrId_smcu:arrId_smcu
+            }
+          }).done((data) => {
+            $('#TblSmcu').DataTable().ajax.reload();
+            // console.log(JSON.stringify(data));
+          });
+    })
+}
+
+function add_SMCU(){
+    $('#btnAdd-smcu').on('click', function() {
+        var new_smcu = $('#new-smcu').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/add/smcu',
+            type: 'post',
+            data: {
+                new_smcu:new_smcu
+            }
+          }).done((data) => {
+            $(".modal-tambah-smcu").modal('hide');
+            $('#TblSmcu').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+          });
+    })
+}
+
+function Modal_smcu(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/modal/smcu/'+id,
+        type: 'get'
+      }).done((data) => {
+        $('#btnEdit-smcu').val(id);
+        $('#edit-smcu').val(data[0].keterangan);
+        console.log(JSON.stringify(data));
+      });
+}
+
+function checkSmcu(obj){
+    if (obj.checked==false) {
+        console.log('nonactive')
+        var active=0;
+    } else {
+        console.log('active')
+        var active=1;
+    }
+    
+    var id_smcu= obj.value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/active/smcu',
+        type: 'post',
+        data: {
+            active:active,
+            id_smcu:id_smcu
+        }
+      }).done((data) => {
+        $('#TblSmcu').DataTable().ajax.reload();
+        console.log(JSON.stringify(data));
+    });
+
+}
+
+function Edit_SMCU(){
+    $('#btnEdit-smcu').on('click', function() {
+        var Edit_keterangan = $('#edit-smcu').val();
+        var id_smcu = $('#btnEdit-smcu').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/edit/smcu',
+            type: 'post',
+            data: {
+                Edit_keterangan:Edit_keterangan,
+                id_smcu:id_smcu
+            }
+          }).done((data) => {
+            $(".modal-edit-smcu").modal('hide');
+            $('#TblSmcu').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+        });
+    });
+}
+
+//----STATUS MCU----
+function loadTbl_STEST(){
+    $('#TblStest').DataTable({
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        pageLength : 5,
+        ajax: {
+        url: "/hrdats/mt/show/stest",
+                data:{},
+                dataSrc:""
+            },
+        "paging":true,
+        "bInfo" : false,
+        "lengthChange": false,
+        language: {
+            paginate: {
+                previous: "<i class='fas fa-angle-left'>",
+                next: "<i class='fas fa-angle-right'>"
+            }
+        },
+        columns: [
+            {
+                render: (data, type, row, meta)=> {
+                    return '<input type="checkbox" class="cek-stest" value="'+row.id+'">'
+                }
+            },
+            {
+                data: 'active',
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+  
+                    switch(data){
+                        case'1':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkStest(this)" checked value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        case'0':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkStest(this)" value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        default:
+                            return data;
+                            break;
+                    }
+                    
+                }
+            },
+            {
+                data: 'keterangan',
+                defaultContent: ''
+            },
+            {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+                    return '<button type="button" class="btn btn-info" onclick="Modal_stest(value)" data-toggle="modal" data-target=".modal-edit-stest" value="'+row.id+'">Edit</button>'
+                }
+            }
+        ] 
+    });
+
+    //buat check
+    $('#cekAll-stest').change(function(){
+        $("input.cek-stest:checkbox").prop("checked",$(this).prop("checked"));
+    })
+}
+
+function delete_STEST(){
+    $('#btnDel-stest').on('click', function() {
+        //ini buat ambil ID-nya
+        var arrId_stest=[];
+        var cek = $('.cek-stest')
+        for(var i=0; cek[i]; ++i){
+            if(cek[i].checked){
+                arrId_stest.push(cek[i].value);
+            }
+        }
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/del/stest',
+            type: 'post',
+            data: {
+                arrId_stest:arrId_stest
+            }
+          }).done((data) => {
+            $('#TblStest').DataTable().ajax.reload();
+            // console.log(JSON.stringify(data));
+          });
+    })
+}
+
+function add_STEST(){
+    $('#btnAdd-stest').on('click', function() {
+        var new_stest = $('#new-stest').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/add/stest',
+            type: 'post',
+            data: {
+                new_stest:new_stest
+            }
+          }).done((data) => {
+            $(".modal-tambah-stest").modal('hide');
+            $('#TblStest').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+          });
+    })
+}
+
+function Modal_stest(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/modal/stest/'+id,
+        type: 'get'
+      }).done((data) => {
+        $('#btnEdit-stest').val(id);
+        $('#edit-stest').val(data[0].keterangan);
+        console.log(JSON.stringify(data));
+      });
+}
+
+function checkStest(obj){
+    if (obj.checked==false) {
+        console.log('nonactive')
+        var active=0;
+    } else {
+        console.log('active')
+        var active=1;
+    }
+    
+    var id_stest= obj.value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/active/stest',
+        type: 'post',
+        data: {
+            active:active,
+            id_stest:id_stest
+        }
+      }).done((data) => {
+        $('#TblStest').DataTable().ajax.reload();
+        console.log(JSON.stringify(data));
+    });
+
+}
+
+function Edit_STEST(){
+    $('#btnEdit-stest').on('click', function() {
+        var Edit_keterangan = $('#edit-stest').val();
+        var id_stest = $('#btnEdit-stest').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/edit/stest',
+            type: 'post',
+            data: {
+                Edit_keterangan:Edit_keterangan,
+                id_stest:id_stest
+            }
+          }).done((data) => {
+            $(".modal-edit-stest").modal('hide');
+            $('#TblStest').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+        });
+    });
+}
+
+//----STATUS REKRUTMEN----
+function loadTbl_SREK(){
+    $('#TblSrek').DataTable({
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        pageLength : 5,
+        ajax: {
+        url: "/hrdats/mt/show/srek",
+                data:{},
+                dataSrc:""
+            },
+        "paging":true,
+        "bInfo" : false,
+        "lengthChange": false,
+        language: {
+            paginate: {
+                previous: "<i class='fas fa-angle-left'>",
+                next: "<i class='fas fa-angle-right'>"
+            }
+        },
+        columns: [
+            {
+                render: (data, type, row, meta)=> {
+                    return '<input type="checkbox" class="cek-srek" value="'+row.id+'">'
+                }
+            },
+            {
+                data: 'active',
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+  
+                    switch(data){
+                        case'1':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkSrek(this)" checked value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        case'0':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkSrek(this)" value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        default:
+                            return data;
+                            break;
+                    }
+                    
+                }
+            },
+            {
+                data: 'proses',
+                defaultContent: ''
+            },
+            {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+                    return '<button type="button" class="btn btn-info" onclick="Modal_srek(value)" data-toggle="modal" data-target=".modal-edit-srek" value="'+row.id+'">Edit</button>'
+                }
+            }
+        ] 
+    });
+
+    //buat check
+    $('#cekAll-srek').change(function(){
+        $("input.cek-srek:checkbox").prop("checked",$(this).prop("checked"));
+    })
+}
+
+function delete_SREK(){
+    $('#btnDel-srek').on('click', function() {
+        //ini buat ambil ID-nya
+        var arrId_srek=[];
+        var cek = $('.cek-srek')
+        for(var i=0; cek[i]; ++i){
+            if(cek[i].checked){
+                arrId_srek.push(cek[i].value);
+            }
+        }
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/del/srek',
+            type: 'post',
+            data: {
+                arrId_srek:arrId_srek
+            }
+          }).done((data) => {
+            $('#TblSrek').DataTable().ajax.reload();
+            // console.log(JSON.stringify(data));
+          });
+    })
+}
+
+function add_SREK(){
+    $('#btnAdd-srek').on('click', function() {
+        var new_srek = $('#new-srek').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/add/srek',
+            type: 'post',
+            data: {
+                new_srek:new_srek
+            }
+          }).done((data) => {
+            $(".modal-tambah-srek").modal('hide');
+            $('#TblSrek').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+          });
+    })
+}
+
+function Modal_srek(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/modal/srek/'+id,
+        type: 'get'
+      }).done((data) => {
+        $('#btnEdit-srek').val(id);
+        $('#edit-srek').val(data[0].proses);
+        console.log(JSON.stringify(data));
+      });
+}
+
+function checkSrek(obj){
+    if (obj.checked==false) {
+        console.log('nonactive')
+        var active=0;
+    } else {
+        console.log('active')
+        var active=1;
+    }
+    
+    var id_srek= obj.value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/active/srek',
+        type: 'post',
+        data: {
+            active:active,
+            id_srek:id_srek
+        }
+      }).done((data) => {
+        $('#TblSrek').DataTable().ajax.reload();
+        console.log(JSON.stringify(data));
+    });
+
+}
+
+function Edit_SREK(){
+    $('#btnEdit-srek').on('click', function() {
+        var Edit_keterangan = $('#edit-srek').val();
+        var id_srek = $('#btnEdit-srek').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/edit/srek',
+            type: 'post',
+            data: {
+                Edit_keterangan:Edit_keterangan,
+                id_srek:id_srek
+            }
+          }).done((data) => {
+            $(".modal-edit-srek").modal('hide');
+            $('#TblSrek').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
         });
     });
