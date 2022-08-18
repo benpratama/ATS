@@ -169,7 +169,6 @@ function loadTbl_SIM(){
         $("input.cek-sim:checkbox").prop("checked",$(this).prop("checked"));
     })
 }
-
 function delete_SIM(){
     $('#btnDel-sim').on('click', function() {
         //ini buat ambil ID-nya
@@ -199,7 +198,6 @@ function delete_SIM(){
           });
     })
 }
-
 function add_SIM(){
     $('#btnAdd-sim').on('click', function() {
         var new_sim = $('#new-sim').val();
@@ -223,7 +221,6 @@ function add_SIM(){
           });
     })
 }
-
 function Modal_sim(id){
     $.ajaxSetup({
         headers: {
@@ -240,7 +237,6 @@ function Modal_sim(id){
         console.log(JSON.stringify(data));
       });
 }
-
 function checkSIM(obj){
     if (obj.checked==false) {
         console.log('nonactive')
@@ -271,7 +267,6 @@ function checkSIM(obj){
     });
 
 }
-
 function Edit_SIM(){
     $('#btnEdit-sim').on('click', function() {
         var Edit_sim = $('#edit-sim').val();
@@ -371,7 +366,6 @@ function loadTbl_JURUSAN(){
         $("input.cek-jurusan:checkbox").prop("checked",$(this).prop("checked"));
     })
 }
-
 function delete_JURUSAN(){
     $('#btnDel-jurusan').on('click', function() {
         //ini buat ambil ID-nya
@@ -401,7 +395,6 @@ function delete_JURUSAN(){
           });
     })
 }
-
 function add_JURUSAN(){
     $('#btnAdd-jurusan').on('click', function() {
         var new_jurusan = $('#new-jurusan').val();
@@ -427,7 +420,6 @@ function add_JURUSAN(){
           });
     })
 }
-
 function Modal_jurusan(id){
     $.ajaxSetup({
         headers: {
@@ -445,7 +437,6 @@ function Modal_jurusan(id){
         console.log(JSON.stringify(data));
       });
 }
-
 function checkJurusan(obj){
     if (obj.checked==false) {
         console.log('nonactive')
@@ -476,7 +467,6 @@ function checkJurusan(obj){
     });
 
 }
-
 function Edit_JURUSAN(){
     $('#btnEdit-jurusan').on('click', function() {
         var Edit_jurusan = $('#edit-jurusan').val();
@@ -578,7 +568,6 @@ function loadTbl_PERKAWINAN(){
         $("input.cek-perkawinan:checkbox").prop("checked",$(this).prop("checked"));
     })
 }
-
 function delete_PERKAWINAN(){
     $('#btnDel-perkawinan').on('click', function() {
         //ini buat ambil ID-nya
@@ -608,7 +597,6 @@ function delete_PERKAWINAN(){
           });
     })
 }
-
 function add_PERKAWINAN(){
     $('#btnAdd-perkawinan').on('click', function() {
         var new_perkawinan = $('#new-perkawinan').val();
@@ -634,7 +622,6 @@ function add_PERKAWINAN(){
           });
     })
 }
-
 function Modal_perkawinan(id){
     $.ajaxSetup({
         headers: {
@@ -652,7 +639,6 @@ function Modal_perkawinan(id){
         console.log(JSON.stringify(data));
       });
 }
-
 function checkPerkawinan(obj){
     if (obj.checked==false) {
         console.log('nonactive')
@@ -683,7 +669,6 @@ function checkPerkawinan(obj){
     });
 
 }
-
 function Edit_PERKAWINAN(){
     $('#btnEdit-perkawinan').on('click', function() {
         var Edit_perkawinan = $('#edit-perkawinan').val();
@@ -781,7 +766,6 @@ function loadTbl_SFPTK(){
         $("input.cek-sfptk:checkbox").prop("checked",$(this).prop("checked"));
     })
 }
-
 function delete_SFPTK(){
     $('#btnDel-sfptk').on('click', function() {
         //ini buat ambil ID-nya
@@ -811,7 +795,6 @@ function delete_SFPTK(){
           });
     })
 }
-
 function add_SFPTK(){
     $('#btnAdd-sfptk').on('click', function() {
         var new_sfptk = $('#new-sfptk').val();
@@ -835,7 +818,6 @@ function add_SFPTK(){
           });
     })
 }
-
 function Modal_sfptk(id){
     $.ajaxSetup({
         headers: {
@@ -852,7 +834,6 @@ function Modal_sfptk(id){
         console.log(JSON.stringify(data));
       });
 }
-
 function checkSfptk(obj){
     if (obj.checked==false) {
         console.log('nonactive')
@@ -883,7 +864,6 @@ function checkSfptk(obj){
     });
 
 }
-
 function Edit_SFPTK(){
     $('#btnEdit-sfptk').on('click', function() {
         var Edit_keterangan = $('#edit-sfptk').val();
@@ -979,7 +959,6 @@ function loadTbl_SMCU(){
         $("input.cek-smcu:checkbox").prop("checked",$(this).prop("checked"));
     })
 }
-
 function delete_SMCU(){
     $('#btnDel-smcu').on('click', function() {
         //ini buat ambil ID-nya
@@ -1009,7 +988,6 @@ function delete_SMCU(){
           });
     })
 }
-
 function add_SMCU(){
     $('#btnAdd-smcu').on('click', function() {
         var new_smcu = $('#new-smcu').val();
@@ -1033,7 +1011,6 @@ function add_SMCU(){
           });
     })
 }
-
 function Modal_smcu(id){
     $.ajaxSetup({
         headers: {
@@ -1050,7 +1027,6 @@ function Modal_smcu(id){
         console.log(JSON.stringify(data));
       });
 }
-
 function checkSmcu(obj){
     if (obj.checked==false) {
         console.log('nonactive')
@@ -1081,7 +1057,6 @@ function checkSmcu(obj){
     });
 
 }
-
 function Edit_SMCU(){
     $('#btnEdit-smcu').on('click', function() {
         var Edit_keterangan = $('#edit-smcu').val();
@@ -1177,7 +1152,6 @@ function loadTbl_STEST(){
         $("input.cek-stest:checkbox").prop("checked",$(this).prop("checked"));
     })
 }
-
 function delete_STEST(){
     $('#btnDel-stest').on('click', function() {
         //ini buat ambil ID-nya
@@ -1207,7 +1181,6 @@ function delete_STEST(){
           });
     })
 }
-
 function add_STEST(){
     $('#btnAdd-stest').on('click', function() {
         var new_stest = $('#new-stest').val();
@@ -1231,7 +1204,6 @@ function add_STEST(){
           });
     })
 }
-
 function Modal_stest(id){
     $.ajaxSetup({
         headers: {
@@ -1248,7 +1220,6 @@ function Modal_stest(id){
         console.log(JSON.stringify(data));
       });
 }
-
 function checkStest(obj){
     if (obj.checked==false) {
         console.log('nonactive')
@@ -1279,7 +1250,6 @@ function checkStest(obj){
     });
 
 }
-
 function Edit_STEST(){
     $('#btnEdit-stest').on('click', function() {
         var Edit_keterangan = $('#edit-stest').val();
@@ -1375,7 +1345,6 @@ function loadTbl_SREK(){
         $("input.cek-srek:checkbox").prop("checked",$(this).prop("checked"));
     })
 }
-
 function delete_SREK(){
     $('#btnDel-srek').on('click', function() {
         //ini buat ambil ID-nya
@@ -1405,7 +1374,6 @@ function delete_SREK(){
           });
     })
 }
-
 function add_SREK(){
     $('#btnAdd-srek').on('click', function() {
         var new_srek = $('#new-srek').val();
@@ -1429,7 +1397,6 @@ function add_SREK(){
           });
     })
 }
-
 function Modal_srek(id){
     $.ajaxSetup({
         headers: {
@@ -1446,7 +1413,6 @@ function Modal_srek(id){
         console.log(JSON.stringify(data));
       });
 }
-
 function checkSrek(obj){
     if (obj.checked==false) {
         console.log('nonactive')
@@ -1477,7 +1443,6 @@ function checkSrek(obj){
     });
 
 }
-
 function Edit_SREK(){
     $('#btnEdit-srek').on('click', function() {
         var Edit_keterangan = $('#edit-srek').val();

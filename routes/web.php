@@ -23,6 +23,24 @@ Route::get('/hrdats/dashboard/hrd', 'HomeController@index')->name('home');
 
 //Master Table Internal
 Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');
+//--JOB--
+Route::get('/hrdats/mt/show/job', 'MasterTableController@ShowJob')->name('mt.ShowJob');
+Route::Post('/hrdats/mt/del/job', 'MasterTableController@DelJob')->name('mt.DelJob');
+Route::Post('/hrdats/mt/add/job', 'MasterTableController@AddJob')->name('mt.AddJob');
+Route::get('/hrdats/mt/modal/job/{id}', 'MasterTableController@ModalJob')->name('mt.ModalJob');
+Route::Post('/hrdats/mt/edit/job', 'MasterTableController@EditJob')->name('mt.EditJob');
+Route::Post('/hrdats/mt/active/job', 'MasterTableController@ActiveJob')->name('mt.ActiveJob');
+//--USER--
+Route::get('/hrdats/mt/show/user', 'MasterTableController@ShowUser')->name('mt.ShowUser');
+Route::Post('/hrdats/mt/del/user', 'MasterTableController@DelUser')->name('mt.DelUser');
+Route::Post('/hrdats/mt/add/user', 'MasterTableController@AddUser')->name('mt.AddUser');
+Route::get('/hrdats/mt/modal/user/{id}', 'MasterTableController@ModalUser')->name('mt.ModalUser');
+Route::Post('/hrdats/mt/edit/user', 'MasterTableController@EditUser')->name('mt.EditUser');
+Route::Post('/hrdats/mt/active/user', 'MasterTableController@ActiveUser')->name('mt.ActiveUser');
+//--ORGANISASI--
+Route::get('/hrdats/mt/show/organisasi', 'MasterTableController@ShowOrganisasi')->name('mt.ShowOrganisasi');
+//--Dept--
+Route::get('/hrdats/mt/show/dept', 'MasterTableController@ShowDept')->name('mt.ShowDept');
 
 //Master Table Form
 Route::get('/hrdats/mt/form', 'MasterTableController@indexForm')->name('mt.form');
@@ -78,3 +96,17 @@ Route::Post('/hrdats/mt/active/srek', 'MasterTableController@ActiveSRek')->name(
 
 //Master Table Vendor
 Route::get('/hrdats/mt/vendor', 'MasterTableController@indexVendor')->name('mt.vendor');
+//--Status MCU--
+Route::get('/hrdats/mt/show/mcu', 'MasterTableController@ShowMCU')->name('mt.ShowMCU');
+Route::Post('/hrdats/mt/del/mcu', 'MasterTableController@DelMCU')->name('mt.DelMCU');
+Route::Post('/hrdats/mt/add/mcu', 'MasterTableController@AddMCU')->name('mt.AddMCU');
+Route::get('/hrdats/mt/modal/mcu/{id}', 'MasterTableController@ModalMCU')->name('mt.ModalMCU');
+Route::Post('/hrdats/mt/edit/mcu', 'MasterTableController@EditMCU')->name('mt.EditMCU');
+Route::Post('/hrdats/mt/active/mcu', 'MasterTableController@ActiveMCU')->name('mt.ActiveMCU');
+//--Status PSIKOTEST--
+Route::get('/hrdats/mt/show/psikotest', 'MasterTableController@ShowPsikotest')->name('mt.ShowPsikotest');
+Route::Post('/hrdats/mt/del/psikotest', 'MasterTableController@DelPsikotest')->name('mt.DelPsikotest');
+Route::Post('/hrdats/mt/add/psikotest', 'MasterTableController@AddPsikotest')->name('mt.AddPsikotest');
+Route::get('/hrdats/mt/modal/psikotest/{id}', 'MasterTableController@ModalPsikotest')->name('mt.ModalPsikotest');
+Route::Post('/hrdats/mt/edit/psikotest', 'MasterTableController@EditPsikotest')->name('mt.EditPsikotest');
+Route::Post('/hrdats/mt/active/psikotest', 'MasterTableController@ActivePsikotest')->name('mt.ActivePsikotest');
