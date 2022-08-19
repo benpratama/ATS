@@ -11,7 +11,7 @@ $( document ).ready(function() {
     loadTbl_DEPARMENT();
 
     loadTbl_USER();
-    add_USER();
+    // add_USER();
     Edit_USER();
 });
 

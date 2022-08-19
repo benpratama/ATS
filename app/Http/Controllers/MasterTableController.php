@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Exception;
+use Illuminate\Support\Facades\Redirect;
+use App\User;
 
 class MasterTableController extends Controller
 {   
@@ -95,7 +98,214 @@ class MasterTableController extends Controller
         ->update(['mobilePhone'=>$request->edit_wa]);
         return true;
     }
+    public function AddUser(Request $request){
+        $nik = $request->newUser;
+        //cek jumlah
+        $result_user = DB::table('M_User')->where('NIK',$nik)->count();
+        
+        $ldapuri = "ldap://huayra.onekalbe.com:6501";
+        $ldap_connection = ldap_connect($ldapuri);
+        $ldap_base_dn = 'DC=VirtualDirectory';
 
+        $search_filter = '(&(objectClass=user)(employeenumber=' . $nik . '))';
+        
+        $result = ldap_search($ldap_connection, $ldap_base_dn, $search_filter);
+        $entries = ldap_get_entries($ldap_connection, $result);
+        
+        if (count($entries)>1 && $result_user<1) {
+            for ($x = 0; $x < $entries['count']; $x++) {
+                    
+                //samAcc
+                $LDAP_UserID = "";
+                if (!empty($entries[$x]['samaccountname'][0])) {
+                    $LDAP_UserID = $entries[$x]['samaccountname'][0];
+                    if ($LDAP_UserID == "NULL") {
+                        $LDAP_UserID = "";
+                    }
+                }
+
+                //nama
+                $LDAP_FullName = "";
+                if (!empty($entries[$x]['cn'][0])) {
+                    $LDAP_FullName = $entries[$x]['cn'][0];
+                    if ($LDAP_FullName == "NULL") {
+                        $LDAP_FullName = "";
+                    }
+                }
+
+                //email
+                $LDAP_Mail = "";
+
+                if (!empty($entries[$x]['mail'][0])) {
+                    $LDAP_Mail = $entries[$x]['mail'][0];
+                    if ($LDAP_Mail == "NULL") {
+                        $LDAP_Mail = "";
+                    }
+                }
+
+                //NIK
+                $LDAP_Nik = "";
+
+                if (!empty($entries[$x]['employeenumber'][0])) {
+                    $LDAP_Nik = $entries[$x]['employeenumber'][0];
+                    if ($LDAP_Nik == "NULL") {
+                        $LDAP_Nik = "";
+                    }
+                }
+
+                //userPrincipal
+                $LDAP_PrincipalName = "";
+
+                if (!empty($entries[$x]['userprincipalname'][0])) {
+                    $LDAP_PrincipalName = $entries[$x]['userprincipalname'][0];
+                    if ($LDAP_PrincipalName == "NULL") {
+                        $LDAP_PrincipalName = "";
+                    }
+                }
+
+                //mobilePhone
+                $LDAP_MobilePhone = "";
+
+                if (!empty($entries[$x]['mobile'][0])) {
+                    $LDAP_MobilePhone = $entries[$x]['mobile'][0];
+                    if ($LDAP_MobilePhone == "NULL") {
+                        $LDAP_MobilePhone = "";
+                    }
+                }
+
+                //title
+                $LDAP_Title = "";
+
+                if (!empty($entries[$x]['title'][0])) {
+                    $LDAP_Title = $entries[$x]['title'][0];
+                    if ($LDAP_Title == "NULL") {
+                        $LDAP_Title = "";
+                    }
+                }
+
+                //extensionName
+                $LDAP_ExtensionName = "";
+
+                if (!empty($entries[$x]['ekstensionName'][0])) {
+                    $LDAP_ExtensionName = $entries[$x]['ekstensionName'][0];
+                    if ($LDAP_ExtensionName == "NULL") {
+                        $LDAP_ExtensionName = "";
+                    }
+                }
+
+                //id_Organisasi
+                $LDAP_Organisasi = "";
+
+                if (!empty($entries[$x]['company'][0])) {
+                    $LDAP_Organisasi = $entries[$x]['company'][0];
+                    if ($LDAP_Organisasi == "NULL") {
+                        $LDAP_Organisasi = "";
+                    }
+                }
+
+                $result_Organisasi = DB::table('M_Organisasi')
+                                ->where('nama',$LDAP_Organisasi)
+                                ->count();
+                
+                if (!$result_Organisasi) {
+                    // data tidak ada
+                    $id_Organisasi = DB::table('M_Organisasi')
+                                    ->insertGetId([
+                                        'nama'=>$LDAP_Organisasi,
+                                        'active'=>'1',
+                                        'deleted'=>'0'
+                                    ]);
+                }else{
+                    $id_Organisasi_ = DB::table('M_Organisasi')
+                                    ->select('id')
+                                    ->where('nama',$LDAP_Organisasi)
+                                    ->get();
+                    $id_Organisasi = $id_Organisasi_[0]->id;
+                }
+
+                //id_Dept
+                $LDAP_department = "";
+
+                if (!empty($entries[$x]['department'][0])) {
+                    $LDAP_department = $entries[$x]['department'][0];
+                    if ($LDAP_department == "NULL") {
+                        $LDAP_department = "";
+                    }
+                }
+
+                $result_department = DB::table('M_LobandSub')
+                                ->where('nama',$LDAP_department)
+                                ->count();
+                if (!$result_department) {
+                    // data tidak ada
+                    $id_Dept = DB::table('M_LobandSub')
+                                    ->insertGetId([
+                                        'id_Organisasi'=>$id_Organisasi,
+                                        'nama'=>$LDAP_department,
+                                    ]);
+                }else{
+                    $id_Dept_ = DB::table('M_LobandSub')
+                                    ->select('id')
+                                    ->where('nama',$LDAP_department)
+                                    ->get();
+                    $id_Dept = $id_Dept_[0]->id;
+                }   
+                
+
+                //namaManager
+                $LDAP_manager = "";
+
+                if (!empty($entries[$x]['manager'][0])) {
+                    $LDAP_manager = $entries[$x]['manager'][0];
+                    if ($LDAP_manager == "NULL") {
+                        $LDAP_manager = "";
+                    }
+                }
+
+                $manager = $this->get_string_between($LDAP_manager,'CN=',',');
+                // dd($manager);
+
+                //location
+                $LDAP_location = "";
+
+                if (!empty($entries[$x]['physicaldeliveryofficename'][0])) {
+                    $LDAP_location = $entries[$x]['physicaldeliveryofficename'][0];
+                    if ($LDAP_location == "NULL") {
+                        $LDAP_location = "";
+                    }
+                }
+
+                try {
+                    $m_user = new User;
+                    $m_user->samAcc = $LDAP_UserID;
+                    $m_user->nama = $LDAP_FullName;
+                    $m_user->email = $LDAP_Mail;
+                    $m_user->NIK = $LDAP_Nik;
+                    $m_user->userPrincipal = $LDAP_PrincipalName;
+                    $m_user->mobilePhone = $LDAP_MobilePhone;
+                    $m_user->title = $LDAP_Title;
+                    $m_user->extensionName = $LDAP_ExtensionName;
+                    $m_user->id_Organisasi = $id_Organisasi;
+                    $m_user->id_Dept = $id_Dept;
+                    $m_user->namaManager = $manager;
+                    $m_user->location = $LDAP_location;
+                    $m_user->save();
+                } catch (Exception $e) {
+                    return Redirect::back()->with('error', $e);
+                }
+            } 
+        }
+        return redirect()->route('mt.internal');
+    }
+
+    public function get_string_between($string, $start, $end){
+        $string = ' ' . $string;
+        $ini = strpos($string, $start);
+        if ($ini == 0) return '';
+        $ini += strlen($start);
+        $len = strpos($string, $end, $ini) - $ini;
+        return substr($string, $ini, $len);
+    }
 
     //MASTER TABLE FORM
     public function indexForm(){
@@ -145,6 +355,59 @@ class MasterTableController extends Controller
         DB::table('M_sim')
             ->where('id',$request->id_sim)
             ->update(['active'=>$request->active]);
+        return true;
+    }
+
+    //----SIM----
+    public function ShowDomisili(){
+        $domisili = DB::table('M_kodepos_Final')
+            ->select('id','provinsi','kabupaten','kodepos','active','deleted')
+            ->where('deleted',0)
+            ->get();
+        return $domisili;
+    }
+    public function DelDomisili(Request $request){
+        $delted =1;
+        $active =0;
+        for ($i=0; $i <count($request->arrId_domisili) ; $i++) { 
+            DB::table('M_kodepos_Final')
+                ->where('id',$request->arrId_domisili[$i])
+                ->update(['deleted'=>$delted,'active'=>$active]);
+        }
+        return true;
+    }
+    public function AddDomisili(Request $request){
+        DB::table('M_kodepos_Final')
+            ->insert([
+                'provinsi'=>$request->new_provinsi,
+                'kabupaten'=>$request->new_kabupaten,
+                'kodepos'=>$request->new_kodepos,
+                'active'=>'1',
+                'deleted'=>'0'
+            ]);
+        return true;
+    }
+    public function ModalDomisili($id){
+        $domisili = DB::table('M_kodepos_Final')
+            ->select('provinsi','kabupaten','kodepos')
+            ->where('id',$id)
+            ->get();
+        return $domisili;
+    }
+    public function ActiveDomisili(Request $request){
+        DB::table('M_kodepos_Final')
+            ->where('id',$request->id_domisili)
+            ->update(['active'=>$request->active]);
+        return true;
+    }
+    public function EditDomisili(Request $request){
+        DB::table('M_kodepos_Final')
+        ->where('id',$request->id_domisili)
+        ->update([
+            'provinsi'=>$request->Edit_provinsi,
+            'kabupaten'=>$request->Edit_kabupaten,
+            'kodepos'=>$request->Edit_kodepos,
+        ]);
         return true;
     }
 

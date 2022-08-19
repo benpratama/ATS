@@ -91,19 +91,22 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <div class="form-group row">
-                <label for="new-user" class="col-md-2 col-form-label form-control-label">NIK User</label>
-                <div class="col-md-10">
-                  <input class="form-control" type="text" id="new-user">
+            <form method="POST" action="{{ route('mt.AddUser') }}">
+              @csrf
+              <div class="modal-body">
+                <div class="form-group row">
+                  <label for="new-user" class="col-md-2 col-form-label form-control-label">NIK User</label>
+                  <div class="col-md-10">
+                    <input class="form-control" type="text" id="new-user" name="newUser">
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="modal-footer">
-              <div class="row">
-                <button id="btnAdd-user" type="button" class="btn btn-primary">Save changes</button>
+              <div class="modal-footer">
+                <div class="row">
+                  <button id="btnAdd-user" type="submit" class="btn btn-primary">Save changes</button>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>

@@ -148,17 +148,121 @@
         <div class="card">
           <div class="card-header bg-transparent">
             <div class="row align-items-center">
-              <div class="col">
+              <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">form</h6>
                 <h5 class="h3 mb-0">Domisili</h5>
+              </div>
+              <div class="d-flex col-8">
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-domisili">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah</span>
+                </button>
+                <button id="btnDel-domisili" type="button" class="btn btn-danger d-flex">
+                  <span class="material-symbols-outlined">delete</span>
+                  <span class="gap-logo">Hapus</span>
+                </button>
               </div>
             </div>
           </div>
           <div class="card-body">
-
+            <div class="table-responsive">
+              <table class="table" id="TblDomisili">
+                <thead class="thead-light">
+                  <tr>
+                    <th><input type="checkbox" id="cekAll-domisili"></th>
+                    <th>Active</th>
+                    <th>Provinsi</th>
+                    <th>Kabupaten</th>
+                    <th>kodepos</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+
+      {{--!!START MODAL TAMBAH!!--}}
+      <div class="modal fade bd-example-modal-lg modal-tambah-domisili" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Domisili</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="new-provinsi" class="col-md-2 col-form-label form-control-label">Provinsi</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="new-provinsi">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-kabupaten" class="col-md-2 col-form-label form-control-label">Kabupaten</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="new-kabupaten">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-kodepos" class="col-md-2 col-form-label form-control-label">kodepos</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="new-kodepos">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnAdd-domisili" type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL TAMBAH!!--}}
+
+      {{--!!START MODAL EDIT!!--}}
+      <div class="modal fade bd-example-modal-lg modal-edit-domisili" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Domisili</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="edit-provinsi" class="col-md-2 col-form-label form-control-label">Provinsi</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-provinsi">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="edit-kabupaten" class="col-md-2 col-form-label form-control-label">Kabupaten</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-kabupaten">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="edit-kodepos" class="col-md-2 col-form-label form-control-label">kodepos</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-kodepos">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnEdit-domisili" type="button" class="btn btn-primary" value="">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL EDIT!!--}}
+      
     </div>
 
     {{-- !! JURUSAN !! --}}

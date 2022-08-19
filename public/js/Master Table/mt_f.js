@@ -6,6 +6,11 @@ $( document ).ready(function() {
     add_SIM();
     Edit_SIM();
 
+    loadTbl_DOMISILI();
+    delete_DOMISILI();
+    add_DOMISILI();
+    Edit_DOMISILI()
+
     loadTbl_JURUSAN();
     delete_JURUSAN();
     add_JURUSAN();
@@ -44,6 +49,18 @@ function clearModal(){
     $('.modal-edit-sim').on('hide.bs.modal', function() {
         $('#edit-sim').val('');
         $('#btnEdit-sim').val('');
+    })
+
+    $('.modal-tambah-domisili').on('hide.bs.modal', function() {
+        $('#new-provinsi').val('');
+        $('#new-kabupaten').val('');
+        $('#new-kodepos').val('');
+    })
+    $('.modal-edit-domisili').on('hide.bs.modal', function() {
+        $('#edit-provinsi').val('');
+        $('#edit-kabupaten').val('');
+        $('#edit-kodepos').val('');
+        $('#btnEdit-domisili').val('');
     })
 
     $('.modal-tambah-jurusan').on('hide.bs.modal', function() {
@@ -288,6 +305,217 @@ function Edit_SIM(){
           }).done((data) => {
             $(".modal-edit-sim").modal('hide');
             $('#TblSim').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+        });
+    });
+}
+
+//----DOMISILI----
+function loadTbl_DOMISILI(){
+    $('#TblDomisili').DataTable({
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        pageLength : 5,
+        ajax: {
+        url: "/hrdats/mt/show/domisili",
+                data:{},
+                dataSrc:""
+            },
+        "paging":true,
+        "bInfo" : false,
+        "lengthChange": false,
+        language: {
+            paginate: {
+                previous: "<i class='fas fa-angle-left'>",
+                next: "<i class='fas fa-angle-right'>"
+            }
+        },
+        columns: [
+            {
+                render: (data, type, row, meta)=> {
+                    return '<input type="checkbox" class="cek-domisili" value="'+row.id+'">'
+                }
+            },
+            {
+                data: 'active',
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+  
+                    switch(data){
+                        case'1':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkDomisili(this)" checked value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        case'0':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkDomisili(this)" value="'+row.id+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        default:
+                            return data;
+                            break;
+                    }
+                    
+                }
+            },
+            {
+                data: 'provinsi',
+                defaultContent: ''
+            },
+            {
+                data: 'kabupaten',
+                defaultContent: ''
+            },
+            {
+                data: 'kodepos',
+                defaultContent: ''
+            },
+            {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+                    return '<button type="button" class="btn btn-info" onclick="Modal_domisili(value)" data-toggle="modal" data-target=".modal-edit-domisili" value="'+row.id+'">Edit</button>'
+                }
+            }
+        ] 
+    });
+
+    //buat check
+    $('#cekAll-domisili').change(function(){
+        $("input.cek-domisili:checkbox").prop("checked",$(this).prop("checked"));
+    })
+}
+function delete_DOMISILI(){
+    $('#btnDel-domisili').on('click', function() {
+        //ini buat ambil ID-nya
+        var arrId_domisili=[];
+        var cek = $('.cek-domisili')
+        for(var i=0; cek[i]; ++i){
+            if(cek[i].checked){
+                arrId_domisili.push(cek[i].value);
+            }
+        }
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/del/domisili',
+            type: 'post',
+            data: {
+                arrId_domisili:arrId_domisili
+            }
+          }).done((data) => {
+            $('#TblDomisili').DataTable().ajax.reload();
+            // console.log(JSON.stringify(data));
+          });
+    })
+}
+function add_DOMISILI(){
+    $('#btnAdd-domisili').on('click', function() {
+        var new_provinsi = $('#new-provinsi').val();
+        var new_kabupaten = $('#new-kabupaten').val();
+        var new_kodepos = $('#new-kodepos').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/add/domisili',
+            type: 'post',
+            data: {
+                new_provinsi:new_provinsi,
+                new_kabupaten:new_kabupaten,
+                new_kodepos:new_kodepos
+            }
+          }).done((data) => {
+            $(".modal-tambah-domisili").modal('hide');
+            $('#TblDomisili').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+          });
+    })
+}
+function Modal_domisili(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/modal/domisili/'+id,
+        type: 'get'
+      }).done((data) => {
+        $('#btnEdit-domisili').val(id);
+        $('#edit-provinsi').val(data[0].provinsi);
+        $('#edit-kabupaten').val(data[0].kabupaten);
+        $('#edit-kodepos').val(data[0].kodepos);
+        console.log(JSON.stringify(data));
+      });
+}
+function checkDomisili(obj){
+    if (obj.checked==false) {
+        console.log('nonactive')
+        var active=0;
+    } else {
+        console.log('active')
+        var active=1;
+    }
+    
+    var id_domisili= obj.value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/active/domisili',
+        type: 'post',
+        data: {
+            active:active,
+            id_domisili:id_domisili
+        }
+      }).done((data) => {
+        $('#TblDomisili').DataTable().ajax.reload();
+        console.log(JSON.stringify(data));
+    });
+
+}
+function Edit_DOMISILI(){
+    $('#btnEdit-domisili').on('click', function() {
+        var Edit_provinsi = $('#edit-provinsi').val();
+        var Edit_kabupaten = $('#edit-kabupaten').val();
+        var Edit_kodepos = $('#edit-kodepos').val();
+        var id_domisili=$('#btnEdit-domisili').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/edit/domisili',
+            type: 'post',
+            data: {
+                Edit_provinsi:Edit_provinsi,
+                Edit_kabupaten:Edit_kabupaten,
+                Edit_kodepos:Edit_kodepos,
+                id_domisili:id_domisili
+            }
+          }).done((data) => {
+            $(".modal-edit-domisili").modal('hide');
+            $('#TblDomisili').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
         });
     });

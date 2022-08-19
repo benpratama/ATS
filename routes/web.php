@@ -51,6 +51,13 @@ Route::Post('/hrdats/mt/add/sim', 'MasterTableController@AddSim')->name('mt.AddS
 Route::get('/hrdats/mt/modal/sim/{id}', 'MasterTableController@ModalSim')->name('mt.ModalSim');
 Route::Post('/hrdats/mt/edit/sim', 'MasterTableController@EditSim')->name('mt.EditSim');
 Route::Post('/hrdats/mt/active/sim', 'MasterTableController@ActiveSim')->name('mt.ActiveSim');
+//--DOMISILI--
+Route::get('/hrdats/mt/show/domisili', 'MasterTableController@ShowDomisili')->name('mt.ShowDomisili');
+Route::Post('/hrdats/mt/del/domisili', 'MasterTableController@DelDomisili')->name('mt.DelDomisili');
+Route::Post('/hrdats/mt/add/domisili', 'MasterTableController@AddDomisili')->name('mt.AddDomisili');
+Route::get('/hrdats/mt/modal/domisili/{id}', 'MasterTableController@ModalDomisili')->name('mt.ModalDomisili');
+Route::Post('/hrdats/mt/edit/domisili', 'MasterTableController@EditDomisili')->name('mt.EditDomisili');
+Route::Post('/hrdats/mt/active/domisili', 'MasterTableController@ActiveDomisili')->name('mt.ActiveDomisili');
 //--Jurusan--
 Route::get('/hrdats/mt/show/jurusan', 'MasterTableController@ShowJurusan')->name('mt.ShowJurusan');
 Route::Post('/hrdats/mt/del/jurusan', 'MasterTableController@DelJurusan')->name('mt.DelJurusan');
