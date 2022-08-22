@@ -24,7 +24,7 @@
 @endsection
 
 @section('content')
-<div class="header bg-primary pb-6">
+  <div class="header bg-primary pb-6">
     {{-- !!! ROUTE DIHEADER !!! --}}
     <div class="container-fluid">
       <div class="header-body">

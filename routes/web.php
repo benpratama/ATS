@@ -117,3 +117,8 @@ Route::Post('/hrdats/mt/add/psikotest', 'MasterTableController@AddPsikotest')->n
 Route::get('/hrdats/mt/modal/psikotest/{id}', 'MasterTableController@ModalPsikotest')->name('mt.ModalPsikotest');
 Route::Post('/hrdats/mt/edit/psikotest', 'MasterTableController@EditPsikotest')->name('mt.EditPsikotest');
 Route::Post('/hrdats/mt/active/psikotest', 'MasterTableController@ActivePsikotest')->name('mt.ActivePsikotest');
+
+//--FORM Kandidat--
+// Route::view('/term-of-use','termofuse')->name('termofuse');
+Route::get('/form-kandidat/{url}','FormKandidatController@ShowForm1')->name('fk.ShowForm1');
+Route::Post('/submit/form-kandidat','FormKandidatController@SubmitForm1')->name('fk.SubmitForm1');

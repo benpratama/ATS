@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/nucleo/css/nucleo.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('../../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" type="text/css">
      <!-- Page plugins -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}">
@@ -103,6 +103,14 @@
                     <span class="nav-link-text">MPP</span>
                   </a>
                 </li>
+
+                {{-- URL --}}
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-shop text-primary"></i>
+                    <span class="nav-link-text">URL</span>
+                  </a>
+                </li>
               </ul>
               <!-- Divider -->
               <hr class="my-3">
@@ -164,64 +172,65 @@
     @endguest
     <!-- Argon Scripts -->
     <!-- Core -->
+  </div>
     
-    <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js-cookie/js.cookie.js') }}"></script>
-    <script src="{{ asset('assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
-    <!-- Optional JS -->
-    <script src="{{ asset('assets/vendor/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datatables.net-select/js/dataTables.select.min.js') }}"></script>
-    <!-- Argon JS -->
-    <script src="{{ asset('assets/js/argon.js?v=1.1.0') }}"></script>
-    <!-- Demo JS - remove this in your project -->
-    <script src="{{ asset('assets/js/demo.min.js') }}"></script>
-      @yield('script')
-    {{-- active dashboard --}}
-    @if (Route::currentRouteName()=='home' )
+  <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/js-cookie/js.cookie.js') }}"></script>
+  <script src="{{ asset('assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
+  <!-- Optional JS -->
+  <script src="{{ asset('assets/vendor/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+  <!-- Argon JS -->
+  <script src="{{ asset('assets/js/argon.js?v=1.1.0') }}"></script>
+  <!-- Demo JS - remove this in your project -->
+  <script src="{{ asset('assets/js/demo.min.js') }}"></script>
+    @yield('script')
+  {{-- active dashboard --}}
+  @if (Route::currentRouteName()=='home' )
+    <script>
+      $(document).ready(() => {
+        $('#home').addClass("active");
+      });
+    </script>
+  @endif
+  
+  {{-- active master table --}}
+  @if (Str::contains(Route::currentRouteName(),'mt.'))
+    <script>
+      $(document).ready(() => {
+        $('#masterTable').removeClass( "collapsed" );
+        $('#masterTable').attr( "aria-expanded","true");
+        $('#navbar-mastertable').addClass("show");
+        $('#masterTable').addClass("active");
+      });
+    </script>
+    @if (Route::currentRouteName()=='mt.internal')
       <script>
         $(document).ready(() => {
-          $('#home').addClass("active");
-        });
+          $('#url-Internal').addClass("active");
+        })
       </script>
-    @endif
-    
-    {{-- active master table --}}
-    @if (Str::contains(Route::currentRouteName(),'mt.'))
+    @elseif (Route::currentRouteName()=='mt.form')
       <script>
         $(document).ready(() => {
-          $('#masterTable').removeClass( "collapsed" );
-          $('#masterTable').attr( "aria-expanded","true");
-          $('#navbar-mastertable').addClass("show");
-          $('#masterTable').addClass("active");
-        });
+          $('#url-Form').addClass("active");
+        })
       </script>
-      @if (Route::currentRouteName()=='mt.internal')
-        <script>
-          $(document).ready(() => {
-            $('#url-Internal').addClass("active");
-          })
-        </script>
-      @elseif (Route::currentRouteName()=='mt.form')
-        <script>
-          $(document).ready(() => {
-            $('#url-Form').addClass("active");
-          })
-        </script>
-      @else
-        <script>
-          $(document).ready(() => {
-            $('#url-Vendor').addClass("active");
-          })
-        </script>
-      @endif
+    @else
+      <script>
+        $(document).ready(() => {
+          $('#url-Vendor').addClass("active");
+        })
+      </script>
     @endif
+  @endif
 </body>
 </html>
