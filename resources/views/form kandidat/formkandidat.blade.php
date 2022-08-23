@@ -19,6 +19,9 @@
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/argon.css?v=1.1.0') }}" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
+
+    
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" type="text/css">
     <style>
       .material-symbols-outlined {
         font-variation-settings:
@@ -99,13 +102,20 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="kota">Kota*</label>
-                    <input type="text" class="form-control" id="kota" name="kota" required>
+                    <select class="js-example-basic-single form-control" name="kota1" id="kota1">
+                      <option value="" disabled selected>Domisili</option>
+                      @foreach ($Domisili as $domisili )
+                      <option value="{{ $domisili->kabupaten }}">{{ $domisili->kabupaten }}</option>
+                      @endforeach
+                    </select>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="kodepos">kode pos*</label>
-                    <input type="text" class="form-control" id="kodepos" name="kodepos"required>
+                    <select class="js-example-basic-single form-control" name="kodepos" id="kodepos" required>
+                      <option value="" disabled selected>kode pos</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -113,8 +123,8 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label class="form-control-label" for="alamatkoresponden">Alamat Korespondensi*</label>
-                    <input type="text" class="form-control" id="alamatkoresponden" name="alamatkoresponden"required>
+                    <label class="form-control-label" for="alamat_koresponden">Alamat Korespondensi*</label>
+                    <input type="text" class="form-control" id="alamat_koresponden" name="alamat_koresponden"required>
                   </div>
                 </div>
               </div>
@@ -134,13 +144,20 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="kota_koresponden">Kota*</label>
-                    <input type="text" class="form-control" id="kota_koresponden" name="kota_koresponden" required>
+                    <select class="js-example-basic-single form-control" name="kota_koresponden" id="kota_koresponden" required>
+                      <option value="" disabled selected>Domisili</option>
+                      @foreach ($Domisili as $domisili )
+                      <option value="{{ $domisili->kabupaten }}">{{ $domisili->kabupaten }}</option>
+                      @endforeach
+                    </select>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="kodepos_koresponden">kodepos*</label>
-                    <input type="text" class="form-control" id="kodepos_koresponden" name="kodepos_koresponden" required>
+                    <select class="js-example-basic-single form-control" name="kodepos_koresponden" id="kodepos_koresponden" required>
+                      <option value="" disabled selected>kode pos</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -149,7 +166,6 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="status_perkawinan">Status Perkawinan*</label>
-                    {{-- <input type="text" class="form-control" id="status_perkawinan" name="status_perkawinan" required> --}}
                     <select class="form-control" id="status_perkawinan" name="status_perkawinan" required>
                       <option value="" disabled selected>Status Perkawinan</option>
                       @foreach ($Pernikahan as $pernikahan )
@@ -161,7 +177,6 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="tgllahir">Tanggal Lahir*</label>
-                    {{-- <input type="text" class="form-control" id="tgllahir" name="tgllahir"> --}}
                     <input class="form-control" type="date" value="" id="tgllahir" name="tgllahir" required>
                   </div>
                 </div>
@@ -183,40 +198,45 @@
               <hr class="my-4">
               <div class="col-md-2">
                 <div class="form-group">
-                  {{-- <label class="form-control-label" for="nosim">Tambah SIM</label> --}}
-                  <button type="button" class="btn btn-success d-flex">
+                  <button type="button" class="btn btn-success d-flex" id="btnAdd-sim">
                     <span class="material-symbols-outlined">add</span>
                     <span class="gap-logo">Tambah SIM</span>
                   </button>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="jenissim">SIM yang dimiliki</label>
-                    <select class="form-control" id="sim[]" name="sim[]" required>
-                      <option value="" disabled selected>SIM</option>
-                      @foreach ($SIM as $sim )
-                      <option value="{{ $sim->id }}">{{ $sim->nama }}</option>
-                      @endforeach
-                    </select>
+
+              <div id="sims">
+                <div class="row" id="simbaris1">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="jenissim">SIM yang dimiliki</label>
+                      <select class="form-control sim" data-row="1" name="sim[]" required>
+                        <option value="" disabled selected>SIM</option>
+                        @foreach ($SIM as $sim )
+                        <option value="{{ $sim->id }}">{{ $sim->nama }}</option>
+                        @endforeach
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="nosim">No SIM</label>
-                    <input type="text" class="form-control" id="nosim" name="nosim[]">
+                  <div class="col-md-6" id='nosimbaris1'hidden>
+                    <div class="form-group">
+                      <label class="form-control-label" for="nosim">No SIM</label>
+                      <input type="text" class="form-control" data-row="1" name="nosim[]">
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <button id="btnDel-jurusan" type="button" class="btn btn-danger d-flex" style="margin-top: 2.3em;">
-                      <span class="material-symbols-outlined">delete</span>
-                      <span class="gap-logo">Hapus</span>
-                    </button>
-                  </div>
+
+                  {{-- <div class="col-md-2">
+                    <div class="form-group">
+                      <button id="btnDel-jurusan" type="button" class="btn btn-danger d-flex" style="margin-top: 2.3em;">
+                        <span class="material-symbols-outlined">delete</span>
+                        <span class="gap-logo">Hapus</span>
+                      </button>
+                    </div>
+                  </div> --}}
+
                 </div>
               </div>
+              
               <hr class="my-4">
               <div class="row">
                 <div class="col-md-6">
@@ -277,22 +297,21 @@
                   <tbody>
                     <tr>
                       <td>SD</td>
-                      <td><input type="text" name="namasekolah[]"></td>
-                      <td><input type="text" name="jurusan[]"></td>
-                      <td><input type="text" name="kota[]"></td>
-                      <td><input type="text" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
+                      <td><input type="text" class="form-control" name="jurusan[]"></td>
+                      <td><input type="text" class="form-control" name="kota[]"></td>
+                      <td><input type="text" class="form-control" name="tahun[]"></td>
                     </tr>
                     <tr>
                       <td>SLTP</td>
-                      <td><input type="text" name="namasekolah[]"></td>
-                      <td><input type="text" name="jurusan[]"></td>
-                      <td><input type="text" name="kota[]"></td>
-                      <td><input type="text" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
+                      <td><input type="text" class="form-control" name="jurusan[]"></td>
+                      <td><input type="text" class="form-control" name="kota[]"></td>
+                      <td><input type="text" class="form-control" name="tahun[]"></td>
                     </tr>
                     <tr>
                       <td>SMA</td>
-                      <td><input type="text" name="namasekolah[]"></td>
-                      {{-- <td><input type="text" name="jurusan[]"></td> --}}
+                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
                       <th>
                         <select class="form-control" id="jurusan[]" name="jurusan[]">
                           <option value="" disabled selected>jurusan</option>
@@ -301,13 +320,12 @@
                           @endforeach
                         </select>
                       </th>
-                      <td><input type="text" name="kota[]"></td>
-                      <td><input type="text" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="kota[]"></td>
+                      <td><input type="text" class="form-control" name="tahun[]"></td>
                     </tr>
                     <tr>
                       <td>Akademi</td>
-                      <td><input type="text" name="namasekolah[]"></td>
-                      {{-- <td><input type="text" name="jurusan[]"></td> --}}
+                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
                       <th>
                         <select class="form-control" id="jurusan[]" name="jurusan[]">
                           <option value="" disabled selected>jurusan</option>
@@ -316,22 +334,22 @@
                           @endforeach
                         </select>
                       </th>
-                      <td><input type="text" name="kota[]"></td>
-                      <td><input type="text" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="kota[]"></td>
+                      <td><input type="text" class="form-control" name="tahun[]"></td>
                     </tr>
                     <tr>
                       <td>S1</td>
-                      <td><input type="text" name="namasekolah[]"></td>
-                      <td><input type="text" name="jurusan[]"></td>
-                      <td><input type="text" name="kota[]"></td>
-                      <td><input type="text" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
+                      <td><input type="text" class="form-control" name="jurusan[]"></td>
+                      <td><input type="text" class="form-control" name="kota[]"></td>
+                      <td><input type="text" class="form-control" name="tahun[]"></td>
                     </tr>
                     <tr>
                       <td>S2</td>
-                      <td><input type="text" name="namasekolah[]"></td>
-                      <td><input type="text" name="jurusan[]"></td>
-                      <td><input type="text" name="kota[]"></td>
-                      <td><input type="text" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
+                      <td><input type="text" class="form-control" name="jurusan[]"></td>
+                      <td><input type="text" class="form-control" name="kota[]"></td>
+                      <td><input type="text" class="form-control" name="tahun[]"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -353,16 +371,20 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table" id="TblSim">
+                <table class="table" id="TblPerushaan">
                   <thead class="thead-light">
                     <tr>
-                      <th>Nama Perushaan</th>
-                      <th>Jenis Perushaan</th>
-                      <th>Alamat Prushaan</th>
-                      <th>Jabatan</th>
-                      <th>Nama Atasan/ Jabatan</th>
-                      <th>Lama Bekerja</th>
-                      <th>+</th>
+                      <th style="width: 15.8%;">Nama Perushaan</th>
+                      <th style="width: 15.8%;">Jenis Perushaan</th>
+                      <th style="width: 15.8%;">Alamat Prushaan</th>
+                      <th style="width: 15.8%;">Jabatan</th>
+                      <th style="width: 15.8%;">Nama Atasan/ Jabatan</th>
+                      <th style="width: 15.8%;">Lama Bekerja</th>
+                      <th style="width: 5%;"> 
+                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-perusahaan">
+                          <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
+                        </button>
+                      </th>
                     </tr>
                   </thead>
                 </table>
@@ -423,7 +445,6 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="bertugasluarkota">bersedia Bertugas ke luar kota*</label>
-                    {{-- <input type="text" class="form-control" id="bertugasluarkota" name="bertugasluarkota"> --}}
                     <select class="form-control" id="bertugasluarkota" name="bertugasluarkota" required>
                       <option value="" disabled selected>Bertugas ke luar kota</option>
                       <option value="Ya">Ya</option>
@@ -434,7 +455,6 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="tujanganharapan">bersedia Ditempatkan di luar kota</label>
-                    {{-- <input type="text" class="form-control" id="tujanganharapan" name="tujanganharapan"> --}}
                     <select class="form-control" id="tujanganharapan" name="tujanganharapan" required>
                       <option value="" disabled selected>Ditempatkan di luar kota</option>
                       <option value="Ya">Ya</option>
@@ -448,6 +468,8 @@
         </div>
       </div>
       <div class="row">
+        <input name='urlid' value='{{ $URL->id }}'hidden>
+        <input name='organisasiid' value='{{ $URL->id_Organisasi }}'hidden>
         <button type="submit" class="btn btn-primary btnsbmt">Primary</button>
       </div>
     </div>
@@ -463,4 +485,5 @@
   <script src="{{ asset('assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
   <script language="JavaScript" type="text/javascript" src="{{ asset('js/form.js') }}"></script>
+  <script src="{{ asset('js/select2.min.js') }}"></script>
 </body>

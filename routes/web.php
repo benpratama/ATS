@@ -121,4 +121,6 @@ Route::Post('/hrdats/mt/active/psikotest', 'MasterTableController@ActivePsikotes
 //--FORM Kandidat--
 // Route::view('/term-of-use','termofuse')->name('termofuse');
 Route::get('/form-kandidat/{url}','FormKandidatController@ShowForm1')->name('fk.ShowForm1');
+Route::get('/form-kandidat/get/sim','FormKandidatController@GetSIM')->name('fk.GetSIM');
+Route::post('/form-kandidat/kodepos','FormKandidatController@ShowKodePos')->name('fk.ShowKodePos');
 Route::Post('/submit/form-kandidat','FormKandidatController@SubmitForm1')->name('fk.SubmitForm1');
