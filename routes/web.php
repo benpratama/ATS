@@ -124,3 +124,4 @@ Route::get('/form-kandidat/{url}','FormKandidatController@ShowForm1')->name('fk.
 Route::get('/form-kandidat/get/sim','FormKandidatController@GetSIM')->name('fk.GetSIM');
 Route::post('/form-kandidat/kodepos','FormKandidatController@ShowKodePos')->name('fk.ShowKodePos');
 Route::Post('/submit/form-kandidat','FormKandidatController@SubmitForm1')->name('fk.SubmitForm1');
+Route::view('/submit/finish','form kandidat/terimakasih')->name('fk.terimakasih');

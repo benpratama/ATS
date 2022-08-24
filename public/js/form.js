@@ -13,6 +13,7 @@ $( document ).ready(function() {
   $('#kodepos').select2();
   $('#kota_koresponden').select2();
   $('#kodepos_koresponden').select2();
+  $('#tempatlahir').select2();
   getPostCode();
   Row_perushaan();
 });
@@ -64,7 +65,7 @@ function AddDelSim(){
       var html  = "<div class='row' id='simbaris"+data_sim+"'>"
         html +=   "<div class='col-md-4'>"
         html +=     "<div class='form-group'>"
-        html +=       "<label class='form-control-label' for='jenissim'>SIM yang dimiliki</label>"
+        html +=       "<label class='form-control-label' for='jenissim'>SIM yang dimiliki*</label>"
         html +=         "<select class='form-control sim' data-row='"+data_sim+"' name='sim[]' required>"
         html +=           "<option value='' disabled selected>SIM</option>"
         data.forEach(element => {
@@ -175,26 +176,26 @@ function Row_perushaan(){
     
     var html  = "<tr id='baris"+baris_perusahaan+"' class='detail-perusahaan'>"
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='nama-perushaan[]'>"
+        html +=     "<input class='form-control'  type='text' name='nama_perushaan[]'>"
         html +=   "</td>" 
         html +=   "<td style='width: 19%;'>"
-        html +=     "<select class='form-control' id='status_perkawinan' name='jenis-perusahaan[]' required>"
+        html +=     "<select class='form-control' id='status_perkawinan' name='jenis_perusahaan[]' required>"
         html +=       "<option value='' disabled selected>Jenis Perusahaan</option>"
         html +=       "<option value='Farmasi'>Farmasi</option>"
         html +=       "<option value='Bukan Farmasi'>Bukan Farmasi</option>"
         html +=     "</select>"
         html +=   "</td>" 
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control' type='text' name='alamat-perusahaan[]'>"
+        html +=     "<input class='form-control' type='text' name='alamat_perusahaan[]'>"
         html +=   "</td>"
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control' type='text' name='jabatan-perusahaan[]'>"
+        html +=     "<input class='form-control' type='text' name='jabatan_perusahaan[]'>"
         html +=   "</td>"
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control' type='text' name='atasan-perusahaan[]'>"
+        html +=     "<input class='form-control' type='text' name='atasan_perusahaan[]'>"
         html +=   "</td>" 
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control' type='text' name='lama-perusahaan[]'>"
+        html +=     "<input class='form-control' type='text' name='lama_perusahaan[]'>"
         html +=   "</td>"   
         html +=   "<td style='width: 5%;'>"
         html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_perusahaan+"' id='btnDelRow-perusahaan'>"

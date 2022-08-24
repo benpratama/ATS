@@ -46,7 +46,7 @@
 <body class="stly">
   <form method="POST" action="{{ route('fk.SubmitForm1') }}">
     @csrf
-    <div id='frm' class="container-fluid mt--6">
+    <div id='frm' class="container-fluid mt--6" hidden>
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
@@ -77,6 +77,36 @@
                   </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="status_perkawinan">Status Perkawinan*</label>
+                    <select class="form-control" id="status_perkawinan" name="status_perkawinan" required>
+                      <option value="" disabled selected>Status Perkawinan</option>
+                      @foreach ($Pernikahan as $pernikahan )
+                      <option value="{{ $pernikahan->keterangan }}">{{ $pernikahan->nama }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="tempatlahir">Tempat lahir*</label>
+                    <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required>
+                      <option value="" disabled selected>Tempat lahir</option>
+                      @foreach ($TempatLahir as $tempatlahir )
+                      <option value="{{ $tempatlahir->provinsi }}">{{ $tempatlahir->provinsi }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="tgllahir">Tanggal Lahir*</label>
+                    <input class="form-control" type="date" value="" id="tgllahir" name="tgllahir" required>
+                  </div>
+                </div>
+              </div>
               <hr class="my-4">
               <div class="row">
                 <div class="col-md-12">
@@ -102,7 +132,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="kota">Kota*</label>
-                    <select class="js-example-basic-single form-control" name="kota1" id="kota1">
+                    <select class="js-example-basic-single form-control" name="kota1" id="kota1" required>
                       <option value="" disabled selected>Domisili</option>
                       @foreach ($Domisili as $domisili )
                       <option value="{{ $domisili->kabupaten }}">{{ $domisili->kabupaten }}</option>
@@ -162,25 +192,7 @@
                 </div>
               </div>
               <hr class="my-4">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="status_perkawinan">Status Perkawinan*</label>
-                    <select class="form-control" id="status_perkawinan" name="status_perkawinan" required>
-                      <option value="" disabled selected>Status Perkawinan</option>
-                      @foreach ($Pernikahan as $pernikahan )
-                      <option value="{{ $pernikahan->keterangan }}">{{ $pernikahan->nama }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="tgllahir">Tanggal Lahir*</label>
-                    <input class="form-control" type="date" value="" id="tgllahir" name="tgllahir" required>
-                  </div>
-                </div>
-              </div>
+              
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
@@ -196,20 +208,20 @@
                 </div>
               </div>
               <hr class="my-4">
-              <div class="col-md-2">
+              <div class="col-md-4">
                 <div class="form-group">
                   <button type="button" class="btn btn-success d-flex" id="btnAdd-sim">
                     <span class="material-symbols-outlined">add</span>
                     <span class="gap-logo">Tambah SIM</span>
                   </button>
                 </div>
-              </div>
+              </div> 
 
               <div id="sims">
                 <div class="row" id="simbaris1">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label class="form-control-label" for="jenissim">SIM yang dimiliki</label>
+                      <label class="form-control-label" for="jenissim">SIM yang dimiliki*</label>
                       <select class="form-control sim" data-row="1" name="sim[]" required>
                         <option value="" disabled selected>SIM</option>
                         @foreach ($SIM as $sim )
@@ -248,7 +260,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="email">Email*</label>
-                    <input type="text" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email" required>
                   </div>
                 </div>
               </div>
@@ -314,7 +326,7 @@
                       <td><input type="text" class="form-control" name="namasekolah[]"></td>
                       <th>
                         <select class="form-control" id="jurusan[]" name="jurusan[]">
-                          <option value="" disabled selected>jurusan</option>
+                          <option value="" selected>jurusan</option>
                           @foreach ($SMA as $sma )
                           <option value="{{ $sma->id }}">{{ $sma->nama }}</option>
                           @endforeach
@@ -328,7 +340,7 @@
                       <td><input type="text" class="form-control" name="namasekolah[]"></td>
                       <th>
                         <select class="form-control" id="jurusan[]" name="jurusan[]">
-                          <option value="" disabled selected>jurusan</option>
+                          <option value="" selected>jurusan</option>
                           @foreach ($Sederajat as $sederajat )
                           <option value="{{ $sederajat->id }}">{{ $sederajat->nama }}</option>
                           @endforeach
@@ -407,8 +419,8 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="tanggungjawab">Gambarkan kedudukan Saudara dalam struktur organisasi perusahaan</label>
-                    <input type="file" class="form-control" name="fileToUpload" id="fileToUpload">
+                    <label class="form-control-label" for="gambarkedudukan">Gambarkan kedudukan Saudara dalam struktur organisasi perusahaan</label>
+                    <input type="file" class="form-control" name="gambarkedudukan" id="gambarkedudukan" accept="image/png, image/jpeg, image/jpg ">
                   </div>
                 </div>
               </div>
@@ -428,13 +440,19 @@
               </div>
               <hr class="my-4">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="jabatanharapan">Jabatan yang Saudara inginkan*</label>
+                    <input type="text" class="form-control" id="jabatanharapan" name="jabatanharapan" required>
+                  </div>
+                </div>
+                <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="gajiharapan">gaji yang yang diharapkan*</label>
                     <input type="text" class="form-control" id="gajiharapan" name="gajiharapan" required>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="tujanganharapan">tujangan yang diharapkan*</label>
                     <input type="text" class="form-control" id="tujanganharapan" name="tujanganharapan" required>
@@ -454,8 +472,8 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="tujanganharapan">bersedia Ditempatkan di luar kota</label>
-                    <select class="form-control" id="tujanganharapan" name="tujanganharapan" required>
+                    <label class="form-control-label" for="ditempatkanluarkota">bersedia Ditempatkan di luar kota*</label>
+                    <select class="form-control" id="ditempatkanluarkota" name="ditempatkanluarkota" required>
                       <option value="" disabled selected>Ditempatkan di luar kota</option>
                       <option value="Ya">Ya</option>
                       <option value="Tidak">Tidak</option>
@@ -467,6 +485,45 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-3">
+                  <h3 class="text-uppercase text-muted ls-1 mb-1">Dokumen Penunjang</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="porto">URL Portofolio</label>
+                    <input type="text" class="form-control" id="porto" name="porto">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="porto">CV</label>
+                    <input type="file" class="form-control" name="cv" id="cv" accept="application/pdf">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="porto">Foto</label>
+                    <input type="file" class="form-control" name="foto" id="foto" accept="image/png, image/jpeg, image/jpg ">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <input name='urlid' value='{{ $URL->id }}'hidden>
         <input name='organisasiid' value='{{ $URL->id_Organisasi }}'hidden>
