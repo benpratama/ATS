@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
+use Illuminate\Http\UploadedFile;
 
 class FormKandidatController extends Controller
 {
+
+
     public function ShowForm1($url){
         $date = Carbon::now()->format('Y-m-d');
         $result = DB::table('T_link')
@@ -76,6 +83,15 @@ class FormKandidatController extends Controller
     }
 
     public function SubmitForm1(Request $request){
+        $path_gambarkedudukan = storage_path('app/public/kandidatFotoKedudukans');
+        $path_profile=storage_path('app/public/kandidatFotos');
+        $path_CV=storage_path('app/public/kandidatCVs/');
+
+        $gambarkedudukan_ =storage_path('app\public\kandidatFotoKedudukans\\');
+        $profile_ =storage_path('app\public\kandidatFotos\\');
+        $CV_=storage_path('app\public\kandidatCVs\\');
+        $CV2='public\kandidatCVs\\';
+
         DB::beginTransaction();
         try {
             $result1 = DB::table('T_kandidat')
@@ -85,6 +101,7 @@ class FormKandidatController extends Controller
                     ->where('noidentitas',$request->noidentitas)
                     ->where('id_Organisasi',$request->organisasiid)
                     ->count();
+            
             if ($result1>=1 && $result2>=1) {
                 // dd('masuk sini');
                 // kalo usenya pernah daftar dan di organisasi yang sama
@@ -96,7 +113,88 @@ class FormKandidatController extends Controller
                                 ->first();
                 $id_kandidat = $id_kandidat_->id;
 
-                $test = DB::table('T_kandidat')
+                $gambarkedudukan = $request->file('gambarkedudukan');
+                if (!File::isDirectory($path_gambarkedudukan)) {
+                    File::makeDirectory($path_gambarkedudukan);
+                }
+                if ($gambarkedudukan) {
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.png')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpeg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpeg');
+                    }
+
+                    $imgName = $id_kandidat . '.' . $gambarkedudukan->getClientOriginalExtension();
+                    Image::make($gambarkedudukan)->save($path_gambarkedudukan . '/' . $imgName);
+                }else if($gambarkedudukan==null){
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.png')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpeg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpeg');
+                    }
+                    $imgName=null;
+                }
+
+                $fotoprofile = $request->file('foto');
+                if (!File::isDirectory($path_profile)) {
+                    File::makeDirectory($path_profile);
+                }
+                if ($fotoprofile) {
+                    if(file_exists($profile_ . $id_kandidat . '.png')) {
+                        unlink($profile_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpg')) {
+                        unlink($profile_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpeg')) {
+                        unlink($profile_ . $id_kandidat . '.jpeg');
+                    }
+
+                    $imgName2 = $id_kandidat . '.' . $fotoprofile->getClientOriginalExtension();
+                    Image::make($fotoprofile)->save($path_profile . '/' . $imgName2);
+                }else if($fotoprofile==null){
+                    if(file_exists($profile_ . $id_kandidat . '.png')) {
+                        unlink($profile_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpg')) {
+                        unlink($profile_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpeg')) {
+                        unlink($profile_ . $id_kandidat . '.jpeg');
+                    }
+
+                    $imgName2= null;
+                }
+
+                $cv = $request->file('cv');
+                if (!File::isDirectory($path_CV)) {
+                    File::makeDirectory($path_CV);
+                }
+                if ($cv) {
+                    if(file_exists($CV_ . $id_kandidat . '.pdf')) {
+                        unlink($CV_ . $id_kandidat . '.pdf');
+                    }
+
+                    $filecv = $id_kandidat . '.' . $cv->getClientOriginalExtension();
+                    $request->file('cv')->storeAs($CV2,$filecv);
+                }else if($cv==null){
+                    // dd(file_exists($CV_ . $id_kandidat . '.pdf'),$CV_ . $id_kandidat . '.pdf');
+                    if(file_exists($CV_ . $id_kandidat . '.pdf')) {
+                        unlink($CV_ . $id_kandidat . '.pdf');
+                    }
+
+                    $filecv = null;
+                }
+
+                DB::table('T_kandidat')
                 ->where('id',$id_kandidat)
                 ->update([
                     'id_Test'=>NULL,
@@ -123,7 +221,7 @@ class FormKandidatController extends Controller
                     'beratbadan'=>$request->beratbadan,
                     'gaji'=>$request->gaji,
                     'tunjangan'=>$request->tunjangan,
-                    'gambarkedudukan'=>NULL,
+                    'gambarkedudukan'=>$imgName,
                     'tanggungjawab'=>$request->tanggungjawab,
                     'prestasi'=>$request->prestasi,
                     'jabatanharapan'=>$request->jabatanharapan,
@@ -131,8 +229,8 @@ class FormKandidatController extends Controller
                     'tujanganharapan'=>$request->tujanganharapan,
                     'bertugasluarkota'=>$request->bertugasluarkota,
                     'ditempatkanluarkota'=>$request->bertugasluarkota,
-                    'fotoCV'=>NULL,
-                    'CV'=>NULL,
+                    'fotoCV'=>$imgName2,
+                    'CV'=>$filecv,
                     'urlPorto'=>$request->porto,
                     'flag'=>1,
                     'updated_at'=>Carbon::now()
@@ -160,7 +258,7 @@ class FormKandidatController extends Controller
                     $kota = trim($request->kota[$j],''); 
                     $tahun = trim($request->tahun[$j],''); 
 
-                    if (!empty($namasekolah)&&!empty($jurusan)&&!empty($kota)&&!empty($tahun)) {
+                    if (!empty($namasekolah)||!empty($jurusan)||!empty($kota)||!empty($tahun)) {
                         DB::table('T_kandidat_edukasi')
                             ->insert([
                                 'id_Tkandidat'=>$id_kandidat,
@@ -177,27 +275,29 @@ class FormKandidatController extends Controller
 
                 DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',$id_kandidat)->delete();
 
-                for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
-                    $namaperusahaan = trim($request->nama_perushaan[$k],''); 
-                    $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
-                    $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
-                    $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
-                    $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
+                if(!empty($request->nama_perushaan)){
+                    for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
+                        $namaperusahaan = trim($request->nama_perushaan[$k],''); 
+                        $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
+                        $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
+                        $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
+                        $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
 
-                    if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)&&!empty($lamaperusahaan)) {
-                        DB::table('T_kandidat_pekerjaan')
-                            ->insert([
-                                'id_Tkandidat'=>2,
-                                'namaPerusahaan'=>$namaperusahaan,
-                                'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
-                                'alamatPerusahaan'=>$alamatperushaan,
-                                'jabatanPerusahaan'=>$jabatanperusahaan,
-                                'atasanPerusahaan'=>$atasanperusahaan,
-                                'tahunPerusahaan'=>$lamaperusahaan
-                            ]);
+                        if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)&&!empty($lamaperusahaan)) {
+                            DB::table('T_kandidat_pekerjaan')
+                                ->insert([
+                                    'id_Tkandidat'=>2,
+                                    'namaPerusahaan'=>$namaperusahaan,
+                                    'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
+                                    'alamatPerusahaan'=>$alamatperushaan,
+                                    'jabatanPerusahaan'=>$jabatanperusahaan,
+                                    'atasanPerusahaan'=>$atasanperusahaan,
+                                    'tahunPerusahaan'=>$lamaperusahaan
+                                ]);
+                        }
                     }
                 }
-
+                
                 DB::table('T_LogKandidat')
                     ->insert([
                         'noidentitas_Tkandidat'=>$request->noidentitas,
@@ -267,6 +367,105 @@ class FormKandidatController extends Controller
                             'updated_at'=>NULL
                         ]);
 
+                $gambarkedudukan = $request->file('gambarkedudukan');
+                if (!File::isDirectory($path_gambarkedudukan)) {
+                    File::makeDirectory($path_gambarkedudukan);
+                }
+                if ($gambarkedudukan) {
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.png')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpeg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpeg');
+                    }
+                
+                    $imgName = $id_kandidat . '.' . $gambarkedudukan->getClientOriginalExtension();
+                    Image::make($gambarkedudukan)->save($path_gambarkedudukan . '/' . $imgName);
+                }else{
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.png')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpeg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpeg');
+                    }
+                    $imgName=null;
+                }
+                        
+
+                DB::table('T_kandidat')
+                    ->where('id',$id_kandidat)
+                    ->update([
+                        'gambarkedudukan'=>$imgName
+                    ]);
+
+                $fotoprofile = $request->file('foto');
+                if (!File::isDirectory($path_profile)) {
+                    File::makeDirectory($path_profile);
+                }
+                if ($fotoprofile) {
+                    if(file_exists($profile_ . $id_kandidat . '.png')) {
+                        unlink($profile_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpg')) {
+                        unlink($profile_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpeg')) {
+                        unlink($profile_ . $id_kandidat . '.jpeg');
+                    }
+                
+                    $imgName2 = $id_kandidat . '.' . $fotoprofile->getClientOriginalExtension();
+                    Image::make($fotoprofile)->save($path_profile . '/' . $imgName2);
+                }else if($fotoprofile==null){
+                    if(file_exists($profile_ . $id_kandidat . '.png')) {
+                        unlink($profile_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpg')) {
+                        unlink($profile_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpeg')) {
+                        unlink($profile_ . $id_kandidat . '.jpeg');
+                    }
+                
+                    $imgName2= null;
+                }
+
+                DB::table('T_kandidat')
+                    ->where('id',$id_kandidat)
+                    ->update([
+                        'fotoCV'=>$imgName2
+                    ]);
+
+                $cv = $request->file('cv');
+                if (!File::isDirectory($path_CV)) {
+                    File::makeDirectory($path_CV);
+                }
+                if ($cv) {
+                    if(file_exists($CV_ . $id_kandidat . '.pdf')) {
+                        unlink($CV_ . $id_kandidat . '.pdf');
+                    }
+                
+                    $filecv = $id_kandidat . '.' . $cv->getClientOriginalExtension();
+                    $request->file('cv')->storeAs($CV2,$filecv);
+                }else if($cv==null){
+                    if(file_exists($CV_ . $id_kandidat . '.pdf')) {
+                        unlink($CV_ . $id_kandidat . '.pdf');
+                    }
+                
+                    $filecv = null;
+                }
+
+                DB::table('T_kandidat')
+                    ->where('id',$id_kandidat)
+                    ->update([
+                        'CV'=>$imgName2
+                    ]);
+
                 for ($i=0; $i <count($request->sim) ; $i++) { 
                     if ($request->sim[$i]!=1) {
                         DB::table('T_kandidat_sim')
@@ -285,7 +484,7 @@ class FormKandidatController extends Controller
                     $kota = trim($request->kota[$j],''); 
                     $tahun = trim($request->tahun[$j],''); 
 
-                    if (!empty($namasekolah)&&!empty($jurusan)&&!empty($kota)&&!empty($tahun)) {
+                    if (!empty($namasekolah)||!empty($jurusan)||!empty($kota)||!empty($tahun)) {
                         DB::table('T_kandidat_edukasi')
                             ->insert([
                                 'id_Tkandidat'=>$id_kandidat,
@@ -299,24 +498,26 @@ class FormKandidatController extends Controller
                     }
                 }
 
-                for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
-                    $namaperusahaan = trim($request->nama_perushaan[$k],''); 
-                    $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
-                    $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
-                    $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
-                    $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
-
-                    if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)&&!empty($lamaperusahaan)) {
-                        DB::table('T_kandidat_pekerjaan')
-                            ->insert([
-                                'id_Tkandidat'=>2,
-                                'namaPerusahaan'=>$namaperusahaan,
-                                'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
-                                'alamatPerusahaan'=>$alamatperushaan,
-                                'jabatanPerusahaan'=>$jabatanperusahaan,
-                                'atasanPerusahaan'=>$atasanperusahaan,
-                                'tahunPerusahaan'=>$lamaperusahaan
-                            ]);
+                if (!empty($request->nama_perushaan)) {
+                    for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
+                        $namaperusahaan = trim($request->nama_perushaan[$k],''); 
+                        $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
+                        $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
+                        $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
+                        $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
+    
+                        if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)&&!empty($lamaperusahaan)) {
+                            DB::table('T_kandidat_pekerjaan')
+                                ->insert([
+                                    'id_Tkandidat'=>2,
+                                    'namaPerusahaan'=>$namaperusahaan,
+                                    'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
+                                    'alamatPerusahaan'=>$alamatperushaan,
+                                    'jabatanPerusahaan'=>$jabatanperusahaan,
+                                    'atasanPerusahaan'=>$atasanperusahaan,
+                                    'tahunPerusahaan'=>$lamaperusahaan
+                                ]);
+                        }
                     }
                 }
                         
@@ -377,6 +578,105 @@ class FormKandidatController extends Controller
                             'created_at'=>Carbon::now(),
                             'updated_at'=>NULL
                         ]);
+                
+                $gambarkedudukan = $request->file('gambarkedudukan');
+                if (!File::isDirectory($path_gambarkedudukan)) {
+                    File::makeDirectory($path_gambarkedudukan);
+                }
+                if ($gambarkedudukan) {
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.png')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpeg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpeg');
+                    }
+                
+                    $imgName = $id_kandidat . '.' . $gambarkedudukan->getClientOriginalExtension();
+                    Image::make($gambarkedudukan)->save($path_gambarkedudukan . '/' . $imgName);
+                }else{
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.png')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($gambarkedudukan_ . $id_kandidat . '.jpeg')) {
+                        unlink($gambarkedudukan_ . $id_kandidat . '.jpeg');
+                    }
+                    $imgName=null;
+                }
+
+                DB::table('T_kandidat')
+                    ->where('id',$id_kandidat)
+                    ->update([
+                        'gambarkedudukan'=>$imgName
+                    ]);
+
+                $fotoprofile = $request->file('foto');
+                if (!File::isDirectory($path_profile)) {
+                    File::makeDirectory($path_profile);
+                }
+                if ($fotoprofile) {
+                    if(file_exists($profile_ . $id_kandidat . '.png')) {
+                        unlink($profile_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpg')) {
+                        unlink($profile_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpeg')) {
+                        unlink($profile_ . $id_kandidat . '.jpeg');
+                    }
+                
+                    $imgName2 = $id_kandidat . '.' . $fotoprofile->getClientOriginalExtension();
+                    Image::make($fotoprofile)->save($path_profile . '/' . $imgName2);
+                }else if($fotoprofile==null){
+                    if(file_exists($profile_ . $id_kandidat . '.png')) {
+                        unlink($profile_ . $id_kandidat . '.png');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpg')) {
+                        unlink($profile_ . $id_kandidat . '.jpg');
+                    }
+                    if(file_exists($profile_ . $id_kandidat . '.jpeg')) {
+                        unlink($profile_ . $id_kandidat . '.jpeg');
+                    }
+                
+                    $imgName2= null;
+                }
+
+                DB::table('T_kandidat')
+                    ->where('id',$id_kandidat)
+                    ->update([
+                        'fotoCV'=>$imgName2
+                    ]);
+
+                $cv = $request->file('cv');
+                if (!File::isDirectory($path_CV)) {
+                    File::makeDirectory($path_CV);
+                }
+                if ($cv) {
+                    if(file_exists($CV_ . $id_kandidat . '.pdf')) {
+                        unlink($CV_ . $id_kandidat . '.pdf');
+                    }
+                
+                    $filecv = $id_kandidat . '.' . $cv->getClientOriginalExtension();
+                    $request->file('cv')->storeAs($CV2,$filecv);
+                }else if($cv==null){
+                    // dd(file_exists($CV_ . $id_kandidat . '.pdf'),$CV_ . $id_kandidat . '.pdf');
+                    if(file_exists($CV_ . $id_kandidat . '.pdf')) {
+                        unlink($CV_ . $id_kandidat . '.pdf');
+                    }
+                    
+                    $filecv = null;
+                }
+
+                DB::table('T_kandidat')
+                    ->where('id',$id_kandidat)
+                    ->update([
+                        'CV'=>$filecv
+                    ]);
 
                 for ($i=0; $i <count($request->sim) ; $i++) { 
                     if ($request->sim[$i]!=1) {
@@ -396,7 +696,7 @@ class FormKandidatController extends Controller
                     $kota = trim($request->kota[$j],''); 
                     $tahun = trim($request->tahun[$j],''); 
 
-                    if (!empty($namasekolah)&&!empty($jurusan)&&!empty($kota)&&!empty($tahun)) {
+                    if (!empty($namasekolah)||!empty($jurusan)||!empty($kota)||!empty($tahun)) {
                         DB::table('T_kandidat_edukasi')
                             ->insert([
                                 'id_Tkandidat'=>$id_kandidat,
@@ -410,24 +710,26 @@ class FormKandidatController extends Controller
                     }
                 }
 
-                for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
-                    $namaperusahaan = trim($request->nama_perushaan[$k],''); 
-                    $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
-                    $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
-                    $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
-                    $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
+                if(!empty($request->nama_perushaan)){
+                    for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
+                        $namaperusahaan = trim($request->nama_perushaan[$k],''); 
+                        $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
+                        $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
+                        $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
+                        $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
 
-                    if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)&&!empty($lamaperusahaan)) {
-                        DB::table('T_kandidat_pekerjaan')
-                            ->insert([
-                                'id_Tkandidat'=>2,
-                                'namaPerusahaan'=>$namaperusahaan,
-                                'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
-                                'alamatPerusahaan'=>$alamatperushaan,
-                                'jabatanPerusahaan'=>$jabatanperusahaan,
-                                'atasanPerusahaan'=>$atasanperusahaan,
-                                'tahunPerusahaan'=>$lamaperusahaan
-                            ]);
+                        if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)&&!empty($lamaperusahaan)) {
+                            DB::table('T_kandidat_pekerjaan')
+                                ->insert([
+                                    'id_Tkandidat'=>2,
+                                    'namaPerusahaan'=>$namaperusahaan,
+                                    'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
+                                    'alamatPerusahaan'=>$alamatperushaan,
+                                    'jabatanPerusahaan'=>$jabatanperusahaan,
+                                    'atasanPerusahaan'=>$atasanperusahaan,
+                                    'tahunPerusahaan'=>$lamaperusahaan
+                                ]);
+                        }
                     }
                 }
                         

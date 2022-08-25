@@ -44,7 +44,7 @@
     </style>
 </head>
 <body class="stly">
-  <form method="POST" action="{{ route('fk.SubmitForm1') }}">
+  <form method="POST" action="{{ route('fk.SubmitForm1') }}" enctype="multipart/form-data">
     @csrf
     <div id='frm' class="container-fluid mt--6" hidden>
       <div class="row">
