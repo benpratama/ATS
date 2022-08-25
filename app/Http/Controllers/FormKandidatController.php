@@ -86,12 +86,133 @@ class FormKandidatController extends Controller
                     ->where('id_Organisasi',$request->organisasiid)
                     ->count();
             if ($result1>=1 && $result2>=1) {
+                // dd('masuk sini');
                 // kalo usenya pernah daftar dan di organisasi yang sama
                 // update flag jadi 1
-                dd('masuk if');
+                $id_kandidat_ = DB::table('T_kandidat')
+                                ->select('id')
+                                ->where('noidentitas',$request->noidentitas)
+                                ->where('id_Organisasi',$request->organisasiid)
+                                ->first();
+                $id_kandidat = $id_kandidat_->id;
+
+                $test = DB::table('T_kandidat')
+                ->where('id',$id_kandidat)
+                ->update([
+                    'id_Test'=>NULL,
+                    'id_MCU'=>NULL,
+                    'id_FPTK'=>NULL,
+                    'UserInterview'=>NULL,
+                    'namalengkap'=>$request->namalengkap,
+                    'gender'=>$request->gender,
+                    'status_perkawinan'=>$request->status_perkawinan,
+                    'tempatlahir'=>$request->tempatlahir,
+                    'tgllahir'=>$request->tgllahir,
+                    'alamatlengkap'=>$request->alamatlengkap,
+                    'rumahmilik'=>$request->rumahmilik,
+                    'kota1'=>$request->kota1,
+                    'kodepos'=>$request->kodepos,
+                    'alamat_koresponden'=>$request->alamat_koresponden,
+                    'rumahmilik_koresponden'=>$request->rumahmilik_koresponden,
+                    'kota_koresponden'=>$request->kota_koresponden,
+                    'kodepos_koresponden'=>$request->kodepos_koresponden,
+                    'npwp'=>$request->npwp,
+                    'nohp'=>$request->nohp,
+                    'email'=>$request->email,
+                    'tinggibadan'=>$request->tinggibadan,
+                    'beratbadan'=>$request->beratbadan,
+                    'gaji'=>$request->gaji,
+                    'tunjangan'=>$request->tunjangan,
+                    'gambarkedudukan'=>NULL,
+                    'tanggungjawab'=>$request->tanggungjawab,
+                    'prestasi'=>$request->prestasi,
+                    'jabatanharapan'=>$request->jabatanharapan,
+                    'gajiharapan'=>$request->gajiharapan,
+                    'tujanganharapan'=>$request->tujanganharapan,
+                    'bertugasluarkota'=>$request->bertugasluarkota,
+                    'ditempatkanluarkota'=>$request->bertugasluarkota,
+                    'fotoCV'=>NULL,
+                    'CV'=>NULL,
+                    'urlPorto'=>$request->porto,
+                    'flag'=>1,
+                    'updated_at'=>Carbon::now()
+                ]);
+
+                DB::table('T_kandidat_sim')->where('id_Tkandidat',$id_kandidat)->delete();
+
+                for ($i=0; $i <count($request->sim) ; $i++) { 
+                    if ($request->sim[$i]!=1) {
+                        DB::table('T_kandidat_sim')
+                            ->insert([
+                                'id_Tkandidat'=>$id_kandidat,
+                                'sim'=> $request->sim[$i],
+                                'nosim'=> $request->nosim[$i],
+                        ]);
+                    }
+                }
+
+                DB::table('T_kandidat_edukasi')->where('id_Tkandidat',$id_kandidat)->delete();
+
+                $pendidikan_ = ['SD','SLTP','SMA','Akademi','S1','S2'];
+                for ($j=0; $j <count($request->namasekolah) ; $j++) {
+                    $namasekolah = trim($request->namasekolah[$j],''); 
+                    $jurusan = trim($request->jurusan[$j],''); 
+                    $kota = trim($request->kota[$j],''); 
+                    $tahun = trim($request->tahun[$j],''); 
+
+                    if (!empty($namasekolah)&&!empty($jurusan)&&!empty($kota)&&!empty($tahun)) {
+                        DB::table('T_kandidat_edukasi')
+                            ->insert([
+                                'id_Tkandidat'=>$id_kandidat,
+                                'urutan'=>$j+1,
+                                'pendidikan'=>$pendidikan_[$j],
+                                'namaSekolah'=>$namasekolah,
+                                'jurusan'=>$jurusan,
+                                'kota'=>$kota,
+                                'tahun'=>$tahun,
+                            ]);
+                    }
+                }
+
+
+                DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',$id_kandidat)->delete();
+
+                for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
+                    $namaperusahaan = trim($request->nama_perushaan[$k],''); 
+                    $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
+                    $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
+                    $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
+                    $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
+
+                    if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)&&!empty($lamaperusahaan)) {
+                        DB::table('T_kandidat_pekerjaan')
+                            ->insert([
+                                'id_Tkandidat'=>2,
+                                'namaPerusahaan'=>$namaperusahaan,
+                                'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
+                                'alamatPerusahaan'=>$alamatperushaan,
+                                'jabatanPerusahaan'=>$jabatanperusahaan,
+                                'atasanPerusahaan'=>$atasanperusahaan,
+                                'tahunPerusahaan'=>$lamaperusahaan
+                            ]);
+                    }
+                }
+
+                DB::table('T_LogKandidat')
+                    ->insert([
+                        'noidentitas_Tkandidat'=>$request->noidentitas,
+                        'id_Rekrutmen'=>'1',
+                        'id_Organisasi'=>$request->organisasiid,
+                        'id_Summary'=>NULL,
+                        'notes'=>NULL,
+                        'created_at'=>Carbon::now(),
+                        'updated_at'=>NULL
+                    ]);
+
             }else if($result1>=1 && $result2==0){
                 // kalo usenya pernah daftar dan di organisasi beda
                 // tambah row data
+
                 // update flag jadi 1
                 DB::table('T_kandidat')
                 ->where('noidentitas',$request->noidentitas)
@@ -99,6 +220,116 @@ class FormKandidatController extends Controller
                     'flag'=>1,
                     'updated_at'=>Carbon::now()
                 ]);
+
+                //tamabh row data
+                $id_kandidat = DB::table('T_kandidat')
+                        ->insertGetId([
+                            'id_Organisasi'=>$request->organisasiid,
+                            'id_Tlink'=>$request->urlid,
+                            'id_Test'=>NULL,
+                            'id_MCU'=>NULL,
+                            'id_FPTK'=>NULL,
+                            'UserInterview'=>NULL,
+                            'namalengkap'=>$request->namalengkap,
+                            'gender'=>$request->gender,
+                            'status_perkawinan'=>$request->status_perkawinan,
+                            'tempatlahir'=>$request->tempatlahir,
+                            'tgllahir'=>$request->tgllahir,
+                            'alamatlengkap'=>$request->alamatlengkap,
+                            'rumahmilik'=>$request->rumahmilik,
+                            'kota1'=>$request->kota1,
+                            'kodepos'=>$request->kodepos,
+                            'alamat_koresponden'=>$request->alamat_koresponden,
+                            'rumahmilik_koresponden'=>$request->rumahmilik_koresponden,
+                            'kota_koresponden'=>$request->kota_koresponden,
+                            'kodepos_koresponden'=>$request->kodepos_koresponden,
+                            'noidentitas'=>$request->noidentitas,
+                            'npwp'=>$request->npwp,
+                            'nohp'=>$request->nohp,
+                            'email'=>$request->email,
+                            'tinggibadan'=>$request->tinggibadan,
+                            'beratbadan'=>$request->beratbadan,
+                            'gaji'=>$request->gaji,
+                            'tunjangan'=>$request->tunjangan,
+                            'gambarkedudukan'=>NULL,
+                            'tanggungjawab'=>$request->tanggungjawab,
+                            'prestasi'=>$request->prestasi,
+                            'jabatanharapan'=>$request->jabatanharapan,
+                            'gajiharapan'=>$request->gajiharapan,
+                            'tujanganharapan'=>$request->tujanganharapan,
+                            'bertugasluarkota'=>$request->bertugasluarkota,
+                            'ditempatkanluarkota'=>$request->bertugasluarkota,
+                            'fotoCV'=>NULL,
+                            'CV'=>NULL,
+                            'urlPorto'=>$request->porto,
+                            'flag'=>1,
+                            'created_at'=>Carbon::now(),
+                            'updated_at'=>NULL
+                        ]);
+
+                for ($i=0; $i <count($request->sim) ; $i++) { 
+                    if ($request->sim[$i]!=1) {
+                        DB::table('T_kandidat_sim')
+                            ->insert([
+                                'id_Tkandidat'=>$id_kandidat,
+                                'sim'=> $request->sim[$i],
+                                'nosim'=> $request->nosim[$i],
+                        ]);
+                    }
+                }
+                
+                $pendidikan_ = ['SD','SLTP','SMA','Akademi','S1','S2'];
+                for ($j=0; $j <count($request->namasekolah) ; $j++) {
+                    $namasekolah = trim($request->namasekolah[$j],''); 
+                    $jurusan = trim($request->jurusan[$j],''); 
+                    $kota = trim($request->kota[$j],''); 
+                    $tahun = trim($request->tahun[$j],''); 
+
+                    if (!empty($namasekolah)&&!empty($jurusan)&&!empty($kota)&&!empty($tahun)) {
+                        DB::table('T_kandidat_edukasi')
+                            ->insert([
+                                'id_Tkandidat'=>$id_kandidat,
+                                'urutan'=>$j+1,
+                                'pendidikan'=>$pendidikan_[$j],
+                                'namaSekolah'=>$namasekolah,
+                                'jurusan'=>$jurusan,
+                                'kota'=>$kota,
+                                'tahun'=>$tahun,
+                            ]);
+                    }
+                }
+
+                for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
+                    $namaperusahaan = trim($request->nama_perushaan[$k],''); 
+                    $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
+                    $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
+                    $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
+                    $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
+
+                    if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)&&!empty($lamaperusahaan)) {
+                        DB::table('T_kandidat_pekerjaan')
+                            ->insert([
+                                'id_Tkandidat'=>2,
+                                'namaPerusahaan'=>$namaperusahaan,
+                                'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
+                                'alamatPerusahaan'=>$alamatperushaan,
+                                'jabatanPerusahaan'=>$jabatanperusahaan,
+                                'atasanPerusahaan'=>$atasanperusahaan,
+                                'tahunPerusahaan'=>$lamaperusahaan
+                            ]);
+                    }
+                }
+                        
+                DB::table('T_LogKandidat')
+                    ->insert([
+                        'noidentitas_Tkandidat'=>$request->noidentitas,
+                        'id_Rekrutmen'=>'1',
+                        'id_Organisasi'=>$request->organisasiid,
+                        'id_Summary'=>NULL,
+                        'notes'=>NULL,
+                        'created_at'=>Carbon::now(),
+                        'updated_at'=>NULL
+                    ]);
             }else{
                 // kalo usenya blm pernah daftar
                 // flag null
@@ -211,11 +442,11 @@ class FormKandidatController extends Controller
                         'updated_at'=>NULL
                     ]);
             }
-            // DB::commit();
-            // return redirect()->route('fk.terimakasih');
+            DB::commit();
+            return redirect()->route('fk.terimakasih');
         } catch (Exception $e) {
             DB::rollBack();
-            return Redirect::back()->with('error', 'salah bosss');
+            return Redirect::back()->with('error', $e);
         }
         
     }
