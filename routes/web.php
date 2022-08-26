@@ -19,7 +19,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
+//Dashboar HRD
 Route::get('/hrdats/dashboard/hrd', 'HomeController@index')->name('home');
+Route::get('/hrdats/dashboard/hrd/summary','HomeController@ShowSummary')->name('hm.Summary');
+Route::post('/hrdats/dashboard/hrd/detail','HomeController@ShowDetail')->name('hm.Detail');
+
+//Detail Kandidat
+Route::get('/hrdats/detail/kandidat/{id}/{noidentitas}', 'KandidatController@index')->name('dk.home');
 
 //Master Table Internal
 Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');
