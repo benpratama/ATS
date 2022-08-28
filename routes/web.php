@@ -26,6 +26,7 @@ Route::post('/hrdats/dashboard/hrd/detail','HomeController@ShowDetail')->name('h
 
 //Detail Kandidat
 Route::get('/hrdats/detail/kandidat/{id}/{noidentitas}', 'KandidatController@index')->name('dk.home');
+Route::post('/hrdats/detail/kandidat/genurl','KandidatController@GenUrl')->name('dk.GenUrl');
 
 //Master Table Internal
 Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');
@@ -131,3 +132,5 @@ Route::get('/form-kandidat/get/sim','FormKandidatController@GetSIM')->name('fk.G
 Route::post('/form-kandidat/kodepos','FormKandidatController@ShowKodePos')->name('fk.ShowKodePos');
 Route::Post('/submit/form-kandidat','FormKandidatController@SubmitForm1')->name('fk.SubmitForm1');
 Route::view('/submit/finish','form kandidat/terimakasih')->name('fk.terimakasih');
+
+Route::get('/form-kandidat/phase2/{url}','FormKandidatController@ShowForm2')->name('fk.ShowForm2');

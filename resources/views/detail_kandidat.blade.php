@@ -44,12 +44,22 @@
   </div>
   <!-- Page content -->
   {{-- <div class="container-fluid mt--6"> --}}
-    <h1>{{ $info_kandidat->namalengkap }}</h1>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-control-label" for="urlphase2">URL Pahse 2</label>
+          <input type="text" class="form-control" id="urlphase2" name="urlphase2" value="{{ $url_phase2 }}" readonly>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }}>Genarate</button>
+      </div>
+    </div>
   {{-- </div> --}}
 {{-- !!!!!!! END  DIKOPI DARI SINI !!!!!!! --}}
 
 @endsection
 
 @section('script')
-  <script language="JavaScript" type="text/javascript" src="{{ asset('js/Master Table/mt_f.js') }}"></script>
+  <script language="JavaScript" type="text/javascript" src="{{ asset('js/Kandidat/detail_kandidat.js') }}"></script>
 @endsection

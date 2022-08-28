@@ -60,22 +60,40 @@
               <table class="table" id="TblKandidat" style="width: 100%">
                 <thead class="thead-light">
                   <tr>
-                    <th><input type="checkbox" id="cekAll-kandidat"></th>
-                    <th>Usia</th>
-                    <th>Domisili</th>
-                    <th>Gender</th>
-                    <th>Pendidikan</th>
-                    <th>Jurusan</th>
-                    <th>Fresh or not</th>
-                    <th>Bidang lini</th>
-                    <th>Penempatan luar indo</th>
-                    <th>ditempatkan luar indo</th>
-                    <th>SIM</th>
-                    <th>Apply</th>
-                    <th>Status</th>
-                    <th>Detail</th>
+                    <th style="width: 123.778px;" class="thseacrh"><input type="checkbox" id="cekAll-kandidat"></th>
+                    <th style="width: 123.778px;" id="2">Usia</th>
+                    <th style="width: 123.778px;" id="3">Domisili</th>
+                    <th style="width: 123.778px;" id="4">Gender</th>
+                    <th style="width: 123.778px;" id="5">Pendidikan</th>
+                    <th style="width: 123.778px;" id="6">Jurusan</th>
+                    <th style="width: 123.778px;" id="7">Fresh or not</th>
+                    <th style="width: 123.778px;" id="8">Bidang lini</th>
+                    <th style="width: 123.778px;" id="9">Penempatan luar indo</th>
+                    <th style="width: 123.778px;" id="10">ditempatkan luar indo</th>
+                    <th style="width: 123.778px;" id="11">SIM</th>
+                    <th style="width: 123.778px;" id="12">Apply</th>
+                    <th style="width: 123.778px;" id="13">Status</th>
+                    <th style="width: 123.778px;" id="14">Detail</th>
                   </tr>
                 </thead>
+                {{-- <thead id="DTsearch">
+                  <tr>
+                    <th></th>
+                    <th class="thseacrh">Usia</th>
+                    <th class="thseacrh">Domisili</th>
+                    <th class="thseacrh">Gender</th>
+                    <th class="thseacrh">Pendidikan</th>
+                    <th class="thseacrh">Jurusan</th>
+                    <th class="thseacrh">Fresh or not</th>
+                    <th class="thseacrh">Bidang lini</th>
+                    <th class="thseacrh">Penempatan luar indo</th>
+                    <th class="thseacrh">ditempatkan luar indo</th>
+                    <th class="thseacrh">SIM</th>
+                    <th class="thseacrh">Apply</th>
+                    <th class="thseacrh">Status</th>
+                    <th></th>
+                </tr>
+                </thead> --}}
               </table>
             </div>
           </div>

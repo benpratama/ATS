@@ -541,6 +541,6 @@
   <script src="{{ asset('assets/vendor/js-cookie/js.cookie.js') }}"></script>
   <script src="{{ asset('assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
-  <script language="JavaScript" type="text/javascript" src="{{ asset('js/form.js') }}"></script>
+  <script language="JavaScript" type="text/javascript" src="{{ asset('js/Kandidat/form.js') }}"></script>
   <script src="{{ asset('js/select2.min.js') }}"></script>
 </body>

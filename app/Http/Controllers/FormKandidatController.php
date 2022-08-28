@@ -82,6 +82,19 @@ class FormKandidatController extends Controller
         }
     }
 
+    public function ShowForm2($url){
+        $id_kandidat = DB::table('T_linkPhase2')
+                    ->where('url',$url)
+                    ->where('active',1)
+                    ->where('deleted',0)
+                    ->first();
+        if($id_kandidat){
+            return view('form kandidat/formkandidat2');
+        }else{
+            return abort(404);
+        }
+    }
+
     public function SubmitForm1(Request $request){
         $path_gambarkedudukan = storage_path('app/public/kandidatFotoKedudukans');
         $path_profile=storage_path('app/public/kandidatFotos');
