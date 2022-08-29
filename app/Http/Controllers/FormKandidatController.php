@@ -88,8 +88,13 @@ class FormKandidatController extends Controller
                     ->where('active',1)
                     ->where('deleted',0)
                     ->first();
+        $info_kandidat = DB::table('T_kandidat')
+                    ->where('id',$id_kandidat->id)
+                    ->first();        
         if($id_kandidat){
-            return view('form kandidat/formkandidat2');
+            return view('form kandidat/formkandidat2',[
+                        'info_kandidat'=>$info_kandidat
+                    ]);
         }else{
             return abort(404);
         }
@@ -764,6 +769,230 @@ class FormKandidatController extends Controller
             return Redirect::back()->with('error', $e);
         }
         
+    }
+
+    public function SubmitForm2(Request $request){
+        // dd($request);
+        DB::beginTransaction();
+        try {
+            DB::table('T_kandidat2')
+                ->insert([
+                    'id_Tkandidat'=>$request->kandidat,
+                    'golDarah'=>$request->goldarah,
+                    'noTlp'=>$request->tlprumah,
+                    'prestasiPendidikan'=>$request->prestasi,
+                    'tulisanIlmiah'=>$request->karyailmiah,
+                    'kegiatan'=>$request->waktuluang,
+                    'suratKabar'=>$request->suratkabar,
+                    'topik'=>$request->topik,
+                    'alasanMelamar'=>$request->alasan,
+                    'lingkunganKerja'=>implode(", ",$request->lingkungankerja),
+                    'sakit'=>$request->sakit,
+                    'tahunSakit'=>$request->sakitkapan,
+                    'psikologis'=>$request->psikologis,
+                    'tahunPsikolog'=>$request->psikologiskapan,
+                    'lembagaPsikolog'=>$request->psikologislembaga,
+                    'tujuanPsikolog'=>$request->psikologistujuan,
+                    'jenisKendaraan'=>$request->kendaraan,
+                    'milikKendaraan'=>$request->kendaraanmilik,
+                    'kerabatFarmasi'=>$request->kerabat,
+                    'created_at'=>Carbon::now(),
+                    'updated_at'=>Carbon::now()
+                ]);
+
+            if(!empty($request->jenis_pelatihan)){
+                for ($k=0; $k <count($request->jenis_pelatihan) ; $k++) { 
+                    $jenispelatihan = trim($request->jenis_pelatihan[$k],''); 
+                    $penyelenggarapelatihan = trim($request->penyelenggara_pelatihan[$k],''); 
+                    $tahunpelatihan = trim($request->tahun_pelatihan[$k],''); 
+
+                    if (!empty($jenispelatihan)&&!empty($penyelenggarapelatihan)&&!empty($tahunpelatihan)) {
+                    
+                        DB::table('T_pelatihan')
+                            ->insert([
+                                'id_Tkandidat'=>$request->kandidat,
+                                'jenisPlthn'=>$jenispelatihan,
+                                'penyelenggaraPlthn'=>$penyelenggarapelatihan,
+                                'tahunPlthn'=>$tahunpelatihan
+                            ]);
+                    }
+                }
+                
+            }
+            
+            if(!empty($request->nama_organisasi)){
+                for ($k=0; $k <count($request->nama_organisasi) ; $k++) { 
+                    $namaorganisasi = trim($request->nama_organisasi[$k],''); 
+                    $kotaorganisasi = trim($request->kota_organisasi[$k],''); 
+                    $jabatanorganisasi = trim($request->jabatan_organisasi[$k],''); 
+                    $tahunorganisasi = trim($request->tahun_organisasi[$k],''); 
+                    
+                    if (!empty($namaorganisasi)&&!empty($kotaorganisasi)&&!empty($jabatanorganisasi)&&!empty($tahunorganisasi)) {
+                        DB::table('T_organisasi')
+                            ->insert([
+                                'id_Tkandidat'=>$request->kandidat,
+                                'namaOrg'=>$namaorganisasi,
+                                'kotaOrg'=>$kotaorganisasi,
+                                'jabatanOrg'=>$jabatanorganisasi,
+                                'tahunOrg'=>$tahunorganisasi
+                            ]);
+                    }
+                }
+                
+            }
+
+            if(!empty($request->nama_kenal)){
+                for ($k=0; $k <count($request->nama_kenal) ; $k++) { 
+                    $namakenal = trim($request->nama_kenal[$k],''); 
+                    $hubungankenal = trim($request->hubungan_kenal[$k],''); 
+
+                    if (!empty($namakenal)&&!empty($hubungankenal)) {
+                        DB::table('T_kenal')
+                            ->insert([
+                                'id_Tkandidat'=>$request->kandidat,
+                                'namaKenalan'=>$namakenal,
+                                'hubunganKenalan'=>$hubungankenal
+                            ]);
+                    }
+                }
+                
+            }
+
+            if(!empty($request->nama_referensi)){
+                for ($k=0; $k <count($request->nama_referensi) ; $k++) { 
+                    $namaref = trim($request->nama_referensi[$k],''); 
+                    $alamatref = trim($request->alamat_referensi[$k],''); 
+                    $pekerjaanref = trim($request->pekerjaan_referensi[$k],''); 
+                    $tlpref = trim($request->tlp_referensi[$k],''); 
+                    
+                    if (!empty($namaref)&&!empty($alamatref)&&!empty($alamatref)&&!empty($pekerjaanref)&&!empty($tlpref)) {
+                        DB::table('T_refrensi')
+                            ->insert([
+                                'id_Tkandidat'=>$request->kandidat,
+                                'namaRef'=>$namaref,
+                                'alamatRef'=>$alamatref,
+                                'pekerjaanRef'=>$pekerjaanref,
+                                'tlpRef'=>$tlpref
+                            ]);
+                    }
+                }
+                
+            }
+
+            if(!empty($request->nama_kontakdarurat)){
+                for ($k=0; $k <count($request->nama_kontakdarurat) ; $k++) { 
+                    $namadarurat = trim($request->nama_kontakdarurat[$k],''); 
+                    $alamatdarurat = trim($request->alamat_kontakdarurat[$k],''); 
+                    $tlpdarurat = trim($request->tlp_kontakdarurat[$k],''); 
+                    
+                    if (!empty($namadarurat)&&!empty($alamatdarurat)&&!empty($tlpdarurat)) {
+                        DB::table('T_darurat')
+                            ->insert([
+                                'id_Tkandidat'=>$request->kandidat,
+                                'namaDart'=>$namadarurat,
+                                'alamatDart'=>$alamatdarurat,
+                                'tlpDart'=>$tlpdarurat
+                            ]);
+                    }
+                }
+                
+            }
+
+            $statuskeluarga = ['Ayah','Ibu','Kaka/Adik 1',
+                                'Kaka/Adik 2','kaka/adik 3',
+                                'Kaka/Adik 4','Suami/Istri',
+                                'Anak 1','Anak 2','Anak 3','Anak 4',
+                                'Ayah Mertua','Ibu Mertua'
+            ];
+            $statusalamt = [
+                'Alamat Keluarga',
+                'Alamat Merrtua'
+            ];
+
+            if(!empty($request->nama)){
+                for ($k=0; $k <count($request->nama) ; $k++) {
+                    $status = $statuskeluarga[$k]; 
+                    $namakeluarga = trim($request->nama[$k],''); 
+                    $usiakeluarga = trim($request->usia[$k],''); 
+                    $LPKeluarga = trim($request->LP[$k],''); 
+                    $pendidikankeluarga = trim($request->pendidikan[$k],'');
+                    $perushaankeluarga = trim($request->namaperushaan[$k],''); 
+                    
+                    if (!empty($namakeluarga)&&!empty($usiakeluarga)&&!empty($LPKeluarga)&&!empty($pendidikankeluarga)&&!empty($perushaankeluarga)) {
+                        DB::table('T_keluarga')
+                        ->insert([
+                            'id_Tkandidat'=>$request->kandidat,
+                            'statusKeluarga'=>$status,
+                            'namaKelurga'=>$namakeluarga,
+                            'usiaKeluarga'=>$usiakeluarga,
+                            'genderKeluarga'=>$LPKeluarga,
+                            'pendidikanKeluarga'=>$pendidikankeluarga,
+                            'perushaanKeluarga'=>$perushaankeluarga
+                        ]);
+                    }
+                }
+                
+            }
+
+            if(!empty($request->alamat)){
+                for ($k=0; $k <count($request->alamat) ; $k++) {
+                    $status = $statusalamt[$k]; 
+                    $alamatkeluarga = trim($request->alamat[$k],'');
+                    if ($k<1) {
+                        $tlpkeluarga = trim($request->notlp[$k],''); 
+                    } else{
+                        $tlpkeluarga=null;
+                    }
+                    
+                    
+                    if (!empty($status)&&!empty($alamatkeluarga)) {
+                        DB::table('T_alamatKeluarga')
+                            ->insert([
+                                'id_Tkandidat'=>$request->kandidat,
+                                'statusAlamat'=>$status,
+                                'alamatKeluarga'=>$alamatkeluarga,
+                                'tlpKeluarga'=>$tlpkeluarga
+                            ]);
+                        }
+                }
+                
+            }
+
+            if(!empty($request->bahasa)){
+                for ($k=0; $k <count($request->bahasa) ; $k++) { 
+                    $bahasa = trim($request->bahasa[$k],''); 
+                    $berbicara = trim($request->berbicara[$k],''); 
+                    $menulis = trim($request->menulis[$k],''); 
+                    $membaca = trim($request->membaca[$k],''); 
+                    
+                    if (!empty($bahasa)&&!empty($berbicara)&&!empty($menulis)&&!empty($membaca)) {
+                        DB::table('T_bahasa')
+                            ->insert([
+                                'id_Tkandidat'=>$request->kandidat,
+                                'bahasa'=>$bahasa,
+                                'berbicara'=>$berbicara,
+                                'menulis'=>$menulis,
+                                'membaca'=>$membaca
+                            ]);
+                    }
+                }
+                
+            }
+
+            DB::table('T_linkPhase2')
+                ->where('id',$request->kandidat)
+                ->update([
+                    'active'=>0
+                ]);
+            
+            DB::commit();
+            return redirect()->route('fk.terimakasih');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->with('error', $e);
+        }
+        
+
     }
 
     public function ShowKodePos(Request $request){

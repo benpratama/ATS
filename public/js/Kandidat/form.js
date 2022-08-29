@@ -205,11 +205,12 @@ function Row_perushaan(){
         html +="</tr>"
 
     $('#TblPerushaan').append(html);
-
+    })
+    
     $(document).on('click','#btnDelRow-perusahaan',function(){
       var hapus = $(this).data('row')
       // console.log(hapus);
       $('#'+hapus).remove();
-  })
-})
+    })
+
 }

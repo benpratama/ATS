@@ -134,3 +134,4 @@ Route::Post('/submit/form-kandidat','FormKandidatController@SubmitForm1')->name(
 Route::view('/submit/finish','form kandidat/terimakasih')->name('fk.terimakasih');
 
 Route::get('/form-kandidat/phase2/{url}','FormKandidatController@ShowForm2')->name('fk.ShowForm2');
+Route::Post('/submit/form-kandidat2','FormKandidatController@SubmitForm2')->name('fk.SubmitForm2');
