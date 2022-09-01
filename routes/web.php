@@ -135,3 +135,14 @@ Route::view('/submit/finish','form kandidat/terimakasih')->name('fk.terimakasih'
 
 Route::get('/form-kandidat/phase2/{url}','FormKandidatController@ShowForm2')->name('fk.ShowForm2');
 Route::Post('/submit/form-kandidat2','FormKandidatController@SubmitForm2')->name('fk.SubmitForm2');
+
+//FPTK
+Route::get('/hrdats/hrd/fptk', 'FptkController@index')->name('hr_fptk.index');
+Route::get('/hrdats/hrd/export/fptk', 'FptkController@TemplateFptk')->name('hr_fptk.TemplateFptk');
+
+
+//LINK
+Route::get('/hrdats/hrd/link','UrlController@index')->name('hr_url.index');
+Route::get('/hrdats/hrd/show/link','UrlController@ShowUrl')->name('hr_url.ShowUrl');
+Route::get('/hrdats/hrd/modal/link/{id}', 'UrlController@ModalUrl')->name('hr_url.ModalUrl');
+Route::get('/hrdats/hrd/modal2/link/{id}', 'UrlController@ModalUrl2')->name('hr_url.ModalUrl2');

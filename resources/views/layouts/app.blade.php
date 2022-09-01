@@ -90,7 +90,7 @@
 
                 {{-- FPTK --}}
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{{ route('hr_fptk.index') }}">
                     <i class="ni ni-shop text-primary"></i>
                     <span class="nav-link-text">FPTK</span>
                   </a>
@@ -106,7 +106,7 @@
 
                 {{-- URL --}}
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{{ route('hr_url.index') }}">
                     <i class="ni ni-shop text-primary"></i>
                     <span class="nav-link-text">URL</span>
                   </a>
