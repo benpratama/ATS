@@ -61,7 +61,7 @@
               <table class="table" id="TblUrl">
                 <thead class="thead-light">
                   <tr>
-                    <th><input type="checkbox" id="cekAll-url"></th>
+                    {{-- <th><input type="checkbox" id="cekAll-url"></th> --}}
                     <th>Job</th>
                     <th>Jumlah</th>
                     <th>Detail</th>
@@ -73,7 +73,7 @@
         </div>
       </div>
       {{--!!START MODAL 1!!--}}
-      <div class="modal fade bd-example-modal-xl modal-url" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal fade bd-example-modal-xl modal-url"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
@@ -88,6 +88,16 @@
                   <label for="new_source" class="col-md-2 col-form-label form-control-label">Source</label>
                   <input class="form-control" type="text" id="new_Source">
                 </div>
+                {{-- <div class="col-md-4">
+                  <label for="new_source" class="col-md-2 col-form-label form-control-label">Job</label>
+                  <select id="new_job" class="form-control sim" data-row="1" name="new_job" required>
+                    <option value="" disabled selected>JOB</option>
+                  </select>
+                </div> --}}
+                <div class="col-md-6">
+                  <label for="new_note" class="col-md-2 col-form-label form-control-label">Notes</label>
+                  <input class="form-control" type="text" id="new_note">
+                </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-6">
@@ -100,31 +110,44 @@
                   <div class="form-group">
                     <label class="form-control-label" for="close_url">Close Url</label>
                     <input  type="datetime-local" class="form-control" name="close_url" id="close_url">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="checkclose">
+                      <label class="form-check-label" for="checkclose">
+                        no close time
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-6">
-                  <button id="btnAdd-url" type="button" class="btn btn-primary" value="">Generate</button>
+                  <button type="button" class="btn btn-success d-flex" id="btnAdd-url">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="gap-logo">Tambah</span>
+                  </button>
                 </div>
+                
               </div>
               <hr class="my-4">
               <div class="form-group row">
                 <div class="col-md-6">
-                  <button id="btnAdd-url" type="button" class="btn btn-primary" value="">delete</button>
+                  <button id="btnDel-url" type="button" class="btn btn-danger d-flex">
+                    <span class="material-symbols-outlined">delete</span>
+                    <span class="gap-logo">Hapus</span>
+                  </button>
                 </div>
               </div>
               <div class="table-responsive">
                 <table class="table" id="TblDetailurl">
                   <thead class="thead-light">
                     <tr>
-                      <th><input type="checkbox" id="cekAll-detailurl"></th>
+                      <th style="width: 5%"><input type="checkbox" id="cekAll-detailurl"></th>
                       <th>Active</th>
                       <th>Source</th>
                       <th>Open Url</th>
                       <th>Close Url</th>
                       <th>Url</th>
-                      <th>Update</th>
+                      <th style="width: 5%">Update</th>
                     </tr>
                   </thead>
                 </table>
@@ -138,7 +161,7 @@
       {{--!!END MODAL 1!!--}}
 
       {{--!!START MODAL 2!!--}}
-      <div class="modal fade bd-example-modal-xl modal-detailurl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal fade bd-example-modal-xl modal-detail-url" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
@@ -169,12 +192,18 @@
                   <div class="form-group">
                     <label class="form-control-label" for="edit_close_url">Close Url</label>
                     <input  type="datetime-local" class="form-control" name="edit_close_url" id="edit_close_url">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="edit_checkclose">
+                      <label class="form-check-label" for="checkclose">
+                        no close time
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-6">
-                  <button id="btnAdd-url" type="button" class="btn btn-primary" value="">Update</button>
+                  <button id="btnEdit-url" type="button" class="btn btn-primary" value="">Update</button>
                 </div>
               </div>
             </div>

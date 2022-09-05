@@ -146,3 +146,7 @@ Route::get('/hrdats/hrd/link','UrlController@index')->name('hr_url.index');
 Route::get('/hrdats/hrd/show/link','UrlController@ShowUrl')->name('hr_url.ShowUrl');
 Route::get('/hrdats/hrd/modal/link/{id}', 'UrlController@ModalUrl')->name('hr_url.ModalUrl');
 Route::get('/hrdats/hrd/modal2/link/{id}', 'UrlController@ModalUrl2')->name('hr_url.ModalUrl2');
+Route::Post('/hrdats/hrd/edit/link', 'UrlController@EdiUrl')->name('hr_url.EdiUrl');
+Route::Post('/hrdats/hrd/add/link', 'UrlController@AddUrl')->name('hr_url.AddUrl');
+Route::Post('/hrdats/hrd/active/link', 'UrlController@ActiveUrl')->name('hr_url.ActiveUrl');
+Route::Post('/hrdats/hrd/del/link', 'UrlController@DelUrl')->name('hr_url.DelUrl');

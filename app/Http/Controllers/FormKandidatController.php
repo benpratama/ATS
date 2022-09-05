@@ -18,11 +18,13 @@ class FormKandidatController extends Controller
 
 
     public function ShowForm1($url){
-        $date = Carbon::now()->format('Y-m-d');
+        $date = Carbon::now()->format('Y-m-d H:i');
         $result = DB::table('T_link')
             ->where('url',$url)
             ->where('openlink','<=',$date)
             ->where('closelink','>=',$date)
+            ->where('active','1')
+            ->where('deleted',0)
             ->first();
         if (!$result){
             return abort(404);
@@ -1013,7 +1015,4 @@ class FormKandidatController extends Controller
                     ->get();
         return $SIM;
     }
-    // public function test(){
-    //     return redirect()->route('fk.terimakasih');
-    // }
 }

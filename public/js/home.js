@@ -1,7 +1,6 @@
 $( document ).ready(function() {
   ShowSummary()
   ShowDetail()
-  // DatabtaleSearch()
 });
 
 function ShowSummary(){
