@@ -75,7 +75,7 @@ class LoginController extends Controller
             if (ldap_bind($ldap_connection, $samAcc, $password) === true) {
                 return true;
             } else {
-                return Redirect::back()->with('error', $e);
+                return Redirect::back()->with('error', 'error');
             }
         } catch (Exception $e) {
             return Redirect::back()->with('error', $e);

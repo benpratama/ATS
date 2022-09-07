@@ -139,7 +139,12 @@ Route::Post('/submit/form-kandidat2','FormKandidatController@SubmitForm2')->name
 //FPTK
 Route::get('/hrdats/hrd/fptk', 'FptkController@index')->name('hr_fptk.index');
 Route::get('/hrdats/hrd/export/fptk', 'FptkController@TemplateFptk')->name('hr_fptk.TemplateFptk');
-
+Route::post('/hrdats/hrd/import/fptk', 'FptkController@ImportFptk')->name('hr_fptk.ImportFptk');
+Route::get('/hrdats/hrd/show/fptk', 'FptkController@ShowFptk')->name('hr_fptk.ShowFptk');
+Route::get('/hrdats/hrd/show/detail/fptk/{id}', 'FptkController@ShowDetailFptk')->name('hr_fptk.ShowDetailFptk');
+Route::get('/hrdats/hrd/show/detailkandidat/fptk/{id}', 'FptkController@ShowDetailKandidatFptk')->name('hr_fptk.ShowDetailKandidatFptk');
+Route::get('/hrdats/hrd/show/kandidat/fptk', 'FptkController@ShowKandidat')->name('hr_fptk.ShowKandidat');
+Route::post('/hrdats/hrd/update/fptk','FptkController@UpdateFptk')->name('hr_fptk.UpdateFptk');
 
 //LINK
 Route::get('/hrdats/hrd/link','UrlController@index')->name('hr_url.index');

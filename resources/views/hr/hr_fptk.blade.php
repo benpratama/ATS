@@ -44,7 +44,6 @@
   </div>
   <!-- Page content -->
   <div class="container-fluid mt--6">
-
     {{-- !! FPTK btn !! --}}
     <div class="row">
       <div class="col-xl-12">
@@ -63,38 +62,71 @@
                 <span class="material-symbols-outlined">add</span>
                 <span class="gap-logo">Generate Template</span>
               </a>
-              <button id="btnDel-jurusan" type="button" class="btn btn-danger d-flex">
-                <span class="material-symbols-outlined">delete</span>
-                <span class="gap-logo">Hapus</span>
+              <button id="btnDel-jurusan" type="button" class="btn btn-danger d-flex" data-toggle="modal" data-target="#ModalUploadFPTK">
+                <span class="material-symbols-outlined">file_upload</span>
+                <span class="gap-logo">Upload</span>
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
+    {{-- !!  Start Modal FPTK Upload !! --}}
+    <div class="modal fade" id="ModalUploadFPTK" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Upload File FPTK</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form method="POST" action="{{ route('hr_fptk.ImportFptk') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-control-label" for="upload_FPTK">File FPTK</label>
+                    <input type="file" class="form-control" name="upload_FPTK" id="upload_FPTK" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {{-- !!  End Modal FPTK Upload !! --}}
 
-     {{-- !! FPTK btn !! --}}
-     <div class="row">
+    {{-- !! FPTK !! --}}
+    <div class="row">
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header bg-transparent">
             <div class="row align-items-center">
               <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">FPTK</h6>
-                <h5 class="h3 mb-0">Detail</h5>
+                <h5 class="h3 mb-0">List</h5>
               </div>
             </div>
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table" id="TblJurusan">
+              <table class="table" id="TblFptk">
                 <thead class="thead-light">
                   <tr>
-                    <th><input type="checkbox" id="cekAll-jurusan"></th>
-                    <th>Active</th>
-                    <th>Jurusan</th>
-                    <th>SMA/Sederajat</th>
-                    <th>Edit</th>
+                    <th>No FPTK</th>
+                    <th>TGL Disetujui</th>
+                    <th>Nama Peminta</th>
+                    <th>Nama Atasan</th>
+                    <th>Posisi</th>
+                    <th>Lokasi</th>
+                    <th>Status</th>
+                    <th>Detail</th>
                   </tr>
                 </thead>
               </table>
@@ -109,5 +141,5 @@
 @endsection
 
 @section('script')
-  <script language="JavaScript" type="text/javascript" src="{{ asset('js/Master Table/mt_f.js') }}"></script>
+  <script language="JavaScript" type="text/javascript" src="{{ asset('js/fptk.js') }}"></script>
 @endsection
