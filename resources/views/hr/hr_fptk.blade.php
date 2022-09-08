@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('styles')
+<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" type="text/css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
 <style>
   .material-symbols-outlined {
@@ -66,6 +67,78 @@
                 <span class="material-symbols-outlined">file_upload</span>
                 <span class="gap-logo">Upload</span>
               </button>
+            </div>
+            <hr class="my-4">
+            {{-- <div class="col-3">
+              <h6 class="text-uppercase text-muted ls-1 mb-1">FPTK</h6>
+              <h5 class="h3 mb-0">Filter</h5>
+            </div> --}}
+            <div class="row d-flex col-12">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Speriod">Start Period</label>
+                  <input class="form-control" type="date" value="" id="filter_Speriod" name="filter_Speriod" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Eperiod">End Period</label>
+                  <input class="form-control" type="date" value="" id="filter_Eperiod" name="filter_Eperiod" required>
+                </div>
+              </div>
+            </div>
+            <div class="row d-flex col-12">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_nofptk">NO FPTK</label>
+                  {{-- <input class="form-control" type="text" value="" id="filter_nofptk" name="filter_nofptk" required> --}}
+                  <select id="nofptk" class="js-example-basic-multiple" name="nofptk[]" multiple="multiple">
+                    @foreach ($Filters as $filter )
+                      <option value="{{ $filter->nofptk }}">{{ $filter->nofptk }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_npeminta">Nama Peminta</label>
+                  {{-- <input class="form-control" type="text" value="" id="filter_npeminta" name="filter_npeminta" required> --}}
+                  <select id="namapeminta" class="js-example-basic-multiple" name="namapeminta[]" multiple="multiple">
+                    @foreach ($Filters as $filter )
+                      <option value="{{ $filter->namapeminta }}">{{ $filter->namapeminta }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_natasan">Nama Atasan</label>
+                  <input class="form-control" type="text" value="" id="filter_natasan" name="filter_natasan" required>
+                </div>
+              </div>
+            </div>
+            <div class="row d-flex col-12">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_posisi">Posisi</label>
+                  <input class="form-control" type="text" value="" id="filter_posisi" name="filter_posisi" required>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_lokasi">Lokasi</label>
+                  <input class="form-control" type="text" value="" id="filter_lokasi" name="filter_lokasi" required>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_status">Status</label>
+                  <input class="form-control" type="text" value="" id="filter_status" name="filter_status" required>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex col-8">
+              <button type="button" class="btn btn-primary btnsbmt">Filter</button>
             </div>
           </div>
         </div>
@@ -141,5 +214,6 @@
 @endsection
 
 @section('script')
+  <script src="{{ asset('js/select2.min.js') }}"></script>
   <script language="JavaScript" type="text/javascript" src="{{ asset('js/fptk.js') }}"></script>
 @endsection

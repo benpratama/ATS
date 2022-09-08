@@ -215,6 +215,52 @@
           </div>
         </div>
       </div>
+
+      {{--!!START MODAL DETAIL KANDIDAT!!--}}
+      <div class="modal fade bd-example-modal-lg modal-detail-kandidat" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Data Kandidat</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="new-sim" class="col-md-2 col-form-label form-control-label">Keterangan</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-keterangan">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-sim" class="col-md-2 col-form-label form-control-label">Sumber</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-sumber" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-sim" class="col-md-2 col-form-label form-control-label">Jenis</label>
+                <div class="col-md-10">
+                  <select class="form-control" id="edit-jenis" name="edit-jenis" required>
+                    <option value="" disabled selected>Rekrutment/ Cabang</option>
+                    <option value="Rekrutment">Rekrutment</option>
+                    <option value="Cabang">Cabang</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <label id="kandidat" hidden></label>
+              <label id="fptk" hidden></label>
+              <div class="row">
+                <button id="btnEdit-kandidat" type="button" class="btn btn-primary" >Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL DETAIL KANDIDAT!!--}}
     </div>
   </div>
 {{-- !!!!!!! END  DIKOPI DARI SINI !!!!!!! --}}

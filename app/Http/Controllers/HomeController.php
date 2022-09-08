@@ -36,8 +36,8 @@ class HomeController extends Controller
         return $summary;
     }
     public function ShowDetail(Request $request){
-        // $id_Organisasi = Auth::user()->id_Organisasi;
-        $id_Organisasi = $request->id_Organisasi;
+        $id_Organisasi = Auth::user()->id_Organisasi;
+        // $id_Organisasi = $request->id_Organisasi;
         $detail =  DB::select('EXEC SP_Get_Detail_Kandidat ?',array(strval($id_Organisasi)));
         return $detail;
     }

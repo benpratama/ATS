@@ -141,10 +141,13 @@ Route::get('/hrdats/hrd/fptk', 'FptkController@index')->name('hr_fptk.index');
 Route::get('/hrdats/hrd/export/fptk', 'FptkController@TemplateFptk')->name('hr_fptk.TemplateFptk');
 Route::post('/hrdats/hrd/import/fptk', 'FptkController@ImportFptk')->name('hr_fptk.ImportFptk');
 Route::get('/hrdats/hrd/show/fptk', 'FptkController@ShowFptk')->name('hr_fptk.ShowFptk');
-Route::get('/hrdats/hrd/show/detail/fptk/{id}', 'FptkController@ShowDetailFptk')->name('hr_fptk.ShowDetailFptk');
-Route::get('/hrdats/hrd/show/detailkandidat/fptk/{id}', 'FptkController@ShowDetailKandidatFptk')->name('hr_fptk.ShowDetailKandidatFptk');
-Route::get('/hrdats/hrd/show/kandidat/fptk', 'FptkController@ShowKandidat')->name('hr_fptk.ShowKandidat');
-Route::post('/hrdats/hrd/update/fptk','FptkController@UpdateFptk')->name('hr_fptk.UpdateFptk');
+// -- masuk ke detail
+Route::get('/hrdats/hrd/show/detail/fptk/{id}', 'FptkController@ShowDetailFptk')->name('hr_fptk.ShowDetailFptk'); //masuk ke halaman detail-nya
+Route::get('/hrdats/hrd/show/detailkandidat/fptk/{id}', 'FptkController@ShowDetailKandidatFptk')->name('hr_fptk.ShowDetailKandidatFptk'); // show kandidat yang udah dipilih
+Route::get('/hrdats/hrd/show/kandidat/fptk', 'FptkController@ShowKandidat')->name('hr_fptk.ShowKandidat'); //list seluruh kandidat
+Route::get('/hrdats/hrd/modaldetail/kandiat/fptk/{idF}/{idK}','FptkController@ShowModalKandidat')->name('hr_fptk.ShowModalKandidat');
+Route::Post('/hrdats/hrd/update/fptk','FptkController@UpdateFptk')->name('hr_fptk.UpdateFptk');
+Route::post('/hrdats/hrd/show/updatemodal/fptk/','FptkController@UpdateModal')->name('hr_fptk.UpdateModal');
 
 //LINK
 Route::get('/hrdats/hrd/link','UrlController@index')->name('hr_url.index');

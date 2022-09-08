@@ -11,14 +11,21 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use League\CommonMark\Extension\Table\Table;
+use PhpOffice\PhpSpreadsheet\Calculation\TextData\Format;
 
 class FptkController extends Controller
 {
-    public function index()
-    {
+    public function index(){
+        // $start = Carbon::now()->startOfMonth()->toDateString();
+        // $end = Carbon::now()->endOfMonth()->toDateString();
+        // dd($start, $end);
         // dd(Auth::user());
-        
-        return view('hr/hr_fptk');
+        $filter= DB::table('T_FPTK')
+                ->where('id',Auth::user()->id_Organisasi)
+                ->get();
+        // dd($filter);
+        return view('hr/hr_fptk',['Filters'=>$filter]);
     }
 
     public function TemplateFptk(){
@@ -95,6 +102,7 @@ class FptkController extends Controller
             $datas = $spreadsheet->getSheetByName('FPTK FIX')->toArray();
 
             //row
+            //nanti ubahnya disini jadi 3
             for ($i=2; $i <count($datas) ; $i++) { 
                 // //kolom
                 // $j=0;
@@ -156,7 +164,8 @@ class FptkController extends Controller
         return $fptk;
     }
 
-    public function UpdateFptk(Request $request){     
+    public function UpdateFptk(Request $request){
+        // return $request;    
         try {
             DB::beginTransaction();
             DB::table('T_FPTK')
@@ -185,16 +194,23 @@ class FptkController extends Controller
 
             if (!empty($request->id_kandidat)) {
                 $list_kandidat = array_unique($request->id_kandidat);
-                for ($i=0; $i <count($list_kandidat) ; $i++) { 
+                for ($i=0; $i <count($list_kandidat) ; $i++) {
+                    
+                    $source = DB::table('T_kandidat')
+                            ->join('T_link','T_link.id','T_kandidat.id_Tlink')
+                            ->where('T_kandidat.id',$list_kandidat[$i])
+                            ->select('T_link.source')
+                            ->get();
+
                     DB::table('T_DFPTK')
                         ->insert([
                             'id_TFPTK'=>$request->id_fptk,
                             'id_TKandidat'=>$list_kandidat[$i],
-                            'tglkonfirm'=>null,
-                            'tgljoin'=>null,
-                            'tglbatal'=>null,
+                            'tglkonfirm'=>$request->tgl_konfirm[$i],
+                            'tgljoin'=>$request->tgl_join[$i],
+                            'tglbatal'=>$request->tgl_batal[$i],
                             'ket'=>null,
-                            'sumber'=>null,
+                            'sumber'=>$source[0]->source,
                             'jenis'=>null
                         ]);
                 }
@@ -232,14 +248,11 @@ class FptkController extends Controller
                     ]);
     }
 
+    //$id->id fptk
     public function ShowDetailKandidatFptk($id){
         $info_kandidat = DB::table('T_DFPTK')
                         ->where('id_TFPTK',$id)
                         ->get();
-        // $arr = [];
-        // foreach ($info_kandidat as $key => $value) {
-        //     array_push($arr,$value->id_TKandidat);
-        // }
         $data_kandidat = DB::table('T_kandidat')
                         ->select('id','noidentitas','namalengkap')
                         ->where('id_Organisasi',Auth::user()->id_Organisasi)
@@ -253,5 +266,24 @@ class FptkController extends Controller
                         ->where('id_Organisasi',Auth::user()->id_Organisasi)
                         ->get();
         return $data_kandidat;
+    }
+
+    public function ShowModalKandidat($idF,$idK){
+        $infodetailkandiat = DB::table('T_DFPTK')
+                        ->where('id_TFPTK',$idF)
+                        ->where('id_TKandidat',$idK)
+                        ->get();
+        return $infodetailkandiat;
+    }
+
+    public function UpdateModal(Request $request){
+        DB::table('T_DFPTK')
+            ->where('id_TFPTK',$request->id_fptk)
+            ->where('id_TKandidat',$request->id_kandidat)
+            ->update([
+                'ket'=>$request->keterangan,
+                'jenis'=>$request->jenis
+            ]);
+        return true;
     }
 }

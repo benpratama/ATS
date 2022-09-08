@@ -3,7 +3,22 @@ $( document ).ready(function() {
   Row_kandidat()
   update_Fptk()
   detailKandidat()
+  Update_modal()
+  clearModal()
+
+  $('#nofptk').select2();
+  $('#namapeminta').select2();
 });
+function clearModal(){
+  $('.modal-detail-kandidat').on('hide.bs.modal', function() {
+      $('#edit-keterangan').val('');
+      $('#edit-jenis').val('');
+      $('#edit-sumber').val('');
+      $('#kandidat').text('')
+      $('#fptk').text('')
+  })
+}
+
 
 function loadTbl_FPTK(){
   $('#TblFptk').DataTable({
@@ -100,7 +115,7 @@ function Row_kandidat(){
             html +=     "<input class='form-control' type='date' name='tgl_batal[]'>"
             html +=   "</td>" 
             html +=   "<td style='width: 5%;'>"
-            html +=     "<button type='button' class='btn btn-info' onclick='Modal_fptk(value)' data-toggle='modal' data-target='.modal-detail-fptk' value='"+baris_kandidat+"'>Detail</button>"
+            html +=     "<button type='button' class='btn btn-info' onclick='Modal_fptk(value)' data-toggle='modal' data-target='.modal-detail-kandidat' value='"+baris_kandidat+"' disabled>Detail</button>"
             html +=   "</td>"   
             html +=   "<td style='width: 5%;'>"
             html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_kandidat+"' id='btnDelRow-kandidat'>"
@@ -125,57 +140,56 @@ function detailKandidat(){
   if (result==true) {
     var id = $('#id_fptk').text()
     // console.log(id);
-  }
-
-  $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-  });
-  $.ajax({
-      _token: '{{ csrf_token() }}',
-      url: '/hrdats/hrd/show/detailkandidat/fptk/'+id,
-      type: 'get'
-    }).done((data) => {
-      data[0].forEach(elements => {
-        baris_kandidat+=1;
-        var html  = "<tr id='baris"+baris_kandidat+"' class='detail-perusahaan'>"
-            html +=   "<td style='width: 50%;'>"
-            html +=     "<select class='js-example-basic-single form-control fptkkandidat' name='fptkkandidat[]' >"
-            html +=       "<option value='' disabled selected>ID Kandidat</option>"
-            data[1].forEach(element => {
-              if (element.id==elements.id_TKandidat) {
-                html+=        "<option value="+element.id+" selected>"+element.noidentitas+' - '+element.namalengkap+"</option>"
-              }else{
-                html+=        "<option value="+element.id+">"+element.noidentitas+' - '+element.namalengkap+"</option>"
-              }
-            });
-            // html+=        "<option value="+elements.id_TKandidat+">"+element.noidentitas+' - '+element.namalengkap+"</option>"
-            html +=     "</select>"
-            html +=   "</td>" 
-            html +=   "<td style='width: 10%;'>"
-            html +=     "<input class='form-control' type='date' name='tgl_konfirm[]'>"
-            html +=   "</td>" 
-            html +=   "<td style='width: 10%;'>"
-            html +=     "<input class='form-control' type='date' name='tgl_join[]'>"
-            html +=   "</td>" 
-            html +=   "<td style='width: 10%;'>"
-            html +=     "<input class='form-control' type='date' name='tgl_batal[]'>"
-            html +=   "</td>" 
-            html +=   "<td style='width: 5%;'>"
-            html +=     "<button type='button' class='btn btn-info' onclick='Modal_fptk(value)' data-toggle='modal' data-target='.modal-detail-fptk' value='"+baris_kandidat+"'>Detail</button>"
-            html +=   "</td>"   
-            html +=   "<td style='width: 5%;'>"
-            html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_kandidat+"' id='btnDelRow-kandidat'>"
-            html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
-            html +=     "</button>"
-            html +=   "</td>"   
-            html +="</tr>"
-    
-        $('#Tblkandidat').append(html);
-      });
-      // console.log(data);
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
     });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/hrd/show/detailkandidat/fptk/'+id,
+        type: 'get'
+      }).done((data) => {
+        data[0].forEach(elements => {
+          baris_kandidat+=1;
+          var html  = "<tr id='baris"+baris_kandidat+"' class='detail-perusahaan'>"
+              html +=   "<td style='width: 50%;'>"
+              html +=     "<select class='js-example-basic-single form-control fptkkandidat' name='fptkkandidat[]' >"
+              html +=       "<option value='' disabled selected>ID Kandidat</option>"
+              data[1].forEach(element => {
+                if (element.id==elements.id_TKandidat) {
+                  html+=        "<option value="+element.id+" selected>"+element.noidentitas+' - '+element.namalengkap+"</option>"
+                }else{
+                  html+=        "<option value="+element.id+">"+element.noidentitas+' - '+element.namalengkap+"</option>"
+                }
+              });
+              // html+=        "<option value="+elements.id_TKandidat+">"+element.noidentitas+' - '+element.namalengkap+"</option>"
+              html +=     "</select>"
+              html +=   "</td>" 
+              html +=   "<td style='width: 10%;'>"
+              html +=     "<input class='form-control' type='date' name='tgl_konfirm[]' value='"+elements.tglkonfirm+"'>"
+              html +=   "</td>" 
+              html +=   "<td style='width: 10%;'>"
+              html +=     "<input class='form-control' type='date' name='tgl_join[]' value='"+elements.tgljoin+"'>" 
+              html +=   "</td>" 
+              html +=   "<td style='width: 10%;'>"
+              html +=     "<input class='form-control' type='date' name='tgl_batal[]' value='"+elements.tglbatal+"'>"
+              html +=   "</td>" 
+              html +=   "<td style='width: 5%;'>"
+              html +=     "<button type='button' class='btn btn-info' onclick='Modal_detail_kandidat(this)' data-toggle='modal' data-target='.modal-detail-kandidat' data-kandidat='"+elements.id_TKandidat+"' data-fptk='"+elements.id_TFPTK+"'>Detail</button>"
+              html +=   "</td>"   
+              html +=   "<td style='width: 5%;'>"
+              html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_kandidat+"' id='btnDelRow-kandidat'>"
+              html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
+              html +=     "</button>"
+              html +=   "</td>"   
+              html +="</tr>"
+      
+          $('#Tblkandidat').append(html);
+        });
+        // console.log(data[0]);
+      });
+  }
 }
 
 function update_Fptk(){
@@ -196,9 +210,14 @@ function update_Fptk(){
     var pic = $('#pic').val();
     var namakarybergabung = $('#namabergabung').val();
     var leadtime = $('#leadtime').val();
-    var id_kandidat = $("select[name='fptkkandidat[]']").map(function(){return $(this).val();}).get();
     var id_fptk = $('#btnUpdateFPTK').data('value');
-    // console.log(id_kandidat);
+
+    var id_kandidat = $("select[name='fptkkandidat[]']").map(function(){return $(this).val();}).get();
+    var tgl_konfirm = $("input[name='tgl_konfirm[]']").map(function(){return $(this).val();}).get();
+    var tgl_join= $("input[name='tgl_join[]']").map(function(){return $(this).val();}).get();
+    var tgl_batal = $("input[name='tgl_batal[]']").map(function(){return $(this).val();}).get();
+
+    // console.log(tgl_konfirm);
     $.ajaxSetup({
       headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -226,12 +245,70 @@ function update_Fptk(){
           namakarybergabung:namakarybergabung,
           leadtime:leadtime,
           id_kandidat:id_kandidat,
-          id_fptk:id_fptk
+          id_fptk:id_fptk,
+          tgl_konfirm:tgl_konfirm,
+          tgl_join:tgl_join,
+          tgl_batal:tgl_batal
         }
       }).done((data) => {
         location.reload()
         console.log(JSON.stringify(data));
     });
+  });
+}
 
+function Modal_detail_kandidat (obj){
+  var url = window.location.href;
+  var result =  url.includes("/hrdats/hrd/show/detail/fptk/");
+  if (result==true) {
+    var id_kandidat = $(obj).data('kandidat');
+    var id_fptk = $(obj).data('fptk');
+    // console.log(id);
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/hrd/modaldetail/kandiat/fptk/'+id_fptk+'/'+id_kandidat,
+        type: 'get'
+      }).done((data) => {
+        $('#edit-keterangan').val(data[0].ket);
+        $('#edit-jenis').val(data[0].jenis);
+        $('#edit-sumber').val(data[0].sumber);
+        $('#kandidat').text(id_kandidat);
+        $('#fptk').text(id_fptk);
+        // console.log(JSON.stringify(data));
+      });
+  }
+}
+
+function Update_modal(){
+  $('#btnEdit-kandidat').on('click',function(){
+    var keterangan = $('#edit-keterangan').val();
+    var jenis = $('#edit-jenis').val();
+    var id_kandidat = $('#kandidat').text();
+    var id_fptk = $('#fptk').text();
+
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/hrd/show/updatemodal/fptk/',
+        type: 'post',
+        data: {
+            keterangan:keterangan,
+            jenis:jenis,
+            id_kandidat:id_kandidat,
+            id_fptk:id_fptk
+        }
+      }).done((data) => {
+        $(".modal-detail-kandidat").modal('hide');
+        console.log(JSON.stringify(data));
+    });
   });
 }

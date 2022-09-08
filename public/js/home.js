@@ -38,8 +38,7 @@ function ShowDetail(){
         .clone(true)
         .addClass('filters')
         .appendTo('#TblKandidat thead');
-
-
+        
   $('#TblKandidat').DataTable({
     orderCellsTop: true,
         fixedHeader: true,
@@ -102,7 +101,7 @@ function ShowDetail(){
           url: "/hrdats/dashboard/hrd/detail",
           type: "POST",
           data:{
-              id_Organisasi:1
+              id_Organisasi:null
           },
           dataSrc:""
         },
