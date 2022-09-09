@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" type="text/css">
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
 <style>
   .material-symbols-outlined {
@@ -25,6 +25,7 @@
 @endsection
 
 @section('content')
+
   <div class="header bg-primary pb-6">
     {{-- !!! ROUTE DIHEADER !!! --}}
     <div class="container-fluid">
@@ -77,13 +78,13 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="form-control-label" for="filter_Speriod">Start Period</label>
-                  <input class="form-control" type="date" value="" id="filter_Speriod" name="filter_Speriod" required>
+                  <input class="form-control" type="date" value="" id="filter_Speriod" name="filter_Speriod">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="form-control-label" for="filter_Eperiod">End Period</label>
-                  <input class="form-control" type="date" value="" id="filter_Eperiod" name="filter_Eperiod" required>
+                  <input class="form-control" type="date" value="" id="filter_Eperiod" name="filter_Eperiod">
                 </div>
               </div>
             </div>
@@ -92,9 +93,9 @@
                 <div class="form-group">
                   <label class="form-control-label" for="filter_nofptk">NO FPTK</label>
                   {{-- <input class="form-control" type="text" value="" id="filter_nofptk" name="filter_nofptk" required> --}}
-                  <select id="nofptk" class="js-example-basic-multiple" name="nofptk[]" multiple="multiple">
-                    @foreach ($Filters as $filter )
-                      <option value="{{ $filter->nofptk }}">{{ $filter->nofptk }}</option>
+                  <select id="filter_nofptk" class="form-control js-example-basic-multiple " name="filter_nofptk[]" multiple="multiple">
+                    @foreach ($nofptks as $nofptk )
+                      <option value="{{ $nofptk->nofptk }}">{{ $nofptk->nofptk }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -103,9 +104,9 @@
                 <div class="form-group">
                   <label class="form-control-label" for="filter_npeminta">Nama Peminta</label>
                   {{-- <input class="form-control" type="text" value="" id="filter_npeminta" name="filter_npeminta" required> --}}
-                  <select id="namapeminta" class="js-example-basic-multiple" name="namapeminta[]" multiple="multiple">
-                    @foreach ($Filters as $filter )
-                      <option value="{{ $filter->namapeminta }}">{{ $filter->namapeminta }}</option>
+                  <select id="filter_namapeminta" class="js-example-basic-multiple form-control" name="filter_namapeminta[]" multiple="multiple">
+                    @foreach ($namapemintas as $namapeminta )
+                      <option value="{{ $namapeminta->namapeminta }}">{{ $namapeminta->namapeminta }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -113,7 +114,12 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label class="form-control-label" for="filter_natasan">Nama Atasan</label>
-                  <input class="form-control" type="text" value="" id="filter_natasan" name="filter_natasan" required>
+                  {{-- <input class="form-control" type="text" value="" id="filter_natasan" name="filter_natasan" required> --}}
+                  <select id="filter_namaatasan" class="js-example-basic-multiple form-control" name="filter_namaatasan[]" multiple="multiple">
+                    @foreach ($namaatasans as $namaatasan )
+                      <option value="{{ $namaatasan->namaatasanlangusng }}">{{ $namaatasan->namaatasanlangusng }}</option>
+                    @endforeach
+                  </select>
                 </div>
               </div>
             </div>
@@ -121,24 +127,39 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label class="form-control-label" for="filter_posisi">Posisi</label>
-                  <input class="form-control" type="text" value="" id="filter_posisi" name="filter_posisi" required>
+                  {{-- <input class="form-control" type="text" value="" id="filter_posisi" name="filter_posisi" required> --}}
+                  <select id="filter_posisi" class="js-example-basic-multiple form-control" name="filter_posisi[]" multiple="multiple">
+                    @foreach ($posisis as $posisi )
+                      <option value="{{ $posisi->posisi }}">{{ $posisi->posisi }}</option>
+                    @endforeach
+                  </select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label class="form-control-label" for="filter_lokasi">Lokasi</label>
-                  <input class="form-control" type="text" value="" id="filter_lokasi" name="filter_lokasi" required>
+                  {{-- <input class="form-control" type="text" value="" id="filter_lokasi" name="filter_lokasi" required> --}}
+                  <select id="filter_lokasi" class="js-example-basic-multiple form-control" name="filter_lokasi[]" multiple="multiple">
+                    @foreach ($lokasis as $lokasi )
+                      <option value="{{ $lokasi->penempatan }}">{{ $lokasi->penempatan }}</option>
+                    @endforeach
+                  </select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label class="form-control-label" for="filter_status">Status</label>
-                  <input class="form-control" type="text" value="" id="filter_status" name="filter_status" required>
+                  {{-- <input class="form-control" type="text" value="" id="filter_status" name="filter_status" required> --}}
+                  <select id="filter_status" class="js-example-basic-multiple form-control" name="filter_status[]" multiple="multiple">
+                    @foreach ($statuss as $status )
+                      <option value="{{ $status->id }}">{{ $status->keterangan }}</option>
+                    @endforeach
+                  </select>
                 </div>
               </div>
             </div>
             <div class="d-flex col-8">
-              <button type="button" class="btn btn-primary btnsbmt">Filter</button>
+              <button id="filterfptk" type="button" class="btn btn-primary btnsbmt">Filter</button>
             </div>
           </div>
         </div>
@@ -214,6 +235,6 @@
 @endsection
 
 @section('script')
-  <script src="{{ asset('js/select2.min.js') }}"></script>
+
   <script language="JavaScript" type="text/javascript" src="{{ asset('js/fptk.js') }}"></script>
 @endsection

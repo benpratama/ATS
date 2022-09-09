@@ -5,9 +5,14 @@ $( document ).ready(function() {
   detailKandidat()
   Update_modal()
   clearModal()
+  filter()
 
-  $('#nofptk').select2();
-  $('#namapeminta').select2();
+  $('#filter_nofptk').select2();
+  $('#filter_namapeminta').select2();
+  $('#filter_namaatasan').select2();
+  $('#filter_posisi').select2();
+  $('#filter_lokasi').select2();
+  $('#filter_status').select2();
 });
 function clearModal(){
   $('.modal-detail-kandidat').on('hide.bs.modal', function() {
@@ -19,18 +24,80 @@ function clearModal(){
   })
 }
 
+function filter(){
+  $('#filterfptk').on('click',function(){
+    var filter_Speriod=$('#filter_Speriod').val();
+    var filter_Eperiod=$('#filter_Eperiod').val();
+    var nofptk=$("select[name='filter_nofptk[]']").map(function(){return $(this).val();}).get();
+    var namapeminta=$("select[name='filter_namapeminta[]']").map(function(){return $(this).val();}).get();
+    var namaatasan=$("select[name='filter_namaatasan[]']").map(function(){return $(this).val();}).get();
+    var posisi=$("select[name='filter_posisi[]']").map(function(){return $(this).val();}).get();
+    var lokasi=$("select[name='filter_lokasi[]']").map(function(){return $(this).val();}).get();
+    var status=$("select[name='filter_status[]']").map(function(){return $(this).val();}).get();
 
-function loadTbl_FPTK(){
+    loadTbl_FPTK(
+                filter_Speriod,
+                filter_Eperiod,
+                nofptk,
+                namapeminta,
+                namaatasan,
+                posisi,
+                lokasi,
+                status
+                )
+  });
+}
+
+
+function loadTbl_FPTK(filter_Speriod,filter_Eperiod,nofptk,namapeminta,namaatasan,posisi,lokasi,status){
+
+  // $.ajaxSetup({
+  //   headers: {
+  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //   }
+  // });
+  // $.ajax({
+  //     _token: '{{ csrf_token() }}',
+  //     url: '/hrdats/hrd/show/fptk',
+  //     type: 'post',
+  //     data: {
+  //       filter_Speriod:filter_Speriod,
+  //         filter_Eperiod:filter_Eperiod,
+  //         nofptk:nofptk,
+  //         namapeminta:namapeminta,
+  //         namaatasan:namaatasan,
+  //         posisi:posisi,
+  //         lokasi:lokasi,
+  //         status:status
+  //     }
+  //   }).done((data) => {
+  //     console.log(JSON.stringify(data));
+  // });
+
+  $('#TblFptk').DataTable().destroy();
   $('#TblFptk').DataTable({
       "scrollY":        "400px",
       // "scrollX": true,
       "scrollCollapse": true,
       pageLength : 5,
       ajax: {
-      url: "/hrdats/hrd/show/fptk",
-              data:{},
-              dataSrc:""
-          },
+        url: "/hrdats/hrd/show/fptk",
+        type: "POST",
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },  
+        data:{
+          filter_Speriod:filter_Speriod,
+          filter_Eperiod:filter_Eperiod,
+          nofptk:nofptk,
+          namapeminta:namapeminta,
+          namaatasan:namaatasan,
+          posisi:posisi,
+          lokasi:lokasi,
+          status:status
+        },
+        dataSrc:""
+      },
       "paging":true,
       "bInfo" : false,
       "lengthChange": false,
@@ -66,7 +133,7 @@ function loadTbl_FPTK(){
             defaultContent: 'Tidak ada data'
           },
           {
-            data: 'status',
+            data: 'keterangan',
             defaultContent: 'Tidak ada data'
           },
           {

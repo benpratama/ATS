@@ -21,11 +21,51 @@ class FptkController extends Controller
         // $end = Carbon::now()->endOfMonth()->toDateString();
         // dd($start, $end);
         // dd(Auth::user());
-        $filter= DB::table('T_FPTK')
+        $filter_nofptk= DB::table('T_FPTK')
+                ->select('nofptk')
                 ->where('id',Auth::user()->id_Organisasi)
                 ->get();
+        
+        $filter_npeminta= DB::table('T_FPTK')
+                ->select('namapeminta')
+                ->distinct()
+                ->where('id',Auth::user()->id_Organisasi)
+                ->get();
+        
+        $filter_natasan= DB::table('T_FPTK')
+                ->select('namaatasanlangusng')
+                ->distinct()
+                ->where('id',Auth::user()->id_Organisasi)
+                ->get();
+        
+        $filter_posisi= DB::table('T_FPTK')
+                ->select('posisi')
+                ->distinct()
+                ->where('id',Auth::user()->id_Organisasi)
+                ->get();
+        
+        $filter_lokasi= DB::table('T_FPTK')
+                ->select('penempatan')
+                ->distinct()
+                ->where('id',Auth::user()->id_Organisasi)
+                ->get();
+        
+        $filter_status= DB::table('M_StatusFPTK')
+                ->select('id','keterangan')
+                ->where('active',1)
+                ->where('deleted',0)
+                ->get();
         // dd($filter);
-        return view('hr/hr_fptk',['Filters'=>$filter]);
+        return view(
+            'hr/hr_fptk',
+            [
+                'nofptks'=>$filter_nofptk,
+                'namapemintas'=>$filter_npeminta,
+                'namaatasans'=>$filter_natasan,
+                'posisis'=>$filter_posisi,
+                'lokasis'=>$filter_lokasi,
+                'statuss'=>$filter_status
+            ]);
     }
 
     public function TemplateFptk(){
@@ -156,12 +196,44 @@ class FptkController extends Controller
        return Redirect::back();
     }
 
-    public function ShowFptk(){
+    public function ShowFptk(Request $request){
         $fptk = DB::table('T_FPTK')
-            ->select('id','nofptk','tgldisetujui','namapeminta','namaatasanlangusng','posisi','penempatan','status')
-            ->where('id_Organisasi',Auth::user()->id_Organisasi)
-            ->get();
-        return $fptk;
+            ->select('T_FPTK.id','nofptk','tgldisetujui','namapeminta','namaatasanlangusng','posisi','penempatan','M_StatusFPTK.keterangan')
+            ->join('M_StatusFPTK','M_StatusFPTK.id','T_FPTK.status')
+            ->where('id_Organisasi',Auth::user()->id_Organisasi);
+
+            if(!empty($request->filter_Speriod)){
+                $fptk->where('tglinputfptk','>=',$request->filter_Speriod);
+            }else{
+                $fptk->where('tglinputfptk','>=',Carbon::now()->startOfMonth()->toDateString());
+            }
+
+            if(!empty($request->filter_Eperiod)){
+                $fptk->where('tglinputfptk','<=',$request->filter_Eperiod);
+            }else{
+                $fptk->where('tglinputfptk','<=',Carbon::now()->endOfMonth()->toDateString());
+            }
+
+            if(!empty($request->nofptk)){
+                $fptk->where('nofptk',array($request->nofptk));
+            }
+            if(!empty($request->namapeminta)){
+                $fptk->where('namapeminta',array($request->namapeminta));
+            }
+            if(!empty($request->namaatasan)){
+                $fptk->where('namaatasanlangusng',array($request->namaatasan));
+            }
+            if(!empty($request->posisi)){
+                $fptk->where('posisi',array($request->posisi));
+            }
+            if(!empty($request->lokasi)){
+                $fptk->where('penempatan',array($request->lokasi));
+            }
+            if(!empty($request->status)){
+                $fptk->where('status',array($request->status));
+            }
+        $result=$fptk->get();
+        return $result;
     }
 
     public function UpdateFptk(Request $request){

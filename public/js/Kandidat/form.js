@@ -18,33 +18,33 @@ $( document ).ready(function() {
   Row_perushaan();
 });
 
-const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-};
+// const options = {
+//   enableHighAccuracy: true,
+//   timeout: 5000,
+//   maximumAge: 0
+// };
 
-function success(pos) {
-  const crd = pos.coords;
-  if (crd.latitude!=null && crd.longitude!=null) {
-    $('#frm').removeAttr('hidden');
-    // $('#ntf').attr("hidden",true);
-    console.log(`Latitude : ${crd.latitude}`);
-    console.log(`Longitude: ${crd.longitude}`);
-  }
-  // console.log('Your current position is:');
-  // console.log(`Latitude : ${crd.latitude}`);
-  // console.log(`Longitude: ${crd.longitude}`);
-  // console.log(`More or less ${crd.accuracy} meters.`);
-}
+// function success(pos) {
+//   const crd = pos.coords;
+//   if (crd.latitude!=null && crd.longitude!=null) {
+//     $('#frm').removeAttr('hidden');
+//     // $('#ntf').attr("hidden",true);
+//     console.log(`Latitude : ${crd.latitude}`);
+//     console.log(`Longitude: ${crd.longitude}`);
+//   }
+//   // console.log('Your current position is:');
+//   // console.log(`Latitude : ${crd.latitude}`);
+//   // console.log(`Longitude: ${crd.longitude}`);
+//   // console.log(`More or less ${crd.accuracy} meters.`);
+// }
 
-function error(err) {
-  // console.warn(`ERROR(${err.code}): ${err.message}`);
-  $('#ntf').removeAttr('hidden');
-  // $('#frm').attr("hidden",true);
-}
+// function error(err) {
+//   // console.warn(`ERROR(${err.code}): ${err.message}`);
+//   $('#ntf').removeAttr('hidden');
+//   // $('#frm').attr("hidden",true);
+// }
 
-navigator.geolocation.getCurrentPosition(success, error, options);
+// navigator.geolocation.getCurrentPosition(success, error, options);
 
 data_sim =1;
 function AddDelSim(){
@@ -174,6 +174,38 @@ function Row_perushaan(){
   $('#btnAddRow-perusahaan').on('click',function(){
     baris_perusahaan+=1;
     
+    // var html  = "<tr id='baris"+baris_perusahaan+"' class='detail-perusahaan'>"
+    //     html +=   "<td style='width: 17.25%;'>"
+    //     html +=     "<input class='form-control'  type='text' name='nama_perushaan[]'>"
+    //     html +=   "</td>" 
+    //     html +=   "<td style='width: 10%;'>"
+    //     html +=     "<select class='form-control' id='status_perkawinan' name='jenis_perusahaan[]' required>"
+    //     html +=       "<option value='' disabled selected>Jenis Perusahaan</option>"
+    //     html +=       "<option value='Farmasi'>Farmasi</option>"
+    //     html +=       "<option value='Bukan Farmasi'>Bukan Farmasi</option>"
+    //     html +=     "</select>"
+    //     html +=   "</td>" 
+    //     html +=   "<td style='width: 17.25%;'>"
+    //     html +=     "<input class='form-control' type='text' name='alamat_perusahaan[]'>"
+    //     html +=   "</td>"
+    //     html +=   "<td style='width: 17.25%;'>"
+    //     html +=     "<input class='form-control' type='text' name='jabatan_perusahaan[]'>"
+    //     html +=   "</td>"
+    //     html +=   "<td style='width: 17.25%;'>"
+    //     html +=     "<input class='form-control' type='text' name='atasan_perusahaan[]'>"
+    //     html +=   "</td>" 
+    //     html +=   "<td style='width: 8%;'>"
+    //     html +=     "<input class='form-control' type='date' name='start_perusahaan[]'>"
+    //     html +=   "</td>"
+    //     html +=   "<td style='width: 8%;'>"
+    //     html +=     "<input class='form-control' type='date' name='end_perusahaan[]'>"
+    //     html +=   "</td>"   
+    //     html +=   "<td style='width: 2%;'>"
+    //     html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_perusahaan+"' id='btnDelRow-perusahaan'>"
+    //     html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
+    //     html +=     "</button>"
+    //     html +=   "</td>"   
+    //     html +="</tr>"
     var html  = "<tr id='baris"+baris_perusahaan+"' class='detail-perusahaan'>"
         html +=   "<td style='width: 19%;'>"
         html +=     "<input class='form-control'  type='text' name='nama_perushaan[]'>"

@@ -140,7 +140,7 @@ Route::Post('/submit/form-kandidat2','FormKandidatController@SubmitForm2')->name
 Route::get('/hrdats/hrd/fptk', 'FptkController@index')->name('hr_fptk.index');
 Route::get('/hrdats/hrd/export/fptk', 'FptkController@TemplateFptk')->name('hr_fptk.TemplateFptk');
 Route::post('/hrdats/hrd/import/fptk', 'FptkController@ImportFptk')->name('hr_fptk.ImportFptk');
-Route::get('/hrdats/hrd/show/fptk', 'FptkController@ShowFptk')->name('hr_fptk.ShowFptk');
+Route::POST('/hrdats/hrd/show/fptk', 'FptkController@ShowFptk')->name('hr_fptk.ShowFptk');
 // -- masuk ke detail
 Route::get('/hrdats/hrd/show/detail/fptk/{id}', 'FptkController@ShowDetailFptk')->name('hr_fptk.ShowDetailFptk'); //masuk ke halaman detail-nya
 Route::get('/hrdats/hrd/show/detailkandidat/fptk/{id}', 'FptkController@ShowDetailKandidatFptk')->name('hr_fptk.ShowDetailKandidatFptk'); // show kandidat yang udah dipilih

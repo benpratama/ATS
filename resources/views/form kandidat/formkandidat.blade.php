@@ -46,7 +46,7 @@
 <body class="stly">
   <form method="POST" action="{{ route('fk.SubmitForm1') }}" enctype="multipart/form-data">
     @csrf
-    <div id='frm' class="container-fluid mt--6" hidden>
+    <div class="container-fluid mt--6">
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
@@ -386,13 +386,20 @@
                 <table class="table" id="TblPerushaan">
                   <thead class="thead-light">
                     <tr>
+                      {{-- <th style="width: 17.25%;">Nama Perushaan</th>
+                      <th style="width: 13%;">Jenis Perushaan</th>
+                      <th style="width: 17.25%;">Alamat Prushaan</th>
+                      <th style="width: 17.25%;">Jabatan</th>
+                      <th style="width: 17.25%;">Nama Atasan/ Jabatan</th>
+                      <th style="width: 8%;">Start Kerja</th>
+                      <th style="width: 8%;">End kerja</th> --}}
                       <th style="width: 15.8%;">Nama Perushaan</th>
                       <th style="width: 15.8%;">Jenis Perushaan</th>
                       <th style="width: 15.8%;">Alamat Prushaan</th>
                       <th style="width: 15.8%;">Jabatan</th>
                       <th style="width: 15.8%;">Nama Atasan/ Jabatan</th>
                       <th style="width: 15.8%;">Lama Bekerja</th>
-                      <th style="width: 5%;"> 
+                      <th style="width: 2%;"> 
                         <button type="button" class="btn btn-success d-flex" id="btnAddRow-perusahaan">
                           <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
                         </button>
@@ -531,10 +538,6 @@
       </div>
     </div>
   </form>
-
-  <div id='ntf' hidden>
-    <h1>halaman butuh akses lokasi</h1>
-  </div>
   
   <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>

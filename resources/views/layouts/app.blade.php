@@ -24,6 +24,7 @@
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/argon.css?v=1.1.0') }}" type="text/css">
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" type="text/css">
 </head>
 <body>
   <div id="app">
@@ -192,6 +193,7 @@
   <script src="{{ asset('assets/js/argon.js?v=1.1.0') }}"></script>
   <!-- Demo JS - remove this in your project -->
   <script src="{{ asset('assets/js/demo.min.js') }}"></script>
+  <script src="{{ asset('js/select2.min.js') }}"></script>
     @yield('script')
   {{-- active dashboard --}}
   @if (Route::currentRouteName()=='home' )
