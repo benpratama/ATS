@@ -156,12 +156,40 @@ class FptkController extends Controller
                 $namapeminta= $datas[$i][5];
                 $namaatasanlangusng= $datas[$i][6];
                 $posisi= $datas[$i][7];
-                $organisasi= $datas[$i][8];
+                $lobandsub= $datas[$i][8];
                 $penempatan= $datas[$i][9];
                 $alasandigantikan= $datas[$i][10];
                 $namaygdigantikan= $datas[$i][11];
                 $namaSpvDm= $datas[$i][12];
                 $pic= $datas[$i][13];
+
+                $result_golongan = DB::table('M_Job')
+                                ->where('nama',$posisi)
+                                ->where('active',1)
+                                ->where('deleted',0)
+                                ->first();
+                // dd($result_golongan->golongan);
+                if (empty($result_golongan)) {
+                    // dd('golongan gak ada');
+                    $golongan=null;
+                }else{
+                    // dd('golongan ada');
+                    $golongan = $result_golongan->golongan;
+                }
+
+                $result_lobandsub = DB::table('M_LobandSub')
+                                    ->where('nama',$lobandsub)
+                                    ->where('id_Organisasi',$id_Organisasi[0])
+                                    ->first();
+                // dd($result_lobandsub->id);
+                if (empty($result_lobandsub)) {
+                    // dd('golongan gak ada');
+                    $id_lob=null;
+                }else{
+                    // dd('golongan ada');
+                    $id_lob = $result_lobandsub->id;
+                }
+
 
                 if(empty($nofptk)&&empty($tglinput)&&empty($tgldisetujui)&&empty($nikpeminta)) {
                     break;
@@ -175,7 +203,9 @@ class FptkController extends Controller
                             'namapeminta'=>$namapeminta,
                             'namaatasanlangusng'=>$namaatasanlangusng,
                             'posisi'=>$posisi,
-                            'organisasi'=>$organisasi,
+                            'golongan'=>$golongan,
+                            'lobandsub'=>$lobandsub,
+                            'id_Tlobandsub'=>$id_lob,
                             'penempatan'=>$penempatan,
                             'alasandigantikan'=>$alasandigantikan,
                             'namaygdigantikan'=>$namaygdigantikan,
@@ -199,7 +229,7 @@ class FptkController extends Controller
     public function ShowFptk(Request $request){
         $fptk = DB::table('T_FPTK')
             ->select('T_FPTK.id','nofptk','tgldisetujui','namapeminta','namaatasanlangusng','posisi','penempatan','M_StatusFPTK.keterangan')
-            ->join('M_StatusFPTK','M_StatusFPTK.id','T_FPTK.status')
+            ->leftjoin('M_StatusFPTK','M_StatusFPTK.id','T_FPTK.status')
             ->where('id_Organisasi',Auth::user()->id_Organisasi);
 
             if(!empty($request->filter_Speriod)){
@@ -240,6 +270,35 @@ class FptkController extends Controller
         // return $request;    
         try {
             DB::beginTransaction();
+
+            $result_golongan = DB::table('M_Job')
+                                ->where('nama',$request->posisi)
+                                ->where('active',1)
+                                ->where('deleted',0)
+                                ->first();
+            // dd($result_golongan->golongan);
+            if (empty($result_golongan)) {
+                // dd('golongan gak ada');
+                $golongan=null;
+            }else{
+                // dd('golongan ada');
+                $golongan = $result_golongan->golongan;
+            }
+
+            $result_lobandsub = DB::table('M_LobandSub')
+                                    ->where('nama',$request->lobandsub)
+                                    ->where('id_Organisasi',Auth::user()->id_Organisasi)
+                                    ->first();
+            // dd($result_lobandsub->id);
+            if (empty($result_lobandsub)) {
+                // dd('golongan gak ada');
+                $id_lob=null;
+            }else{
+                // dd('golongan ada');
+                $id_lob = $result_lobandsub->id;
+            }
+
+
             DB::table('T_FPTK')
                 ->where('id',$request->id_fptk)
                 ->update([
@@ -250,7 +309,9 @@ class FptkController extends Controller
                     'namapeminta'=>$request->namapeminta,
                     'namaatasanlangusng'=>$request->namaatasanlangusng,
                     'posisi'=>$request->posisi,
-                    'organisasi'=>$request->organisasi,
+                    'golongan'=>$golongan,
+                    'lobandsub'=>$request->lobandsub,
+                    'id_Tlobandsub'=>$id_lob,
                     'penempatan'=>$request->penempatan,
                     'alasandigantikan'=>$request->alasandigantikan,
                     'namaygdigantikan'=>$request->namaygdigantikan,
@@ -311,12 +372,21 @@ class FptkController extends Controller
                         ->select('id','namalengkap')
                         ->where('id_Organisasi',Auth::user()->id_Organisasi)
                         ->get();
+        $list_job = DB::table('M_Job')
+                    ->where('active',1)
+                    ->where('deleted',0)
+                    ->get();
+        $list_lob= DB::table('M_LobandSub')
+                    ->where('id_Organisasi',Auth::user()->id_Organisasi)
+                    ->get();
         // dd($status_fptk);
         return view('hr/hr_detail_fptk',
                     [
                         'detailfptk'=>$detail_fptk,
                         'statusfptk'=>$status_fptk,
-                        'idkandidat'=>$id_kandidat
+                        'idkandidat'=>$id_kandidat,
+                        'listjob'=>$list_job,
+                        'listlob'=>$list_lob
                     ]);
     }
 

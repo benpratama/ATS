@@ -269,7 +269,7 @@ function update_Fptk(){
     var namapeminta = $('#namapeminta').val();
     var namaatasanlangusng = $('#atasanlangsung').val();
     var posisi = $('#posisi').val();
-    var organisasi = $('#organisasi').val();
+    var lobandsub = $('#lobandsub').val();
     var penempatan = $('#penempatan').val();
     var alasandigantikan = $('#alasan').val();
     var namaygdigantikan = $('#namadigantikan').val();
@@ -303,7 +303,7 @@ function update_Fptk(){
           namapeminta:namapeminta,
           namaatasanlangusng:namaatasanlangusng,
           posisi:posisi,
-          organisasi:organisasi,
+          lobandsub:lobandsub,
           penempatan:penempatan,
           alasandigantikan:alasandigantikan,
           namaygdigantikan:namaygdigantikan,

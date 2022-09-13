@@ -122,13 +122,23 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="posisi" class="col-md-5 col-form-label form-control-label">Posisi</label>
-                    <input class="form-control" type="text" id="posisi" value="{{ $detailfptk[0]->posisi }}">
+                    <input class="form-control" list="job" type="text" id="posisi" value="{{ $detailfptk[0]->posisi }}">
+                    <datalist id="job">
+                      @foreach ( $listjob as $job )
+                        <option value="{{ $job->nama }}">
+                      @endforeach
+                    </datalist>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label for="organisasi" class="col-md-5 col-form-label form-control-label">Organisasi</label>
-                    <input class="form-control" type="text" id="organisasi" value="{{ $detailfptk[0]->organisasi }}">
+                    <label for="lobandsub" class="col-md-5 col-form-label form-control-label">Organisasi</label>
+                    <input class="form-control" list="lob" type="text" id="lobandsub" value="{{ $detailfptk[0]->lobandsub }}">
+                    <datalist id="lob">
+                      @foreach ( $listlob as $lob )
+                        <option value="{{ $lob->nama }}">
+                      @endforeach
+                    </datalist>
                   </div>
                 </div>
                 <div class="col-md-4">
