@@ -149,6 +149,12 @@ Route::get('/hrdats/hrd/modaldetail/kandiat/fptk/{idF}/{idK}','FptkController@Sh
 Route::Post('/hrdats/hrd/update/fptk','FptkController@UpdateFptk')->name('hr_fptk.UpdateFptk');
 Route::post('/hrdats/hrd/show/updatemodal/fptk/','FptkController@UpdateModal')->name('hr_fptk.UpdateModal');
 
+//MPP
+Route::get('/hrdats/hrd/mpp', 'MppController@index')->name('hr_mpp.index');
+Route::get('/hrdats/hrd/export/mpp', 'MppController@TemplateMpp')->name('hr_mpp.TemplateMpp');
+Route::post('/hrdats/hrd/import/mpp', 'MppController@ImportMpp')->name('hr_mpp.ImportMpp');
+Route::post('/hrdats/hrd/show/mpp', 'MppController@ShowMpp')->name('hr_mpp.ShowMpp');
+
 //LINK
 Route::get('/hrdats/hrd/link','UrlController@index')->name('hr_url.index');
 Route::get('/hrdats/hrd/show/link','UrlController@ShowUrl')->name('hr_url.ShowUrl');

@@ -99,7 +99,7 @@
 
                 {{-- MPP --}}
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{{ route('hr_mpp.index') }}">
                     <i class="ni ni-shop text-primary"></i>
                     <span class="nav-link-text">MPP</span>
                   </a>
