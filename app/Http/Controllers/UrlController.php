@@ -19,7 +19,7 @@ class UrlController extends Controller
                 ->select('T_link.id_Tjob','M_job.nama',DB::raw('count(id_Tjob) as jumlah'))
                 ->join('M_job', 'T_link.id_Tjob', '=', 'M_job.id')
                 ->groupBy('T_link.id_Tjob','M_job.nama')
-                ->where('T_link.id_Organisasi',Auth::user()->id)
+                ->where('T_link.id_Organisasi',Auth::user()->id_Organisasi)
                 ->where('T_link.deleted',0)
                 ->get();
         return $job;
@@ -30,7 +30,7 @@ class UrlController extends Controller
         $list_url = DB::table('T_link')
                 ->where('id_Tjob',$id)
                 ->where('deleted',0)
-                ->where('id_Organisasi',Auth::user()->id)
+                ->where('id_Organisasi',Auth::user()->id_Organisasi)
                 ->get();
         return $list_url;
     }
@@ -39,7 +39,7 @@ class UrlController extends Controller
         $detail_url = DB::table('T_link')
                     ->where('id',$id)
                     ->where('deleted',0)
-                    ->where('id_Organisasi',Auth::user()->id)
+                    ->where('id_Organisasi',Auth::user()->id_Organisasi)
                     ->get();
         return $detail_url;
     }

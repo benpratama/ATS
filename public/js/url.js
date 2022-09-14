@@ -244,7 +244,7 @@ function Modal_url2(id){
     $('#edit_close_url').val(data[0].closelink.slice(0, 16));
     $('#edit_Notes').val(data[0].noteslink);
     $('#btnEdit-url').val(id);
-    // console.log(JSON.stringify(data[0].openlink.slice(0, 16)));
+    // console.log(JSON.stringify(data));
   });
 }
 function Edit_Url(){
