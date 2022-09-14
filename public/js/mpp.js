@@ -1,12 +1,7 @@
 $( document ).ready(function() {
-  // loadTbl_FPTK()
-  // Row_kandidat()
-  // update_Fptk()
-  // detailKandidat()
-  // Update_modal()
   clearModal();
   loadtablempp();
-  // filter()
+  updatempp();
 
   $('#filter_lob').select2();
 });
@@ -32,6 +27,10 @@ function loadtablempp(){
 
     var filter_thn = $('#filter_tahunBE').val();
     var filter_lob = $('#filter_lob').val();
+
+    $('#inf_thn').text(filter_thn);
+    $('#inf_lob').text(filter_lob);
+
     $.ajaxSetup({
       headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -71,19 +70,28 @@ function loadtablempp(){
             be.push(val2)
           }
         }
-        
-      
+        //START BTN UPDATE
+          if (data[1].length<=0) {
+            $('#btnUpdate_mpp').attr('disabled',true)
+          }else{
+            $('#btnUpdate_mpp').attr('disabled',false)
+          }
+        //END BTN UPDATE
+
+        // START Table
         var html=''
         for (let index = 0; index < data[0].length; index++) {
           html+='<tr class="datampp">'
           html+=  '<td>'+data[0][index]+'</td>'
           if (data[1].length<=0) {
+            // ini kalo gak ada data BE
             html+=  '<td>'+'data belum ada'+'</td>'
           } else {
-            html+=  '<td>'+be[index]+'</td>'
+            html+=  '<td><input type="number" name=UpdateBE[] value='+be[index]+' min="0"></input></td>'
           }
           html+=  '<td>'+actual[index]+'</td>'
           if (data[1].length<=0) {
+            // ini kalo gak ada data BE
             html+=  '<td>'+'data belum ada'+'</td>'
           } else {
             html+=  '<td>'+(be[index]-actual[index])+'</td>'
@@ -92,7 +100,45 @@ function loadtablempp(){
           html+='</tr>'
         }
         $('#detail').append(html);
+        // END TABLE
+
         // console.log(JSON.stringify(data[1].length));
       });
+  });
+}
+
+function updatempp(){
+  $('#btnUpdate_mpp').on('click', function() {
+    var thn = $('#inf_thn').text()
+    var lob = $('#inf_lob').text()
+    var updateBE = $("input[name='UpdateBE[]']")
+              .map(function(){
+                if ($(this).val()>=0) {
+                  return parseInt($(this).val());
+                } else {
+                  return 0
+                }
+                }).get();
+  
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/hrd/update/mpp',
+        type: 'post',
+        data: {
+            thn:thn,
+            lob:lob,
+            updateBE:updateBE
+        }
+      }).done((data) => {
+        // $(".modal-edit-domisili").modal('hide');
+        // $('#TblDomisili').DataTable().ajax.reload();
+        $('#filtermpp').click();
+        // console.log(JSON.stringify(data));
+    });     
   });
 }

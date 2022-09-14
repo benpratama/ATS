@@ -141,9 +141,19 @@
         <div class="card">
           <div class="card-header bg-transparent">
             <div class="row align-items-center">
-              <div class="col-3">
+              <div class="col-2">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">MPP</h6>
                 <h5 class="h3 mb-0">List</h5>
+              </div>
+              <div class="d-flex col-10">
+                <button id="btnUpdate_mpp" type="button" class="btn btn-success d-flex"  disabled>
+                  <span class="material-symbols-outlined">update</span>
+                  <span class="gap-logo">Update</span>
+                </button>
+              </div>
+              <div>
+                <label id="inf_thn" hidden></label>
+                <label id="inf_lob" hidden></label>
               </div>
             </div>
           </div>

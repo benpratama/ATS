@@ -131,4 +131,22 @@ class MppController extends Controller
 
         return [$lvl,$mpp,$actual];
     }
+
+    public function UpdateMpp(Request $request){
+        DB::table('T_MPP')
+            ->where('tahunBE',$request->thn)
+            ->where('id_Tlobandsub',$request->lob)
+            ->where('id_Torganisasi',Auth::user()->id_Organisasi)
+            ->update([
+                'gol 7-8'=>$request->updateBE[0],
+                'gol 6'=>$request->updateBE[1],
+                'gol 5'=>$request->updateBE[2],
+                'gol 4'=>$request->updateBE[3],
+                'gol 3'=>$request->updateBE[4],
+                'gol 1-2'=>$request->updateBE[5],
+                'ttlPermanen'=>$request->updateBE[6],
+                'ttlTemporary'=>$request->updateBE[7]
+            ]);
+        return true;
+    }
 }

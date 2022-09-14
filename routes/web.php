@@ -154,6 +154,7 @@ Route::get('/hrdats/hrd/mpp', 'MppController@index')->name('hr_mpp.index');
 Route::get('/hrdats/hrd/export/mpp', 'MppController@TemplateMpp')->name('hr_mpp.TemplateMpp');
 Route::post('/hrdats/hrd/import/mpp', 'MppController@ImportMpp')->name('hr_mpp.ImportMpp');
 Route::post('/hrdats/hrd/show/mpp', 'MppController@ShowMpp')->name('hr_mpp.ShowMpp');
+Route::post('/hrdats/hrd/update/mpp', 'MppController@UpdateMpp')->name('hr_mpp.UpdateMpp');
 
 //LINK
 Route::get('/hrdats/hrd/link','UrlController@index')->name('hr_url.index');
