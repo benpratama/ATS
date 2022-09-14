@@ -35,6 +35,40 @@ function clearModal(){
     })
 }
 
+function alert(){
+    const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+    })
+    
+    Toast.fire({
+    icon: 'success',
+    title: 'Proses Berhasil'
+    })
+}
+
+function confirm(){
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+    if (result.isConfirmed) {
+        alert()
+    }
+    })
+}
 
 //----MCU----
 function loadTbl_JOB(){
@@ -120,23 +154,40 @@ function delete_JOB(){
                 arrId_job.push(cek[i].value);
             }
         }
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/job',
-            type: 'post',
-            data: {
-                arrId_job:arrId_job
-            }
-          }).done((data) => {
-            $('#TblJob').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
+
+        if (arrId_job.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                    
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/job',
+                        type: 'post',
+                        data: {
+                            arrId_job:arrId_job
+                        }
+                    }).done((data) => {
+                        $('#TblJob').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
     })
 }
 function add_JOB(){
@@ -161,6 +212,7 @@ function add_JOB(){
             $(".modal-tambah-job").modal('hide');
             $('#TblJob').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -235,6 +287,7 @@ function Edit_JOB(){
             $(".modal-edit-job").modal('hide');
             $('#TblJob').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }
@@ -495,6 +548,7 @@ function add_USER(){
             // $(".modal-tambah-user").modal('hide');
             $('#TblUser').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -537,6 +591,7 @@ function Edit_USER(){
             $(".modal-edit-user").modal('hide');
             $('#TblUser').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }

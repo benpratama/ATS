@@ -116,6 +116,40 @@ function clearModal(){
     })
 }
 
+function alert(){
+    const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+    })
+    
+    Toast.fire({
+    icon: 'success',
+    title: 'Proses Berhasil'
+    })
+}
+
+function confirm(){
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+    if (result.isConfirmed) {
+        alert()
+    }
+    })
+}
 
 //----SIM----
 function loadTbl_SIM(){
@@ -196,23 +230,37 @@ function delete_SIM(){
                 arrId_sim.push(cek[i].value);
             }
         }
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/sim',
-            type: 'post',
-            data: {
-                arrId_sim:arrId_sim
-            }
-          }).done((data) => {
-            $('#TblSim').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
+        if(arrId_sim.length>0){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/sim',
+                        type: 'post',
+                        data: {
+                            arrId_sim:arrId_sim
+                        }
+                    }).done((data) => {
+                        $('#TblSim').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert();
+                }
+            })
+        }
     })
 }
 function add_SIM(){
@@ -232,9 +280,11 @@ function add_SIM(){
                 new_sim:new_sim
             }
           }).done((data) => {
+            
             $(".modal-tambah-sim").modal('hide');
             $('#TblSim').DataTable().ajax.reload();
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
+            alert();
           });
     })
 }
@@ -303,9 +353,11 @@ function Edit_SIM(){
                 id_sim:id_sim
             }
           }).done((data) => {
+            
             $(".modal-edit-sim").modal('hide');
             $('#TblSim').DataTable().ajax.reload();
-            console.log(JSON.stringify(data));
+            alert();
+            // console.log(JSON.stringify(data));
         });
     });
 }
@@ -389,31 +441,47 @@ function loadTbl_DOMISILI(){
 }
 function delete_DOMISILI(){
     $('#btnDel-domisili').on('click', function() {
-        //ini buat ambil ID-nya
-        var arrId_domisili=[];
-        var cek = $('.cek-domisili')
-        for(var i=0; cek[i]; ++i){
-            if(cek[i].checked){
-                arrId_domisili.push(cek[i].value);
-            }
-        }
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/domisili',
-            type: 'post',
-            data: {
-                arrId_domisili:arrId_domisili
-            }
-          }).done((data) => {
-            $('#TblDomisili').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
+         //ini buat ambil ID-nya
+         var arrId_domisili=[];
+         var cek = $('.cek-domisili')
+         for(var i=0; cek[i]; ++i){
+             if(cek[i].checked){
+                 arrId_domisili.push(cek[i].value);
+             }
+         }
+
+         if (arrId_domisili.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+               
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/domisili',
+                        type: 'post',
+                        data: {
+                            arrId_domisili:arrId_domisili
+                        }
+                    }).done((data) => {
+                        $('#TblDomisili').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+         }
     })
 }
 function add_DOMISILI(){
@@ -440,6 +508,7 @@ function add_DOMISILI(){
             $(".modal-tambah-domisili").modal('hide');
             $('#TblDomisili').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -517,6 +586,7 @@ function Edit_DOMISILI(){
             $(".modal-edit-domisili").modal('hide');
             $('#TblDomisili').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }
@@ -604,23 +674,39 @@ function delete_JURUSAN(){
                 arrId_jurusan.push(cek[i].value);
             }
         }
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/jurusan',
-            type: 'post',
-            data: {
-                arrId_jurusan:arrId_jurusan
-            }
-          }).done((data) => {
-            $('#TblJurusan').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
+
+        if (arrId_jurusan>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/jurusan',
+                        type: 'post',
+                        data: {
+                            arrId_jurusan:arrId_jurusan
+                        }
+                    }).done((data) => {
+                        $('#TblJurusan').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
     })
 }
 function add_JURUSAN(){
@@ -645,6 +731,7 @@ function add_JURUSAN(){
             $(".modal-tambah-jurusan").modal('hide');
             $('#TblJurusan').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -719,6 +806,7 @@ function Edit_JURUSAN(){
             $(".modal-edit-jurusan").modal('hide');
             $('#TblJurusan').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }
@@ -806,23 +894,39 @@ function delete_PERKAWINAN(){
                 arrId_perkawinan.push(cek[i].value);
             }
         }
+
+        if (arrId_perkawinan.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/perkawinan',
+                        type: 'post',
+                        data: {
+                            arrId_perkawinan:arrId_perkawinan
+                        }
+                    }).done((data) => {
+                        $('#TblPerkawinan').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
         
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/perkawinan',
-            type: 'post',
-            data: {
-                arrId_perkawinan:arrId_perkawinan
-            }
-          }).done((data) => {
-            $('#TblPerkawinan').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
     })
 }
 function add_PERKAWINAN(){
@@ -847,6 +951,7 @@ function add_PERKAWINAN(){
             $(".modal-tambah-perkawinan").modal('hide');
             $('#TblPerkawinan').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -921,6 +1026,7 @@ function Edit_PERKAWINAN(){
             $(".modal-edit-perkawinan").modal('hide');
             $('#TblPerkawinan').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }
@@ -1004,23 +1110,41 @@ function delete_SFPTK(){
                 arrId_sfptk.push(cek[i].value);
             }
         }
+
+        if (arrId_sfptk.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                    
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/sfptk',
+                        type: 'post',
+                        data: {
+                            arrId_sfptk:arrId_sfptk
+                        }
+                    }).done((data) => {
+                        $('#TblSfptk').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
         
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/sfptk',
-            type: 'post',
-            data: {
-                arrId_sfptk:arrId_sfptk
-            }
-          }).done((data) => {
-            $('#TblSfptk').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
     })
 }
 function add_SFPTK(){
@@ -1043,6 +1167,7 @@ function add_SFPTK(){
             $(".modal-tambah-sfptk").modal('hide');
             $('#TblSfptk').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -1114,6 +1239,7 @@ function Edit_SFPTK(){
             $(".modal-edit-sfptk").modal('hide');
             $('#TblSfptk').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }
@@ -1197,23 +1323,38 @@ function delete_SMCU(){
                 arrId_smcu.push(cek[i].value);
             }
         }
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/smcu',
-            type: 'post',
-            data: {
-                arrId_smcu:arrId_smcu
-            }
-          }).done((data) => {
-            $('#TblSmcu').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
+
+        if (arrId_smcu.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/smcu',
+                        type: 'post',
+                        data: {
+                            arrId_smcu:arrId_smcu
+                        }
+                    }).done((data) => {
+                        $('#TblSmcu').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
     })
 }
 function add_SMCU(){
@@ -1236,6 +1377,7 @@ function add_SMCU(){
             $(".modal-tambah-smcu").modal('hide');
             $('#TblSmcu').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -1307,6 +1449,7 @@ function Edit_SMCU(){
             $(".modal-edit-smcu").modal('hide');
             $('#TblSmcu').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }
@@ -1391,22 +1534,37 @@ function delete_STEST(){
             }
         }
         
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/stest',
-            type: 'post',
-            data: {
-                arrId_stest:arrId_stest
-            }
-          }).done((data) => {
-            $('#TblStest').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
+        if (arrId_stest.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/stest',
+                        type: 'post',
+                        data: {
+                            arrId_stest:arrId_stest
+                        }
+                    }).done((data) => {
+                        $('#TblStest').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
     })
 }
 function add_STEST(){
@@ -1429,6 +1587,7 @@ function add_STEST(){
             $(".modal-tambah-stest").modal('hide');
             $('#TblStest').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -1500,6 +1659,7 @@ function Edit_STEST(){
             $(".modal-edit-stest").modal('hide');
             $('#TblStest').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }
@@ -1583,23 +1743,40 @@ function delete_SREK(){
                 arrId_srek.push(cek[i].value);
             }
         }
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/srek',
-            type: 'post',
-            data: {
-                arrId_srek:arrId_srek
-            }
-          }).done((data) => {
-            $('#TblSrek').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
+
+        if (arrId_srek.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                    
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/srek',
+                        type: 'post',
+                        data: {
+                            arrId_srek:arrId_srek
+                        }
+                    }).done((data) => {
+                        $('#TblSrek').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
     })
 }
 function add_SREK(){
@@ -1622,6 +1799,7 @@ function add_SREK(){
             $(".modal-tambah-srek").modal('hide');
             $('#TblSrek').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -1693,6 +1871,7 @@ function Edit_SREK(){
             $(".modal-edit-srek").modal('hide');
             $('#TblSrek').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }

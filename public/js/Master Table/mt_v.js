@@ -15,6 +15,41 @@ $( document ).ready(function() {
 });
 
 
+function alert(){
+    const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+    })
+    
+    Toast.fire({
+    icon: 'success',
+    title: 'Proses Berhasil'
+    })
+}
+
+function confirm(){
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+    if (result.isConfirmed) {
+        alert()
+    }
+    })
+}
+
 var baris_mcu=0
 function Row_MCU(){
     // add row table di tambah mcu dan edit mcu
@@ -292,23 +327,38 @@ function delete_MCU(){
                 arrId_mcu.push(cek[i].value);
             }
         }
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/mcu',
-            type: 'post',
-            data: {
-                arrId_mcu:arrId_mcu
-            }
-          }).done((data) => {
-            $('#TblMcu').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
+
+        if (arrId_mcu.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/mcu',
+                        type: 'post',
+                        data: {
+                            arrId_mcu:arrId_mcu
+                        }
+                    }).done((data) => {
+                        $('#TblMcu').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
     })
 }
 function add_MCU(){
@@ -345,6 +395,7 @@ function add_MCU(){
             $(".modal-tambah-mcu").modal('hide');
             $('#TblMcu').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -433,6 +484,7 @@ function Edit_MCU(){
             $(".modal-edit-mcu").modal('hide');
             $('#TblMcu').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }
@@ -572,23 +624,38 @@ function delete_PSIKOTEST(){
                 arrId_psikotest.push(cek[i].value);
             }
         }
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/del/psikotest',
-            type: 'post',
-            data: {
-                arrId_psikotest:arrId_psikotest
-            }
-          }).done((data) => {
-            $('#TblPsikotest').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-          });
+
+        if (arrId_psikotest.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/psikotest',
+                        type: 'post',
+                        data: {
+                            arrId_psikotest:arrId_psikotest
+                        }
+                    }).done((data) => {
+                        $('#TblPsikotest').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
     })
 }
 function add_PSIKOTEST(){
@@ -623,6 +690,7 @@ function add_PSIKOTEST(){
             $(".modal-tambah-psikotest").modal('hide');
             $('#TblPsikotest').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
           });
     })
 }
@@ -708,6 +776,7 @@ function Edit_Psikotest(){
             $(".modal-edit-psikotest").modal('hide');
             $('#TblPsikotest').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
+            alert()
         });
     });
 }

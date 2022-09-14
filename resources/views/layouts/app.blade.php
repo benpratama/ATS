@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/argon.css?v=1.1.0') }}" type="text/css">
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/sweetalert2/sweetalert2.css') }}" type="text/css">
 </head>
 <body>
   <div id="app">
@@ -174,7 +175,7 @@
     <!-- Argon Scripts -->
     <!-- Core -->
   </div>
-    
+  <script src="{{ asset('assets/sweetalert2/sweetalert2.all.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/js-cookie/js.cookie.js') }}"></script>
@@ -195,6 +196,7 @@
   <script src="{{ asset('assets/js/demo.min.js') }}"></script>
   <script src="{{ asset('js/select2.min.js') }}"></script>
     @yield('script')
+    
   {{-- active dashboard --}}
   @if (Route::currentRouteName()=='home' )
     <script>
