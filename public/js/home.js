@@ -1,6 +1,7 @@
 $( document ).ready(function() {
   ShowSummary()
   ShowDetail()
+  GetName()
 });
 
 function ShowSummary(){
@@ -189,4 +190,20 @@ function DatabtaleSearch(){
     var title = $(this).text();
     $(this).html('<input type="text" placeholder="Search ' + title + '" />');
   });
+}
+
+function GetName(){
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  $.ajax({
+      _token: '{{ csrf_token() }}',
+      url: '/hrdats/dashboard/hrd/name',
+      type: 'get'
+    }).done((data) => {
+      console.log(JSON.stringify(data));
+      $('#welcome').text(data);
+    });
 }

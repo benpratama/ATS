@@ -25,8 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // dd(Auth::user());
-        
+        // dd(Auth::user()->nama);
         return view('home');
     }
 
@@ -40,5 +39,9 @@ class HomeController extends Controller
         // $id_Organisasi = $request->id_Organisasi;
         $detail =  DB::select('EXEC SP_Get_Detail_Kandidat ?',array(strval($id_Organisasi)));
         return $detail;
+    }
+    public function GetName(){
+        $name = Auth::user()->nama;
+        return $name;
     }
 }

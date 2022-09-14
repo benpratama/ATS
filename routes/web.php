@@ -22,6 +22,7 @@ Auth::routes();
 //Dashboar HRD
 Route::get('/hrdats/dashboard/hrd', 'HomeController@index')->name('home');
 Route::get('/hrdats/dashboard/hrd/summary','HomeController@ShowSummary')->name('hm.Summary');
+Route::get('/hrdats/dashboard/hrd/name','HomeController@GetName')->name('hm.GetName');
 Route::post('/hrdats/dashboard/hrd/detail','HomeController@ShowDetail')->name('hm.Detail');
 
 //Detail Kandidat
