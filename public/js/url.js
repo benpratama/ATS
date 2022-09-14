@@ -6,6 +6,41 @@ $( document ).ready(function() {
   delete_Url();
 });
 
+function alert(){
+  const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+  })
+  
+  Toast.fire({
+  icon: 'success',
+  title: 'Proses Berhasil'
+  })
+}
+
+function confirm(){
+  Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+  if (result.isConfirmed) {
+      alert()
+  }
+  })
+}
+
 function clearModal(){
   $('.modal-url').on('hide.bs.modal', function() {
       $('#TblDetailurl').DataTable().destroy();
@@ -64,7 +99,6 @@ function loadTbl_url(){
       ] 
   });
 }
-
 function addUrl(){
   $('#checkclose').on('change',function(){
     $check = $('#checkclose').prop('checked')
@@ -108,10 +142,10 @@ function addUrl(){
           $('#TblUrl').DataTable().ajax.reload();
           $('#TblDetailurl').DataTable().ajax.reload();
           console.log(JSON.stringify(data));
+          alert();
       });
   })
 }
-
 function Modal_url(id){
   $('#btnAdd-url').val(id);
   $('#TblDetailurl').DataTable({
@@ -194,7 +228,6 @@ function Modal_url(id){
     $("input.cek-detailurl:checkbox").prop("checked",$(this).prop("checked"));
   })
 }
-
 function Modal_url2(id){
   $.ajaxSetup({
     headers: {
@@ -214,7 +247,6 @@ function Modal_url2(id){
     // console.log(JSON.stringify(data[0].openlink.slice(0, 16)));
   });
 }
-
 function Edit_Url(){
   $('#edit_checkclose').on('change',function(){
     $check = $('#edit_checkclose').prop('checked')
@@ -252,10 +284,10 @@ function Edit_Url(){
           $(".modal-detail-url").modal('hide');
           $('#TblDetailurl').DataTable().ajax.reload();
           console.log(JSON.stringify(data));
+          alert();
       });
   })
 }
-
 function checkUrl(obj){
   if (obj.checked==false) {
       console.log('nonactive')
@@ -286,33 +318,46 @@ function checkUrl(obj){
   });
 
 }
-
 function delete_Url(){
   $('#btnDel-url').on('click', function() {
-      var arrId_url=[];
+    var arrId_url=[];
       var cek = $('.cek-detailurl')
       for(var i=0; cek[i]; ++i){
           if(cek[i].checked){
               arrId_url.push(cek[i].value);
           }
       }
-      
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      if (arrId_url.length>0) {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+              $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+              });
+              $.ajax({
+                  _token: '{{ csrf_token() }}',
+                  url: '/hrdats/hrd/del/link',
+                  type: 'post',
+                  data: {
+                    arrId_url:arrId_url
+                  }
+                }).done((data) => {
+                  $('#TblDetailurl').DataTable().ajax.reload();
+                  // console.log(JSON.stringify(data));
+                });
+              // console.log(arrId_url);
+              alert()
           }
-      });
-      $.ajax({
-          _token: '{{ csrf_token() }}',
-          url: '/hrdats/hrd/del/link',
-          type: 'post',
-          data: {
-            arrId_url:arrId_url
-          }
-        }).done((data) => {
-          $('#TblDetailurl').DataTable().ajax.reload();
-          // console.log(JSON.stringify(data));
-        });
-      // console.log(arrId_url);
+      })
+      }
   })
 }

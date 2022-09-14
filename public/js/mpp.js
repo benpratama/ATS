@@ -6,6 +6,26 @@ $( document ).ready(function() {
   $('#filter_lob').select2();
 });
 
+function alert(){
+  const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+  })
+  
+  Toast.fire({
+  icon: 'success',
+  title: 'Proses Berhasil'
+  })
+}
+
+
 function clearModal(){
   $('#modal-upload-mpp').on('hide.bs.modal', function() {
       $('#tahunBE').val('');
@@ -138,6 +158,7 @@ function updatempp(){
         // $(".modal-edit-domisili").modal('hide');
         // $('#TblDomisili').DataTable().ajax.reload();
         $('#filtermpp').click();
+        alert();
         // console.log(JSON.stringify(data));
     });     
   });
