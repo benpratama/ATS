@@ -17,6 +17,7 @@ class KandidatController extends Controller
                 ->first();
 
         $url_pahse2 = DB::table('T_linkPhase2')
+                         ->select('url')
                         ->where('id_Tkandidat',$id)
                         ->first();
        if($url_pahse2){
@@ -68,7 +69,6 @@ class KandidatController extends Controller
                     'deleted'=>0
                ]);
           }
-          
-          return true;
+          return $url;
     }
 }

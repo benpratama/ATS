@@ -13,6 +13,7 @@ $( document ).ready(function() {
 
 function gen_url(){
   $('#btnGen-url').on('click',function(){
+    $('#urlphase2').val('')
     var id_kandidat = $('#btnGen-url').val();
     var noidentitas = $('#btnGen-url').data('noidentitas');
 
@@ -30,6 +31,8 @@ function gen_url(){
           noidentitas:noidentitas
         }
       }).done((data) => {
+        // result = data.url
+        $('#urlphase2').val('/form-kandidat/phase2/'+data)
        console.log(data);
       });
   })
