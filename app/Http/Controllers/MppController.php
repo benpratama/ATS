@@ -124,7 +124,7 @@ class MppController extends Controller
         $mpp = DB::table('T_MPP')
                     ->select('gol 7-8','gol 6','gol 5','gol 4','gol 3','gol 1-2','ttlPermanen','ttlTemporary')
                     ->where('tahunBe',$request->thn)
-                    ->where('id_Tlobandsub',1)
+                    ->where('id_Tlobandsub',$request->lob)
                     ->get();
         
         $actual = DB::select('exec SP_Get_MPP_Actual ?,?,?',array(Auth::user()->id_Organisasi,$request->lob,$request->thn));
