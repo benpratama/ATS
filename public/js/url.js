@@ -93,11 +93,23 @@ function loadTbl_url(){
           {
               defaultContent: '',
               render: (data, type, row, meta)=> {
-                  return '<button type="button" class="btn btn-info" onclick="Modal_url(value)" data-toggle="modal" data-target=".modal-url" value="'+row.id_Tjob+'">Detail</button>'
+                  return '<button type="button" class="btn btn-info" onclick="Modal_url(value)" data-toggle="modal" data-target=".modal-url" value="'+row.id+'">Detail</button>'
               }
           }
       ] 
   });
+  // $.ajaxSetup({
+  //   headers: {
+  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //   }
+  // });
+  // $.ajax({
+  //     _token: '{{ csrf_token() }}',
+  //     url: '/hrdats/hrd/show/link',
+  //     type: 'get'
+  //   }).done((data) => {
+  //     console.log(JSON.stringify(data));
+  //   });
 }
 function addUrl(){
   $('#checkclose').on('change',function(){
@@ -314,6 +326,7 @@ function checkUrl(obj){
       }
     }).done((data) => {
       $('#TblDetailurl').DataTable().ajax.reload();
+      $('#TblUrl').DataTable().ajax.reload();
       console.log(JSON.stringify(data));
   });
 

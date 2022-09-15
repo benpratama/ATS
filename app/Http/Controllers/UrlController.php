@@ -15,13 +15,14 @@ class UrlController extends Controller
     
     public function ShowUrl(){
         // dd(Auth::user());
-        $job = DB::table('T_link')
-                ->select('T_link.id_Tjob','M_job.nama',DB::raw('count(id_Tjob) as jumlah'))
-                ->join('M_job', 'T_link.id_Tjob', '=', 'M_job.id')
-                ->groupBy('T_link.id_Tjob','M_job.nama')
-                ->where('T_link.id_Organisasi',Auth::user()->id_Organisasi)
-                ->where('T_link.deleted',0)
-                ->get();
+        // $job = DB::table('T_link')
+        //         ->select('T_link.id_Tjob','M_job.nama',DB::raw('count(id_Tjob) as jumlah'))
+        //         ->join('M_job', 'T_link.id_Tjob', '=', 'M_job.id')
+        //         ->groupBy('T_link.id_Tjob','M_job.nama')
+        //         ->where('T_link.id_Organisasi',Auth::user()->id_Organisasi)
+        //         ->where('T_link.deleted',0)
+        //         ->get();
+        $job = DB::select('EXEC SP_Get_ShowUrl ?',array(strval(Auth::user()->id_Organisasi)));
         return $job;
     }
 
