@@ -81,7 +81,7 @@ class MasterTableController extends Controller
     //----USER----
     public function ShowUser(){
         $User = DB::table('M_user')
-            ->select('id','nama','email','NIK','extensionName','location','namaManager')
+            ->select('id','nama','email','NIK','title','location','namaManager')
             ->get();
         return $User;
     }

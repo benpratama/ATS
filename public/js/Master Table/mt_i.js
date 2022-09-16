@@ -503,7 +503,7 @@ function loadTbl_USER(){
                 defaultContent: ''
             },
             {
-                data: 'extensionName',
+                data: 'title',
                 defaultContent: ''
             },
             {
