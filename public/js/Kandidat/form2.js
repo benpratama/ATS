@@ -15,18 +15,18 @@ function Row_pelatihan(){
   $('#btnAddRow-pelatihan').on('click',function(){
     baris_pelatihan+=1;
     
-    var html  = "<tr id='baris"+baris_pelatihan+"' class='detail-pelatihan'>"
+    var html  = "<tr id='baris_pelatihan"+baris_pelatihan+"' class='detail-pelatihan'>"
         html +=   "<td style='width: 30%;'>"
-        html +=     "<input class='form-control'  type='text' name='jenis_pelatihan[]'>"
+        html +=     "<input class='form-control'  type='text' name='jenis_pelatihan[]' maxlength='200'>"
         html +=   "</td>" 
         html +=   "<td style='width: 30%;'>"
-        html +=     "<input class='form-control' type='text' name='penyelenggara_pelatihan[]'>"
+        html +=     "<input class='form-control' type='text' name='penyelenggara_pelatihan[]' maxlength='200'>"
         html +=   "</td>"
         html +=   "<td style='width: 30%;'>"
         html +=     "<input class='form-control' type='number' min='1800' max='2050' name='tahun_pelatihan[]'>"
         html +=   "</td>" 
         html +=   "<td style='width: 10%;'>"
-        html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_pelatihan+"' id='btnDelRow-pelatihan'>"
+        html +=     "<button type='button' class='btn btn-danger' data-row='baris_pelatihan"+baris_pelatihan+"' id='btnDelRow-pelatihan'>"
         html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
         html +=     "</button>"
         html +=   "</td>"   
@@ -36,7 +36,7 @@ function Row_pelatihan(){
   })
     $(document).on('click','#btnDelRow-pelatihan',function(){
       var hapus = $(this).data('row')
-      // console.log(hapus);
+      console.log(hapus);
       $('#'+hapus).remove();
   })
 }
@@ -44,11 +44,11 @@ function Row_pelatihan(){
 var baris_bahasa=0
 function Row_bahasa(){
   $('#btnAddRow-bahasa').on('click',function(){
-    baris_pelatihan+=1;
+    baris_bahasa+=1;
     
-    var html  = "<tr id='baris"+baris_bahasa+"' class='detail-pelatihan'>"
+    var html  = "<tr id='baris_bahasa"+baris_bahasa+"' class='detail_bahasa'>"
         html +=   "<td style='width: 23.75%;'>"
-        html +=     "<input class='form-control'  type='text' name='bahasa[]'>"
+        html +=     "<input class='form-control'  type='text' name='bahasa[]' maxlength='250'>"
         html +=   "</td>" 
         html +=   "<td style='width: 23.75%;'>"
         html +=     "<select class='form-control' id='berbicara[]' name='berbicara[]' required>"
@@ -75,7 +75,7 @@ function Row_bahasa(){
         html +=     "</select>"
         html +=   "</td>" 
         html +=   "<td style='width: 5%;'>"
-        html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_bahasa+"' id='btnDelRow-bahasa'>"
+        html +=     "<button type='button' class='btn btn-danger' data-row='baris_bahasa"+baris_bahasa+"' id='btnDelRow-bahasa'>"
         html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
         html +=     "</button>"
         html +=   "</td>"   
@@ -93,23 +93,23 @@ function Row_bahasa(){
 var baris_organisasi=0
 function Row_organisasi(){
   $('#btnAddRow-organisasi').on('click',function(){
-    baris_pelatihan+=1;
+    baris_organisasi+=1;
     
-    var html  = "<tr id='baris"+baris_organisasi+"' class='detail-pelatihan'>"
+    var html  = "<tr id='baris_organisasi"+baris_organisasi+"' class='detail_organisasi'>"
         html +=   "<td style='width: 23.75%;'>"
-        html +=     "<input class='form-control'  type='text' name='nama_organisasi[]'>"
+        html +=     "<input class='form-control'  type='text' name='nama_organisasi[]' maxlength='220'>"
         html +=   "</td>" 
         html +=   "<td style='width: 23.75%;'>"
-        html +=     "<input class='form-control'  type='text' name='kota_organisasi[]'>"
+        html +=     "<input class='form-control'  type='text' name='kota_organisasi[]' maxlength='220'>"
         html +=   "</td>"
         html +=   "<td style='width: 23.75%;'>"
-        html +=     "<input class='form-control'  type='text' name='jabatan_organisasi[]'>"
+        html +=     "<input class='form-control'  type='text' name='jabatan_organisasi[]' maxlength='220'>"
         html +=   "</td>" 
         html +=   "<td style='width: 23.75%;'>"
-        html +=     "<input class='form-control'  type='text' name='tahun_organisasi[]'>"
+        html +=     "<input class='form-control'  type='text' name='tahun_organisasi[]' maxlength='220'>"
         html +=   "</td>" 
         html +=   "<td style='width: 5%;'>"
-        html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_organisasi+"' id='btnDelRow-organisasi'>"
+        html +=     "<button type='button' class='btn btn-danger' data-row='baris_organisasi"+baris_organisasi+"' id='btnDelRow-organisasi'>"
         html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
         html +=     "</button>"
         html +=   "</td>"   
@@ -127,17 +127,17 @@ function Row_organisasi(){
 var baris_kenal=0
 function Row_kenal(){
   $('#btnAddRow-kenal').on('click',function(){
-    baris_pelatihan+=1;
+    baris_kenal+=1;
     
-    var html  = "<tr id='baris"+baris_kenal+"' class='detail-pelatihan'>"
+    var html  = "<tr id='baris_kenal"+baris_kenal+"' class='detail_kenal'>"
         html +=   "<td style='width: 47.5%;'>"
-        html +=     "<input class='form-control'  type='text' name='nama_kenal[]'>"
+        html +=     "<input class='form-control'  type='text' name='nama_kenal[]' maxlength='80'>"
         html +=   "</td>" 
         html +=   "<td style='width: 47.5%;'>"
-        html +=     "<input class='form-control'  type='text' name='hubungan_kenal[]'>"
+        html +=     "<input class='form-control'  type='text' name='hubungan_kenal[]' maxlength='80'>"
         html +=   "</td>"
         html +=   "<td style='width: 5%;'>"
-        html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_kenal+"' id='btnDelRow-kenal'>"
+        html +=     "<button type='button' class='btn btn-danger' data-row='baris_kenal"+baris_kenal+"' id='btnDelRow-kenal'>"
         html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
         html +=     "</button>"
         html +=   "</td>"   
@@ -155,14 +155,14 @@ function Row_kenal(){
 var baris_saudara=0
 function Row_saudara(){
   $('#btnAddRow-saudarafarmasi').on('click',function(){
-    baris_pelatihan+=1;
+    baris_saudara+=1;
     
-    var html  = "<tr id='baris"+baris_saudara+"' class='detail-pelatihan'>"
+    var html  = "<tr id='baris_saudara"+baris_saudara+"' class='detail_saudara'>"
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='hubungan_saudarafarmasi[]' required>"
+        html +=     "<input class='form-control'  type='text' name='hubungan_saudarafarmasi[]' maxlength='220' required>"
         html +=   "</td>" 
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='nama_saudarafarmasi[]' required>"
+        html +=     "<input class='form-control'  type='text' name='nama_saudarafarmasi[]' maxlength='220' required>"
         html +=   "</td>" 
         html +=   "<td style='width: 19%;'>"
         html +=     "<select class='form-control' id='LPsaudara' name='LP_saudarafarmasi[]' required>"
@@ -172,13 +172,13 @@ function Row_saudara(){
         html +=     "</select>"
         html +=   "</td>" 
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='perushaan_saudarafarmasi[]' required>"
+        html +=     "<input class='form-control'  type='text' name='perushaan_saudarafarmasi[]' maxlength='220' required>"
         html +=   "</td>"
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='jabatan_saudarafarmasi[]' required>"
+        html +=     "<input class='form-control'  type='text' name='jabatan_saudarafarmasi[]'maxlength='220' required>"
         html +=   "</td>"
         html +=   "<td style='width: 5%;'>"
-        html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_saudara+"' id='btnDelRow-saudarafarmasi'>"
+        html +=     "<button type='button' class='btn btn-danger' data-row='baris_saudara"+baris_saudara+"' id='btnDelRow-saudarafarmasi'>"
         html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
         html +=     "</button>"
         html +=   "</td>"   
@@ -188,7 +188,7 @@ function Row_saudara(){
   })
     $(document).on('click','#btnDelRow-saudarafarmasi',function(){
       var hapus = $(this).data('row')
-      // console.log(hapus);
+      console.log(hapus);
       $('#'+hapus).remove();
   })
 }
@@ -236,6 +236,7 @@ function saudara(){
       $('#Tblsaudarafarmasi').removeAttr('hidden');
     } else {
       $('#Tblsaudarafarmasi').attr("hidden",true);
+      $('.detail_saudara').remove();
     }
   });
 }

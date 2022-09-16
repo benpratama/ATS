@@ -19,7 +19,7 @@
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/argon.css?v=1.1.0') }}" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
-
+    <link rel="stylesheet" href="{{ asset('assets/sweetalert2/sweetalert2.css') }}" type="text/css">
     
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" type="text/css">
     <style>
@@ -63,7 +63,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="namalengkap">Nama Lengkap*</label>
-                    <input type="text" class="form-control" id="namalengkap" name="namalengkap" required>
+                    <input type="text" class="form-control" id="namalengkap" name="namalengkap" maxlength="200" required>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -112,7 +112,7 @@
                 <div class="col-md-12">
                   <div class="form-group">
                     <label class="form-control-label" for="alamatlengkap">Alamat Lengkap* (KTP)</label>
-                    <input type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" required>
+                    <input type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" maxlength="220" required>
                   </div>
                 </div>
               </div>
@@ -154,7 +154,7 @@
                 <div class="col-md-12">
                   <div class="form-group">
                     <label class="form-control-label" for="alamat_koresponden">Alamat Korespondensi*</label>
-                    <input type="text" class="form-control" id="alamat_koresponden" name="alamat_koresponden"required>
+                    <input type="text" class="form-control" id="alamat_koresponden" name="alamat_koresponden" maxlength="220" required>
                   </div>
                 </div>
               </div>
@@ -197,13 +197,13 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="noidentitas">No. KTP / Passport*</label>
-                    <input type="text" class="form-control" id="noidentitas" name="noidentitas" required>
+                    <input type="text" class="form-control" id="noidentitas" name="noidentitas" maxlength="45" required>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="npwp">NPWP</label>
-                    <input type="text" class="form-control" id="npwp" name="npwp">
+                    <input type="text" class="form-control" id="npwp" name="npwp" maxlength="45">
                   </div>
                 </div>
               </div>
@@ -233,7 +233,7 @@
                   <div class="col-md-6" id='nosimbaris1'hidden>
                     <div class="form-group">
                       <label class="form-control-label" for="nosim">No SIM</label>
-                      <input type="text" class="form-control" data-row="1" name="nosim[]">
+                      <input type="text" class="form-control" data-row="1" name="nosim[]" maxlength="45">
                     </div>
                   </div>
 
@@ -254,13 +254,13 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="nohp">NO HP*</label>
-                    <input type="text" class="form-control" id="nohp" name="nohp" required>
+                    <input type="text" class="form-control" id="nohp" name="nohp" maxlength="45" placeholder="08123456789" required>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="email">Email*</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email" maxlength="45" required>
                   </div>
                 </div>
               </div>
@@ -268,14 +268,14 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="tinggibadan">tinggi badan*</label>
-                    <input type="text" class="form-control" id="tinggibadan" name="tinggibadan" required>
+                    <label class="form-control-label" for="tinggibadan">tinggi badan (cm)*</label>
+                    <input type="number" class="form-control" id="tinggibadan" name="tinggibadan" min="1" max="10000" required>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="beratbadan">berat badan*</label>
-                    <input type="text" class="form-control" id="beratbadan" name="beratbadan" required>
+                    <label class="form-control-label" for="beratbadan">berat badan (kg)*</label>
+                    <input type="number" class="form-control" id="beratbadan" name="beratbadan" min="1" max="1000" required>
                   </div>
                 </div>
               </div>
@@ -309,59 +309,59 @@
                   <tbody>
                     <tr>
                       <td>SD</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
-                      <td><input type="text" class="form-control" name="jurusan[]"></td>
-                      <td><input type="text" class="form-control" name="kota[]"></td>
-                      <td><input type="text" class="form-control" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
                     </tr>
                     <tr>
                       <td>SLTP</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
-                      <td><input type="text" class="form-control" name="jurusan[]"></td>
-                      <td><input type="text" class="form-control" name="kota[]"></td>
-                      <td><input type="text" class="form-control" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="tahun[]" placeholder="2000-2006"></td>
                     </tr>
                     <tr>
                       <td>SMA</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
                       <th>
-                        <select class="form-control" id="jurusan[]" name="jurusan[]">
+                        <select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">
                           <option value="" selected>jurusan</option>
                           @foreach ($SMA as $sma )
                           <option value="{{ $sma->id }}">{{ $sma->nama }}</option>
                           @endforeach
                         </select>
                       </th>
-                      <td><input type="text" class="form-control" name="kota[]"></td>
-                      <td><input type="text" class="form-control" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
                     </tr>
                     <tr>
                       <td>Akademi</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
                       <th>
-                        <select class="form-control" id="jurusan[]" name="jurusan[]">
+                        <select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">
                           <option value="" selected>jurusan</option>
                           @foreach ($Sederajat as $sederajat )
                           <option value="{{ $sederajat->id }}">{{ $sederajat->nama }}</option>
                           @endforeach
                         </select>
                       </th>
-                      <td><input type="text" class="form-control" name="kota[]"></td>
-                      <td><input type="text" class="form-control" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
                     </tr>
                     <tr>
                       <td>S1</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
-                      <td><input type="text" class="form-control" name="jurusan[]"></td>
-                      <td><input type="text" class="form-control" name="kota[]"></td>
-                      <td><input type="text" class="form-control" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
                     </tr>
                     <tr>
                       <td>S2</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]"></td>
-                      <td><input type="text" class="form-control" name="jurusan[]"></td>
-                      <td><input type="text" class="form-control" name="kota[]"></td>
-                      <td><input type="text" class="form-control" name="tahun[]"></td>
+                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
+                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -398,7 +398,7 @@
                       <th style="width: 15.8%;">Alamat Prushaan</th>
                       <th style="width: 15.8%;">Jabatan</th>
                       <th style="width: 15.8%;">Nama Atasan/ Jabatan</th>
-                      <th style="width: 15.8%;">Lama Bekerja</th>
+                      <th style="width: 15.8%;">Lama Bekerja(bulan)</th>
                       <th style="width: 2%;"> 
                         <button type="button" class="btn btn-success d-flex" id="btnAddRow-perusahaan">
                           <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
@@ -411,13 +411,13 @@
               <div class="row" style="margin-top: 1.7em">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="gaji">gaji yang diterima</label>
+                    <label class="form-control-label" for="gaji">gaji yang diterima terakhir</label>
                     <input type="text" class="form-control" id="gaji" name="gaji">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="tujangan">tujangan yang diterima</label>
+                    <label class="form-control-label" for="tujangan">tujangan yang diterima terakhir</label>
                     <input type="text" class="form-control" id="tunjangan" name="tunjangan">
                   </div>
                 </div>
@@ -426,7 +426,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="gambarkedudukan">Gambarkan kedudukan Saudara dalam struktur organisasi perusahaan</label>
+                    <label class="form-control-label" for="gambarkedudukan">Gambarkan kedudukan Saudara dalam struktur organisasi perusahaan (max 5MB)</label>
                     <input type="file" class="form-control" name="gambarkedudukan" id="gambarkedudukan" accept="image/png, image/jpeg, image/jpg ">
                   </div>
                 </div>
@@ -450,7 +450,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="jabatanharapan">Jabatan yang Saudara inginkan*</label>
-                    <input type="text" class="form-control" id="jabatanharapan" name="jabatanharapan" required>
+                    <input type="text" class="form-control" id="jabatanharapan" name="jabatanharapan" maxlength="200" required>
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -462,7 +462,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="tujanganharapan">tujangan yang diharapkan*</label>
-                    <input type="text" class="form-control" id="tujanganharapan" name="tujanganharapan" required>
+                    <input type="text" class="form-control" id="tujanganharapan" name="tujanganharapan" maxlength="200" required>
                   </div>
                 </div>
               </div>
@@ -515,13 +515,13 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="porto">CV</label>
+                    <label class="form-control-label" for="porto">CV (max 5MB)</label>
                     <input type="file" class="form-control" name="cv" id="cv" accept="application/pdf">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="porto">Foto</label>
+                    <label class="form-control-label" for="porto">Foto (max 5MB)</label>
                     <input type="file" class="form-control" name="foto" id="foto" accept="image/png, image/jpeg, image/jpg ">
                   </div>
                 </div>
@@ -538,7 +538,7 @@
       </div>
     </div>
   </form>
-  
+  <script src="{{ asset('assets/sweetalert2/sweetalert2.all.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/js-cookie/js.cookie.js') }}"></script>

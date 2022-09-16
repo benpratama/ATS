@@ -16,6 +16,8 @@ $( document ).ready(function() {
   $('#tempatlahir').select2();
   getPostCode();
   Row_perushaan();
+  numberWithCommas();
+  validatesize();
 });
 
 // const options = {
@@ -77,7 +79,7 @@ function AddDelSim(){
         html +=   "<div class='col-md-6' id='nosimbaris"+data_sim+"' hidden>"
         html +=     "<div class='form-group'>"
         html +=       "<label class='form-control-label' for='nosim'>No SIM</label>"
-        html +=       "<input type='text' class='form-control nosim' data-row='"+data_sim+"' name='nosim[]'>"
+        html +=       "<input type='text' class='form-control nosim' data-row='"+data_sim+"' name='nosim[]' maxlength='45'>"
         html +=     "</div>"
         html +=   "</div>"
         html +=   "<div class='col-md-2'>"
@@ -208,7 +210,7 @@ function Row_perushaan(){
     //     html +="</tr>"
     var html  = "<tr id='baris"+baris_perusahaan+"' class='detail-perusahaan'>"
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='nama_perushaan[]'>"
+        html +=     "<input class='form-control'  type='text' name='nama_perushaan[]' maxlength='220'>"
         html +=   "</td>" 
         html +=   "<td style='width: 19%;'>"
         html +=     "<select class='form-control' id='status_perkawinan' name='jenis_perusahaan[]' required>"
@@ -218,16 +220,16 @@ function Row_perushaan(){
         html +=     "</select>"
         html +=   "</td>" 
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control' type='text' name='alamat_perusahaan[]'>"
+        html +=     "<input class='form-control' type='text' name='alamat_perusahaan[]' maxlength='220'>"
         html +=   "</td>"
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control' type='text' name='jabatan_perusahaan[]'>"
+        html +=     "<input class='form-control' type='text' name='jabatan_perusahaan[]' maxlength='220'>"
         html +=   "</td>"
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control' type='text' name='atasan_perusahaan[]'>"
+        html +=     "<input class='form-control' type='text' name='atasan_perusahaan[]' maxlength='220'>"
         html +=   "</td>" 
         html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control' type='text' name='lama_perusahaan[]'>"
+        html +=     "<input class='form-control' type='number' name='lama_perusahaan[]' min='1' max='10000'>"
         html +=   "</td>"   
         html +=   "<td style='width: 5%;'>"
         html +=     "<button type='button' class='btn btn-danger' data-row='baris"+baris_perusahaan+"' id='btnDelRow-perusahaan'>"
@@ -245,4 +247,82 @@ function Row_perushaan(){
       $('#'+hapus).remove();
     })
 
+}
+
+function numberWithCommas() {
+  $('#gaji').keyup(function(event) {
+    if(event.which >= 37 && event.which <= 40) return;
+
+    $(this).val(function(index, value) {
+      return value
+      .replace(/\D/g, "")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      ;
+    });
+  })
+
+  $('#gajiharapan').keyup(function(event) {
+    if(event.which >= 37 && event.which <= 40) return;
+
+    $(this).val(function(index, value) {
+      return value
+      .replace(/\D/g, "")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      ;
+    });
+  })
+}
+
+function notif(){
+  Swal.fire({
+    title: 'File terlalu besar, max size 5MB',
+    showClass: {
+      popup: 'animate__animated animate__fadeInDown'
+    },
+    hideClass: {
+      popup: 'animate__animated animate__fadeOutUp'
+    }
+  })
+}
+
+function validatesize(){
+  $('#gambarkedudukan').bind('change', function() {
+    var _size = this.files[0].size;
+    var size=_size;
+    var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
+    i=0;while(_size>900){_size/=1024;i++;}
+    var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
+        console.log('FILE SIZE = ',exactSize);
+        
+    if(size>5000000){
+      $('#gambarkedudukan').val('');
+      notif();
+    }
+  });
+  $('#cv').bind('change', function() {
+    var _size = this.files[0].size;
+    var size=_size;
+    var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
+    i=0;while(_size>900){_size/=1024;i++;}
+    var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
+        console.log('FILE SIZE = ',exactSize);
+        
+    if(size>5000000){
+      $('#cv').val('');
+      notif();
+    }
+  });
+  $('#foto').bind('change', function() {
+    var _size = this.files[0].size;
+    var size=_size;
+    var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
+    i=0;while(_size>900){_size/=1024;i++;}
+    var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
+        console.log('FILE SIZE = ',exactSize);
+        
+    if(size>5000000){
+      $('#foto').val('');
+      notif();
+    }
+  });
 }

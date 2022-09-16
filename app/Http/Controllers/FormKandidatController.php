@@ -89,11 +89,11 @@ class FormKandidatController extends Controller
                     ->where('url',$url)
                     ->where('active',1)
                     ->where('deleted',0)
-                    ->first();
-        $info_kandidat = DB::table('T_kandidat')
-                    ->where('id',$id_kandidat->id)
-                    ->first();        
+                    ->first();    
         if($id_kandidat){
+            $info_kandidat = DB::table('T_kandidat')
+                    ->where('id',$id_kandidat->id)
+                    ->first(); 
             return view('form kandidat/formkandidat2',[
                         'info_kandidat'=>$info_kandidat
                     ]);
@@ -812,7 +812,7 @@ class FormKandidatController extends Controller
                     
                         DB::table('T_pelatihan')
                             ->insert([
-                                'id_Tkandidat'=>$request->kandidat,
+                                'id_Tkandidat'=>$request->kandidat, //$request->kandidat
                                 'jenisPlthn'=>$jenispelatihan,
                                 'penyelenggaraPlthn'=>$penyelenggarapelatihan,
                                 'tahunPlthn'=>$tahunpelatihan
@@ -832,11 +832,35 @@ class FormKandidatController extends Controller
                     if (!empty($namaorganisasi)&&!empty($kotaorganisasi)&&!empty($jabatanorganisasi)&&!empty($tahunorganisasi)) {
                         DB::table('T_organisasi')
                             ->insert([
-                                'id_Tkandidat'=>$request->kandidat,
+                                'id_Tkandidat'=>$request->kandidat, //$request->kandidat
                                 'namaOrg'=>$namaorganisasi,
                                 'kotaOrg'=>$kotaorganisasi,
                                 'jabatanOrg'=>$jabatanorganisasi,
                                 'tahunOrg'=>$tahunorganisasi
+                            ]);
+                    }
+                }
+                
+            }
+
+            //ubah disini BLM di update
+            if(!empty($request->nama_saudarafarmasi)){
+                for ($k=0; $k <count($request->nama_saudarafarmasi) ; $k++) { 
+                    $namasaudara = trim($request->nama_saudarafarmasi[$k],''); 
+                    $hubungansaudara = trim($request->hubungan_saudarafarmasi[$k],''); 
+                    $gendersaudara = trim($request->LP_saudarafarmasi[$k],''); 
+                    $perusahaansaudara = trim($request->perushaan_saudarafarmasi[$k],''); 
+                    $jabatansaudara = trim($request->jabatan_saudarafarmasi[$k],''); 
+
+                    if (!empty($namasaudara)&&!empty($hubungansaudara)&&!empty($gendersaudara)&&!empty($perusahaansaudara)&&!empty($jabatansaudara)) {
+                        DB::table('T_Kerabat')
+                            ->insert([
+                                'id_Tkandidat'=>$request->kandidat,//$request->kandidat
+                                'hubunganKrbt'=>$hubungansaudara,
+                                'namaKrbt'=>$namasaudara,
+                                'genderKrbt'=>$gendersaudara,
+                                'nmperusahaanKrbt'=>$perusahaansaudara,
+                                'jabatanKrbt'=>$jabatansaudara
                             ]);
                     }
                 }
@@ -851,7 +875,7 @@ class FormKandidatController extends Controller
                     if (!empty($namakenal)&&!empty($hubungankenal)) {
                         DB::table('T_kenal')
                             ->insert([
-                                'id_Tkandidat'=>$request->kandidat,
+                                'id_Tkandidat'=>$request->kandidat,//$request->kandidat
                                 'namaKenalan'=>$namakenal,
                                 'hubunganKenalan'=>$hubungankenal
                             ]);
@@ -970,7 +994,7 @@ class FormKandidatController extends Controller
                     if (!empty($bahasa)&&!empty($berbicara)&&!empty($menulis)&&!empty($membaca)) {
                         DB::table('T_bahasa')
                             ->insert([
-                                'id_Tkandidat'=>$request->kandidat,
+                                'id_Tkandidat'=>$request->kandidat, //$request->kandidat
                                 'bahasa'=>$bahasa,
                                 'berbicara'=>$berbicara,
                                 'menulis'=>$menulis,
