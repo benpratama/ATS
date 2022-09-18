@@ -64,16 +64,16 @@
                 <span class="material-symbols-outlined">add</span>
                 <span class="gap-logo">Generate Template</span>
               </a>
-              <button id="btnDel-jurusan" type="button" class="btn btn-danger d-flex" data-toggle="modal" data-target="#ModalUploadFPTK">
+              <button id="btnUploadFPTK" type="button" class="btn btn-danger d-flex" data-toggle="modal" data-target="#ModalUploadFPTK">
                 <span class="material-symbols-outlined">file_upload</span>
                 <span class="gap-logo">Upload</span>
               </button>
+              {{-- <button id="btnExportFPTK" type="button" class="btn btn-danger d-flex">
+                <span class="material-symbols-outlined">file_download</span>
+                <span class="gap-logo">Export FPTK</span>
+              </button> --}}
             </div>
             <hr class="my-4">
-            {{-- <div class="col-3">
-              <h6 class="text-uppercase text-muted ls-1 mb-1">FPTK</h6>
-              <h5 class="h3 mb-0">Filter</h5>
-            </div> --}}
             <div class="row d-flex col-12">
               <div class="col-md-6">
                 <div class="form-group">
@@ -159,6 +159,8 @@
               </div>
             </div>
             <div class="d-flex col-8">
+              <label id="F_startTgl" hidden></label>
+              <label id="F_endTgl" hidden></label>
               <button id="filterfptk" type="button" class="btn btn-primary btnsbmt">Filter</button>
             </div>
           </div>

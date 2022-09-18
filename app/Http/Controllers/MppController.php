@@ -60,10 +60,11 @@ class MppController extends Controller
     public function ImportMpp(Request $request){
         // dd($request);
         $MPPs = $request->file('upload_MPP');
-        $raw_filename = explode("_",$MPPs->getClientOriginalName()); //buat ambil nama pengupload [1]
-        $raw_id_Organisasi= explode(".",$raw_filename[2]);//buat ambil id_Organisasi [0]
         
         if ($MPPs) {
+            $raw_filename = explode("_",$MPPs->getClientOriginalName()); //buat ambil nama pengupload [1]
+            $raw_id_Organisasi= explode(".",$raw_filename[2]);//buat ambil id_Organisasi [0]
+
             $reader = new Xlsx();
             $spreadsheet = $reader->load($MPPs);
             $sheetname = $spreadsheet->getSheetNames();
@@ -86,26 +87,34 @@ class MppController extends Controller
                 $ttlPermanen = $datas[8][2];
                 $ttlTemporary= $datas[9][2];
 
-                DB::table('T_MPP')
-                ->insert([
-                    'id_Torganisasi'=>$id_Organisasi,
-                    'id_Tlobandsub'=>$id_lobandsub,
-                    'tahunBE'=>$thnBE,
-                    'gol 7-8'=>$gol78,
-                    'gol 6'=>$gol6,
-                    'gol 5'=>$gol5,
-                    'gol 4'=>$gol4,
-                    'gol 3'=>$gol3,
-                    'gol 1-2'=>$dol12,
-                    'ttlPermanen'=>$ttlPermanen,
-                    'ttlTemporary'=>$ttlTemporary,
-                    'createdBy'=>$createdBy,
-                    'created_at'=>Carbon::now()
-                ]);
-
+                $cek = DB::table('T_MPP')
+                        ->where('id_Torganisasi',$id_Organisasi)
+                        ->where('id_Tlobandsub',$id_lobandsub)
+                        ->where('tahunBE',$thnBE)
+                        ->count();
+                if ($cek>=1) {
+                    continue;
+                } else {
+                    DB::table('T_MPP')
+                        ->insert([
+                            'id_Torganisasi'=>$id_Organisasi,
+                            'id_Tlobandsub'=>$id_lobandsub,
+                            'tahunBE'=>$thnBE,
+                            'gol 7-8'=>$gol78,
+                            'gol 6'=>$gol6,
+                            'gol 5'=>$gol5,
+                            'gol 4'=>$gol4,
+                            'gol 3'=>$gol3,
+                            'gol 1-2'=>$dol12,
+                            'ttlPermanen'=>$ttlPermanen,
+                            'ttlTemporary'=>$ttlTemporary,
+                            'createdBy'=>$createdBy,
+                            'created_at'=>Carbon::now()
+                        ]);
+                }
             }
         }else {
-            dd('file tdk ada');
+            return Redirect::back();
         }
        return Redirect::back();
     }

@@ -6,6 +6,7 @@ $( document ).ready(function() {
   Update_modal()
   clearModal()
   filter()
+  exportDataFPTK()
 
   $('#filter_nofptk').select2();
   $('#filter_namapeminta').select2();
@@ -34,6 +35,9 @@ function filter(){
     var posisi=$("select[name='filter_posisi[]']").map(function(){return $(this).val();}).get();
     var lokasi=$("select[name='filter_lokasi[]']").map(function(){return $(this).val();}).get();
     var status=$("select[name='filter_status[]']").map(function(){return $(this).val();}).get();
+
+    $('#F_startTgl').text(filter_Speriod);
+    $('#F_endTgl').text(filter_Eperiod);
 
     loadTbl_FPTK(
                 filter_Speriod,
@@ -167,7 +171,10 @@ function alert(){
   })
 }
 
-var baris_kandidat=0
+
+
+var baris_kandidat=0;
+
 function Row_kandidat(){
   $.ajaxSetup({
     headers: {
@@ -181,7 +188,6 @@ function Row_kandidat(){
     }).done((data) => {
       $('#btnAddRow-kandidat').on('click',function(){
         baris_kandidat+=1;
-        
         var html  = "<tr id='baris"+baris_kandidat+"' class='detail-perusahaan'>"
             html +=   "<td style='width: 50%;'>"
             html +=     "<select class='js-example-basic-single form-control fptkkandidat' name='fptkkandidat[]'>"
@@ -210,13 +216,20 @@ function Row_kandidat(){
             html +=   "</td>"   
             html +="</tr>"
     
-        $('#Tblkandidat').append(html);
-        })
-    });    
+          $('#Tblkandidat').append(html);
+          disable_add_kandidat();
+      })
+    });
+        
     $(document).on('click','#btnDelRow-kandidat',function(){
       var hapus = $(this).data('row')
       // console.log(hapus);
+      baris_kandidat-=1;
       $('#'+hapus).remove();
+      if (baris_kandidat<=0) {
+        console.log(baris_kandidat);
+        $('#btnAddRow-kandidat').attr("disabled", false);
+      }
     })
 }
 
@@ -273,7 +286,8 @@ function detailKandidat(){
       
           $('#Tblkandidat').append(html);
         });
-        // console.log(data[0]);
+        // console.log(baris_kandidat);
+        disable_add_kandidat();
       });
   }
 }
@@ -398,4 +412,38 @@ function Update_modal(){
         console.log(JSON.stringify(data));
     });
   });
+}
+
+function disable_add_kandidat(){
+  if (baris_kandidat>=1) {
+    console.log(baris_kandidat);
+    $('#btnAddRow-kandidat').attr("disabled", true);
+  }
+}
+
+function exportDataFPTK(){
+  $('#btnExportFPTK').on('click', function() {
+    var F_start = $('#F_startTgl').text();
+    var F_end= $('#F_endTgl').text();
+    if (F_start=='') {
+      F_start = 'NULL'
+    }
+    if (F_end=='') {
+      F_end = 'NULL'
+    }
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/hrd/exportdata/fptk/'+F_start+"/"+F_end,
+        type: 'get',
+        data: {
+
+        }
+      })
+  })
 }

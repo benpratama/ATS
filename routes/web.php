@@ -140,6 +140,7 @@ Route::Post('/submit/form-kandidat2','FormKandidatController@SubmitForm2')->name
 //FPTK
 Route::get('/hrdats/hrd/fptk', 'FptkController@index')->name('hr_fptk.index');
 Route::get('/hrdats/hrd/export/fptk', 'FptkController@TemplateFptk')->name('hr_fptk.TemplateFptk');
+Route::get('/hrdats/hrd/exportdata/fptk/{start}/{end}', 'FptkController@ExportDataFptk')->name('hr_fptk.ExportDataFptk');
 Route::post('/hrdats/hrd/import/fptk', 'FptkController@ImportFptk')->name('hr_fptk.ImportFptk');
 Route::POST('/hrdats/hrd/show/fptk', 'FptkController@ShowFptk')->name('hr_fptk.ShowFptk');
 // -- masuk ke detail

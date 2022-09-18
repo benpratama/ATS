@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use Facade\FlareClient\Http\Response;
+// use Facade\FlareClient\Http\Response;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -11,8 +12,11 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 use League\CommonMark\Extension\Table\Table;
 use PhpOffice\PhpSpreadsheet\Calculation\TextData\Format;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
 
 class FptkController extends Controller
 {
@@ -131,10 +135,12 @@ class FptkController extends Controller
 
     public function ImportFptk(Request $request){
         $FPTK = $request->file('upload_FPTK');
-        $raw_filename = explode("_",$FPTK->getClientOriginalName()); //buat ambil nama pengupload [1]
-        $id_Organisasi = explode(".",$raw_filename[2]);//buat ambil id_Organisasi [0]
+        
 
         if ($FPTK) {
+            $raw_filename = explode("_",$FPTK->getClientOriginalName()); //buat ambil nama pengupload [1]
+            $id_Organisasi = explode(".",$raw_filename[2]);//buat ambil id_Organisasi [0]
+
             $reader = new Xlsx();
             // dd($reader);
 
@@ -194,8 +200,15 @@ class FptkController extends Controller
                 if(empty($nofptk)&&empty($tglinput)&&empty($tgldisetujui)&&empty($nikpeminta)) {
                     break;
                 }else{
-                    DB::table('T_fptk')
-                        ->insert([
+                    $cek = DB::table('T_fptk')
+                        ->where('nofptk',$nofptk)
+                        // ->get();
+                        ->count();
+                    if($cek>=1){
+                        continue;
+                    }else{
+                        DB::table('T_fptk')
+                        ->insert([ 
                             'nofptk'=>$nofptk,
                             'tglinputfptk'=>$tglinput,
                             'tgldisetujui'=>$tgldisetujui,
@@ -217,16 +230,20 @@ class FptkController extends Controller
                             'status'=>null,
                             'leadtime'=>null
                         ]);
+                    }
                 }
             }
            
         } else {
-            dd('file tdk ada');
+            return Redirect::back();
         }
        return Redirect::back();
     }
 
     public function ShowFptk(Request $request){
+        $startdate =Carbon::now()->startOfMonth()->toDateString();
+        $enddate = Carbon::now()->endOfMonth()->toDateString();
+
         $fptk = DB::table('T_FPTK')
             ->select('T_FPTK.id','nofptk','tgldisetujui','namapeminta','namaatasanlangusng','posisi','penempatan','M_StatusFPTK.keterangan')
             ->leftjoin('M_StatusFPTK','M_StatusFPTK.id','T_FPTK.status')
@@ -235,13 +252,13 @@ class FptkController extends Controller
             if(!empty($request->filter_Speriod)){
                 $fptk->where('tglinputfptk','>=',$request->filter_Speriod);
             }else{
-                $fptk->where('tglinputfptk','>=',Carbon::now()->startOfMonth()->toDateString());
+                $fptk->where('tglinputfptk','>=',$startdate);
             }
 
             if(!empty($request->filter_Eperiod)){
                 $fptk->where('tglinputfptk','<=',$request->filter_Eperiod);
             }else{
-                $fptk->where('tglinputfptk','<=',Carbon::now()->endOfMonth()->toDateString());
+                $fptk->where('tglinputfptk','<=',$enddate);
             }
 
             if(!empty($request->nofptk)){
@@ -356,6 +373,31 @@ class FptkController extends Controller
             DB::rollBack();
             return $e;
         }
+    }
+
+    public function ExportDataFptk($F_start,$F_end){
+        if ($F_start=="NULL") {
+            $F_start = Carbon::now()->startOfMonth()->toDateString();
+        }else{
+            $F_start = $F_start;
+        }
+        if ($F_end=="NULL") {
+            $F_end = Carbon::now()->endOfMonth()->toDateString();
+        }else{
+            $F_end =$F_end;
+        }
+
+        $file = storage_path('app\public\template').'\FPTK_NAMA_ORGANISASI.xlsx';
+        $filenameDownload = 'FPTK_'.Auth::user()->nama.'_'.Auth::user()->id_Organisasi.'.xlsx';
+
+        $success=copy($file, $filenameDownload);
+        if(!$success) die();
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename='.$filenameDownload);
+        readfile($filenameDownload); 
+        // unlink($filenameDownload);
+        
+        return [$F_start,$F_end];
     }
 
     // DETAIL FPTK

@@ -112,7 +112,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label class="form-control-label" for="tahunBE">Tahun BE</label>
-                      <input type="number" min="1900" max="9999" step="1" placeholder="2022" class="form-control" name="tahunBE" id="tahunBE" >
+                      <input type="number" min="1900" max="9999" step="1" placeholder="2022" class="form-control" name="tahunBE" id="tahunBE" required>
                     </div>
                   </div>
                 </div>
@@ -120,7 +120,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label class="form-control-label" for="upload_MPP">File FPTK</label>
-                      <input type="file" class="form-control" name="upload_MPP" id="upload_MPP" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                      <input type="file" class="form-control" name="upload_MPP" id="upload_MPP" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
                     </div>
                   </div>
                 </div>
