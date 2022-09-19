@@ -284,7 +284,7 @@ class FptkController extends Controller
     }
 
     public function UpdateFptk(Request $request){
-        // return $request;    
+        // return $request;
         try {
             DB::beginTransaction();
 
@@ -314,8 +314,7 @@ class FptkController extends Controller
                 // dd('golongan ada');
                 $id_lob = $result_lobandsub->id;
             }
-
-
+        
             DB::table('T_FPTK')
                 ->where('id',$request->id_fptk)
                 ->update([
@@ -336,7 +335,7 @@ class FptkController extends Controller
                     'pic'=>$request->pic,
                     'namakarybergabung'=>$request->namakarybergabung,
                     'status'=>$request->status,
-                    'leadtime'=>$request->leadtime,
+                    'leadtime'=>0,
                 ]);
             DB::table('T_DFPTK')
                 ->where('id_TFPTK',$request->id_fptk)
@@ -366,7 +365,29 @@ class FptkController extends Controller
                 }
                 
             }
-            
+        //// Start LEAD TIME
+            $result  = DB::table('T_DFPTK')
+            ->where('id_TFPTK',$request->id_fptk)
+            ->select('tglkonfirm')
+            ->first();
+            if(!empty($request->tgl_disetujui)&&!empty($result->tglkonfirm)){
+                $dt = Carbon::parse($request->tgl_disetujui);
+                $dt2 = Carbon::parse($result->tglkonfirm);
+                $workdays = $dt->diffInDaysFiltered(function(Carbon $date) {
+                    return !$date->isWeekend();
+                }, $dt2);
+                $holiday  = DB::select('EXEC SP_Get_Holiday ?,?',array($request->tgl_disetujui,$result->tglkonfirm));
+                $leadtime = $workdays-$holiday[0]->jml_hari+1;
+            }else{
+                $leadtime = 0;
+            }
+            DB::table('T_FPTK')
+                ->where('id',$request->id_fptk)
+                ->update([
+                    'leadtime'=>$leadtime 
+                ]);
+        //// End LEAD TIME
+
             DB::commit();
             return True;
         } catch (\Exception $e) {
@@ -387,17 +408,16 @@ class FptkController extends Controller
             $F_end =$F_end;
         }
 
-        $file = storage_path('app\public\template').'\FPTK_NAMA_ORGANISASI.xlsx';
-        $filenameDownload = 'FPTK_'.Auth::user()->nama.'_'.Auth::user()->id_Organisasi.'.xlsx';
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Hello World !');
 
-        $success=copy($file, $filenameDownload);
-        if(!$success) die();
-        header('Content-type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment; filename='.$filenameDownload);
-        readfile($filenameDownload); 
-        // unlink($filenameDownload);
-        
-        return [$F_start,$F_end];
+
+        header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="test.xlsx"');
+
+        $writer = IOFactory::createWriter($spreadsheet,'Xlsx');
+        $writer->save('php://output');
     }
 
     // DETAIL FPTK
@@ -421,7 +441,7 @@ class FptkController extends Controller
         $list_lob= DB::table('M_LobandSub')
                     ->where('id_Organisasi',Auth::user()->id_Organisasi)
                     ->get();
-        // dd($status_fptk);
+
         return view('hr/hr_detail_fptk',
                     [
                         'detailfptk'=>$detail_fptk,
@@ -470,4 +490,5 @@ class FptkController extends Controller
             ]);
         return true;
     }
+
 }
