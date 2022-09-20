@@ -51,19 +51,20 @@ class KandidatController extends Controller
                     ->where('id_Tkandidat',$id_kandidat)
                     ->update([
                          'openlink'=>Carbon::now(),
-                         'closelink'=>$date->addDays(3),
+                         'closelink'=>null,
                          'url'=>$url,
                          'active'=>1,
                          'deleted'=>0
                     ]);
                // TRS HAPUS SEMUA TBALE YANG MSUK PHASE2
+               DB::select('EXEC SP_Clear_FormPhase2  ?',array($id_kandidat));
           }else{
                // return 'tdk ada';
                DB::table('T_linkPhase2')
                ->insert([
                     'id_Tkandidat'=>$id_kandidat,
                     'openlink'=>Carbon::now(),
-                    'closelink'=>$date->addDays(3),
+                    'closelink'=>null,
                     'url'=>$url,
                     'active'=>1,
                     'deleted'=>0
