@@ -151,7 +151,7 @@
                   <div class="dropdown-menu dropdown-menu-right">
                     <div class="dropdown-header noti-title">
                       <h5 class="text-overflow m-0">Welcome!</h5>
-                      <h5 class="text-overflow m-0" id="welcome"></h5>
+                      <h5 class="text-overflow m-0" id="welcome">{{ Auth::user()->nama }}</h5>
                     </div>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ route('logout') }}"

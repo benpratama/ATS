@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
+<style>
+  .btnhide{
+    padding: 0.3em !important;
+    margin-left: 2.7em;
+  }
+</style>
+@endsection
+
 @section('content')
 <div class="header bg-primary pb-6">
     {{-- !!! ROUTE DIHEADER !!! --}}
@@ -27,13 +37,21 @@
           <div class="card bg-default">
             <div class="card-header bg-transparent">
               <div class="row align-items-center">
-                <div class="col">
+                <div class="col-11">
                   <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
                   <h5 class="h3 text-white mb-0">PROSES</h5>
                 </div>
+                <div class="col-1" s>
+                  <button id="btnhide_summary" type="button" class="btn btn-danger d-flex btnhide" data-value="0">
+                    <span id="span_summary" class="material-symbols-outlined">
+                      close_fullscreen
+                    </span>
+                  </button>
+                  
+                </div>
               </div>
             </div>
-            <div class="card-body">
+            <div id="body_summary" class="card-body">
               <div class="row" id="summary">
                 {{-- disni --}}
 

@@ -1,7 +1,8 @@
 $( document ).ready(function() {
   ShowSummary()
   ShowDetail()
-  GetName()
+  hide()
+  // GetName()
 });
 
 function ShowSummary(){
@@ -206,4 +207,24 @@ function GetName(){
       console.log(JSON.stringify(data));
       $('#welcome').text(data);
     });
+}
+
+function hide(){
+  $('#btnhide_summary').on('click', function() {
+    var value = $('#btnhide_summary').data('value');
+    if (value==0) {
+    $('#body_summary').attr('hidden',true)
+    $('#span_summary').text('open_in_full')
+    $('#btnhide_summary').removeClass("btn-danger")
+    $('#btnhide_summary').addClass("btn-success")
+    $('#btnhide_summary').data('value',1);
+    } else {
+      $('#body_summary').attr('hidden',false)
+      $('#span_summary').text('close_fullscreen')
+      $('#btnhide_summary').removeClass("btn-success")
+      $('#btnhide_summary').addClass("btn-danger")
+      $('#btnhide_summary').data('value',0);
+    }
+   
+  });
 }
