@@ -150,6 +150,8 @@ Route::get('/hrdats/hrd/show/kandidat/fptk', 'FptkController@ShowKandidat')->nam
 Route::get('/hrdats/hrd/modaldetail/kandiat/fptk/{idF}/{idK}','FptkController@ShowModalKandidat')->name('hr_fptk.ShowModalKandidat');
 Route::Post('/hrdats/hrd/update/fptk','FptkController@UpdateFptk')->name('hr_fptk.UpdateFptk');
 Route::post('/hrdats/hrd/show/updatemodal/fptk/','FptkController@UpdateModal')->name('hr_fptk.UpdateModal');
+Route::post('/hrdats/hrd/cek/posisi','FptkController@CekPosisi')->name('hr_fptk.CekPosisi');
+Route::post('/hrdats/hrd/cek/organisasi','FptkController@CekOrganisasi')->name('hr_fptk.CekOrganisasi');
 
 //MPP
 Route::get('/hrdats/hrd/mpp', 'MppController@index')->name('hr_mpp.index');

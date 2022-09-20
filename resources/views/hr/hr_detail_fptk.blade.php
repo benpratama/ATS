@@ -122,7 +122,12 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="posisi" class="col-md-5 col-form-label form-control-label">Posisi</label>
-                    <input class="form-control" list="job" type="text" id="posisi" value="{{ $detailfptk[0]->posisi }}">
+                    @if ($detailfptk[0]->golongan=='')
+                    <input class="form-control" list="job" type="text" id="posisi" value="{{ $detailfptk[0]->posisi }}" style="border:#EB4747 solid 3px" >
+                    @else
+                    <input class="form-control" list="job" type="text" id="posisi" value="{{ $detailfptk[0]->posisi }}" >
+                    @endif
+                    
                     <datalist id="job">
                       @foreach ( $listjob as $job )
                         <option value="{{ $job->nama }}">
@@ -133,7 +138,12 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="lobandsub" class="col-md-5 col-form-label form-control-label">Organisasi</label>
+                    @if ($detailfptk[0]->id_Tlobandsub=='')
+                    <input class="form-control" list="lob" type="text" id="lobandsub" value="{{ $detailfptk[0]->lobandsub }}" style="border:#EB4747 solid 3px">
+                    @else
                     <input class="form-control" list="lob" type="text" id="lobandsub" value="{{ $detailfptk[0]->lobandsub }}">
+                    @endif
+                    
                     <datalist id="lob">
                       @foreach ( $listlob as $lob )
                         <option value="{{ $lob->nama }}">

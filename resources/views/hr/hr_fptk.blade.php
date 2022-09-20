@@ -162,6 +162,7 @@
               <label id="F_startTgl" hidden></label>
               <label id="F_endTgl" hidden></label>
               <button id="filterfptk" type="button" class="btn btn-primary btnsbmt">Filter</button>
+              <button id="Clearfilterfptk" type="button" class="btn btn-primary btnsbmt">Clear Filter</button>
             </div>
           </div>
         </div>

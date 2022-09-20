@@ -7,6 +7,8 @@ $( document ).ready(function() {
   clearModal()
   filter()
   exportDataFPTK()
+  clearFilter()
+  cek_posisi_organisasi();
 
   $('#filter_nofptk').select2();
   $('#filter_namapeminta').select2();
@@ -445,5 +447,74 @@ function exportDataFPTK(){
 
         }
       })
+  })
+}
+
+function clearFilter(){
+  $('#Clearfilterfptk').on('click',function(){
+    $('#filter_nofptk').val(null).trigger('change');
+    $('#filter_namapeminta').val(null).trigger('change');
+    $('#filter_namaatasan').val(null).trigger('change');
+    $('#filter_posisi').val(null).trigger('change');
+    $('#filter_lokasi').val(null).trigger('change');
+    $('#filter_status').val(null).trigger('change');
+    $('#filter_Speriod').val('')
+    $('#filter_Eperiod').val('')
+
+    $('#filterfptk').click();
+  });
+}
+
+function cek_posisi_organisasi(){
+  $('#posisi').on('change',function(){
+    posisi =$('#posisi').val();
+
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/hrd/cek/posisi',
+        type: 'post',
+        data: {
+            posisi:posisi
+        }
+      }).done((data) => {
+        // $(".modal-detail-kandidat").modal('hide');
+        if(data==0){
+          $('#posisi').css("border", "#EB4747 solid 3px"); 
+        }else{
+          $('#posisi').css("border", "1px solid #2C3333"); 
+        }
+        console.log(JSON.stringify(data));
+    });
+  })
+
+  $('#lobandsub').on('change',function(){
+    lob =$('#lobandsub').val();
+    
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/hrd/cek/organisasi',
+        type: 'post',
+        data: {
+          lob:lob
+        }
+      }).done((data) => {
+        // $(".modal-detail-kandidat").modal('hide');
+        if(data==0){
+          $('#lobandsub').css("border", "#EB4747 solid 3px"); 
+        }else{
+          $('#lobandsub').css("border", "1px solid #2C3333"); 
+        }
+        console.log(JSON.stringify(data));
+    });
   })
 }

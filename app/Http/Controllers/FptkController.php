@@ -27,31 +27,32 @@ class FptkController extends Controller
         // dd(Auth::user());
         $filter_nofptk= DB::table('T_FPTK')
                 ->select('nofptk')
-                ->where('id',Auth::user()->id_Organisasi)
+                ->distinct()
+                ->where('id_Organisasi',Auth::user()->id_Organisasi)
                 ->get();
         
         $filter_npeminta= DB::table('T_FPTK')
                 ->select('namapeminta')
                 ->distinct()
-                ->where('id',Auth::user()->id_Organisasi)
+                ->where('id_Organisasi',Auth::user()->id_Organisasi)
                 ->get();
         
         $filter_natasan= DB::table('T_FPTK')
                 ->select('namaatasanlangusng')
                 ->distinct()
-                ->where('id',Auth::user()->id_Organisasi)
+                ->where('id_Organisasi',Auth::user()->id_Organisasi)
                 ->get();
         
         $filter_posisi= DB::table('T_FPTK')
                 ->select('posisi')
                 ->distinct()
-                ->where('id',Auth::user()->id_Organisasi)
+                ->where('id_Organisasi',Auth::user()->id_Organisasi)
                 ->get();
         
         $filter_lokasi= DB::table('T_FPTK')
                 ->select('penempatan')
                 ->distinct()
-                ->where('id',Auth::user()->id_Organisasi)
+                ->where('id_Organisasi',Auth::user()->id_Organisasi)
                 ->get();
         
         $filter_status= DB::table('M_StatusFPTK')
@@ -59,7 +60,7 @@ class FptkController extends Controller
                 ->where('active',1)
                 ->where('deleted',0)
                 ->get();
-        // dd($filter);
+        // dd($filter_posisi);
         return view(
             'hr/hr_fptk',
             [
@@ -200,13 +201,13 @@ class FptkController extends Controller
                 if(empty($nofptk)&&empty($tglinput)&&empty($tgldisetujui)&&empty($nikpeminta)) {
                     break;
                 }else{
-                    $cek = DB::table('T_fptk')
-                        ->where('nofptk',$nofptk)
-                        // ->get();
-                        ->count();
-                    if($cek>=1){
-                        continue;
-                    }else{
+                    // $cek = DB::table('T_fptk')
+                    //     ->where('nofptk',$nofptk)
+                    //     // ->get();
+                    //     ->count();
+                    // if($cek>=1){
+                    //     continue;
+                    // }else{
                         DB::table('T_fptk')
                         ->insert([ 
                             'nofptk'=>$nofptk,
@@ -230,7 +231,7 @@ class FptkController extends Controller
                             'status'=>null,
                             'leadtime'=>null
                         ]);
-                    }
+                    // }
                 }
             }
            
@@ -251,33 +252,39 @@ class FptkController extends Controller
 
             if(!empty($request->filter_Speriod)){
                 $fptk->where('tglinputfptk','>=',$request->filter_Speriod);
-            }else{
+            }elseif(empty($request->filter_Speriod)&&empty($request->nofptk)&&
+                    empty($request->namapeminta)&&empty($request->namaatasan)&&
+                    empty($request->posisi)&&empty($request->lokasi)&&empty($request->status)
+            ){
                 $fptk->where('tglinputfptk','>=',$startdate);
             }
 
             if(!empty($request->filter_Eperiod)){
                 $fptk->where('tglinputfptk','<=',$request->filter_Eperiod);
-            }else{
+            }elseif(empty($request->filter_Eperiod)&&empty($request->nofptk)&&
+                    empty($request->namapeminta)&&empty($request->namaatasan)&&
+                    empty($request->posisi)&&empty($request->lokasi)&&empty($request->status)
+            ){
                 $fptk->where('tglinputfptk','<=',$enddate);
             }
 
             if(!empty($request->nofptk)){
-                $fptk->where('nofptk',array($request->nofptk));
+                $fptk->whereIn('nofptk',$request->nofptk);
             }
             if(!empty($request->namapeminta)){
-                $fptk->where('namapeminta',array($request->namapeminta));
+                $fptk->whereIn('namapeminta',$request->namapeminta);
             }
             if(!empty($request->namaatasan)){
-                $fptk->where('namaatasanlangusng',array($request->namaatasan));
+                $fptk->whereIn('namaatasanlangusng',$request->namaatasan);
             }
             if(!empty($request->posisi)){
-                $fptk->where('posisi',array($request->posisi));
+                $fptk->whereIn('posisi',$request->posisi);
             }
             if(!empty($request->lokasi)){
-                $fptk->where('penempatan',array($request->lokasi));
+                $fptk->whereIn('penempatan',$request->lokasi);
             }
             if(!empty($request->status)){
-                $fptk->where('status',array($request->status));
+                $fptk->whereIn('status',$request->status);
             }
         $result=$fptk->get();
         return $result;
@@ -490,5 +497,18 @@ class FptkController extends Controller
             ]);
         return true;
     }
+
+    public function CekPosisi(Request $request){
+        $result = DB::table('M_job')
+                ->where('active',1)
+                ->where('deleted',0)
+                ->where('nama',$request->posisi)
+                ->count();
+        return $result;
+    }
+    public function CekOrganisasi(Request $request){
+        return $request;
+    }
+
 
 }
