@@ -10,31 +10,64 @@ use Illuminate\Support\Facades\Redirect;
 class KandidatController extends Controller
 {
     public function index($id,$noidentitas){
-     $server = $_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'];
-     // dd($server);
-        $info_kandiat = DB::table('T_kandidat')
-                ->where('id',$id)
-                ->where('noidentitas',$noidentitas)
-                ->first();
+          // dd($server);
+          $info_kandidat = DB::table('T_kandidat')
+                    ->where('id',$id)
+                    ->where('noidentitas',$noidentitas)
+                    ->first();
 
-        $url_pahse2 = DB::table('T_linkPhase2')
+          // Start UMUR, last Pendidikan, FreshorNot, Status Perkawinan
+          $age = Carbon::parse($info_kandidat->tglLahir)->diff(Carbon::now())->y;
+          $last_pendidikan = DB::table('last_Pendidikan')
+                              ->where('id_Tkandidat',$id)
+                              ->first();
+
+          $FreshorNot = DB::table('freshornot')
+                         ->where('id_Tkandidat',$id)
+                         ->first();
+          if (empty($FreshorNot)) {
+               $FreshorNot='FRESH';
+               $last_pekerjaan ="";
+          }else{
+               $FreshorNot='PENGALAMAN';
+               $last_pekerjaan = DB::table('last_Pekerjaan')
+                              ->where('id_Tkandidat',$id)
+                              ->first();
+          }
+          $status_perkawinan = DB::table('M_Statuspernikahan')
+                              ->where('active',1)
+                              ->where('deleted',0)
+                              ->get();
+          // End UMUR, last pendidikan, Fresh or Not
+          
+
+          // Start url pahse 2
+          $url_pahse2 = DB::table('T_linkPhase2')
                          ->select('url')
-                        ->where('id_Tkandidat',$id)
-                        ->first();
-       if($url_pahse2){
-          $url = $server.'/form-kandidat/phase2/'.$url_pahse2->url;
-       }else{
-          $url='BLM ada';
-       }
-       if($info_kandiat){
-            return view('detail_kandidat',
+                         ->where('id_Tkandidat',$id)
+                         ->first();
+          if($url_pahse2){
+               $server = $_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'];
+               $url = $server.'/form-kandidat/phase2/'.$url_pahse2->url;
+          }else{
+               $url='BLM ada';
+          }
+          // End url pahse 2
+
+          if($info_kandidat){
+               return view('detail_kandidat',
                     [
-                         'info_kandidat' => $info_kandiat,
+                         'StatusPerkawinan'=>$status_perkawinan,
+                         'FreshorNot'=>$FreshorNot,
+                         'pekerjaan'=>$last_pekerjaan,
+                         'pendidikan' =>$last_pendidikan,
+                         'info_kandidat' => $info_kandidat,
+                         'umur'=>$age,
                          'url_phase2' => $url
                     ]);
-       }else{
-            return redirect()->route('home');
-       }      
+          }else{
+               return redirect()->route('home');
+          }      
     }
 
     public function GenUrl(Request $request){
