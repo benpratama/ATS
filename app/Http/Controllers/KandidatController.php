@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 class KandidatController extends Controller
 {
     public function index($id,$noidentitas){
-
+     $server = $_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'];
+     // dd($server);
         $info_kandiat = DB::table('T_kandidat')
                 ->where('id',$id)
                 ->where('noidentitas',$noidentitas)
@@ -21,7 +22,7 @@ class KandidatController extends Controller
                         ->where('id_Tkandidat',$id)
                         ->first();
        if($url_pahse2){
-          $url = '/form-kandidat/phase2/'.$url_pahse2->url;
+          $url = $server.'/form-kandidat/phase2/'.$url_pahse2->url;
        }else{
           $url='BLM ada';
        }

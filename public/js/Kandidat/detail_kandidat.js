@@ -31,9 +31,9 @@ function gen_url(){
           noidentitas:noidentitas
         }
       }).done((data) => {
-        // result = data.url
-        $('#urlphase2').val('/form-kandidat/phase2/'+data)
-       console.log(data);
+        host = window.location.origin;
+        $('#urlphase2').val(host+'/form-kandidat/phase2/'+data)
+       console.log(host);
       });
   })
 }

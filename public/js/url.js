@@ -223,14 +223,21 @@ function Modal_url(id){
           defaultContent: ''
         },
         {
-          data: 'url',
-          defaultContent: ''
+          // data: 'url',
+          // defaultContent: ''
+          defaultContent: '',
+            render: (data, type, row, meta)=> {
+              test='<button type="button" class="btn btn-success" onclick="CopyUrl(value)" data-toggle="tooltip" data-placement="top" title="Tooltip on top" value="'+row.url+'">'
+              // test+='<span class=" tooltip tooltiptext" id="myTooltip">Copy to clipboard</span>'
+              test+='Copy Url </button>'
+                return test
+            }
         },
         {
-            defaultContent: '',
-            render: (data, type, row, meta)=> {
-                return '<button type="button" class="btn btn-info" onclick="Modal_url2(value)" data-toggle="modal" data-target=".modal-detail-url" value="'+row.id+'">Update</button>'
-            }
+          defaultContent: '',
+          render: (data, type, row, meta)=> {
+              return '<button type="button" class="btn btn-info" onclick="Modal_url2(value)" data-toggle="modal" data-target=".modal-detail-url" value="'+row.id+'">Update</button>'
+          }
         }
     ] 
   });
@@ -373,4 +380,12 @@ function delete_Url(){
       })
       }
   })
+}
+function CopyUrl(url){
+  host = window.location.origin;
+  path = "/form-kandidat/"
+  final_url = host+path+url;
+  navigator.clipboard.writeText(final_url);
+  alert();
+  console.log(final_url);
 }
