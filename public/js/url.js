@@ -227,10 +227,10 @@ function Modal_url(id){
           // defaultContent: ''
           defaultContent: '',
             render: (data, type, row, meta)=> {
-              test='<button type="button" class="btn btn-success" onclick="CopyUrl(value)" data-toggle="tooltip" data-placement="top" title="Tooltip on top" value="'+row.url+'">'
-              // test+='<span class=" tooltip tooltiptext" id="myTooltip">Copy to clipboard</span>'
-              test+='Copy Url </button>'
-                return test
+              // test='<button type="button" class="btn btn-success" onclick="CopyUrl(value)" data-toggle="tooltip" data-placement="top" title="Tooltip on top" value="'+row.url+'">'
+              // // test+='<span class=" tooltip tooltiptext" id="myTooltip">Copy to clipboard</span>'
+              // test+='Copy Url </button>'
+                return '10.101.1.161:100/form-kandidat/'+row.url
             }
         },
         {
@@ -385,6 +385,7 @@ function CopyUrl(url){
   host = window.location.origin;
   path = "/form-kandidat/"
   final_url = host+path+url;
+  // isSecureContext(true);
   navigator.clipboard.writeText(final_url);
   alert();
   console.log(final_url);
