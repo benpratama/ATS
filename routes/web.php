@@ -29,6 +29,12 @@ Route::post('/hrdats/dashboard/hrd/detail','HomeController@ShowDetail')->name('h
 //Detail Kandidat
 Route::get('/hrdats/detail/kandidat/{id}/{noidentitas}', 'KandidatController@index')->name('dk.home');
 Route::post('/hrdats/detail/kandidat/genurl','KandidatController@GenUrl')->name('dk.GenUrl');
+Route::get('/hrdats/detail/getsim/kandidat/{id}','KandidatController@GetSim')->name('dk.GetSim');
+Route::get('/hrdats/detail/getpendidikan/kandidat/{id}','KandidatController@GetPendidikan')->name('dk.GetPendidikan');
+Route::get('/hrdats/detail/getpekerjaan/kandidat/{id}','KandidatController@GetPekerjaan')->name('dk.GetPekerjaan');
+Route::get('/hrdats/detail/listsim','KandidatController@ListSim')->name('dk.ListSim');
+Route::post('/hrdats/detail/update/phase1','KandidatController@UpdateForm1')->name('dk.UpdateForm1');
+Route::post('/hrdats/detail/update/phase1_1','KandidatController@UpdateForm1_1')->name('dk.UpdateForm1_1');
 
 //Master Table Internal
 Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');
@@ -170,3 +176,5 @@ Route::Post('/hrdats/hrd/edit/link', 'UrlController@EdiUrl')->name('hr_url.EdiUr
 Route::Post('/hrdats/hrd/add/link', 'UrlController@AddUrl')->name('hr_url.AddUrl');
 Route::Post('/hrdats/hrd/active/link', 'UrlController@ActiveUrl')->name('hr_url.ActiveUrl');
 Route::Post('/hrdats/hrd/del/link', 'UrlController@DelUrl')->name('hr_url.DelUrl');
+
+Route::get('/test','FormKandidatController@Test')->name('fk.Test');

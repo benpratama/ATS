@@ -147,8 +147,14 @@ function ShowDetail(){
             defaultContent: ''
         },
         {
-            data: 'lamakerja',
+            data: 'bidang',
             defaultContent: ''
+        },
+        {
+          defaultContent: '',
+          render: (data, type, row, meta)=> {
+            return row.tahun+' Tahun '+row.bulan+' Bulan '+row.hari+' Hari'
+          }
         },
         {
             data: 'bertugasluarkota',

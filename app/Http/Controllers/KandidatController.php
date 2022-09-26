@@ -38,6 +38,12 @@ class KandidatController extends Controller
                               ->where('active',1)
                               ->where('deleted',0)
                               ->get();
+          $kota = DB::table('M_kodepos_Final')
+                              ->distinct()
+                              ->select('kabupaten','provinsi')
+                              ->where('deleted',0)
+                              ->where('active',1)
+                              ->get();
           // End UMUR, last pendidikan, Fresh or Not
           
 
@@ -53,10 +59,11 @@ class KandidatController extends Controller
                $url='BLM ada';
           }
           // End url pahse 2
-
+          
           if($info_kandidat){
                return view('detail_kandidat',
                     [
+                         'kotas'=>$kota,
                          'StatusPerkawinan'=>$status_perkawinan,
                          'FreshorNot'=>$FreshorNot,
                          'pekerjaan'=>$last_pekerjaan,
@@ -105,5 +112,87 @@ class KandidatController extends Controller
                ]);
           }
           return $url;
+    }
+
+    public function GetSim($id){
+     $sim = DB::table('T_kandidat_sim')
+          ->where('id_Tkandidat',$id)
+          ->get();
+     $list_sim = DB::table('M_SIM')
+               ->where('active',1)
+               ->where('deleted',0)
+               ->where('id','<>',1)
+               ->get();
+     return [$sim,$list_sim];
+    }
+
+    public function GetPendidikan($id){
+          $pendidikan = DB::table('T_kandidat_edukasi')
+                         ->where('id_Tkandidat',$id)
+                         ->get();
+          return $pendidikan;
+    }
+
+    public function GetPekerjaan($id){
+          $pekerjaan = DB::table('T_kandidat_pekerjaan')
+                         ->where('id_Tkandidat',$id)
+                         ->get();
+          return $pekerjaan;
+    }
+
+
+    //kebutuhan tambah data
+    public function ListSim(){
+     $list_sim = DB::table('M_SIM')
+               ->where('active',1)
+               ->where('deleted',0)
+               ->where('id','<>',1)
+               ->get();
+     return $list_sim;
+    }
+
+    //update
+     // untuk yang atas
+    public function UpdateForm1(Request $request){
+          DB::table('T_kandidat')
+          ->where('id',$request->id_kandidat)
+          ->update([
+               'namalengkap'=>$request->namalengkap,
+               'gender'=>$request->gender,
+               'status_perkawinan'=>$request->status_perkawinan,
+               'noidentitas'=>$request->noidentitas,
+               'npwp'=>$request->npwp,
+               'nohp'=>$request->nohp,
+               'email'=>$request->email,
+               'tempatlahir'=>$request->tempatlahir,
+               'tgllahir'=>$request->tgllahir,
+               'urlPorto'=>$request->porto
+          ]);
+          return Redirect::back();
+    }
+     //untuk yang bawah
+    public function UpdateForm1_1(Request $request){
+
+          DB::table('T_kandidat')
+          ->where('id',$request->id_kandidat2)
+          ->update([
+               'alamatlengkap'=>$request->alamatlengkap,
+               'rumahmilik'=>$request->rumahmilik,
+               'kota1'=>$request->kota1,
+               'kodepos'=>$request->kodepos,
+               'alamat_koresponden'=>$request->alamat_koresponden,
+               'rumahmilik_koresponden'=>$request->rumahmilik_koresponden,
+               'kota_koresponden'=>$request->kota_koresponden,
+               'kodepos_koresponden'=>$request->kodepos_koresponden,
+               'gaji'=>$request->gaji,
+               'tunjangan'=>$request->tunjangan,
+               'tanggungjawab'=>$request->tanggungjawab,
+               'jabatanharapan'=>$request->jabatanharapan,
+               'gajiharapan'=>$request->gajiharapan,
+               'tujanganharapan'=>$request->tujanganharapan,
+               'bertugasluarkota'=>$request->bertugasluarkota,
+               'ditempatkanluarkota'=>$request->ditempatkanluarkota,
+          ]);
+          return Redirect::back();
     }
 }

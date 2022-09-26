@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Session\Session;
 
 class LoginController extends Controller
 {
@@ -293,10 +294,11 @@ class LoginController extends Controller
                 $user = User::where('samAcc', $samAcc)->first();
             }
             // dd($user);
-
-            //KETENDANG DISINI CII (PAS GUA DD DI HOMECONTROLLER INDEX RESULT-NYA NULL)
+            
             Auth::login($user);
             // dd('masuk');
+            session()->put('user', ['nama' => $user->nama, 'NIK' => $user->NIK, 'organisasi' =>$user->id_Organisasi, 'dept' =>$user->id_Dept]);
+            // dd(session()->get('user'));
             return redirect()->route('home');
         }
         else{

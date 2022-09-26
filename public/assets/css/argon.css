@@ -18915,7 +18915,7 @@ a.btn-icon-only
     position: absolute;
     left: 50%;
 
-    max-width: 140px;
+    max-width: 120px;
 
     transition: all .15s ease; 
     transform: translate(-50%, -50%) scale(1);

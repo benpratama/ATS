@@ -41,13 +41,12 @@
                   <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
                   <h5 class="h3 text-white mb-0">PROSES</h5>
                 </div>
-                <div class="col-1" s>
+                <div class="col-1">
                   <button id="btnhide_summary" type="button" class="btn btn-danger d-flex btnhide" data-value="0">
                     <span id="span_summary" class="material-symbols-outlined">
                       close_fullscreen
                     </span>
                   </button>
-                  
                 </div>
               </div>
             </div>
@@ -84,14 +83,15 @@
                     <th style="width: 123.778px;" id="4">Gender</th>
                     <th style="width: 123.778px;" id="5">Pendidikan</th>
                     <th style="width: 123.778px;" id="6">Jurusan</th>
-                    <th style="width: 123.778px;" id="7">Fresh or not</th>
+                    <th style="width: 123.778px;" id="7">Pengalaman</th>
                     <th style="width: 123.778px;" id="8">Bidang lini</th>
-                    <th style="width: 123.778px;" id="9">Penempatan luar indo</th>
-                    <th style="width: 123.778px;" id="10">ditempatkan luar indo</th>
-                    <th style="width: 123.778px;" id="11">SIM</th>
-                    <th style="width: 123.778px;" id="12">Apply</th>
-                    <th style="width: 123.778px;" id="13">Status</th>
-                    <th style="width: 123.778px;" id="14">Detail</th>
+                    <th style="width: 123.778px;" id="9">Lama Kerja</th>
+                    <th style="width: 123.778px;" id="10">Penempatan luar indo</th>
+                    <th style="width: 123.778px;" id="11">ditempatkan luar indo</th>
+                    <th style="width: 123.778px;" id="12">SIM</th>
+                    <th style="width: 123.778px;" id="13">Apply</th>
+                    <th style="width: 123.778px;" id="14">Status</th>
+                    <th style="width: 123.778px;" id="15">Detail</th>
                   </tr>
                 </thead>
                 {{-- <thead id="DTsearch">
