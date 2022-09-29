@@ -20,6 +20,12 @@
   table td{
     text-align: center;
   }
+  .border-rw{
+    border-style: solid;
+    border-color: coral;
+    padding: 1em;
+    margin: 0.5em;
+  }
   </style>
 @endsection
 
@@ -44,21 +50,6 @@
   </div>
   <!-- Page content -->
   <div class="container-fluid mt--6">
-
-    {{-- START URL PAHSE 2 --}}
-      {{-- <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="form-control-label" for="urlphase2">URL Pahse 2</label>
-            <input type="text" class="form-control" id="urlphase2" name="urlphase2" value="{{ $url_phase2 }}" readonly>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }}>Genarate</button>
-        </div>
-      </div> --}}
-    {{-- END URL PAHSE 2 --}}
-
     <div class="row">
       {{-- CARD SEBELAH KIRI --}}
       <div class="col-xl-4 order-xl-1">
@@ -110,6 +101,16 @@
                 @endif
               </div>
             </div>
+            {{-- START URL PAHSE 2 --}}
+            <div class="row pt-3">
+              <div class="col-md-8">
+                  <textarea  rows="3" cols="20" wrap="hard" type="text" class="form-control" id="urlphase2" name="urlphase2" readonly>{{ $url_phase2 }}</textarea>
+              </div>
+              <div class="col-md-3">
+                <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }}>Generate</button>
+              </div>
+            </div>
+            {{-- END URL PAHSE 2 --}}
           </div>
         </div>
       </div>
@@ -236,7 +237,8 @@
       </ul>
     </nav>
     {{-- PAGE --}}
-    
+
+    {{-- PHASE1 --}}
     <form method="POST" action="{{ route('dk.UpdateForm1_1') }}" class="p1">
       @csrf
       <input name="id_kandidat2" value="{{ $info_kandidat->id }}" hidden>
@@ -456,24 +458,12 @@
               </div>
             </div>
             <div class="card-body" id="body_pekerjaan" hidden>
-              <div class="table-responsive">
-                <div class="table-responsive">
-                  <table class="table" id="TblPerusahaan">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>NAMA PERUSHAAN</th>
-                        <th>JENIS PERUSHAAN</th>
-                        <th>ALAMAT PRUSHAAN</th>
-                        <th>JABATAN</th>
-                        <th>NAMA ATASAN/ JABATAN</th>
-                        <th>START KERJA</th>
-                        <th>END KERJA</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tbody_pekerjaan">
-                    </tbody>
-                  </table>
-                </div>
+              <div class="d-flex">
+                <h5 class="h5 mb-0 mr-3">RIWAYAT PEKERJAAN</h5>
+                <button type="button" class="btn btn-primary" id="btnAddRow-pekerjaan">Tambah</button>
+              </div>
+              <div id="rw_p">
+                {{-- isinya disni --}}
               </div>
               <hr class="my-4">
               <div class="row">
@@ -558,12 +548,558 @@
                   </div>
                 </div>
               </div>
+            </div>
           </div>
         </div>
       </div>
       {{-- END PEKERJAAN --}}
       <button type="submit" class="btn btn-primary btnsbmt">Update</button>
     </form>
+
+    {{-- PHASE2 --}}
+    @if (!empty($info_kandidat2))
+    <form method="POST" action="{{ route('dk.UpdateForm2') }}" class="p2" hidden>
+      @csrf
+      <input name="id_kandidat3" value="{{ $info_kandidat->id }}" hidden>
+      {{-- Start data --}}
+      <div class="row p2">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-11">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">info kandidat</h6>
+                  <h5 class="h3 mb-0">Data</h5>
+                </div>
+                <div class="col-1">
+                  <button id="btnhide_data" type="button" class="btn btn-success d-flex btnhide" data-value="1">
+                    <span id="span_data" class="material-symbols-outlined">
+                      open_in_full
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" id="body_data" hidden>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="goldarah">Golongan Darah</label>
+                    <select class="form-control" id="goldarah" name="goldarah" required>
+                      <option value="O" {{ $info_kandidat2->golDarah=='O'?"selected":"" }} >O</option>
+                      <option value="A" {{ $info_kandidat2->golDarah=='A'?"selected":"" }}>A</option>
+                      <option value="B" {{ $info_kandidat2->golDarah=='B'?"selected":"" }}>B</option>
+                      <option value="AB" {{ $info_kandidat2->golDarah=='AB'?"selected":"" }}>AB</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="tlprumah">Telp. rumah</label>
+                    <input type="text" class="form-control" id="tlprumah" name="tlprumah" placeholder="(kode)12312123" maxlength="18" value="{{ $info_kandidat2->noTlp }}" required>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4">
+              <div class="row" >
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alasan">Alasan / tujuan Saudara melamar di perusahaan ini :</label>
+                    <input type="text" class="form-control" id="alasan" name="alasan" maxlength='2000' value="{{ $info_kandidat2->alasanMelamar }}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="lingkungankerja">Lingkungan pekerjaan yang Saudara sukai :</label>
+                    <input type="text" class="form-control" id="lingkungankerja" name="lingkungankerja" maxlength='2000' value="{{ $info_kandidat2->lingkunganKerja }}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{-- End data --}}
+
+      {{-- Start pelatihan --}}
+      <div class="row p2">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-11">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">info kandidat</h6>
+                  <h5 class="h3 mb-0">PELATIHAN & KURSUS</h5>
+                </div>
+                <div class="col-1">
+                  <button id="btnhide_pelatihan" type="button" class="btn btn-success d-flex btnhide" data-value="1">
+                    <span id="span_pelatihan" class="material-symbols-outlined">
+                      open_in_full
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" id="body_pelatihan" hidden>
+              <div class="table-responsive">
+                <table class="table" id="Tblpelatihan">
+                  <thead class="thead-light">
+                    <tr>
+                      <th style="width: 30%;">jenis Kursus/Pelatihan</th>
+                      <th style="width: 30%;">Penyelenggara</th>
+                      <th style="width: 30%;">Tahun Pelaksanaan</th>
+                      <th style="width: 10%;"> 
+                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-pelatihan">
+                          <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_pelatihan">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{-- End pelatihan --}}
+
+      {{-- Start pendidikan --}}
+      <div class="row p2">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-11">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">info kandidat</h6>
+                  <h5 class="h3 mb-0">Pendidikan</h5>
+                </div>
+                <div class="col-1">
+                  <button id="btnhide_pendidikan2" type="button" class="btn btn-success d-flex btnhide" data-value="1">
+                    <span id="span_pendidikan2" class="material-symbols-outlined">
+                      open_in_full
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" id="body_pendidikan2" hidden>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="prestasi">Prestasi karya luar biasa yang pernah Saudara peroleh selama pendidikan</label>
+                    <textarea class="form-control" id="prestasi" rows="3" resize="none" name="prestasi" maxlength="2000">{{ $info_kandidat2->prestasiPendidikan }}</textarea>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="karyailmiah">Tulisan / karya ilmiah yang pernah Saudara tulis ( Skripsi, artikel, buku, dsb) / tahun:</label>
+                    <textarea class="form-control" id="karyailmiah" rows="3" resize="none" name="karyailmiah" maxlength="220">{{ $info_kandidat2->tulisanIlmiah }}</textarea>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4">
+              <label class="form-control-label" for="bahasa">Bahasa asing atau bahasa daerah yang dikuasai :</label>
+                <div class="table-responsive">
+                  <table class="table" id="Tblbahasa">
+                    <thead class="thead-light">
+                      <tr>
+                        <th style="width: 23.75%;">Bahasa</th>
+                        <th style="width: 23.75%;">Berbicara</th>
+                        <th style="width: 23.75%;">Menulis</th>
+                        <th style="width: 23.75%;">Membaca</th>
+                        <th style="width: 5%;"> 
+                          <button type="button" class="btn btn-success d-flex" id="btnAddRow-bahasa">
+                            <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
+                          </button>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody_bahasa">
+
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{-- End pendidikan --}}
+      
+      {{-- Start aktivitas sosial --}}
+      <div class="row p2">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-11">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">info kandidat</h6>
+                  <h5 class="h3 mb-0">AKTIVITAS SOSIAL DAN KEGIATAN LAIN</h5>
+                </div>
+                <div class="col-1">
+                  <button id="btnhide_aktivitas" type="button" class="btn btn-success d-flex btnhide" data-value="1">
+                    <span id="span_aktivitas" class="material-symbols-outlined">
+                      open_in_full
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" id="body_aktivitas" hidden>
+              <label class="form-control-label" for="organisasi">Keanggotaan dalam organisasi / lembaga :</label>
+                <div class="table-responsive">
+                  <table class="table" id="Tblorganisasi">
+                    <thead class="thead-light">
+                      <tr>
+                        <th style="width: 23.75%;">Nama Organisasi</th>
+                        <th style="width: 23.75%;">Kota</th>
+                        <th style="width: 23.75%;">Jabatan</th>
+                        <th style="width: 23.75%;">Dari/Sampai(Tahun)</th>
+                        <th style="width: 5%;"> 
+                          <button type="button" class="btn btn-success d-flex" id="btnAddRow-organisasi">
+                            <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
+                          </button>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody_organisasi">
+
+                    </tbody>
+                  </table>
+                </div>
+                <hr class="my-4">
+                <div class="row" >
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="waktuluang">Kegiatan pada waktu luang</label>
+                      <input type="text" class="form-control" id="waktuluang" name="waktuluang" maxlength='2000' value="{{ $info_kandidat2->kegiatan }}">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="suratkabar">Surat kabar / majalah yang sering dibaca</label>
+                      <input type="text" class="form-control" id="suratkabar" name="suratkabar" maxlength='2000' value="{{ $info_kandidat2->suratKabar }}">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="topik">Topik yang diminati untuk dibaca</label>
+                      <input type="text" class="form-control" id="topik" name="topik" maxlength='2000' value="{{ $info_kandidat2->topik }}">
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{-- End aktivitas sosial --}}
+
+      {{-- Start keluarga --}}
+      <div class="row p2">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-11">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">info kandidat</h6>
+                  <h5 class="h3 mb-0">KELUARGA</h5>
+                </div>
+                <div class="col-1">
+                  <button id="btnhide_keluarga" type="button" class="btn btn-success d-flex btnhide" data-value="1">
+                    <span id="span_keluarga" class="material-symbols-outlined">
+                      open_in_full
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" id="body_keluarga" hidden>
+              <div id="kelaurga1">
+                {{-- isinya ayah ibu --}}
+              </div>
+              <div id="kelaurga2">
+                {{-- isinya kakak adik --}}
+              </div>
+              <div id="kelaurga3">
+                {{-- isinya suami istri --}}
+              </div>
+              <div id="kelaurga4">
+                {{-- isinya anak --}}
+              </div>
+              <div id="kelaurga5">
+                {{-- isinya mertua --}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{-- End keluarga --}}
+
+      {{-- Start Lain-lain --}}
+      <div class="row p2">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-11">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">info kandidat</h6>
+                  <h5 class="h3 mb-0">LAIN-LAIN</h5>
+                </div>
+                <div class="col-1">
+                  <button id="btnhide_lain2" type="button" class="btn btn-success d-flex btnhide" data-value="1">
+                    <span id="span_lain2" class="material-symbols-outlined">
+                      open_in_full
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" id="body_lain2" hidden>
+              <div class="row" >
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="sakit">Pernahkah Saudara menderita sakit keras atau kecelakaan kerja ?*</label>
+                    <select class="form-control" id="sakit" name="sakit" required>
+                      <option value="Ya" {{ $info_kandidat2->sakit=="Ya"?"selected":"" }}>Ya</option>
+                      <option value="Tidak" {{ $info_kandidat2->sakit=="Tidak"?"selected":"" }}>Tidak</option>
+                    </select>
+                  </div>
+                </div>
+                @if ($info_kandidat2->sakit=="Ya")
+                  <div class="col-md-6" id="rowsakitkapan">
+                    <div class="form-group">
+                      <label class="form-control-label" for="sakitkapan">kapan</label>
+                      <input class="form-control" type="month" id="sakitkapan" name="sakitkapan" value="{{ $info_kandidat2->tahunSakit }}">
+                    </div>
+                  </div>
+                @endif
+              </div>
+              <hr class="my-4">
+              <div class="row" >
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="psikologis">Pernahkah Saudara mengikuti pemeriksaan psikologis ?</label>
+                    <select class="form-control" id="psikologis" name="psikologis" required>
+                      <option value="Ya" {{ $info_kandidat2->sakit=="Ya"?"selected":"" }}>Ya</option>
+                      <option value="Tidak" {{ $info_kandidat2->sakit=="Tidak"?"selected":"" }}>Tidak</option>
+                    </select>
+                  </div>
+                </div>
+                @if ($info_kandidat2->sakit=="Ya")
+                  <div class="col-md-6 rowpsikologis" >
+                    <div class="form-group">
+                      <label class="form-control-label" for="psikologiskapan">kapan</label>
+                      <input class="form-control" type="month" id="psikologiskapan" name="psikologiskapan" value="{{ $info_kandidat2->tahunPsikolog }}">
+                    </div>
+                  </div>
+                @endif
+              </div>
+              @if ($info_kandidat2->sakit=="Ya")
+                <div class="row rowpsikologis">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="psikologislembaga">Tempat / Lembaga</label>
+                      <input class="form-control" type="text" id="psikologislembaga" name="psikologislembaga" maxlength='220' value="{{ $info_kandidat2->lembagaPsikolog }}">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="psikologistujuan">tujuan</label>
+                      <input class="form-control" type="text" id="psikologistujuan" name="psikologistujuan" maxlength='220' value="{{ $info_kandidat2->tujuanPsikolog }}">
+                    </div>
+                  </div>
+                </div>
+              @endif
+              <hr class="my-4">
+              <div class="row" >
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="kendaraan">Jenis kendaraan yang digunakan</label>
+                    <input class="form-control" type="text" id="kendaraan" name="kendaraan" maxlength='220' value={{ $info_kandidat2->jenisKendaraan }}>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="kendaraanmilik">Milik</label>
+                    <select id="kendaraanmilik" class="form-control" name="kendaraanmilik">
+                      <option value="Pribadi" {{ $info_kandidat2->milikKendaraan=="Pribadi"?"selected":"" }}> Pribadi</option>
+                      <option value="Orangtua" {{ $info_kandidat2->milikKendaraan=="Orangtua"?"selected":"" }}> Orangtua</option>
+                      <option value="Dinas" {{ $info_kandidat2->milikKendaraan=="Dinas"?"selected":"" }}> Dinas</option>
+                      <option value="Umum" {{ $info_kandidat2->milikKendaraan=="Umum"?"selected":"" }}> Umum</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4">
+              <label class="form-control-label" for="karyawankenal">Karyawan / Karyawati yang Saudara kenal di perusahaan ini :</label>
+              <div class="table-responsive">
+                <table class="table" id="Tblkenal">
+                  <thead class="thead-light">
+                    <tr>
+                      <th style="width: 47.5%;">Nama</th>
+                      <th style="width: 47.5%;">hubungan</th>
+                      <th style="width: 5%;"> 
+                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-kenal">
+                          <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_kenal">
+
+                  </tbody>
+                </table>
+              </div>
+              <hr class="my-4">
+              <div class="row" >
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="kendaraan"> Adakah kerabat atau anggota keluarga Saudara yang bekerja di perusahaan farmasi</label>
+                    <select class="form-control" id="kerabat" name="kerabat" required>
+                      <option value="" disabled selected>Ya/Tidak</option>
+                      <option value="Ya" {{ $info_kandidat2->kerabatFarmasi=="Ya"?"selected":"" }}>Ya</option>
+                      <option value="Tidak" {{ $info_kandidat2->kerabatFarmasi=="Tidak"?"selected":"" }}>Tidak</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              @if ($info_kandidat2->kerabatFarmasi=="Ya")
+              <div class="table-responsive" >
+                <table class="table" id="Tblsaudarafarmasi">
+                  <thead class="thead-light">
+                    <tr>
+                      <th style="width: 19%;">Hubungan*</th>
+                      <th style="width: 19%;">Nama*</th>
+                      <th style="width: 19%;">L/P*</th>
+                      <th style="width: 19%;">Nama Perushaan*</th>
+                      <th style="width: 19%;">Jabatan*</th>
+                      <th style="width: 5%;"> 
+                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-saudarafarmasi">
+                          <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_saudara">
+
+                  </tbody>
+                </table>
+              </div>
+              @endif
+              <hr class="my-4">
+              <label class="form-control-label" for="referensi"> Tuliskan 2 nama yang berkenan memberikan referensi bagi lamaran Saudara ke perusahaan ini :</label>
+              <div class="table-responsive">
+                <table class="table" id="Tblsaudarafarmasi">
+                  <thead class="thead-light">
+                    <tr>
+                      <th style="width: 25%;">Nama</th>
+                      <th style="width: 25%;">Alamat</th>
+                      <th style="width: 25%;">Pekerjaan</th>
+                      <th style="width: 25%;">No.Tlp</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @if (count($referensi)>0)
+                        @foreach ($referensi as $ref )
+                        <tr>
+                          <td>
+                            <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]" value="{{ $ref->namaRef }}" maxlength='95'>
+                          </td>
+                          <td>
+                            <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]" value="{{ $ref->alamatRef }}" maxlength='220'>
+                          </td>
+                          <td>
+                            <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]" value="{{ $ref->pekerjaanRef }}" maxlength='95'>
+                          </td>
+                          <td>
+                            <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]" value="{{ $ref->tlpRef }}" maxlength='95'>
+                          </td>
+                        </tr>
+                      @endforeach
+                    @endif
+                    @for ($index=count($referensi); $index<2;$index++)
+                      <tr>
+                        <td>
+                          <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]" maxlength='95'>
+                        </td>
+                        <td>
+                          <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]" maxlength='220'>
+                        </td>
+                        <td>
+                          <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]" maxlength='95'>
+                        </td>
+                        <td>
+                          <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]" maxlength='95'>
+                        </td>
+                      </tr>
+                    @endfor
+                  </tbody>
+                </table>
+              </div>
+              <hr class="my-4">
+              <label class="form-control-label" for="kendaraan"> Tuliskan 2 alamat kenalan Saudara yang dapat dihubungi dalam keadaan darurat</label>
+              <div class="table-responsive">
+                <table class="table" id="kontakdarurat">
+                  <thead class="thead-light">
+                    <tr>
+                      <th style="width: 33.3%;">Nama*</th>
+                      <th style="width: 33.3%;">Alamat*</th>
+                      <th style="width: 33.3%;">No.Tlp*</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @if (count($darurat)>0)
+                      @foreach ($darurat as $dar )
+                      <tr>
+                        <td>
+                          <input class="form-control" type="text" id="nama_kontakdarurat" name="nama_kontakdarurat[]" maxlength='95' value="{{ $dar->namaDart }}" required>
+                        </td>
+                        <td>
+                          <input class="form-control" type="text" id="alamat_kontakdarurat" name="alamat_kontakdarurat[]" maxlength='220' value="{{ $dar->alamatDart }}" required>
+                        </td>
+                        <td>
+                          <input class="form-control" type="text" id="tlp_kontakdarurat" name="tlp_kontakdarurat[]" maxlength='95' value="{{ $dar->tlpDart }}" required>
+                        </td>
+                      </tr>
+                      @endforeach
+                    @endif
+                    @for ($index=count($darurat); $index<2;$index++)
+                    <tr>
+                      <td>
+                        <input class="form-control" type="text" id="nama_kontakdarurat" name="nama_kontakdarurat[]" maxlength='95' required>
+                      </td>
+                      <td>
+                        <input class="form-control" type="text" id="alamat_kontakdarurat" name="alamat_kontakdarurat[]" maxlength='220' required>
+                      </td>
+                      <td>
+                        <input class="form-control" type="text" id="tlp_kontakdarurat" name="tlp_kontakdarurat[]" maxlength='95' required>
+                      </td>
+                    </tr>
+                    @endfor
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{-- End Lain-lain --}}
+      <button type="submit" class="btn btn-primary btnsbmt">Update</button>
+    </form>
+    @else
+    <div class="row p2">  
+      <div class="col-xl-12">
+        <div class="card">
+          <h1>DATA TIDAK ADA</h1>
+        </div>
+      </div>
+    </div>
+    @endif
+    {{-- END DATA --}}
+
+
   </div>
 {{-- !!!!!!! END  DIKOPI DARI SINI !!!!!!! --}}
 

@@ -35,6 +35,14 @@ Route::get('/hrdats/detail/getpekerjaan/kandidat/{id}','KandidatController@GetPe
 Route::get('/hrdats/detail/listsim','KandidatController@ListSim')->name('dk.ListSim');
 Route::post('/hrdats/detail/update/phase1','KandidatController@UpdateForm1')->name('dk.UpdateForm1');
 Route::post('/hrdats/detail/update/phase1_1','KandidatController@UpdateForm1_1')->name('dk.UpdateForm1_1');
+//detail phase2
+Route::get('/hrdats/detail/getpelatihan/kandidat/{id}','KandidatController@GetPelatihan')->name('dk.GetPelatihan');
+Route::get('/hrdats/detail/getbahasa/kandidat/{id}','KandidatController@GetBahasa')->name('dk.GetBahasa');
+Route::get('/hrdats/detail/getorganisasi/kandidat/{id}','KandidatController@GetOrganisasi')->name('dk.GetOrganisasi');
+Route::get('/hrdats/detail/getkenal/kandidat/{id}','KandidatController@GetKenal')->name('dk.GetKenal');
+Route::get('/hrdats/detail/getkerabat/kandidat/{id}','KandidatController@GetKerabat')->name('dk.GetKerabat');
+Route::get('/hrdats/detail/getkeluarga/kandidat/{id}','KandidatController@GetKeluarga')->name('dk.GetKeluarga');
+Route::post('/hrdats/detail/update/phase2','KandidatController@UpdateForm2')->name('dk.UpdateForm2');
 
 //Master Table Internal
 Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');

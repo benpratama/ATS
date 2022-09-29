@@ -293,7 +293,7 @@ class FormKandidatController extends Controller
                 }
 
                
-                DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',1)->delete();
+                DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',$id_kandidat)->delete();
 
                 if(!empty($request->nama_perushaan)){
                     for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
