@@ -1292,65 +1292,119 @@ function get_keluarga(){
       url: '/hrdats/detail/getkeluarga/kandidat/'+id_kandidat,
       type: 'get'
     }).done((data) => {
-      // console.log(JSON.stringify(data[0]));
+      // console.log(JSON.stringify(data[0][0].statusKeluarga));
+      // console.log(data[0][1].statusKeluarga)
+
+      var ayahIbu=['Ayah', 'Ibu'];
+      var i=0;
       var html=""
       html+='<div class="border-rw">'
       if (data[0].length>0) {
-        data[0].forEach(element => {
-        html+='<div class="row">'
-        html+=  '<div class="col-md-4">'
-        html+=    '<label class="form-control-label">'+element.statusKeluarga+'</label>'
-        html+=  '</div>'
-        html+='</div>'
+        for (let index = 0; index < ayahIbu.length;) {
+          if (ayahIbu[index]==data[0][i].statusKeluarga) {
+            html+='<div class="row">'
+            html+=  '<div class="col-md-4">'
+            html+=    '<label class="form-control-label">'+data[0][i].statusKeluarga+'</label>'
+            html+=  '</div>'
+            html+='</div>'
 
-        html+='<div class="row">'
-        html+=  '<div class="col-md-3">'
-        html+=    '<div class="form-group">'
-        html+=      '<label class="form-control-label" for="nama">NAMA</label>'
-        html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'">'
-        html+=    '</div>'
-        html+=  '</div>'
-        html+=  '<div class="col-md-2">'
-        html+=    '<div class="form-group">'
-        html+=      '<label class="form-control-label" for="usia">Usia</label>'
-        html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'">'
-        html+=    '</div>'
-        html+=  '</div>'
-        html+=  '<div class="col-md-1">'
-        html+=    '<div class="form-group">'
-        html+=      '<label class="form-control-label" for="LP">L/P</label>'
-        html+=      '<select class="form-control" id="LP" name="LP[]">'
-        if (element.genderKeluarga=="L") {
-        html+='<option value="L" selected>L</option>'
-        html+='<option value="P">P</option>'
-        } else if(element.genderKeluarga=="P") {
-        html+='<option value="L" >L</option>'
-        html+='<option value="P" selected>P</option>'
-        }else{
-        html+='<option value="" selected>L/P</option>'
-        html+='<option value="L" >L</option>'
-        html+='<option value="P">P</option>'
+            html+='<div class="row">'
+            html+=  '<div class="col-md-3">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="nama">NAMA</label>'
+            html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+data[0][i].namaKelurga+'">'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+=  '<div class="col-md-2">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="usia">Usia</label>'
+            html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+data[0][i].usiaKeluarga+'">'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+=  '<div class="col-md-1">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="LP">L/P</label>'
+            html+=      '<select class="form-control" id="LP" name="LP[]">'
+            if (data[0][i].genderKeluarga=="L") {
+            html+='<option value="L" selected>L</option>'
+            html+='<option value="P">P</option>'
+            } else if(data[0][i].genderKeluarga=="P") {
+            html+='<option value="L" >L</option>'
+            html+='<option value="P" selected>P</option>'
+            }else{
+            html+='<option value="" selected>L/P</option>'
+            html+='<option value="L" >L</option>'
+            html+='<option value="P">P</option>'
+            }
+            html+=      '</select>'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+=  '<div class="col-md-3">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
+            html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+data[0][i].pendidikanKeluarga+'">'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+=  '<div class="col-md-3">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
+            html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+data[0][i].perushaanKeluarga+'">'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+='</div>'
+            if (i<data[0].length-1) {
+              i++;
+            }
+            index++;
+          }else {
+            // console.log('bawah ',index,i)
+            html+='<div class="row">'
+            html+=  '<div class="col-md-4">'
+            html+=    '<label class="form-control-label">'+ayahIbu[index]+'</label>'
+            html+=  '</div>'
+            html+='</div>'
+
+            html+='<div class="row">'
+            html+=  '<div class="col-md-3">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="nama">NAMA</label>'
+            html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+=  '<div class="col-md-2">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="usia">Usia</label>'
+            html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+=  '<div class="col-md-1">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="LP">L/P</label>'
+            html+=      '<select class="form-control" id="LP" name="LP[]">'
+            html+='<option value="" selected>L/P</option>'
+            html+='<option value="L" >L</option>'
+            html+='<option value="P">P</option>'
+            html+=      '</select>'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+=  '<div class="col-md-3">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
+            html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+=  '<div class="col-md-3">'
+            html+=    '<div class="form-group">'
+            html+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
+            html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+            html+=    '</div>'
+            html+=  '</div>'
+            html+='</div>'
+            index++;
+          }
         }
-        html+=      '</select>'
-        html+=    '</div>'
-        html+=  '</div>'
-        html+=  '<div class="col-md-3">'
-        html+=    '<div class="form-group">'
-        html+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-        html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'">'
-        html+=    '</div>'
-        html+=  '</div>'
-        html+=  '<div class="col-md-3">'
-        html+=    '<div class="form-group">'
-        html+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-        html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'">'
-        html+=    '</div>'
-        html+=  '</div>'
-        html+='</div>'
-        });
       }else{
-        ayahibu = ['Ayah','Ibu']
-        ayahibu.forEach(element => {
+        ayahIbu.forEach(element => {
           html+='<div class="row">'
           html+=  '<div class="col-md-4">'
           html+=    '<label class="form-control-label">'+element+'</label>'
@@ -1393,9 +1447,9 @@ function get_keluarga(){
           html+=    '</div>'
           html+=  '</div>'
           html+='</div>'
-        });
+        })
       }
-
+      // jalan keluarga
       if (data[5].length>0) {
         for (let index = 0; index < 1; index++) {
           html+='<div class="row">'
@@ -1754,70 +1808,123 @@ function get_keluarga(){
       html4+= '</div>'
       $('#kelaurga4').append(html4);
 
+      var ayahIbumertua =['Ayah Mertua','Ibu Mertua']
+      var j=0;
       var html5=""
       html5+='<div class="border-rw">'
       if (data[1].length>0) {
-      data[1].forEach(element => {
-        html5+='<div class="row">'
-        html5+=  '<div class="col-md-4">'
-        html5+=    '<label class="form-control-label">'+element.statusKeluarga+'</label>'
-        html5+=  '</div>'
-        html5+='</div>'
+        for (let index = 0; index < ayahIbumertua.length;) {
+          if (ayahIbumertua[index]==data[1][j].statusKeluarga) {
+            console.log(data[1][j].statusKeluarga)
+            html5+='<div class="row">'
+            html5+=  '<div class="col-md-4">'
+            html5+=    '<label class="form-control-label">'+data[1][j].statusKeluarga+'</label>'
+            html5+=  '</div>'
+            html5+='</div>'
 
-        html5+='<div class="row">'
-        html5+=  '<div class="col-md-3">'
-        html5+=    '<div class="form-group">'
-        html5+=      '<label class="form-control-label" for="nama">NAMA</label>'
-        html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'">'
-        html5+=    '</div>'
-        html5+=  '</div>'
-        html5+=  '<div class="col-md-2">'
-        html5+=    '<div class="form-group">'
-        html5+=      '<label class="form-control-label" for="usia">Usia</label>'
-        html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'">'
-        html5+=    '</div>'
-        html5+=  '</div>'
-        html5+=  '<div class="col-md-1">'
-        html5+=    '<div class="form-group">'
-        html5+=      '<label class="form-control-label" for="LP">L/P</label>'
-        html5+=      '<select class="form-control" id="LP" name="LP[]">'
-        if (element.genderKeluarga=="L") {
-        html5+='<option value="L" selected>L</option>'
-        html5+='<option value="P">P</option>'
-        } else if(element.genderKeluarga=="P") {
-        html5+='<option value="L" >L</option>'
-        html5+='<option value="P" selected>P</option>'
-        }else{
-        html5+='<option value="" selected>L/P</option>'
-        html5+='<option value="L" >L</option>'
-        html5+='<option value="P">P</option>'
+            html5+='<div class="row">'
+            html5+=  '<div class="col-md-3">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="nama">NAMA</label>'
+            html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+data[1][j].namaKelurga+'">'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+=  '<div class="col-md-2">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="usia">Usia</label>'
+            html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+data[1][j].usiaKeluarga+'">'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+=  '<div class="col-md-1">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="LP">L/P</label>'
+            html5+=      '<select class="form-control" id="LP" name="LP[]">'
+            if (data[1][j].genderKeluarga=="L") {
+            html5+='<option value="L" selected>L</option>'
+            html5+='<option value="P">P</option>'
+            } else if(data[1][j].genderKeluarga=="P") {
+            html5+='<option value="L" >L</option>'
+            html5+='<option value="P" selected>P</option>'
+            }else{
+            html5+='<option value="" selected>L/P</option>'
+            html5+='<option value="L" >L</option>'
+            html5+='<option value="P">P</option>'
+            }
+            html5+=      '</select>'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+=  '<div class="col-md-3">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
+            html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+data[1][j].pendidikanKeluarga+'">'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+=  '<div class="col-md-3">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
+            html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+data[1][j].perushaanKeluarga+'">'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+='</div>'
+            if (j<data[1].length-1) {
+              j++;
+            }
+            index++;
+          }else {
+            // console.log('bawah ',index,i)
+            html5+='<div class="row">'
+            html5+=  '<div class="col-md-4">'
+            html5+=    '<label class="form-control-label">'+ayahIbumertua[index]+'</label>'
+            html5+=  '</div>'
+            html5+='</div>'
+
+            html5+='<div class="row">'
+            html5+=  '<div class="col-md-3">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="nama">NAMA</label>'
+            html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+=  '<div class="col-md-2">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="usia">Usia</label>'
+            html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+=  '<div class="col-md-1">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="LP">L/P</label>'
+            html5+=      '<select class="form-control" id="LP" name="LP[]">'
+            html5+='<option value="" selected>L/P</option>'
+            html5+='<option value="L" >L</option>'
+            html5+='<option value="P">P</option>'
+            html5+=      '</select>'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+=  '<div class="col-md-3">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
+            html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+=  '<div class="col-md-3">'
+            html5+=    '<div class="form-group">'
+            html5+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
+            html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+            html5+=    '</div>'
+            html5+=  '</div>'
+            html5+='</div>'
+            index++;
+          }
         }
-        html5+=      '</select>'
-        html5+=    '</div>'
-        html5+=  '</div>'
-        html5+=  '<div class="col-md-3">'
-        html5+=    '<div class="form-group">'
-        html5+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-        html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'">'
-        html5+=    '</div>'
-        html5+=  '</div>'
-        html5+=  '<div class="col-md-3">'
-        html5+=    '<div class="form-group">'
-        html5+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-        html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'">'
-        html5+=    '</div>'
-        html5+=  '</div>'
-        html5+='</div>'
-      });
       }else{
-        mertua=['Ayah Mertua','Ibu Mertua']
-        mertua.forEach(element => {
+        ayahIbumertua.forEach(element => {
           html5+='<div class="row">'
           html5+=  '<div class="col-md-4">'
           html5+=    '<label class="form-control-label">'+element+'</label>'
           html5+=  '</div>'
           html5+='</div>'
-  
+
           html5+='<div class="row">'
           html5+=  '<div class="col-md-3">'
           html5+=    '<div class="form-group">'
@@ -1844,7 +1951,7 @@ function get_keluarga(){
           html5+=  '<div class="col-md-3">'
           html5+=    '<div class="form-group">'
           html5+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-          html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90">'
+          html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
           html5+=    '</div>'
           html5+=  '</div>'
           html5+=  '<div class="col-md-3">'
@@ -1854,7 +1961,7 @@ function get_keluarga(){
           html5+=    '</div>'
           html5+=  '</div>'
           html5+='</div>'
-        });
+        })
       }
       if (data[5].length>0) {
           html5+='<div class="row">'

@@ -383,6 +383,7 @@ class KandidatController extends Controller
      }
           
     }
+
     public function UpdateForm2(Request $request){
           // dd($request);
 
@@ -539,6 +540,91 @@ class KandidatController extends Controller
                }
                
            }
+
+           $statuskeluarga = ['Ayah','Ibu','Kaka/Adik 1',
+                                'Kaka/Adik 2','kaka/adik 3',
+                                'Kaka/Adik 4','Suami/Istri',
+                                'Anak 1','Anak 2','Anak 3','Anak 4',
+                                'Ayah Mertua','Ibu Mertua'
+            ];
+            $statusalamt = [
+                'Alamat Keluarga',
+                'Alamat Merrtua'
+            ];
+
+            DB::table('T_keluarga')->where('id_Tkandidat',$id_kandidat)->delete();
+            if(!empty($request->nama)){
+                for ($k=0; $k <count($request->nama) ; $k++) {
+                    $status = $statuskeluarga[$k]; 
+                    $namakeluarga = trim($request->nama[$k],''); 
+                    $usiakeluarga = trim($request->usia[$k],''); 
+                    $LPKeluarga = trim($request->LP[$k],''); 
+                    $pendidikankeluarga = trim($request->pendidikan[$k],'');
+                    $perushaankeluarga = trim($request->namaperushaan[$k],''); 
+                    
+                    if (!empty($namakeluarga)&&!empty($usiakeluarga)&&!empty($LPKeluarga)&&!empty($pendidikankeluarga)&&!empty($perushaankeluarga)) {
+                        DB::table('T_keluarga')
+                        ->insert([
+                            'id_Tkandidat'=>$id_kandidat,
+                            'statusKeluarga'=>$status,
+                            'namaKelurga'=>$namakeluarga,
+                            'usiaKeluarga'=>$usiakeluarga,
+                            'genderKeluarga'=>$LPKeluarga,
+                            'pendidikanKeluarga'=>$pendidikankeluarga,
+                            'perushaanKeluarga'=>$perushaankeluarga
+                        ]);
+                    }
+                }
+                
+            }
+
+            DB::table('T_alamatKeluarga')->where('id_Tkandidat',$id_kandidat)->delete();
+            if(!empty($request->alamat)){
+                for ($k=0; $k <count($request->alamat) ; $k++) {
+                    $status = $statusalamt[$k]; 
+                    $alamatkeluarga = trim($request->alamat[$k],'');
+                    if ($k<1) {
+                        $tlpkeluarga = trim($request->notlp[$k],''); 
+                    } else{
+                        $tlpkeluarga=null;
+                    }
+                    
+                    
+                    if (!empty($status)&&!empty($alamatkeluarga)) {
+                        DB::table('T_alamatKeluarga')
+                            ->insert([
+                                'id_Tkandidat'=>$id_kandidat,
+                                'statusAlamat'=>$status,
+                                'alamatKeluarga'=>$alamatkeluarga,
+                                'tlpKeluarga'=>$tlpkeluarga
+                            ]);
+                        }
+                }
+                
+            }
+
+            DB::table('T_bahasa')->where('id_Tkandidat',$id_kandidat)->delete();
+            if(!empty($request->bahasa)){
+               for ($k=0; $k <count($request->bahasa) ; $k++) { 
+                   $bahasa = trim($request->bahasa[$k],''); 
+                   $berbicara = trim($request->berbicara[$k],''); 
+                   $menulis = trim($request->menulis[$k],''); 
+                   $membaca = trim($request->membaca[$k],''); 
+                   
+                   if (!empty($bahasa)&&!empty($berbicara)&&!empty($menulis)&&!empty($membaca)) {
+                       DB::table('T_bahasa')
+                           ->insert([
+                               'id_Tkandidat'=>$id_kandidat, //$request->kandidat
+                               'bahasa'=>$bahasa,
+                               'berbicara'=>$berbicara,
+                               'menulis'=>$menulis,
+                               'membaca'=>$membaca
+                           ]);
+                   }
+               }
+               
+           }
+
           return Redirect::back();
     }
 }
