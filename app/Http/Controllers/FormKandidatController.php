@@ -343,11 +343,13 @@ class FormKandidatController extends Controller
                 }
                 DB::table('T_LogKandidat')
                     ->insert([
-                        'noidentitas_Tkandidat'=>$request->noidentitas,
+                        'id_Tkandidat'=>$id_kandidat,
                         'id_Rekrutmen'=>'1',
                         'id_Organisasi'=>$request->organisasiid,
                         'id_Summary'=>NULL,
                         'notes'=>NULL,
+                        'ccEmail'=>NULL,
+                        'jenis'=>NULL,
                         'created_at'=>Carbon::now(),
                         'updated_at'=>NULL
                     ]);
@@ -590,11 +592,13 @@ class FormKandidatController extends Controller
                         
                 DB::table('T_LogKandidat')
                     ->insert([
-                        'noidentitas_Tkandidat'=>$request->noidentitas,
+                        'id_Tkandidat'=>$id_kandidat,
                         'id_Rekrutmen'=>'1',
                         'id_Organisasi'=>$request->organisasiid,
                         'id_Summary'=>NULL,
                         'notes'=>NULL,
+                        'ccEmail'=>NULL,
+                        'jenis'=>NULL,
                         'created_at'=>Carbon::now(),
                         'updated_at'=>NULL
                     ]);
@@ -826,11 +830,13 @@ class FormKandidatController extends Controller
                         
                 DB::table('T_LogKandidat')
                     ->insert([
-                        'noidentitas_Tkandidat'=>$request->noidentitas,
+                        'id_Tkandidat'=>$id_kandidat,
                         'id_Rekrutmen'=>'1',
                         'id_Organisasi'=>$request->organisasiid,
                         'id_Summary'=>NULL,
                         'notes'=>NULL,
+                        'ccEmail'=>NULL,
+                        'jenis'=>NULL,
                         'created_at'=>Carbon::now(),
                         'updated_at'=>NULL
                     ]);

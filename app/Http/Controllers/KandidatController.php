@@ -73,6 +73,18 @@ class KandidatController extends Controller
           $darurat = DB::table('T_darurat')
                          ->where('id_Tkandidat',$id) 
                          ->get();
+          //schedule
+          $list_proses = DB::table('M_Rekrutmen')
+                        ->select('id','proses')
+                        ->where('active',1)
+                        ->where('deleted',0)
+                        ->whereNotIn('id', [1,7,8])
+                        ->get();
+          //list_cc
+          $list_cc = DB::table('M_User')
+                    ->select('nama','email')
+                    ->where('id_Organisasi',$info_kandidat->id_Organisasi)
+                    ->get();
 
           if($info_kandidat){
                return view('detail_kandidat',
@@ -89,7 +101,11 @@ class KandidatController extends Controller
                          // phase2
                          'info_kandidat2' => $infokandidat2,
                          'referensi'=>$referensi,
-                         'darurat'=>$darurat
+                         'darurat'=>$darurat,
+
+                         // schedule
+                         'list_proses'=>$list_proses,
+                         'list_cc'=>$list_cc
                     ]);
           }else{
                return redirect()->route('home');
@@ -246,6 +262,8 @@ class KandidatController extends Controller
                ->get();
      return $list_sim;
     }
+
+
 
     //update
      // untuk yang atas
@@ -626,5 +644,32 @@ class KandidatController extends Controller
            }
 
           return Redirect::back();
+    }
+
+    public function GetSchedule($id){
+        $list_schedule=DB::select('EXEC SP_Get_Schedule  ?',array($id));
+        // $list_schedule=DB::table('T_LogKandidat')
+        //                 ->select('')
+        //                 ->where('id_Tkandidat',$id)
+        //                 ->get();
+        return $list_schedule;
+    }
+
+    public function SetSchedule(Request $request){
+        DB::table('T_LogKandidat')
+            ->where('id',$request->id_schedule)
+            ->update([
+                'Notes'=>$request->notes,
+                'Summary'=>$request->summary,
+            ]);
+        return Redirect::back();
+    }
+
+    public function GetNotes($id){
+        $notes = DB::table('T_LogKandidat')
+                -> select('Summary','Notes')
+                ->where('id',$id)
+                ->get();
+        return $notes;
     }
 }

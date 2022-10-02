@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +44,9 @@ Route::get('/hrdats/detail/getkenal/kandidat/{id}','KandidatController@GetKenal'
 Route::get('/hrdats/detail/getkerabat/kandidat/{id}','KandidatController@GetKerabat')->name('dk.GetKerabat');
 Route::get('/hrdats/detail/getkeluarga/kandidat/{id}','KandidatController@GetKeluarga')->name('dk.GetKeluarga');
 Route::post('/hrdats/detail/update/phase2','KandidatController@UpdateForm2')->name('dk.UpdateForm2');
+Route::get('/hrdats/detail/getschedule/kandidat/{id}','KandidatController@GetSchedule')->name('dk.GetSchedule');
+Route::Post('/hrdats/detail/setschedule/kandidat','KandidatController@SetSchedule')->name('dk.SetSchedule');
+Route::get('/hrdats/detail/getschedule/notes/{id}','KandidatController@GetNotes')->name('dk.GetNotes');
 
 //Master Table Internal
 Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');
@@ -185,4 +189,8 @@ Route::Post('/hrdats/hrd/add/link', 'UrlController@AddUrl')->name('hr_url.AddUrl
 Route::Post('/hrdats/hrd/active/link', 'UrlController@ActiveUrl')->name('hr_url.ActiveUrl');
 Route::Post('/hrdats/hrd/del/link', 'UrlController@DelUrl')->name('hr_url.DelUrl');
 
+//BUAT TESTING
 Route::get('/test','FormKandidatController@Test')->name('fk.Test');
+
+//EMAIL
+Route::get('/mailsourcing','EmailController@ESourcing')->name('em.ESourcing');

@@ -90,7 +90,9 @@
                 <i class="ni business_briefcase-24 mr-2"></i>{{ empty($pekerjaan->namaPerusahaan) ? "": $pekerjaan->namaPerusahaan }} - {{ empty($pekerjaan->jabatanPerusahaan) ? "": $pekerjaan->jabatanPerusahaan}}
               </div>
               <div class="mt-3">
-                <i class="ni education_hat mr-2"></i>{{ $pendidikan->pendidikan }} {{ $pendidikan->namaSekolah }} {{ $pendidikan->jurusan }}
+                @if (!empty($pendidikan))
+                  <i class="ni education_hat mr-2"></i>{{ $pendidikan->pendidikan }} {{ $pendidikan->namaSekolah }} {{ $pendidikan->jurusan }}
+                @endif
               </div>
               <div class="d-flex col-8 center mt-3">
                 @if (!empty($info_kandidat->CV))
@@ -228,6 +230,212 @@
       </div>
       {{-- END CARD SEBELAJ KANAN --}}
     </div>
+
+      {{-- START SCHEDULE --}}
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-3">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">info kandidat</h6>
+                  <h5 class="h3 mb-0">SCHEDULE</h5>
+                </div>
+                <div class="d-flex col-8">
+                  <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-schedule">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="gap-logo">Tambah</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" id="body_schedule">
+              <div class="table-responsive">
+                <table class="table" id="tblSchedule">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Status</th>
+                      <th>Tanggal</th>
+                      <th>Summary</th>
+                      <th>Notes</th>
+                      <th>Update</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {{--!!START MODAL TAMBAH!!--}}
+      <div class="modal fade bd-example-modal-xl modal-tambah-schedule" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Schedule</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <input id="id_kandidatModal" value="{{ $info_kandidat->id }}" hidden>
+                    <input id="id_Organisasi" value="{{ $info_kandidat->id_Organisasi }}" hidden>
+                    <label class="form-control-label" for="alamatlengkap">Nama Kandidat</label>
+                    <input type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" value="{{ $info_kandidat->namalengkap }}" readonly>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">list proses</label>
+                    <select class="form-control" id="schedule" name="schedule" required>
+                      <option value="" selected disabled>Proses</option>
+                      @foreach ($list_proses as $proses )
+                      <option value="{{ $proses->id }}">{{ $proses->proses }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Online/On-site</label>
+                    <select class="form-control" id="proses" name="proses" required>
+                      <option value="" selected disabled>Online/Onsite</option>
+                      <option value="Online">Online</option>
+                      <option value="On-site">On-site</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="f_online" hidden>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Link Zoom</label>
+                    <input type="text" class="form-control" id="ol_link" name="ol_link" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Meeting ID</label>
+                    <input type="text" class="form-control" id="ol_meetID" name="ol_meetID" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Password</label>
+                    <input type="text" class="form-control" id="ol_pass" name="ol_pass" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Breakout room</label>
+                    <input type="text" class="form-control" id="ol_Br" name="ol_Br" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="f_onsite" hidden>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Alamat</label>
+                    <input type="text" class="form-control" id="os_alamat" name="os_alamat" value="">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Ruangan</label>
+                    <input type="text" class="form-control" id="os_ruangan" name="os_ruangan" value="">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Bertemu dengan</label>
+                    <input type="text" class="form-control" id="os_bertemu" name="os_bertemu" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Tanggal dan waktu</label>
+                    <input type="datetime-local" class="form-control" id="tglWaktu" name="tglWaktu" value="">
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">TCC To:</label>
+                    <select id="ccto" class="js-example-basic-multiple " name="ccto[]" multiple="multiple">
+                      @foreach ($list_cc as $ccto )
+                      <option value="{{ $ccto->email }}">{{ $ccto->nama }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnAdd-schedule" type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL TAMBAH!!--}}
+
+       {{--!!START MODAL Notes!!--}}
+       <div class="modal fade bd-example-modal-lg modal-notes" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="titleNotes"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="POST" action="{{ route('dk.SetSchedule') }}" >
+              @csrf
+            <div class="modal-body">
+                <input id="id_schedule" name="id_schedule" hidden>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Notes</label>
+                      {{-- <textarea type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" value="{{ $info_kandidat->namalengkap }}" textarea> --}}
+                      <textarea class="form-control" id="notes" name="notes" rows="4" cols="50" required></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="summary">Notes</label>
+                      <select  class="form-control" name="summary" id="summary" required>
+                        <option value="" selected disabled>Summary</option>
+                        <option value="Lanjut">lanjut</option>
+                        <option value="Pertimbangkan">Pertimbangkan</option>
+                        <option value="Tolak">Tolak</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </form>
+          </div>
+        </div>
+       </div>
+      {{--!!START MODAL Notes!!--}}
+
+      </div>
+      {{-- END SCHEDULE --}}
 
     {{-- PAGE --}}
     <nav aria-label="Page navigation example">
@@ -1089,7 +1297,7 @@
       <button type="submit" class="btn btn-primary btnsbmt">Update</button>
     </form>
     @else
-    <div class="row p2">  
+    <div class="row p2" hidden>  
       <div class="col-xl-12">
         <div class="card">
           <h1>DATA TIDAK ADA</h1>

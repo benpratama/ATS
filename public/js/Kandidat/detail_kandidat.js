@@ -32,6 +32,12 @@ $( document ).ready(function() {
   sakit()
   psikologis()
   saudara()
+  $('.modal-tambah-schedule').on('show.bs.modal', function() {
+    $('#ccto').select2();
+  })
+  modal()
+  getSchedule()
+  onlineORonsite()
 });
 
 function gen_url(){
@@ -61,6 +67,34 @@ function gen_url(){
   })
 }
 
+function onlineORonsite(){
+$('#proses').on('change',function(){
+  proses = $('#proses').val();
+  if(proses=='Online'){
+    $('#f_online').attr('hidden',false)
+    $('#f_onsite').attr('hidden',true)
+  }else if(proses=='On-site'){
+    $('#f_online').attr('hidden',true)
+    $('#f_onsite').attr('hidden',false)
+  }else{
+    $('#f_online').attr('hidden',true)
+    $('#f_onsite').attr('hidden',true)
+  }
+})
+}
+
+function modal(){
+  $('.modal-tambah-schedule').on('show.bs.modal', function() {
+    $('#schedule').val('');
+    $('#poses').val('');
+    $('#ol_link').val('');
+    $('#ol_meetID').val('');
+    $('#ol_pass').val('');
+    $('#ol_Br').val('');
+    $('#tglWaktu').val('');
+    $('#ccto').val(null).trigger('change');
+  })
+}
 
 // function AddDelSim(){
 //   $('#btnAdd-sim').on('click',function(){
@@ -488,78 +522,111 @@ function get_Pendidikan(){
       var html=''
       var i=0;
       for (let index = 0; index < pendidikans.length;) {
-        if(pendidikans[index]==data[0][i].pendidikan){
-          html+='<tr>'
-          html+=  '<td>'+pendidikans[index]+'</td>'
-          html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45" value="'+data[0][i].namaSekolah+'"></td>'
-          if (pendidikans[index]=='SMA') {
-            html+='<td>'
-            html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
-            html+=    '<option value="" selected>jurusan</option>'
-            data[1].forEach(element => {
-              if (element.id==data[0][i].jurusan) {
-                html+= '<option value="'+element.id+'" selected>'+element.nama+'</option>'
-              } else {
-                html+= '<option value="'+element.id+'">'+element.nama+'</option>'
-              }
-            });
-          html+=  '</select>'
-          html+='</td>'
-          } else if(pendidikans[index]=='Akademi') {
-            html+='<td>'
-            html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
-            html+=    '<option value="" selected>jurusan</option>'
-            data[2].forEach(element => {
-              if (element.id==data[0][i].jurusan) {
-                html+= '<option value="'+element.id+'" selected>'+element.nama+'</option>'
-              } else {
-                html+= '<option value="'+element.id+'">'+element.nama+'</option>'
-              }
-            });
+        if(data[0]>0){
+          if(pendidikans[index]==data[0][i].pendidikan){
+            html+='<tr>'
+            html+=  '<td>'+pendidikans[index]+'</td>'
+            html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45" value="'+data[0][i].namaSekolah+'"></td>'
+            if (pendidikans[index]=='SMA') {
+              html+='<td>'
+              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              html+=    '<option value="" selected>jurusan</option>'
+              data[1].forEach(element => {
+                if (element.id==data[0][i].jurusan) {
+                  html+= '<option value="'+element.id+'" selected>'+element.nama+'</option>'
+                } else {
+                  html+= '<option value="'+element.id+'">'+element.nama+'</option>'
+                }
+              });
             html+=  '</select>'
             html+='</td>'
+            } else if(pendidikans[index]=='Akademi') {
+              html+='<td>'
+              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              html+=    '<option value="" selected>jurusan</option>'
+              data[2].forEach(element => {
+                if (element.id==data[0][i].jurusan) {
+                  html+= '<option value="'+element.id+'" selected>'+element.nama+'</option>'
+                } else {
+                  html+= '<option value="'+element.id+'">'+element.nama+'</option>'
+                }
+              });
+              html+=  '</select>'
+              html+='</td>'
+            }else{
+              html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45" value="'+data[0][i].jurusan+'"></td>'
+            }
+            
+            html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45" value="'+data[0][i].kota+'"></td>'
+            html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45" value="'+data[0][i].tahun+'"></td>'
+            html+='</tr>'
+            index++
+            if (i<data[0].length-1) {
+              i+=1;
+            }
           }else{
-            html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45" value="'+data[0][i].jurusan+'"></td>'
-          }
-          
-          html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45" value="'+data[0][i].kota+'"></td>'
-          html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45" value="'+data[0][i].tahun+'"></td>'
-          html+='</tr>'
-          index++
-          if (i<data[0].length-1) {
-            i+=1;
+            html+='<tr>'
+            html+=  '<td>'+pendidikans[index]+'</td>'
+            html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>'
+            if (pendidikans[index]=='SMA') {
+              html+='<td>'
+              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              html+=    '<option value="" selected>jurusan</option>'
+              data[1].forEach(element => {
+                html+= '<option value="'+element.id+'">'+element.nama+'</option>'
+              });
+            html+=  '</select>'
+            html+='</td>'
+            } else if(pendidikans[index]=='Akademi') {
+              html+='<td>'
+              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              html+=    '<option value="" selected>jurusan</option>'
+              data[2].forEach(element => {
+                  html+= '<option value="'+element.id+'">'+element.nama+'</option>'
+              });
+              html+=  '</select>'
+              html+='</td>'
+            }else{
+              html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
+            }
+            // html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
+            html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>'
+            html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45"></td>'
+            html+='</tr>'
+            index++
           }
         }else{
           html+='<tr>'
-          html+=  '<td>'+pendidikans[index]+'</td>'
-          html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>'
-          if (pendidikans[index]=='SMA') {
-            html+='<td>'
-            html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
-            html+=    '<option value="" selected>jurusan</option>'
-            data[1].forEach(element => {
-              html+= '<option value="'+element.id+'">'+element.nama+'</option>'
-            });
-          html+=  '</select>'
-          html+='</td>'
-          } else if(pendidikans[index]=='Akademi') {
-            html+='<td>'
-            html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
-            html+=    '<option value="" selected>jurusan</option>'
-            data[2].forEach(element => {
+            html+=  '<td>'+pendidikans[index]+'</td>'
+            html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>'
+            if (pendidikans[index]=='SMA') {
+              html+='<td>'
+              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              html+=    '<option value="" selected>jurusan</option>'
+              data[1].forEach(element => {
                 html+= '<option value="'+element.id+'">'+element.nama+'</option>'
-            });
+              });
             html+=  '</select>'
             html+='</td>'
-          }else{
-            html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
-          }
-          // html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
-          html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>'
-          html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45"></td>'
-          html+='</tr>'
-          index++
+            } else if(pendidikans[index]=='Akademi') {
+              html+='<td>'
+              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              html+=    '<option value="" selected>jurusan</option>'
+              data[2].forEach(element => {
+                  html+= '<option value="'+element.id+'">'+element.nama+'</option>'
+              });
+              html+=  '</select>'
+              html+='</td>'
+            }else{
+              html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
+            }
+            // html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
+            html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>'
+            html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45"></td>'
+            html+='</tr>'
+            index++
         }
+        
       }
       $('#tbody_pendidikan').append(html);
     })
@@ -1815,7 +1882,7 @@ function get_keluarga(){
       if (data[1].length>0) {
         for (let index = 0; index < ayahIbumertua.length;) {
           if (ayahIbumertua[index]==data[1][j].statusKeluarga) {
-            console.log(data[1][j].statusKeluarga)
+            // console.log(data[1][j].statusKeluarga)
             html5+='<div class="row">'
             html5+=  '<div class="col-md-4">'
             html5+=    '<label class="form-control-label">'+data[1][j].statusKeluarga+'</label>'
@@ -1999,6 +2066,7 @@ function get_keluarga(){
     });
 }
 
+
 function numberWithCommas() {
   $('#gaji').keyup(function(event) {
     if(event.which >= 37 && event.which <= 40) return;
@@ -2020,5 +2088,106 @@ function numberWithCommas() {
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
       ;
     });
+  })
+}
+
+function getSchedule(){
+  id = $('#id_kandidatModal').val();
+  today = new Date();
+  // $.ajaxSetup({
+  //   headers: {
+  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //   }
+  // });
+  // $.ajax({
+  //     _token: '{{ csrf_token() }}',
+  //     url: '/hrdats/detail/getschedule/kandidat/'+id,
+  //     type: 'get'
+  // }).done((data) => {
+  //   console.log(JSON.stringify(data));
+  // })
+  $('#tblSchedule').DataTable({
+    
+    "scrollY":        "400px",
+    "scrollCollapse": true,
+    pageLength : 5,
+    ajax: {
+    url: '/hrdats/detail/getschedule/kandidat/'+id,
+            data:{},
+            dataSrc:""
+        },
+    "paging":true,
+    "bInfo" : false,
+    "lengthChange": false,
+    language: {
+        paginate: {
+            previous: "<i class='fas fa-angle-left'>",
+            next: "<i class='fas fa-angle-right'>"
+        }
+    },
+    columns: [
+        {
+            data: 'proses',
+            defaultContent: ''
+        },
+        {
+          data: 'created_at',
+          defaultContent: 'NULL'
+        },
+        {
+          data: 'Summary',
+          defaultContent: 'NULL'
+        },
+        {
+            defaultContent: '',
+            render: (data, type, row, meta)=> {
+              if (row.proses=='Apply') {
+                return'NULL'
+              } else {
+                return '<button type="button" class="btn btn-info" onclick="Modal_notes(this)" data-toggle="modal" data-target=".modal-notes" value="'+row.id+'" data-statusp="'+row.proses+'">Note</button>'
+              }
+                
+            }
+        },
+        {
+          defaultContent: '',
+          render: (data, type, row, meta)=> {
+              if (row.proses=='Apply') {
+                return 'NULL'
+              } else {
+                if (row.created_at<today) {
+                  return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'">Edit</button>'
+                } else {
+                  return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'" disabled>Edit</button>'
+                }
+                
+              }
+          }
+        }
+    ],
+    order: [[1, 'desc']]
+});
+}
+function Modal_notes(obj){
+  //buat tampilin judul notes
+  statpro=$(obj).data("statusp")
+  $('#titleNotes').text('Note for '+statpro)
+
+  val = $(obj).val()
+  $('#id_schedule').val(val);
+
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  $.ajax({
+      _token: '{{ csrf_token() }}',
+      url: '/hrdats/detail/getschedule/notes/'+val,
+      type: 'get'
+  }).done((data) => {
+    console.log(JSON.stringify(data));
+    $('#notes').text(data[0].Notes);
+    $("#summary").val(data[0].Summary);
   })
 }
