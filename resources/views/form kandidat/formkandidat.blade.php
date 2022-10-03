@@ -318,7 +318,7 @@
                         <select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">
                           <option value="" selected>jurusan</option>
                           @foreach ($SMA as $sma )
-                          <option value="{{ $sma->id }}">{{ $sma->nama }}</option>
+                          <option value="{{ $sma->nama }}">{{ $sma->nama }}</option>
                           @endforeach
                         </select>
                       </th>
@@ -332,7 +332,7 @@
                         <select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">
                           <option value="" selected>jurusan</option>
                           @foreach ($Sederajat as $sederajat )
-                          <option value="{{ $sederajat->id }}">{{ $sederajat->nama }}</option>
+                          <option value="{{ $sederajat->nama }}">{{ $sederajat->nama }}</option>
                           @endforeach
                         </select>
                       </th>

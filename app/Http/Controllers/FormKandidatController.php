@@ -297,46 +297,43 @@ class FormKandidatController extends Controller
 
                 if(!empty($request->nama_perushaan)){
                     for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
-                        $namaperusahaan = trim($request->nama_perushaan[$k],''); 
+                        $namaperusahaan = trim($request->nama_perushaan[$k],'');
                         $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
                         $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
                         $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
-                        // $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
                         $startperusahaan = trim($request->start_perusahaan[$k],''); 
-                        // $endperusahaan = trim($request->end_perusahaan[$k],'');
-                         if(empty($request->end_perusahaan[$k])){
-                            $endperusahaan = null;
-                            $tahun=null;
-                            $bulan=null;
-                            $hari=null;
-                         }else{
-                            $endperusahaan = $request->end_perusahaan[$k];
-                            $start = Carbon::parse($startperusahaan);
-                            $end = Carbon::parse( $endperusahaan);
-                            $lama = $start->diff($end)->format('%y-%m-%d');
-                            $rslt = explode("-",$lama);
-                            $tahun = $rslt[0];
-                            $bulan = $rslt[1];
-                            $hari = $rslt[2];
-                         }
-
+                        
+                        // if(empty($request->end_perusahaan[$k])){
+                        //     $endperusahaan = null;
+                        //     $tahun=null;
+                        //     $bulan=null;
+                        //     $hari=null;
+                        // }else{
+                        //     $endperusahaan = $request->end_perusahaan[$k];
+                        //     $start = Carbon::parse($startperusahaan);
+                        //     $end = Carbon::parse( $endperusahaan);
+                        //     $lama = $start->diff($end)->format('%y-%m-%d');
+                        //     $rslt = explode("-",$lama);
+                        //     $tahun = null;
+                        //     $bulan = null;
+                        //     $hari = null;
+                        // }
+        
                         if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)) {
-
-
                             DB::table('T_kandidat_pekerjaan')
                                 ->insert([
-                                    'id_Tkandidat'=>$id_kandidat,
+                                    'id_Tkandidat'=>$request->id_kandidat2,
                                     'namaPerusahaan'=>$namaperusahaan,
                                     'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
                                     'alamatPerusahaan'=>$alamatperushaan,
                                     'jabatanPerusahaan'=>$jabatanperusahaan,
                                     'atasanPerusahaan'=>$atasanperusahaan,
-                                    // 'tahunPerusahaan'=>$lamaperusahaan
+                                    'tahunPerusahaan'=>0,
                                     'startPerushaan'=>$startperusahaan,
-                                    'endPerushaan'=>$endperusahaan,
-                                    'tahun'=>$tahun,
-                                    'bulan'=>$bulan,
-                                    'hari'=>$hari
+                                    'endPerushaan'=>$request->end_perusahaan[$k],
+                                    'tahun'=>null,
+                                    'bulan'=>null,
+                                    'hari'=>null
                                 ]);
                         }
                     }
@@ -545,46 +542,43 @@ class FormKandidatController extends Controller
 
                 if(!empty($request->nama_perushaan)){
                     for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
-                        $namaperusahaan = trim($request->nama_perushaan[$k],''); 
+                        $namaperusahaan = trim($request->nama_perushaan[$k],'');
                         $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
                         $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
                         $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
-                        // $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
                         $startperusahaan = trim($request->start_perusahaan[$k],''); 
-                        // $endperusahaan = trim($request->end_perusahaan[$k],'');
-                         if(empty($request->end_perusahaan[$k])){
-                            $endperusahaan = null;
-                            $tahun=null;
-                            $bulan=null;
-                            $hari=null;
-                         }else{
-                            $endperusahaan = $request->end_perusahaan[$k];
-                            $start = Carbon::parse($startperusahaan);
-                            $end = Carbon::parse( $endperusahaan);
-                            $lama = $start->diff($end)->format('%y-%m-%d');
-                            $rslt = explode("-",$lama);
-                            $tahun = $rslt[0];
-                            $bulan = $rslt[1];
-                            $hari = $rslt[2];
-                         }
-
+                        
+                        // if(empty($request->end_perusahaan[$k])){
+                        //     $endperusahaan = null;
+                        //     $tahun=null;
+                        //     $bulan=null;
+                        //     $hari=null;
+                        // }else{
+                        //     $endperusahaan = $request->end_perusahaan[$k];
+                        //     $start = Carbon::parse($startperusahaan);
+                        //     $end = Carbon::parse( $endperusahaan);
+                        //     $lama = $start->diff($end)->format('%y-%m-%d');
+                        //     $rslt = explode("-",$lama);
+                        //     $tahun = null;
+                        //     $bulan = null;
+                        //     $hari = null;
+                        // }
+        
                         if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)) {
-
-
                             DB::table('T_kandidat_pekerjaan')
                                 ->insert([
-                                    'id_Tkandidat'=>$id_kandidat,
+                                    'id_Tkandidat'=>$request->id_kandidat2,
                                     'namaPerusahaan'=>$namaperusahaan,
                                     'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
                                     'alamatPerusahaan'=>$alamatperushaan,
                                     'jabatanPerusahaan'=>$jabatanperusahaan,
                                     'atasanPerusahaan'=>$atasanperusahaan,
-                                    // 'tahunPerusahaan'=>$lamaperusahaan
+                                    'tahunPerusahaan'=>0,
                                     'startPerushaan'=>$startperusahaan,
-                                    'endPerushaan'=>$endperusahaan,
-                                    'tahun'=>$tahun,
-                                    'bulan'=>$bulan,
-                                    'hari'=>$hari
+                                    'endPerushaan'=>$request->end_perusahaan[$k],
+                                    'tahun'=>null,
+                                    'bulan'=>null,
+                                    'hari'=>null
                                 ]);
                         }
                     }
@@ -783,46 +777,43 @@ class FormKandidatController extends Controller
 
                 if(!empty($request->nama_perushaan)){
                     for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
-                        $namaperusahaan = trim($request->nama_perushaan[$k],''); 
+                        $namaperusahaan = trim($request->nama_perushaan[$k],'');
                         $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
                         $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
                         $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
-                        // $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
                         $startperusahaan = trim($request->start_perusahaan[$k],''); 
-                        // $endperusahaan = trim($request->end_perusahaan[$k],'');
-                         if(empty($request->end_perusahaan[$k])){
-                            $endperusahaan = null;
-                            $tahun=null;
-                            $bulan=null;
-                            $hari=null;
-                         }else{
-                            $endperusahaan = $request->end_perusahaan[$k];
-                            $start = Carbon::parse($startperusahaan);
-                            $end = Carbon::parse( $endperusahaan);
-                            $lama = $start->diff($end)->format('%y-%m-%d');
-                            $rslt = explode("-",$lama);
-                            $tahun = $rslt[0];
-                            $bulan = $rslt[1];
-                            $hari = $rslt[2];
-                         }
-
+                        
+                        // if(empty($request->end_perusahaan[$k])){
+                        //     $endperusahaan = null;
+                        //     $tahun=null;
+                        //     $bulan=null;
+                        //     $hari=null;
+                        // }else{
+                        //     $endperusahaan = $request->end_perusahaan[$k];
+                        //     $start = Carbon::parse($startperusahaan);
+                        //     $end = Carbon::parse( $endperusahaan);
+                        //     $lama = $start->diff($end)->format('%y-%m-%d');
+                        //     $rslt = explode("-",$lama);
+                        //     $tahun = null;
+                        //     $bulan = null;
+                        //     $hari = null;
+                        // }
+        
                         if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)) {
-
-
                             DB::table('T_kandidat_pekerjaan')
                                 ->insert([
-                                    'id_Tkandidat'=>$id_kandidat,
+                                    'id_Tkandidat'=>$request->id_kandidat2,
                                     'namaPerusahaan'=>$namaperusahaan,
                                     'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
                                     'alamatPerusahaan'=>$alamatperushaan,
                                     'jabatanPerusahaan'=>$jabatanperusahaan,
                                     'atasanPerusahaan'=>$atasanperusahaan,
-                                    // 'tahunPerusahaan'=>$lamaperusahaan
+                                    'tahunPerusahaan'=>0,
                                     'startPerushaan'=>$startperusahaan,
-                                    'endPerushaan'=>$endperusahaan,
-                                    'tahun'=>$tahun,
-                                    'bulan'=>$bulan,
-                                    'hari'=>$hari
+                                    'endPerushaan'=>$request->end_perusahaan[$k],
+                                    'tahun'=>null,
+                                    'bulan'=>null,
+                                    'hari'=>null
                                 ]);
                         }
                     }
