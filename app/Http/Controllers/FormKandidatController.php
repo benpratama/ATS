@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Mail;
 
 class FormKandidatController extends Controller
 {
@@ -121,7 +122,12 @@ class FormKandidatController extends Controller
                     ->where('noidentitas',$request->noidentitas)
                     ->where('id_Organisasi',$request->organisasiid)
                     ->count();
-            
+            $posisi = DB::table('T_link')
+                    ->select('M_Job.nama')
+                    ->join('M_Job','T_link.id_Tjob','M_Job.id')
+                    ->where('T_link.id',$request->urlid)
+                    ->get();
+            // dd($posisi);
             if ($result1>=1 && $result2>=1) {
                 // dd('masuk sini');
                 // kalo usenya pernah daftar dan di organisasi yang sama
@@ -219,6 +225,7 @@ class FormKandidatController extends Controller
                 ->update([
                     'id_Test'=>NULL,
                     'id_MCU'=>NULL,
+                    'id_Tlink'=>$request->urlid,
                     'id_FPTK'=>NULL,
                     'UserInterview'=>NULL,
                     'namalengkap'=>$request->namalengkap,
@@ -833,6 +840,23 @@ class FormKandidatController extends Controller
                     ]);
             }
             DB::commit();
+
+            $data=[
+                'jenisemail'=>'1',
+                'org'=>$request->organisasiid,
+                'nama'=>$request->namalengkap,
+                'posisi'=>$posisi[0]->nama
+            ];
+            // dd($data);
+            $sendTo=$request->email;
+            
+            //ini tempelin langusng aja di controller-nya
+            Mail::send('Email and WA/konten', array('datas'=>$data), function($message) use($sendTo)
+            {
+            // $message->to("maptuh.mahpudin@kalbe.co.id")->subject('Pengajuan Beasiswa YKLB');
+                $message->to($sendTo)->subject('apply');
+    
+            });
             return redirect()->route('fk.terimakasih');
         } catch (Exception $e) {
             DB::rollBack();

@@ -94,6 +94,9 @@
                   <i class="ni education_hat mr-2"></i>{{ $pendidikan->pendidikan }} {{ $pendidikan->namaSekolah }} {{ $pendidikan->jurusan }}
                 @endif
               </div>
+              <div class="h3 mt-4">
+                <i class="ni business_briefcase-24 mr-2"></i>Melamar sebagai: {{ $applyas[0]->nama }}<br>
+              </div>
               <div class="d-flex col-8 center mt-3">
                 @if (!empty($info_kandidat->CV))
                   <a type="button" class="btn btn-sm btn-primary d-flex" href="{{ asset('storage/kandidatCVs/'.$info_kandidat->CV)}}" target="_blank">
@@ -278,108 +281,137 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <input id="id_kandidatModal" value="{{ $info_kandidat->id }}" hidden>
-                    <input id="id_Organisasi" value="{{ $info_kandidat->id_Organisasi }}" hidden>
-                    <label class="form-control-label" for="alamatlengkap">Nama Kandidat</label>
-                    <input type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" value="{{ $info_kandidat->namalengkap }}" readonly>
+              <form method="POST" action="{{ route('dk.SetSchedule') }}" >
+                @csrf
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <input id="id_kandidatModal" name="id_kandidatModal" value="{{ $info_kandidat->id }}" hidden>
+                      <input id="id_Organisasi" name="id_Organisasi" value="{{ $info_kandidat->id_Organisasi }}" hidden>
+                      <input id="applyas" name="applyas" value="{{ $applyas[0]->nama }}" hidden>
+                      <label class="form-control-label" for="namalengkap">Nama Kandidat</label>
+                      <input type="text" class="form-control" id="namalengkap" name="namalengkap" value="{{ $info_kandidat->namalengkap }}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="schedule">list proses</label>
+                      <select class="form-control" id="schedule" name="schedule" required>
+                        <option value="" selected disabled>Proses</option>
+                        @foreach ($list_proses as $proses )
+                        <option value="{{ $proses->id }}">{{ $proses->proses }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4" id='onlineonsite'>
+                    <div class="form-group">
+                      <label class="form-control-label" for="proses">Online/On-site</label>
+                      <select class="form-control" id="proses" name="proses" required>
+                        <option value="" selected disabled>Online/Onsite</option>
+                        <option value="Online">Online</option>
+                        <option value="On-site">On-site</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">list proses</label>
-                    <select class="form-control" id="schedule" name="schedule" required>
-                      <option value="" selected disabled>Proses</option>
-                      @foreach ($list_proses as $proses )
-                      <option value="{{ $proses->id }}">{{ $proses->proses }}</option>
-                      @endforeach
-                    </select>
+                <div class="row" id="f_online" hidden>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Link Zoom</label>
+                      <input type="text" class="form-control" id="ol_link" name="ol_link" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Meeting ID</label>
+                      <input type="text" class="form-control" id="ol_meetID" name="ol_meetID" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Password</label>
+                      <input type="text" class="form-control" id="ol_pass" name="ol_pass" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Breakout room</label>
+                      <input type="text" class="form-control" id="ol_Br" name="ol_Br" value="">
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Online/On-site</label>
-                    <select class="form-control" id="proses" name="proses" required>
-                      <option value="" selected disabled>Online/Onsite</option>
-                      <option value="Online">Online</option>
-                      <option value="On-site">On-site</option>
-                    </select>
+                <div class="row" id="f_onsite" hidden>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Alamat</label>
+                      <input type="text" class="form-control" id="os_alamat" name="os_alamat" value="">
+                    </div>
                   </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Ruangan</label>
+                      <input type="text" class="form-control" id="os_ruangan" name="os_ruangan" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Bertemu dengan</label>
+                      <input type="text" class="form-control" id="os_bertemu" name="os_bertemu" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="row" id="form_mcu" hidden>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">No Surat</label>
+                      <input type="text" class="form-control" id="mcu_nosurat" name="mcu_nosurat" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Durasi (dalam jam)</label>
+                      <input type="number" class="form-control" id="Durasi" name="Durasi" min=0 max=100>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Lab</label>
+                      <select id="labMCU" class="form-control" name="labMCU">
+                        <option value="" selected disabled>NAMA LAB</option>
+                        @foreach ($list_mcu as $mcu )
+                        <option value="{{ $mcu->id }}">{{ $mcu->namaLab }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Tanggal dan waktu</label>
+                      <input type="datetime-local" class="form-control" id="tglWaktu" name="tglWaktu" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">TCC To:</label>
+                      <select id="ccto" class="js-example-basic-multiple " name="ccto[]" multiple="multiple">
+                        @foreach ($list_cc as $ccto )
+                        <option value="{{ $ccto->email }}">{{ $ccto->nama }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              
+              </div>
+              <div class="modal-footer">
+                <div class="row">
+                  <button id="btnAdd-schedule" type="submit" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
-              <div class="row" id="f_online" hidden>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Link Zoom</label>
-                    <input type="text" class="form-control" id="ol_link" name="ol_link" value="">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Meeting ID</label>
-                    <input type="text" class="form-control" id="ol_meetID" name="ol_meetID" value="">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Password</label>
-                    <input type="text" class="form-control" id="ol_pass" name="ol_pass" value="">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Breakout room</label>
-                    <input type="text" class="form-control" id="ol_Br" name="ol_Br" value="">
-                  </div>
-                </div>
-              </div>
-              <div class="row" id="f_onsite" hidden>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Alamat</label>
-                    <input type="text" class="form-control" id="os_alamat" name="os_alamat" value="">
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Ruangan</label>
-                    <input type="text" class="form-control" id="os_ruangan" name="os_ruangan" value="">
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Bertemu dengan</label>
-                    <input type="text" class="form-control" id="os_bertemu" name="os_bertemu" value="">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Tanggal dan waktu</label>
-                    <input type="datetime-local" class="form-control" id="tglWaktu" name="tglWaktu" value="">
-                  </div>
-                </div>
-                <div class="col-md-8">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">TCC To:</label>
-                    <select id="ccto" class="js-example-basic-multiple " name="ccto[]" multiple="multiple">
-                      @foreach ($list_cc as $ccto )
-                      <option value="{{ $ccto->email }}">{{ $ccto->nama }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                </div>
-              </div>
-             
-            </div>
-            <div class="modal-footer">
-              <div class="row">
-                <button id="btnAdd-schedule" type="button" class="btn btn-primary">Save changes</button>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -434,7 +466,7 @@
        </div>
       {{--!!START MODAL Notes!!--}}
 
-      </div>
+    </div>
       {{-- END SCHEDULE --}}
 
     {{-- PAGE --}}

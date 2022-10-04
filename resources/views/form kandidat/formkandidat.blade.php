@@ -383,12 +383,6 @@
                       <th style="width: 17.25%;">Nama Atasan/ Jabatan</th>
                       <th style="width: 8%;">Start Kerja</th>
                       <th style="width: 8%;">End kerja</th>
-                      {{-- <th style="width: 15.8%;">Nama Perushaan</th>
-                      <th style="width: 15.8%;">Jenis Perushaan</th>
-                      <th style="width: 15.8%;">Alamat Prushaan</th>
-                      <th style="width: 15.8%;">Jabatan</th>
-                      <th style="width: 15.8%;">Nama Atasan/ Jabatan</th>
-                      <th style="width: 15.8%;">Lama Bekerja(bulan)</th> --}}
                       <th style="width: 2%;"> 
                         <button type="button" class="btn btn-success d-flex" id="btnAddRow-perusahaan">
                           <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
@@ -522,9 +516,9 @@
       </div>
 
       <div class="row">
-        <input name='urlid' value='{{ $URL->id }}'hidden>
-        <input name='organisasiid' value='{{ $URL->id_Organisasi }}'hidden>
-        <button type="submit" class="btn btn-primary btnsbmt">Primary</button>
+        <input name='urlid' value='{{ $URL->id }}' hidden>
+        <input name='organisasiid' value='{{ $URL->id_Organisasi }}' hidden>
+        <button type="submit" class="btn btn-primary btnsbmt">Submit</button>
       </div>
     </div>
   </form>

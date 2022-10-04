@@ -69,27 +69,6 @@
                   </a>
                 </li>
 
-                {{-- Master Table --}}
-                <li class="nav-item">
-                  <a id="masterTable" class="nav-link collapsed" href="#navbar-mastertable" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-mastertable">
-                    <i class="ni ni-align-left-2 text-default"></i>
-                    <span class="nav-link-text">Master Table</span>
-                  </a>
-                  <div class="collapse" id="navbar-mastertable">
-                    <ul class="nav nav-sm flex-column">
-                      <li class="nav-item">
-                        <a id="url-Internal" href="{{ route('mt.internal') }}" class="nav-link">Internal</a>
-                      </li>
-                      <li class="nav-item">
-                        <a id="url-Form" href="{{ route('mt.form') }}" class="nav-link">Form</a>
-                      </li>
-                      <li class="nav-item">
-                        <a id="url-Vendor" href="{{ route('mt.vendor') }}" class="nav-link">Vendor</a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-
                 {{-- FPTK --}}
                 <li class="nav-item">
                   <a class="nav-link" href="{{ route('hr_fptk.index') }}">
@@ -112,6 +91,27 @@
                     <i class="ni ni-shop text-primary"></i>
                     <span class="nav-link-text">URL</span>
                   </a>
+                </li>
+
+                {{-- Master Table --}}
+                <li class="nav-item">
+                  <a id="masterTable" class="nav-link collapsed" href="#navbar-mastertable" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-mastertable">
+                    <i class="ni ni-align-left-2 text-default"></i>
+                    <span class="nav-link-text">Master Table</span>
+                  </a>
+                  <div class="collapse" id="navbar-mastertable">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <a id="url-Internal" href="{{ route('mt.internal') }}" class="nav-link">Internal</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="url-Form" href="{{ route('mt.form') }}" class="nav-link">Form</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="url-Vendor" href="{{ route('mt.vendor') }}" class="nav-link">Vendor</a>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
               </ul>
               <!-- Divider -->

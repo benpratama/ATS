@@ -32,8 +32,10 @@ $( document ).ready(function() {
   sakit()
   psikologis()
   saudara()
+  filterProses();
   $('.modal-tambah-schedule').on('show.bs.modal', function() {
     $('#ccto').select2();
+    $('#labMCU').select2();
   })
   modal()
   getSchedule()
@@ -66,7 +68,7 @@ function gen_url(){
       });
   })
 }
-
+//pengaturan form MODAL TAMBAH
 function onlineORonsite(){
 $('#proses').on('change',function(){
   proses = $('#proses').val();
@@ -83,6 +85,30 @@ $('#proses').on('change',function(){
 })
 }
 
+function filterProses(){
+  $('#schedule').on('change',function(){
+    schedule = $('#schedule').val();
+    if (schedule==2) { 
+      $('#form_mcu').attr('hidden',false)
+      $('#onlineonsite').attr('hidden',true)
+      $('#proses').attr('required',false)
+    }else{
+      $('#form_mcu').attr('hidden',true)
+      $('#onlineonsite').attr('hidden',false)
+      $('#proses').attr('required',true)
+      $('#mcu_nosurat').val('')
+      $('#labMCU').val(null).trigger('change');
+    }
+  });
+}
+
+function addSchedule(){
+  $('#btnAdd-schedule').on('click',function(){
+    
+  })
+}
+
+
 function modal(){
   $('.modal-tambah-schedule').on('show.bs.modal', function() {
     $('#schedule').val('');
@@ -93,6 +119,13 @@ function modal(){
     $('#ol_Br').val('');
     $('#tglWaktu').val('');
     $('#ccto').val(null).trigger('change');
+
+    //mcu
+    $('#form_mcu').attr('hidden',true)
+    $('#onlineonsite').attr('hidden',false)
+    $('#proses').attr('required',true)
+    $('#mcu_nosurat').val('')
+    $('#labMCU').val(null).trigger('change');
   })
 }
 
@@ -517,7 +550,7 @@ function get_Pendidikan(){
       url: '/hrdats/detail/getpendidikan/kandidat/'+id_kandidat,
       type: 'get'
     }).done((data) => {
-      console.log(JSON.stringify(data[0]));
+      // console.log(JSON.stringify(data[0]));
       var pendidikans = ['SD','SLTP','SMA','Akademi','S1','S2'];
       var html=''
       var i=0;

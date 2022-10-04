@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
 class KandidatController extends Controller
@@ -16,6 +17,13 @@ class KandidatController extends Controller
                     ->where('id',$id)
                     ->where('noidentitas',$noidentitas)
                     ->first();
+                    
+            $applyAs =DB::table('T_link')
+                    ->select('M_Job.nama')
+                    ->join('M_Job','T_link.id_Tjob','M_job.id')
+                    ->where('T_link.id',$info_kandidat->id_Tlink)
+                    ->get();
+            // dd($applyAs);
 
           // Start UMUR, last Pendidikan, FreshorNot, Status Perkawinan
           $age = Carbon::parse($info_kandidat->tglLahir)->diff(Carbon::now())->y;
@@ -85,6 +93,12 @@ class KandidatController extends Controller
                     ->select('nama','email')
                     ->where('id_Organisasi',$info_kandidat->id_Organisasi)
                     ->get();
+          $list_mcu = DB::table('M_Vendor')
+                    ->select('id','namaLab')
+                    ->where('Jenis','MCU')
+                    ->where('active',1)
+                    ->where('deleted',0)
+                    ->get();
 
           if($info_kandidat){
                return view('detail_kandidat',
@@ -97,6 +111,7 @@ class KandidatController extends Controller
                          'info_kandidat' => $info_kandidat,
                          'umur'=>$age,
                          'url_phase2' => $url,
+                         'applyas'=>$applyAs,
                          
                          // phase2
                          'info_kandidat2' => $infokandidat2,
@@ -105,7 +120,8 @@ class KandidatController extends Controller
 
                          // schedule
                          'list_proses'=>$list_proses,
-                         'list_cc'=>$list_cc
+                         'list_cc'=>$list_cc,
+                         'list_mcu'=>$list_mcu
                     ]);
           }else{
                return redirect()->route('home');
@@ -658,12 +674,82 @@ class KandidatController extends Controller
     }
 
     public function SetSchedule(Request $request){
+        // dd($request);
+        $emailKandidat = DB::table('T_kandidat')->select('email')->where('id',$request->id_kandidatModal)->first();
+        // dd($emailKandidat->email);
+        if ($request->ccto>0) {
+            $email=implode(" ",$request->ccto);
+        }else{
+            $email=NULL;
+        }
+        if(empty($request->proses)){
+            $proses=NULL;
+        }else{
+            $proses=$request->proses;
+        }
+        if(empty($request->labMCU)){
+            $namalab=NULL;
+            $alamatlab=NULL;
+        }else{
+            $lab=DB::table('M_Vendor')
+                ->select('namaLab','alamat')
+                ->where('id',$request->labMCU)
+                ->get();
+            $namalab=$lab[0]->namaLab;
+            $alamatlab=$lab[0]->alamat;
+            // dd($lab[0]);
+            
+        }
+        $waktu = str_replace("T"," ",$request->tglWaktu);
+        $date = Carbon::createFromFormat('Y-m-d H:i', $waktu)->format('Y-m-d H:i');
         DB::table('T_LogKandidat')
-            ->where('id',$request->id_schedule)
-            ->update([
-                'Notes'=>$request->notes,
-                'Summary'=>$request->summary,
-            ]);
+        ->insert([
+            'id_Tkandidat'=>$request->id_kandidatModal,
+            'id_Rekrutmen'=>$request->schedule,
+            'id_Organisasi'=>$request->id_Organisasi,
+            'Summary'=>NULL,
+            'Notes'=>NULL,
+            'ccEmail'=>$email,
+            'jenis'=>$proses,
+            'created_at'=>$date,
+            'updated_at'=>NULL
+        ]);
+
+        if($request->schedule==2){
+            //MCU
+            $data=[
+                'jenisemail'=>$request->schedule,
+                'org'=>$request->id_Organisasi,
+                'nama'=>$request->namalengkap,
+                'posisi'=>$request->applyas,
+                'durasi'=>$request->Durasi,
+                'dateTime'=>$date,
+                'namalab'=>$namalab,
+                'alamatlab'=>$alamatlab
+            ];
+        }elseif ($request->schedule==3) {
+            // Psikotest
+        }elseif ($request->schedule==4) {
+            // technical test
+        }elseif ($request->schedule==5) {
+            // technical test
+        }elseif ($request->schedule==6) {
+            // Interview User
+        }elseif ($request->schedule==9) {
+            // Offer
+        }
+        
+        //ini email kekandidat
+        $sendTo=$emailKandidat->email;
+        Mail::send('Email and WA/konten', array('datas'=>$data), function($message) use($sendTo)
+        {
+        // $message->to("maptuh.mahpudin@kalbe.co.id")->subject('Pengajuan Beasiswa YKLB');
+            $message->to($sendTo)->subject('MCU');
+
+        });
+
+
+
         return Redirect::back();
     }
 

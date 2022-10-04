@@ -189,8 +189,14 @@ Route::Post('/hrdats/hrd/add/link', 'UrlController@AddUrl')->name('hr_url.AddUrl
 Route::Post('/hrdats/hrd/active/link', 'UrlController@ActiveUrl')->name('hr_url.ActiveUrl');
 Route::Post('/hrdats/hrd/del/link', 'UrlController@DelUrl')->name('hr_url.DelUrl');
 
-//BUAT TESTING
-Route::get('/test','FormKandidatController@Test')->name('fk.Test');
+//DOKUMEN
+Route::get('/hrdats/hrd/Dokumen/eth/mcu', 'DokumenController@ETHsurat')->name('doc.ETHsurat');
+Route::get('/hrdats/hrd/Dokumen/fima/mcu', 'DokumenController@Fimasurat')->name('doc.Fimasurat');
+Route::get('/hrdats/hrd/Dokumen/hj/mcu', 'DokumenController@HJsurat')->name('doc.HJsurat');
 
 //EMAIL
 Route::get('/mailsourcing','EmailController@ESourcing')->name('em.ESourcing');
+
+
+//BUAT TESTING
+Route::get('/test','FormKandidatController@Test')->name('fk.Test');
