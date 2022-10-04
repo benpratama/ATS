@@ -35,9 +35,9 @@
                   <div class="form-group mb-3">
                     <div class="input-group input-group-merge input-group-alternative">
                       <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                        <span class="input-group-text"><i class="ni ni-single-02"></i></span>
                       </div>
-                      <input placeholder="Email" type="text" id="email" class="form-control @error('email') is-invalid @enderror" name="samAcc" value="{{ old('samAcc') }}" required autofocus>
+                      <input placeholder="UserID" type="text" id="UserID" class="form-control @error('UserID') is-invalid @enderror" name="samAcc" value="{{ old('samAcc') }}" required autofocus>
                           @error('samAcc')
                               <span class="invalid-feedback" role="alert">
                                   <strong>{{ $message }}</strong>

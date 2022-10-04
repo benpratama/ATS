@@ -51,7 +51,7 @@ class LoginController extends Controller
 
     public function showLoginForm(){
         if (Auth::check() === true) {
-            return redirect('home');
+            return redirect()->route('home');
         } else {
             return view('auth.login');
         }
@@ -302,6 +302,7 @@ class LoginController extends Controller
             return redirect()->route('home');
         }
         else{
+            // dd('madasd');
             return Redirect::back()->with('error', 'salah bosss');
         }
     }

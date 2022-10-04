@@ -83,7 +83,7 @@ function loadTbl_FPTK(filter_Speriod,filter_Eperiod,nofptk,namapeminta,namaatasa
   $('#TblFptk').DataTable().destroy();
   $('#TblFptk').DataTable({
       "scrollY":        "400px",
-      // "scrollX": true,
+      "scrollX": true,
       "scrollCollapse": true,
       pageLength : 5,
       ajax: {
@@ -172,8 +172,6 @@ function alert(){
   title: 'Proses Berhasil'
   })
 }
-
-
 
 var baris_kandidat=0;
 
