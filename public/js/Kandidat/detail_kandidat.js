@@ -517,12 +517,12 @@ function get_Pendidikan(){
       url: '/hrdats/detail/getpendidikan/kandidat/'+id_kandidat,
       type: 'get'
     }).done((data) => {
-      // console.log(JSON.stringify(data[0]));
+      console.log(JSON.stringify(data[0]));
       var pendidikans = ['SD','SLTP','SMA','Akademi','S1','S2'];
       var html=''
       var i=0;
       for (let index = 0; index < pendidikans.length;) {
-        if(data[0]>0){
+        if(data[0].length>0){
           if(pendidikans[index]==data[0][i].pendidikan){
             html+='<tr>'
             html+=  '<td>'+pendidikans[index]+'</td>'
@@ -532,10 +532,10 @@ function get_Pendidikan(){
               html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
               html+=    '<option value="" selected>jurusan</option>'
               data[1].forEach(element => {
-                if (element.id==data[0][i].jurusan) {
-                  html+= '<option value="'+element.id+'" selected>'+element.nama+'</option>'
+                if (element.nama==data[0][i].jurusan) {
+                  html+= '<option value="'+element.nama+'" selected>'+element.nama+'</option>'
                 } else {
-                  html+= '<option value="'+element.id+'">'+element.nama+'</option>'
+                  html+= '<option value="'+element.nama+'">'+element.nama+'</option>'
                 }
               });
             html+=  '</select>'
@@ -545,10 +545,10 @@ function get_Pendidikan(){
               html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
               html+=    '<option value="" selected>jurusan</option>'
               data[2].forEach(element => {
-                if (element.id==data[0][i].jurusan) {
-                  html+= '<option value="'+element.id+'" selected>'+element.nama+'</option>'
+                if (element.nama==data[0][i].jurusan) {
+                  html+= '<option value="'+element.nama+'" selected>'+element.nama+'</option>'
                 } else {
-                  html+= '<option value="'+element.id+'">'+element.nama+'</option>'
+                  html+= '<option value="'+element.nama+'">'+element.nama+'</option>'
                 }
               });
               html+=  '</select>'
@@ -573,7 +573,7 @@ function get_Pendidikan(){
               html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
               html+=    '<option value="" selected>jurusan</option>'
               data[1].forEach(element => {
-                html+= '<option value="'+element.id+'">'+element.nama+'</option>'
+                html+= '<option value="'+element.nama+'">'+element.nama+'</option>'
               });
             html+=  '</select>'
             html+='</td>'
@@ -582,7 +582,7 @@ function get_Pendidikan(){
               html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
               html+=    '<option value="" selected>jurusan</option>'
               data[2].forEach(element => {
-                  html+= '<option value="'+element.id+'">'+element.nama+'</option>'
+                  html+= '<option value="'+element.nama+'">'+element.nama+'</option>'
               });
               html+=  '</select>'
               html+='</td>'

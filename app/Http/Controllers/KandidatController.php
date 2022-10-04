@@ -164,6 +164,7 @@ class KandidatController extends Controller
     public function GetPendidikan($id){
           $pendidikan = DB::table('T_kandidat_edukasi')
                          ->where('id_Tkandidat',$id)
+                         ->orderBy('urutan','asc')
                          ->get();
           $jurusan_sma = DB::table('M_SMASederajat')
                          ->where('jenis','SMA')
@@ -286,113 +287,114 @@ class KandidatController extends Controller
     }
      //untuk yang bawah
     public function UpdateForm1_1(Request $request){
+    // dd($request);
      DB::beginTransaction();
      try {
-          DB::table('T_kandidat')
-          ->where('id',$request->id_kandidat2)
-          ->update([
-               'alamatlengkap'=>$request->alamatlengkap,
-               'rumahmilik'=>$request->rumahmilik,
-               'kota1'=>$request->kota1,
-               'kodepos'=>$request->kodepos,
-               'alamat_koresponden'=>$request->alamat_koresponden,
-               'rumahmilik_koresponden'=>$request->rumahmilik_koresponden,
-               'kota_koresponden'=>$request->kota_koresponden,
-               'kodepos_koresponden'=>$request->kodepos_koresponden,
-               'gaji'=>$request->gaji,
-               'tunjangan'=>$request->tunjangan,
-               'tanggungjawab'=>$request->tanggungjawab,
-               'jabatanharapan'=>$request->jabatanharapan,
-               'gajiharapan'=>$request->gajiharapan,
-               'tujanganharapan'=>$request->tujanganharapan,
-               'bertugasluarkota'=>$request->bertugasluarkota,
-               'ditempatkanluarkota'=>$request->ditempatkanluarkota,
-          ]);
+        //   DB::table('T_kandidat')
+        //   ->where('id',$request->id_kandidat2)
+        //   ->update([
+        //        'alamatlengkap'=>$request->alamatlengkap,
+        //        'rumahmilik'=>$request->rumahmilik,
+        //        'kota1'=>$request->kota1,
+        //        'kodepos'=>$request->kodepos,
+        //        'alamat_koresponden'=>$request->alamat_koresponden,
+        //        'rumahmilik_koresponden'=>$request->rumahmilik_koresponden,
+        //        'kota_koresponden'=>$request->kota_koresponden,
+        //        'kodepos_koresponden'=>$request->kodepos_koresponden,
+        //        'gaji'=>$request->gaji,
+        //        'tunjangan'=>$request->tunjangan,
+        //        'tanggungjawab'=>$request->tanggungjawab,
+        //        'jabatanharapan'=>$request->jabatanharapan,
+        //        'gajiharapan'=>$request->gajiharapan,
+        //        'tujanganharapan'=>$request->tujanganharapan,
+        //        'bertugasluarkota'=>$request->bertugasluarkota,
+        //        'ditempatkanluarkota'=>$request->ditempatkanluarkota,
+        //   ]);
 
-          // SIM
-          DB::table('T_kandidat_sim')->where('id_Tkandidat',$request->id_kandidat2)->delete();
+        //   // SIM
+        //     DB::table('T_kandidat_sim')->where('id_Tkandidat',$request->id_kandidat2)->delete();
+        //     if(!empty($request->sim)){
+        //         for ($i=0; $i <count($request->sim) ; $i++) { 
+        //             if ($request->sim[$i]!=1) {
+        //                 DB::table('T_kandidat_sim')
+        //                         ->insert([
+        //                             'id_Tkandidat'=>$request->id_kandidat2,
+        //                             'sim'=> $request->sim[$i],
+        //                             'nosim'=> $request->nosim[$i],
+        //                 ]);
+        //             }
+        //         }
+        //     }
 
-          for ($i=0; $i <count($request->sim) ; $i++) { 
-          if ($request->sim[$i]!=1) {
-               DB::table('T_kandidat_sim')
-                    ->insert([
-                         'id_Tkandidat'=>$request->id_kandidat2,
-                         'sim'=> $request->sim[$i],
-                         'nosim'=> $request->nosim[$i],
-               ]);
-          }
-          }
+        //     DB::table('T_kandidat_edukasi')->where('id_Tkandidat',$request->id_kandidat2)->delete();
+        //     if (!empty($request->namasekolah)) {
+        //         $pendidikan_ = ['SD','SLTP','SMA','Akademi','S1','S2'];
+        //         for ($j=0; $j <count($request->namasekolah) ; $j++) {
+        //             $namasekolah = trim($request->namasekolah[$j],''); 
+        //             $jurusan = trim($request->jurusan[$j],''); 
+        //             $kota = trim($request->kota[$j],''); 
+        //             $tahun = trim($request->tahun[$j],''); 
 
-          DB::table('T_kandidat_edukasi')->where('id_Tkandidat',$request->id_kandidat2)->delete();
+        //             if (!empty($namasekolah)||!empty($jurusan)||!empty($kota)||!empty($tahun)) {
+        //                 DB::table('T_kandidat_edukasi')
+        //                     ->insert([
+        //                         'id_Tkandidat'=>$request->id_kandidat2,
+        //                         'urutan'=>$j+1,
+        //                         'pendidikan'=>$pendidikan_[$j],
+        //                         'namaSekolah'=>$namasekolah,
+        //                         'jurusan'=>$jurusan,
+        //                         'kota'=>$kota,
+        //                         'tahun'=>$tahun,
+        //                     ]);
+        //             }
+        //         }
+        //     }
+          
+        
+        DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',$request->id_kandidat2)->delete();
+        if(!empty($request->nama_perushaan)){
+            for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
+                $namaperusahaan = trim($request->nama_perushaan[$k],'');
+                $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
+                $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
+                $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
+                $startperusahaan = trim($request->start_perusahaan[$k],''); 
+                
+                // if(empty($request->end_perusahaan[$k])){
+                //     $endperusahaan = null;
+                //     $tahun=null;
+                //     $bulan=null;
+                //     $hari=null;
+                // }else{
+                //     $endperusahaan = $request->end_perusahaan[$k];
+                //     $start = Carbon::parse($startperusahaan);
+                //     $end = Carbon::parse( $endperusahaan);
+                //     $lama = $start->diff($end)->format('%y-%m-%d');
+                //     $rslt = explode("-",$lama);
+                //     $tahun = null;
+                //     $bulan = null;
+                //     $hari = null;
+                // }
 
-                $pendidikan_ = ['SD','SLTP','SMA','Akademi','S1','S2'];
-                for ($j=0; $j <count($request->namasekolah) ; $j++) {
-                    $namasekolah = trim($request->namasekolah[$j],''); 
-                    $jurusan = trim($request->jurusan[$j],''); 
-                    $kota = trim($request->kota[$j],''); 
-                    $tahun = trim($request->tahun[$j],''); 
-
-                    if (!empty($namasekolah)||!empty($jurusan)||!empty($kota)||!empty($tahun)) {
-                        DB::table('T_kandidat_edukasi')
-                            ->insert([
-                                'id_Tkandidat'=>$request->id_kandidat2,
-                                'urutan'=>$j+1,
-                                'pendidikan'=>$pendidikan_[$j],
-                                'namaSekolah'=>$namasekolah,
-                                'jurusan'=>$jurusan,
-                                'kota'=>$kota,
-                                'tahun'=>$tahun,
-                            ]);
-                    }
-                }
-
-          DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',$request->id_kandidat2)->delete();
-          if(!empty($request->nama_perushaan)){
-               for ($k=0; $k <count($request->nama_perushaan) ; $k++) { 
-               $namaperusahaan = trim($request->nama_perushaan[$k],''); 
-               $alamatperushaan = trim($request->alamat_perusahaan[$k],''); 
-               $jabatanperusahaan = trim($request->jabatan_perusahaan[$k],''); 
-               $atasanperusahaan = trim($request->atasan_perusahaan[$k],''); 
-               $lamaperusahaan = trim($request->lama_perusahaan[$k],''); 
-               $startperusahaan = trim($request->start_perusahaan[$k],''); 
-               $endperusahaan = trim($request->end_perusahaan[$k],'');
-                    if(empty($request->end_perusahaan[$k])){
-                    $endperusahaan = null;
-                    $tahun=null;
-                    $bulan=null;
-                    $hari=null;
-                    }else{
-                    $endperusahaan = $request->end_perusahaan[$k];
-                    $start = Carbon::parse($startperusahaan);
-                    $end = Carbon::parse( $endperusahaan);
-                    $lama = $start->diff($end)->format('%y-%m-%d');
-                    $rslt = explode("-",$lama);
-                    $tahun = $rslt[0];
-                    $bulan = $rslt[1];
-                    $hari = $rslt[2];
-                    }
-
-               if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)) {
-
-
+                if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)) {
                     DB::table('T_kandidat_pekerjaan')
-                         ->insert([
-                              'id_Tkandidat'=>$request->id_kandidat2,
-                              'namaPerusahaan'=>$namaperusahaan,
-                              'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
-                              'alamatPerusahaan'=>$alamatperushaan,
-                              'jabatanPerusahaan'=>$jabatanperusahaan,
-                              'atasanPerusahaan'=>$atasanperusahaan,
-                              'tahunPerusahaan'=>$lamaperusahaan,
-                              'startPerushaan'=>$startperusahaan,
-                              'endPerushaan'=>$endperusahaan,
-                              'tahun'=>null,
-                              'bulan'=>null,
-                              'hari'=>null
-                         ]);
-               }
-               }
-          }
+                        ->insert([
+                            'id_Tkandidat'=>$request->id_kandidat2,
+                            'namaPerusahaan'=>$namaperusahaan,
+                            'jenisPerusahaan'=>$request->jenis_perusahaan[$k],
+                            'alamatPerusahaan'=>$alamatperushaan,
+                            'jabatanPerusahaan'=>$jabatanperusahaan,
+                            'atasanPerusahaan'=>$atasanperusahaan,
+                            'tahunPerusahaan'=>0,
+                            'startPerushaan'=>$startperusahaan,
+                            'endPerushaan'=>$request->end_perusahaan[$k],
+                            'tahun'=>null,
+                            'bulan'=>null,
+                            'hari'=>null
+                        ]);
+                }
+            }
+        }
           DB::commit();
           return Redirect::back();
      } catch (Exception $e) {

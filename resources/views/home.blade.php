@@ -60,6 +60,127 @@
         </div>
     </div>
 
+    {{-- TABLE Filter --}}
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col-3">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">Overview</h6>
+                <h5 class="h3 mb-0">Filter</h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row d-flex">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Speriod">Start Period</label>
+                  <input class="form-control" type="date" value="" id="filter_Speriod" name="filter_Speriod">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Eperiod">End Period</label>
+                  <input class="form-control" type="date" value="" id="filter_Eperiod" name="filter_Eperiod">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Speriod">Umur</label>
+                  <div class="d-flex">
+                    <input class="form-control" type="number"  min="0" max="100" id="startAge" name="startAge">
+                    <label style="margin:0.5em;">s/d</label>
+                    <input class="form-control" type="number"  min="0" max="100" id="endAge" name="endAge">
+                  </div>
+                </div>
+              </div>
+              {{-- <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Speriod">Gender</label>
+                  <select id="f_gender" class="form-control js-example-basic-multiple " name="f_gender[]" multiple="multiple">
+                    <option value="Pria">Pria</option>
+                    <option value="Wanita">Wanita</option>
+                  </select>
+                </div>
+              </div> --}}
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Speriod">Pendidikan</label>
+                  <select id="f_pendidikan" class="form-control js-example-basic-multiple " name="f_pendidikan[]" multiple="multiple">
+                    @foreach ($ListPendidikan as $pendidikan )
+                      <option value="{{ $pendidikan->pendidikan }}">{{ $pendidikan->pendidikan }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_jurusan">Jurusan</label>
+                  <select id="f_jurusans" class="form-control js-example-basic-multiple " name="f_jurusan[]" multiple="multiple">
+                    @foreach ($ListJurusan as $jurusan )
+                      <option value="{{ $jurusan->nama }}">{{ $jurusan->nama }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              {{-- <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Speriod">Lama kerja</label>
+                  <select id="f_lamakerja" class="form-control js-example-basic-multiple " name="f_lamakerja[]" multiple="multiple">
+                      <option value="0">0 Tahun</option>
+                      <option value="1">1 - 2 Tahun</option>
+                      <option value="2">2 - 3 Tahun</option>
+                      <option value="3">3 - 4 Tahun</option>
+                      <option value="4">4 - 5 Tahun</option>
+                      <option value="5">5> Tahun</option>
+                  </select>
+                </div>
+              </div> --}}
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_job">Apply</label>
+                  <select id="f_job" class="form-control js-example-basic-multiple " name="f_job[]" multiple="multiple">
+                    @foreach ($ListJob as $job )
+                      <option value="{{ $job->nama }}">{{ $job->nama }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Speriod">Status</label>
+                  <select id="f_status" class="form-control js-example-basic-multiple " name="f_status[]" multiple="multiple">
+                    @foreach ($ListStatus as $status )
+                      <option value="{{ $status->proses }}">{{ $status->proses }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-control-label" for="filter_Speriod">Domisili</label>
+                  <select id="f_domisili" class="form-control js-example-basic-multiple " name="f_domisili[]" multiple="multiple">
+                    @foreach ($Domisili as $Domisili )
+                      <option value="{{ $Domisili->kabupaten }}">{{ $Domisili->kabupaten }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+            <button id="filterdashboard" type="button" class="btn btn-primary btnsbmt">Filter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {{-- {{dd(session()->get('user')['organisasi']) }} --}}
     {{-- TABLE KANDIDAT --}}
     <div class="row">
       <div class="col-xl-12">
@@ -77,21 +198,23 @@
               <table class="table" id="TblKandidat" style="width: 100%">
                 <thead class="thead-light">
                   <tr>
-                    <th style="width: 123.778px;" class="thseacrh"><input type="checkbox" id="cekAll-kandidat"></th>
-                    <th style="width: 123.778px;" id="2">Usia</th>
-                    <th style="width: 123.778px;" id="3">Domisili</th>
-                    <th style="width: 123.778px;" id="4">Gender</th>
-                    <th style="width: 123.778px;" id="5">Pendidikan</th>
-                    <th style="width: 123.778px;" id="6">Jurusan</th>
-                    <th style="width: 123.778px;" id="7">Pengalaman</th>
-                    <th style="width: 123.778px;" id="8">Bidang lini</th>
-                    <th style="width: 123.778px;" id="9">Lama Kerja</th>
-                    <th style="width: 123.778px;" id="10">Penempatan luar indo</th>
-                    <th style="width: 123.778px;" id="11">ditempatkan luar indo</th>
-                    <th style="width: 123.778px;" id="12">SIM</th>
-                    <th style="width: 123.778px;" id="13">Apply</th>
-                    <th style="width: 123.778px;" id="14">Status</th>
-                    <th style="width: 123.778px;" id="15">Detail</th>
+                    <th  class="thseacrh"><input type="checkbox" id="cekAll-kandidat"></th>
+                    <th  >Usia</th>
+                    <th >Domisili</th>
+                    <th >Gender</th>
+                    <th >Pendidikan</th>
+                    <th >Jurusan</th>
+                    <th >Pengalaman</th>
+                    <th >Bidang lini</th>
+                    <th >Lama Kerja</th>
+                    <th >Penempatan luar indo</th>
+                    {{-- @if (session()->get('user')['organisasi']!='3') --}}
+                    <th >ditempatkan luar indo</th>
+                    {{-- @endif --}}
+                    <th >SIM</th>
+                    <th >Apply</th>
+                    <th >Status</th>
+                    <th >Detail</th>
                   </tr>
                 </thead>
                 {{-- <thead id="DTsearch">
@@ -120,6 +243,10 @@
     </div>
   </div>
 </div> 
+
+<!-- Code begins here -->
+
+
 {{-- !!!!!!! END  DIKOPI DARI SINI !!!!!!! --}}
 @endsection
 
