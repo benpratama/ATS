@@ -293,11 +293,11 @@ class LoginController extends Controller
                 }
                 $user = User::where('samAcc', $samAcc)->first();
             }
-            // dd($user);
             
             Auth::login($user);
+            // dd(Auth::user());
             // dd('masuk');
-            session()->put('user', ['nama' => $user->nama, 'NIK' => $user->NIK, 'organisasi' =>$user->id_Organisasi, 'dept' =>$user->id_Dept]);
+            session()->put('user', ['nama' => $user->nama, 'NIK' => $user->NIK, 'organisasi' =>$user->id_Organisasi, 'dept' =>$user->id_Dept,'title'=>$user->title]);
             // dd(session()->get('user'));
             return redirect()->route('home');
         }
