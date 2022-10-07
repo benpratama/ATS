@@ -130,6 +130,8 @@
             <div class="row align-items-center">
               <div class="col-8">
                 <input id="id_kandidat" name="id_kandidat" value="{{ $info_kandidat->id }}" hidden>
+                <input id="id_Organisasi" name="id_Organisasi" value="{{ $info_kandidat->id_Organisasi }}" hidden>
+                <input id="applyas" name="applyas" value="{{ $applyas[0]->nama }}" hidden>
                 <h3 class="mb-0">Kandidat id: {{ $info_kandidat->id }} </h3>
               </div>
               <div class="col-4 text-right">
@@ -281,14 +283,11 @@
               </button>
             </div>
             <div class="modal-body">
-              <form method="POST" action="{{ route('dk.SetSchedule') }}" >
-                @csrf
+              {{-- <form method="POST" action="{{ route('dk.SetSchedule') }}" >
+                @csrf --}}
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <input id="id_kandidatModal" name="id_kandidatModal" value="{{ $info_kandidat->id }}" hidden>
-                      <input id="id_Organisasi" name="id_Organisasi" value="{{ $info_kandidat->id_Organisasi }}" hidden>
-                      <input id="applyas" name="applyas" value="{{ $applyas[0]->nama }}" hidden>
                       <label class="form-control-label" for="namalengkap">Nama Kandidat</label>
                       <input type="text" class="form-control" id="namalengkap" name="namalengkap" value="{{ $info_kandidat->namalengkap }}" readonly>
                     </div>
@@ -315,28 +314,29 @@
                     </div>
                   </div>
                 </div>
+                {{-- START INI BUAT FIELD ONLINE / OFLINE --}}
                 <div class="row" id="f_online" hidden>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label class="form-control-label" for="alamatlengkap">Link Zoom</label>
+                      <label class="form-control-label" for="ol_link">Link Zoom</label>
                       <input type="text" class="form-control" id="ol_link" name="ol_link" value="">
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label class="form-control-label" for="alamatlengkap">Meeting ID</label>
+                      <label class="form-control-label" for="ol_meetID">Meeting ID</label>
                       <input type="text" class="form-control" id="ol_meetID" name="ol_meetID" value="">
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label class="form-control-label" for="alamatlengkap">Password</label>
+                      <label class="form-control-label" for="ol_pass">Password</label>
                       <input type="text" class="form-control" id="ol_pass" name="ol_pass" value="">
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label class="form-control-label" for="alamatlengkap">Breakout room</label>
+                      <label class="form-control-label" for="ol_Br">Breakout room</label>
                       <input type="text" class="form-control" id="ol_Br" name="ol_Br" value="">
                     </div>
                   </div>
@@ -344,40 +344,43 @@
                 <div class="row" id="f_onsite" hidden>
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label class="form-control-label" for="alamatlengkap">Alamat</label>
+                      <label class="form-control-label" for="os_alamat">Alamat</label>
                       <input type="text" class="form-control" id="os_alamat" name="os_alamat" value="">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label class="form-control-label" for="alamatlengkap">Ruangan</label>
+                      <label class="form-control-label" for="os_ruangan">Ruangan</label>
                       <input type="text" class="form-control" id="os_ruangan" name="os_ruangan" value="">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label class="form-control-label" for="alamatlengkap">Bertemu dengan</label>
+                      <label class="form-control-label" for="os_bertemu">Bertemu dengan</label>
                       <input type="text" class="form-control" id="os_bertemu" name="os_bertemu" value="">
                     </div>
                   </div>
                 </div>
+                {{-- END INI BUAT FIELD ONLINE / OFLINE --}}
+
+                {{-- START INI BUAT KEBUTUHAN MCU --}}
                 <div class="row" id="form_mcu" hidden>
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label class="form-control-label" for="alamatlengkap">No Surat</label>
+                      <label class="form-control-label" for="mcu_nosurat">No Surat</label>
                       <input type="text" class="form-control" id="mcu_nosurat" name="mcu_nosurat" value="">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label class="form-control-label" for="alamatlengkap">Durasi (dalam jam)</label>
-                      <input type="number" class="form-control" id="Durasi" name="Durasi" min=0 max=100>
+                      <label class="form-control-label" for="mcu_Durasi">Durasi (dalam jam)</label>
+                      <input type="number" class="form-control" id="mcu_Durasi" name="Durasi" min=0 max=100>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label class="form-control-label" for="alamatlengkap">Lab</label>
-                      <select id="labMCU" class="form-control" name="labMCU">
+                      <select id="mcu_lab" class="form-control" name="mcu_lab">
                         <option value="" selected disabled>NAMA LAB</option>
                         @foreach ($list_mcu as $mcu )
                         <option value="{{ $mcu->id }}">{{ $mcu->namaLab }}</option>
@@ -386,6 +389,8 @@
                     </div>
                   </div>
                 </div>
+                {{-- END INI BUAT KEBUTUHAN MCU --}}
+
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
@@ -408,10 +413,11 @@
               </div>
               <div class="modal-footer">
                 <div class="row">
-                  <button id="btnAdd-schedule" type="submit" class="btn btn-primary">Save changes</button>
+                  <button id="btnAdd-schedule" type="button" class="btn btn-primary">Save changes</button>
+                  <button id="btnEmail" type="button" class="btn btn-primary">Email</button>
                 </div>
               </div>
-            </form>
+            {{-- </form> --}}
           </div>
         </div>
       </div>

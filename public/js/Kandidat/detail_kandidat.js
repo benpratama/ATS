@@ -40,6 +40,7 @@ $( document ).ready(function() {
   modal()
   getSchedule()
   onlineORonsite()
+  create_schedule()
 });
 
 function gen_url(){
@@ -2124,6 +2125,7 @@ function numberWithCommas() {
   })
 }
 
+//BAGIAN SCHEDULE
 function getSchedule(){
   id = $('#id_kandidatModal').val();
   today = new Date();
@@ -2139,68 +2141,69 @@ function getSchedule(){
   // }).done((data) => {
   //   console.log(JSON.stringify(data));
   // })
-  $('#tblSchedule').DataTable({
+  // $('#tblSchedule').DataTable({
     
-    "scrollY":        "400px",
-    "scrollCollapse": true,
-    pageLength : 5,
-    ajax: {
-    url: '/hrdats/detail/getschedule/kandidat/'+id,
-            data:{},
-            dataSrc:""
-        },
-    "paging":true,
-    "bInfo" : false,
-    "lengthChange": false,
-    language: {
-        paginate: {
-            previous: "<i class='fas fa-angle-left'>",
-            next: "<i class='fas fa-angle-right'>"
-        }
-    },
-    columns: [
-        {
-            data: 'proses',
-            defaultContent: ''
-        },
-        {
-          data: 'created_at',
-          defaultContent: 'NULL'
-        },
-        {
-          data: 'Summary',
-          defaultContent: 'NULL'
-        },
-        {
-            defaultContent: '',
-            render: (data, type, row, meta)=> {
-              if (row.proses=='Apply') {
-                return'NULL'
-              } else {
-                return '<button type="button" class="btn btn-info" onclick="Modal_notes(this)" data-toggle="modal" data-target=".modal-notes" value="'+row.id+'" data-statusp="'+row.proses+'">Note</button>'
-              }
+  //   "scrollY":        "400px",
+  //   "scrollCollapse": true,
+  //   pageLength : 5,
+  //   ajax: {
+  //   url: '/hrdats/detail/getschedule/kandidat/'+id,
+  //           data:{},
+  //           dataSrc:""
+  //       },
+  //   "paging":true,
+  //   "bInfo" : false,
+  //   "lengthChange": false,
+  //   language: {
+  //       paginate: {
+  //           previous: "<i class='fas fa-angle-left'>",
+  //           next: "<i class='fas fa-angle-right'>"
+  //       }
+  //   },
+  //   columns: [
+  //       {
+  //           data: 'proses',
+  //           defaultContent: ''
+  //       },
+  //       {
+  //         data: 'created_at',
+  //         defaultContent: 'NULL'
+  //       },
+  //       {
+  //         data: 'Summary',
+  //         defaultContent: 'NULL'
+  //       },
+  //       {
+  //           defaultContent: '',
+  //           render: (data, type, row, meta)=> {
+  //             if (row.proses=='Apply') {
+  //               return'NULL'
+  //             } else {
+  //               return '<button type="button" class="btn btn-info" onclick="Modal_notes(this)" data-toggle="modal" data-target=".modal-notes" value="'+row.id+'" data-statusp="'+row.proses+'">Note</button>'
+  //             }
                 
-            }
-        },
-        {
-          defaultContent: '',
-          render: (data, type, row, meta)=> {
-              if (row.proses=='Apply') {
-                return 'NULL'
-              } else {
-                if (row.created_at<today) {
-                  return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'">Edit</button>'
-                } else {
-                  return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'" disabled>Edit</button>'
-                }
+  //           }
+  //       },
+  //       {
+  //         defaultContent: '',
+  //         render: (data, type, row, meta)=> {
+  //             if (row.proses=='Apply') {
+  //               return 'NULL'
+  //             } else {
+  //               if (row.created_at<today) {
+  //                 return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'">Edit</button>'
+  //               } else {
+  //                 return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'" disabled>Edit</button>'
+  //               }
                 
-              }
-          }
-        }
-    ],
-    order: [[1, 'desc']]
-});
+  //             }
+  //         }
+  //       }
+  //   ],
+  //   order: [[1, 'desc']]
+  // }); 
 }
+
 function Modal_notes(obj){
   //buat tampilin judul notes
   statpro=$(obj).data("statusp")
@@ -2223,4 +2226,65 @@ function Modal_notes(obj){
     $('#notes').text(data[0].Notes);
     $("#summary").val(data[0].Summary);
   })
+}
+
+function create_schedule(){
+    $('#btnAdd-schedule').on('click',function(){
+      id_kandidat = $('#id_kandidat').val();
+      id_Organisasi = $('#id_Organisasi').val();
+      applyas = $('#applyas').val();
+      schedule = $('#schedule').val();
+      tglWaktu = $('#tglWaktu').val()
+      ccTo =$("select[name='ccto[]']").map(function(){return $(this).val();}).get();
+      // ----
+      proses = $('#proses').val();
+      // ol/on
+      ol_link = $('#ol_link').val();
+      ol_meetID = $('#ol_meetID').val();
+      ol_pass = $('#ol_pass').val();
+      ol_Br = $('#ol_Br').val();
+      os_alamat = $('#os_alamat').val()
+      os_ruangan = $('#os_ruangan').val()
+      os_bertemu = $('#os_bertemu').val()
+
+      //MCU
+      mcu_nosurat = $('#mcu_nosurat').val()
+      mcu_Durasi = $('#mcu_Durasi').val()
+      mcu_lab = $('#mcu_lab').val()
+
+      $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      $.ajax({
+          _token: '{{ csrf_token() }}',
+          url: '/hrdats/detail/setschedule/kandidat',
+          type: 'post',
+          data: {
+            id_kandidat:id_kandidat,
+            id_Organisasi:id_Organisasi,
+            applyas:applyas,
+            schedule:schedule,
+            tglWaktu:tglWaktu,
+            ccTo:ccTo,
+            // proses
+            proses:proses,
+            // ol/off
+            ol_link:ol_link,
+            ol_meetID:ol_meetID,
+            ol_pass:ol_pass,
+            ol_Br:ol_Br,
+            os_alamat:os_alamat,
+            os_ruangan:os_ruangan,
+            os_bertemu:os_bertemu,
+            // MCU
+            mcu_nosurat:mcu_nosurat,
+            mcu_Durasi:mcu_Durasi,
+            mcu_lab:mcu_lab
+          }
+        }).done((data) => {
+          console.log(JSON.stringify(data));
+      });
+    });
 }

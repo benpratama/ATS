@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class KandidatController extends Controller
 {
@@ -674,11 +675,9 @@ class KandidatController extends Controller
     }
 
     public function SetSchedule(Request $request){
-        // dd($request);
-        $emailKandidat = DB::table('T_kandidat')->select('email')->where('id',$request->id_kandidatModal)->first();
-        // dd($emailKandidat->email);
-        if ($request->ccto>0) {
-            $email=implode(" ",$request->ccto);
+        // return $request;
+        if ($request->ccTo>0) {
+            $email=implode(" | ",$request->ccTo);
         }else{
             $email=NULL;
         }
@@ -687,24 +686,11 @@ class KandidatController extends Controller
         }else{
             $proses=$request->proses;
         }
-        if(empty($request->labMCU)){
-            $namalab=NULL;
-            $alamatlab=NULL;
-        }else{
-            $lab=DB::table('M_Vendor')
-                ->select('namaLab','alamat')
-                ->where('id',$request->labMCU)
-                ->get();
-            $namalab=$lab[0]->namaLab;
-            $alamatlab=$lab[0]->alamat;
-            // dd($lab[0]);
-            
-        }
         $waktu = str_replace("T"," ",$request->tglWaktu);
         $date = Carbon::createFromFormat('Y-m-d H:i', $waktu)->format('Y-m-d H:i');
-        DB::table('T_LogKandidat')
-        ->insert([
-            'id_Tkandidat'=>$request->id_kandidatModal,
+        $id_log=DB::table('T_LogKandidat')
+        ->insertGetId([
+            'id_Tkandidat'=>$request->id_kandidat,
             'id_Rekrutmen'=>$request->schedule,
             'id_Organisasi'=>$request->id_Organisasi,
             'Summary'=>NULL,
@@ -714,43 +700,82 @@ class KandidatController extends Controller
             'created_at'=>$date,
             'updated_at'=>NULL
         ]);
-
         if($request->schedule==2){
-            //MCU
-            $data=[
-                'jenisemail'=>$request->schedule,
-                'org'=>$request->id_Organisasi,
-                'nama'=>$request->namalengkap,
-                'posisi'=>$request->applyas,
-                'durasi'=>$request->Durasi,
-                'dateTime'=>$date,
-                'namalab'=>$namalab,
-                'alamatlab'=>$alamatlab
-            ];
-        }elseif ($request->schedule==3) {
-            // Psikotest
-        }elseif ($request->schedule==4) {
-            // technical test
-        }elseif ($request->schedule==5) {
-            // technical test
-        }elseif ($request->schedule==6) {
-            // Interview User
-        }elseif ($request->schedule==9) {
-            // Offer
+            DB::table('T_Dlogkandidat')
+            ->insert([
+                'id_log'=> $id_log,
+                'sendEmail'=>0,
+                'NoSurat'=>$request->mcu_nosurat,
+                'Durasi'=>$request->mcu_Durasi,
+                'id_lab'=>$request->mcu_lab,
+                'ol_link'=>null,
+                'ol_meetID'=>null,
+                'ol_pass'=>null,
+                'ol_Br'=>null,
+                'os_alamat'=>null,
+                'os_ruangan'=>null,
+                'os_bertemu'=>null
+            ]);
         }
         
-        //ini email kekandidat
-        $sendTo=$emailKandidat->email;
-        Mail::send('Email and WA/konten', array('datas'=>$data), function($message) use($sendTo)
-        {
-        // $message->to("maptuh.mahpudin@kalbe.co.id")->subject('Pengajuan Beasiswa YKLB');
-            $message->to($sendTo)->subject('MCU');
+        // $emailKandidat = DB::table('T_kandidat')->select('email')->where('id',$request->id_kandidatModal)->first();
+        // // dd($emailKandidat->email);
+        // if(empty($request->labMCU)){
+        //     $namalab=NULL;
+        //     $alamatlab=NULL;
+        // }else{
+        //     $lab=DB::table('M_Vendor')
+        //         ->select('namaLab','alamat')
+        //         ->where('id',$request->labMCU)
+        //         ->get();
+        //     $namalab=$lab[0]->namaLab;
+        //     $alamatlab=$lab[0]->alamat;
+        //     // dd($lab[0]);
+            
+        // }
+        
 
-        });
+        // if($request->schedule==2){
+        //     //MCU
+        //     $data=[
+        //         'jenisemail'=>$request->schedule,
+        //         'org'=>$request->id_Organisasi,
+        //         'nama'=>$request->namalengkap,
+        //         'posisi'=>$request->applyas,
+        //         'durasi'=>$request->Durasi,
+        //         'dateTime'=>$date,
+        //         'namalab'=>$namalab,
+        //         'alamatlab'=>$alamatlab
+        //     ];
+        //     $details =['title' => 'test'];
+        //     $pdf = PDF::loadView('Surat MCU/eth', $details);
+        //     return $pdf->dowload('test.pdf');
+
+        //     // $pdf_mcu_ethf->
+        // }elseif ($request->schedule==3) {
+        //     // Psikotest
+        // }elseif ($request->schedule==4) {
+        //     // technical test
+        // }elseif ($request->schedule==5) {
+        //     // technical test
+        // }elseif ($request->schedule==6) {
+        //     // Interview User
+        // }elseif ($request->schedule==9) {
+        //     // Offer
+        // }
+        
+        // //ini email kekandidat
+        // $sendTo=$emailKandidat->email;
+        // Mail::send('Email and WA/konten', array('datas'=>$data), function($message) use($sendTo)
+        // {
+        // // $message->to("maptuh.mahpudin@kalbe.co.id")->subject('Pengajuan Beasiswa YKLB');
+        //     $message->to($sendTo)->subject('MCU');
+
+        // });
 
 
-
-        return Redirect::back();
+        // return $pdf_mcu_eth->stream('test.pdf');
+        // return Redirect::back();
     }
 
     public function GetNotes($id){
