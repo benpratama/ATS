@@ -242,7 +242,7 @@ class FptkController extends Controller
     }
 
     public function ShowFptk(Request $request){
-        $startdate =Carbon::now()->startOfMonth()->toDateString();
+        $startdate =Carbon::now()->subDays(30)->toDateString();
         $enddate = Carbon::now()->endOfMonth()->toDateString();
 
         $fptk = DB::table('T_FPTK')
@@ -448,6 +448,10 @@ class FptkController extends Controller
         $list_lob= DB::table('M_LobandSub')
                     ->where('id_Organisasi',Auth::user()->id_Organisasi)
                     ->get();
+        $list_peminta = DB::table('M_user')
+                    ->select('NIK','nama')
+                    ->where('id_Organisasi',Auth::user()->id_Organisasi)
+                    ->get();
 
         return view('hr/hr_detail_fptk',
                     [
@@ -455,7 +459,8 @@ class FptkController extends Controller
                         'statusfptk'=>$status_fptk,
                         'idkandidat'=>$id_kandidat,
                         'listjob'=>$list_job,
-                        'listlob'=>$list_lob
+                        'listlob'=>$list_lob,
+                        'listpeminta'=>$list_peminta
                     ]);
     }
 
@@ -498,6 +503,7 @@ class FptkController extends Controller
         return true;
     }
 
+    //buat cek
     public function CekPosisi(Request $request){
         $result = DB::table('M_job')
                 ->where('active',1)
@@ -508,6 +514,20 @@ class FptkController extends Controller
     }
     public function CekOrganisasi(Request $request){
         return $request;
+    }
+    public function CekNik(Request $request){
+        $result = DB::table('M_user')
+                ->select('NIK','nama')
+                ->where('NIK',$request->NIK)
+                ->get();
+        return $result;
+    }
+
+    //REQUESTOR
+    public function R_ListFptk(Request $request){
+        // return $request;
+        $list_fptk = DB::select('EXEC SP_Get_ReqFPTK ?',array($request->nik));
+        return $list_fptk;
     }
 
 

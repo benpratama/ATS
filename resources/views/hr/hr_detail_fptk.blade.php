@@ -93,7 +93,18 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="nikpeminta" class="col-md-5 col-form-label form-control-label">NIK Peminta</label>
-                    <input class="form-control" type="text" id="nikpeminta" value="{{ $detailfptk[0]->nikpeminta }}">
+                    {{-- <input class="form-control" list="peminta" id="nikpeminta" value="{{ $detailfptk[0]->nikpeminta }}"> --}}
+                    @if ($detailfptk[0]->nikpeminta=='')
+                    <input class="form-control" list="peminta" id="nikpeminta" value="{{ $detailfptk[0]->nikpeminta }}" style="border:#EB4747 solid 3px" >
+                    @else
+                    <input class="form-control" list="peminta" id="nikpeminta" value="{{ $detailfptk[0]->nikpeminta }}" >
+                    @endif
+
+                    <datalist id="peminta">
+                      @foreach ( $listpeminta as $peminta )
+                        <option value="{{ $peminta->NIK}}">{{ $peminta->nama}}</option>
+                      @endforeach
+                    </datalist>
                   </div>
                 </div>
                 <div class="col-md-6">

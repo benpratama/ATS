@@ -9,6 +9,7 @@ $( document ).ready(function() {
   exportDataFPTK()
   clearFilter()
   cek_posisi_organisasi();
+  cel_nikpeminta();
 
   $('#filter_nofptk').select2();
   $('#filter_namapeminta').select2();
@@ -511,6 +512,36 @@ function cek_posisi_organisasi(){
           $('#lobandsub').css("border", "#EB4747 solid 3px"); 
         }else{
           $('#lobandsub').css("border", "1px solid #2C3333"); 
+          
+        }
+        console.log(JSON.stringify(data));
+    });
+  })
+}
+
+function cel_nikpeminta(){
+  $('#nikpeminta').on('change',function(){
+    NIK =$('#nikpeminta').val();
+
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/hrd/cek/nik',
+        type: 'post',
+        data: {
+          NIK:NIK
+        }
+      }).done((data) => {
+        // $(".modal-detail-kandidat").modal('hide');
+        if(data==0){
+          $('#nikpeminta').css("border", "#EB4747 solid 3px"); 
+        }else{
+          $('#nikpeminta').css("border", "1px solid #2C3333"); 
+          $('#namapeminta').val(data[0].nama);
         }
         console.log(JSON.stringify(data));
     });
