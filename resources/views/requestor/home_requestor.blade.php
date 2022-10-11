@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-<div class="header bg-primary pb-6">
+  <div class="header bg-primary pb-6">
     {{-- !!! ROUTE DIHEADER !!! --}}
     <div class="container-fluid">
       <div class="header-body">
@@ -31,7 +31,60 @@
     </div>
   </div>
   <!-- Page content -->
-</div> 
+  <div class="container-fluid mt--6">
+     {{-- !! FILTER !! --}}
+     <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col-3">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">FPTK</h6>
+                <h5 class="h3 mb-0">FILTER</h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+     {{-- !! FPTK !! --}}
+     <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col-3">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">FPTK</h6>
+                <h5 class="h3 mb-0">List</h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="TblReqFPTK" width=100%>
+                <thead class="thead-light">
+                  <tr>
+                    <th>No FPTK</th>
+                    <th>Lokasi</th>
+                    <th>Nama yang diganti</th>
+                    <th>Alasan</th>
+                    <th>Progres</th>
+                    <th>Kandidat</th>
+                    <th>Status</th>
+                    <th>Detail Kandidat</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
 
 <!-- Code begins here -->
 
@@ -40,5 +93,5 @@
 @endsection
 
 @section('script')
-  <script language="JavaScript" type="text/javascript" src="{{ asset('js/home.js') }}"></script>
+  <script language="JavaScript" type="text/javascript" src="{{ asset('js/rqFPTK.js') }}"></script>
 @endsection

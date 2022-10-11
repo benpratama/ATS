@@ -307,65 +307,65 @@ class KandidatController extends Controller
     // dd($request);
      DB::beginTransaction();
      try {
-        //   DB::table('T_kandidat')
-        //   ->where('id',$request->id_kandidat2)
-        //   ->update([
-        //        'alamatlengkap'=>$request->alamatlengkap,
-        //        'rumahmilik'=>$request->rumahmilik,
-        //        'kota1'=>$request->kota1,
-        //        'kodepos'=>$request->kodepos,
-        //        'alamat_koresponden'=>$request->alamat_koresponden,
-        //        'rumahmilik_koresponden'=>$request->rumahmilik_koresponden,
-        //        'kota_koresponden'=>$request->kota_koresponden,
-        //        'kodepos_koresponden'=>$request->kodepos_koresponden,
-        //        'gaji'=>$request->gaji,
-        //        'tunjangan'=>$request->tunjangan,
-        //        'tanggungjawab'=>$request->tanggungjawab,
-        //        'jabatanharapan'=>$request->jabatanharapan,
-        //        'gajiharapan'=>$request->gajiharapan,
-        //        'tujanganharapan'=>$request->tujanganharapan,
-        //        'bertugasluarkota'=>$request->bertugasluarkota,
-        //        'ditempatkanluarkota'=>$request->ditempatkanluarkota,
-        //   ]);
+          DB::table('T_kandidat')
+          ->where('id',$request->id_kandidat2)
+          ->update([
+               'alamatlengkap'=>$request->alamatlengkap,
+               'rumahmilik'=>$request->rumahmilik,
+               'kota1'=>$request->kota1,
+               'kodepos'=>$request->kodepos,
+               'alamat_koresponden'=>$request->alamat_koresponden,
+               'rumahmilik_koresponden'=>$request->rumahmilik_koresponden,
+               'kota_koresponden'=>$request->kota_koresponden,
+               'kodepos_koresponden'=>$request->kodepos_koresponden,
+               'gaji'=>$request->gaji,
+               'tunjangan'=>$request->tunjangan,
+               'tanggungjawab'=>$request->tanggungjawab,
+               'jabatanharapan'=>$request->jabatanharapan,
+               'gajiharapan'=>$request->gajiharapan,
+               'tujanganharapan'=>$request->tujanganharapan,
+               'bertugasluarkota'=>$request->bertugasluarkota,
+               'ditempatkanluarkota'=>$request->ditempatkanluarkota,
+          ]);
 
-        //   // SIM
-        //     DB::table('T_kandidat_sim')->where('id_Tkandidat',$request->id_kandidat2)->delete();
-        //     if(!empty($request->sim)){
-        //         for ($i=0; $i <count($request->sim) ; $i++) { 
-        //             if ($request->sim[$i]!=1) {
-        //                 DB::table('T_kandidat_sim')
-        //                         ->insert([
-        //                             'id_Tkandidat'=>$request->id_kandidat2,
-        //                             'sim'=> $request->sim[$i],
-        //                             'nosim'=> $request->nosim[$i],
-        //                 ]);
-        //             }
-        //         }
-        //     }
+          // SIM
+            DB::table('T_kandidat_sim')->where('id_Tkandidat',$request->id_kandidat2)->delete();
+            if(!empty($request->sim)){
+                for ($i=0; $i <count($request->sim) ; $i++) { 
+                    if ($request->sim[$i]!=1) {
+                        DB::table('T_kandidat_sim')
+                                ->insert([
+                                    'id_Tkandidat'=>$request->id_kandidat2,
+                                    'sim'=> $request->sim[$i],
+                                    'nosim'=> $request->nosim[$i],
+                        ]);
+                    }
+                }
+            }
 
-        //     DB::table('T_kandidat_edukasi')->where('id_Tkandidat',$request->id_kandidat2)->delete();
-        //     if (!empty($request->namasekolah)) {
-        //         $pendidikan_ = ['SD','SLTP','SMA','Akademi','S1','S2'];
-        //         for ($j=0; $j <count($request->namasekolah) ; $j++) {
-        //             $namasekolah = trim($request->namasekolah[$j],''); 
-        //             $jurusan = trim($request->jurusan[$j],''); 
-        //             $kota = trim($request->kota[$j],''); 
-        //             $tahun = trim($request->tahun[$j],''); 
+            DB::table('T_kandidat_edukasi')->where('id_Tkandidat',$request->id_kandidat2)->delete();
+            if (!empty($request->namasekolah)) {
+                $pendidikan_ = ['SD','SLTP','SMA','Akademi','S1','S2'];
+                for ($j=0; $j <count($request->namasekolah) ; $j++) {
+                    $namasekolah = trim($request->namasekolah[$j],''); 
+                    $jurusan = trim($request->jurusan[$j],''); 
+                    $kota = trim($request->kota[$j],''); 
+                    $tahun = trim($request->tahun[$j],''); 
 
-        //             if (!empty($namasekolah)||!empty($jurusan)||!empty($kota)||!empty($tahun)) {
-        //                 DB::table('T_kandidat_edukasi')
-        //                     ->insert([
-        //                         'id_Tkandidat'=>$request->id_kandidat2,
-        //                         'urutan'=>$j+1,
-        //                         'pendidikan'=>$pendidikan_[$j],
-        //                         'namaSekolah'=>$namasekolah,
-        //                         'jurusan'=>$jurusan,
-        //                         'kota'=>$kota,
-        //                         'tahun'=>$tahun,
-        //                     ]);
-        //             }
-        //         }
-        //     }
+                    if (!empty($namasekolah)||!empty($jurusan)||!empty($kota)||!empty($tahun)) {
+                        DB::table('T_kandidat_edukasi')
+                            ->insert([
+                                'id_Tkandidat'=>$request->id_kandidat2,
+                                'urutan'=>$j+1,
+                                'pendidikan'=>$pendidikan_[$j],
+                                'namaSekolah'=>$namasekolah,
+                                'jurusan'=>$jurusan,
+                                'kota'=>$kota,
+                                'tahun'=>$tahun,
+                            ]);
+                    }
+                }
+            }
           
         
         DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',$request->id_kandidat2)->delete();

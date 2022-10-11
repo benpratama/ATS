@@ -31,26 +31,12 @@ Route::middleware('auth')->group(function(){
         Route::get('/hrdats/dashboard/hrd/name','HomeController@GetName')->name('hm.GetName');
         Route::post('/hrdats/dashboard/hrd/detail','HomeController@ShowDetail')->name('hm.Detail');
 
-        //Detail Kandidat
-        Route::get('/hrdats/detail/kandidat/{id}/{noidentitas}', 'KandidatController@index')->name('dk.home');
+        // //Detail Kandidat
         Route::post('/hrdats/detail/kandidat/genurl','KandidatController@GenUrl')->name('dk.GenUrl');
-        Route::get('/hrdats/detail/getsim/kandidat/{id}','KandidatController@GetSim')->name('dk.GetSim');
-        Route::get('/hrdats/detail/getpendidikan/kandidat/{id}','KandidatController@GetPendidikan')->name('dk.GetPendidikan');
-        Route::get('/hrdats/detail/getpekerjaan/kandidat/{id}','KandidatController@GetPekerjaan')->name('dk.GetPekerjaan');
-        Route::get('/hrdats/detail/listsim','KandidatController@ListSim')->name('dk.ListSim');
         Route::post('/hrdats/detail/update/phase1','KandidatController@UpdateForm1')->name('dk.UpdateForm1');
         Route::post('/hrdats/detail/update/phase1_1','KandidatController@UpdateForm1_1')->name('dk.UpdateForm1_1');
-        //detail phase2
-        Route::get('/hrdats/detail/getpelatihan/kandidat/{id}','KandidatController@GetPelatihan')->name('dk.GetPelatihan');
-        Route::get('/hrdats/detail/getbahasa/kandidat/{id}','KandidatController@GetBahasa')->name('dk.GetBahasa');
-        Route::get('/hrdats/detail/getorganisasi/kandidat/{id}','KandidatController@GetOrganisasi')->name('dk.GetOrganisasi');
-        Route::get('/hrdats/detail/getkenal/kandidat/{id}','KandidatController@GetKenal')->name('dk.GetKenal');
-        Route::get('/hrdats/detail/getkerabat/kandidat/{id}','KandidatController@GetKerabat')->name('dk.GetKerabat');
-        Route::get('/hrdats/detail/getkeluarga/kandidat/{id}','KandidatController@GetKeluarga')->name('dk.GetKeluarga');
         Route::post('/hrdats/detail/update/phase2','KandidatController@UpdateForm2')->name('dk.UpdateForm2');
-        Route::get('/hrdats/detail/getschedule/kandidat/{id}','KandidatController@GetSchedule')->name('dk.GetSchedule');
         Route::Post('/hrdats/detail/setschedule/kandidat','KandidatController@SetSchedule')->name('dk.SetSchedule');
-        Route::get('/hrdats/detail/getschedule/notes/{id}','KandidatController@GetNotes')->name('dk.GetNotes');
 
         //Master Table Internal
         Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');
@@ -163,6 +149,7 @@ Route::middleware('auth')->group(function(){
         Route::post('/hrdats/hrd/show/updatemodal/fptk/','FptkController@UpdateModal')->name('hr_fptk.UpdateModal');
         Route::post('/hrdats/hrd/cek/posisi','FptkController@CekPosisi')->name('hr_fptk.CekPosisi');
         Route::post('/hrdats/hrd/cek/organisasi','FptkController@CekOrganisasi')->name('hr_fptk.CekOrganisasi');
+        Route::post('/hrdats/hrd/cek/nik','FptkController@CekNik')->name('hr_fptk.CekNik');
 
         //MPP
         Route::get('/hrdats/hrd/mpp', 'MppController@index')->name('hr_mpp.index');
@@ -194,6 +181,24 @@ Route::middleware('auth')->group(function(){
         Route::get('/test','FormKandidatController@Test')->name('fk.Test');
     });
     Route::get('/hrdats/requestor/dashboard','RequestorController@index')->name('rq.home');
+    Route::post('/hrdats/requestor/listfptk','FptkController@R_ListFptk')->name('rq.R_ListFptk');
+
+    //Detail Kandidat
+    Route::get('/hrdats/detail/kandidat/{id}/{noidentitas}', 'KandidatController@index')->name('dk.home');
+    Route::get('/hrdats/detail/getsim/kandidat/{id}','KandidatController@GetSim')->name('dk.GetSim');
+    Route::get('/hrdats/detail/getpendidikan/kandidat/{id}','KandidatController@GetPendidikan')->name('dk.GetPendidikan');
+    Route::get('/hrdats/detail/getpekerjaan/kandidat/{id}','KandidatController@GetPekerjaan')->name('dk.GetPekerjaan');
+    Route::get('/hrdats/detail/listsim','KandidatController@ListSim')->name('dk.ListSim');
+    
+    //detail phase2
+    Route::get('/hrdats/detail/getpelatihan/kandidat/{id}','KandidatController@GetPelatihan')->name('dk.GetPelatihan');
+    Route::get('/hrdats/detail/getbahasa/kandidat/{id}','KandidatController@GetBahasa')->name('dk.GetBahasa');
+    Route::get('/hrdats/detail/getorganisasi/kandidat/{id}','KandidatController@GetOrganisasi')->name('dk.GetOrganisasi');
+    Route::get('/hrdats/detail/getkenal/kandidat/{id}','KandidatController@GetKenal')->name('dk.GetKenal');
+    Route::get('/hrdats/detail/getkerabat/kandidat/{id}','KandidatController@GetKerabat')->name('dk.GetKerabat');
+    Route::get('/hrdats/detail/getkeluarga/kandidat/{id}','KandidatController@GetKeluarga')->name('dk.GetKeluarga');
+    Route::get('/hrdats/detail/getschedule/kandidat/{id}','KandidatController@GetSchedule')->name('dk.GetSchedule');
+    Route::get('/hrdats/detail/getschedule/notes/{id}','KandidatController@GetNotes')->name('dk.GetNotes');
 });
 
 //--FORM Kandidat--
