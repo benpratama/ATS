@@ -33,14 +33,16 @@ $( document ).ready(function() {
   psikologis()
   saudara()
   filterProses();
-  $('.modal-tambah-schedule').on('show.bs.modal', function() {
-    $('#ccto').select2();
-    $('#labMCU').select2();
-  })
+  // $('.modal-tambah-schedule').on('show.bs.modal', function() {
+    // $('#ccto').select2();
+    // $('#labMCU').select2();
+  // })
   modal()
   getSchedule()
   onlineORonsite()
   create_schedule()
+  $('#ccto').select2();
+  $('#labMCU').select2();
 });
 
 function gen_url(){

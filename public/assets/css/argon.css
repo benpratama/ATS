@@ -29354,7 +29354,7 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle
     height: 3px;
 }
 
-.select2-selection__arrow
+ .select2-selection__arrow
 {
     display: none;
 }
@@ -29363,7 +29363,7 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle
 {
     width: 100% !important;
 }
-
+/*
 .select2-container .select2-selection--single,
 .select2-container--default.select2-container--focus .select2-selection--multiple,
 .select2-container--default .select2-selection--multiple,
@@ -29583,7 +29583,7 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle
 
     border-radius: .25rem;
 }
-
+ 
 .form-control-sm + .select2-container--default.select2-container--focus .select2-selection--multiple,
 .form-control-sm + .select2-container--default .select2-selection--multiple
 {
@@ -29617,7 +29617,7 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle
 .form-control-lg + .select2-container--default .select2-selection--multiple .select2-selection__choice
 {
     line-height: 1.875rem;
-}
+}*/
 
 .swal2-popup
 {

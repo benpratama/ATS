@@ -92,64 +92,62 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
         
   $('#TblKandidat').DataTable({
     orderCellsTop: true,
-        fixedHeader: true,
-        initComplete: function () {
-            var api = this.api();
- 
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-  //                   console.log(title)
-                    if(title!='' && title!="Detail"){
-                      $(cell).html('<input type="text" style="width:100%" placeholder="' + title + '" />');
-                    }else{
-                      $(cell).html('');
-                    }
+    fixedHeader: true,
+    initComplete: function () {
+      var api = this.api();
+          api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+              // Set the header cell to contain the input element
+              var cell = $('.filters th').eq(
+                $(api.column(colIdx).header()).index()
+              );
+
+              var title = $(cell).text();
+              if(title!='' && title!="Detail"){
+                $(cell).html('<input type="text" style="width:100%" placeholder="' + title + '" />');
+              }else{
+                $(cell).html('');
+              }
                     
  
-                    // On every keypress in this input
-                    $(
-                        'input',
-                        $('.filters th').eq($(api.column(colIdx).header()).index())
-                    )
-                        .off('keyup change')
-                        .on('change', function (e) {
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+              // On every keypress in this input
+              $(
+                  'input',
+                  $('.filters th').eq($(api.column(colIdx).header()).index())
+              )
+              .off('keyup change')
+              .on('change', function (e) {
+                // Get the search value
+                $(this).attr('title', $(this).val());
+                var regexr = '({search})'; //$(this).parents('th').find('select').val();
  
-                            // var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search(
-                                    this.value != ''
-                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                        : '',
-                                    this.value != '',
-                                    this.value == ''
-                                )
-                                .draw();
-                        })
-                        .on('keyup', function (e) {
-                            var cursorPosition = this.selectionStart;
-                            e.stopPropagation();
- 
-                            $(this).trigger('change');
-                            $(this)
-                                .focus()[0]
-                                
-                                .setSelectionRange(cursorPosition, cursorPosition);
-                        });
-                });
-        },
+                  // var cursorPosition = this.selectionStart;
+                  // Search the column for that value
+                  api
+                      .column(colIdx)
+                      .search(
+                          this.value != ''
+                              ? regexr.replace('{search}', '(((' + this.value + ')))')
+                              : '',
+                          this.value != '',
+                          this.value == ''
+                      )
+                      .draw();
+              })
+              .on('keyup', function (e) {
+                  var cursorPosition = this.selectionStart;
+                  e.stopPropagation();
+
+                  $(this).trigger('change');
+                  $(this)
+                      .focus()[0]
+                      
+                      .setSelectionRange(cursorPosition, cursorPosition);
+              });
+            });
+    },
     "scrollY":        "400px",
     "scrollX": true,
     "scrollCollapse": true,
