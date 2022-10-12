@@ -365,9 +365,14 @@ function Edit_SIM(){
 //----DOMISILI----
 function loadTbl_DOMISILI(){
     $('#TblDomisili').DataTable({
-        "scrollY":        "400px",
+        "scrollY":        "650px",
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
+        // pageLength : 5,
         ajax: {
         url: "/hrdats/mt/show/domisili",
                 data:{},
@@ -375,7 +380,7 @@ function loadTbl_DOMISILI(){
             },
         "paging":true,
         "bInfo" : false,
-        "lengthChange": false,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
