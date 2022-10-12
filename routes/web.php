@@ -176,9 +176,15 @@ Route::middleware('auth')->group(function(){
         //EMAIL
         Route::get('/mailsourcing','EmailController@ESourcing')->name('em.ESourcing');
 
-
         //BUAT TESTING
         Route::get('/test','FormKandidatController@Test')->name('fk.Test');
+
+        //AKSES MENU
+        Route::get('/hrdats/menu','MenuController@Index')->name('hr_menu.index');
+        Route::get('/hrdats/menu/getMPP','MenuController@getMPP')->name('hr_menu.getMPP');
+        Route::Post('/hrdats/menu/active/akses', 'MenuController@ActiveAkses')->name('hr_menu.ActiveAkses');
+        Route::Post('/hrdats/menu/del/akses', 'MenuController@DelAkses')->name('hr_menu.DelAkses');
+        Route::Post('/hrdats/menu/add/akses', 'MenuController@AddAkses')->name('hr_menu.AddAkses');
     });
     Route::get('/hrdats/requestor/dashboard','RequestorController@index')->name('rq.home');
     Route::post('/hrdats/requestor/listfptk','FptkController@R_ListFptk')->name('rq.R_ListFptk');
