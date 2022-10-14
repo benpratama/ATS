@@ -48,7 +48,10 @@ function filter(){
 
 
 function loadTbl_RqFPTK(){
-
+  var NIK = $('#NIK').text();
+  var id_User = $('#id_User').text();
+  var id_dept = $('#id_dept').text();
+  var id_User = $('#id_User').text();
   // $.ajaxSetup({
   //   headers: {
   //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -59,12 +62,14 @@ function loadTbl_RqFPTK(){
   //     url: '/hrdats/requestor/listfptk',
   //     type: 'post',
   //     data: {
-  //         nik:'211002287'
+  //       nik:NIK,
+  //       id_User:id_User,
+  //       id_dept:id_dept
   //     }
   //   }).done((data) => {
   //     console.log(JSON.stringify(data));
   // });
-
+  
   $('#TblReqFPTK').DataTable().destroy();
   $('#TblReqFPTK').DataTable({
       "scrollY":        "400px",
@@ -78,7 +83,9 @@ function loadTbl_RqFPTK(){
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },  
         data:{
-          nik:'211002287'
+          nik:NIK,
+          id_User:id_User,
+          id_dept:id_dept
         },
         dataSrc:""
       },

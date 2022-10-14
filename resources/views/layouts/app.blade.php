@@ -64,7 +64,20 @@
               <ul class="navbar-nav">
                 @php
                 $idDeptHR = [3,4,5];
+                $listAkses = DB::table('M_AksesMPP')
+                              ->select('id_MUser')
+                              ->where('active',1)
+                              ->where('id_MOrganisasi',session()->get('user')['organisasi'])
+                              ->distinct()->pluck('id_MUser');
+                              // ->pluck('id_MUser')
+                $arrAkses=[];
+                for ($i=0; $i <count($listAkses) ; $i++) { 
+                  array_push($arrAkses,$listAkses[$i]);
+                }
                 @endphp
+                {{-- {{ 
+                  dd($arrAkses)
+                }} --}}
                 @if (!in_array(session()->get('user')['dept'],$idDeptHR))
                   <li class="nav-item">
                     <a class="nav-link" href="{{ route('hr_fptk.index') }}">
@@ -72,9 +85,9 @@
                       <span class="nav-link-text">FPTK</span>
                     </a>
                   </li>
-                  @if (str_contains(session()->get('user')['title'], 'Head'))
+                  @if (in_array(session()->get('user')['id'],$arrAkses))
                     <li class="nav-item">
-                      <a class="nav-link" href="{{ route('hr_mpp.index') }}">
+                      <a class="nav-link" href="{{ route('rq.indexMPP') }}">
                         <i class="ni ni-shop text-primary"></i>
                         <span class="nav-link-text">MPP</span>
                       </a>

@@ -64,6 +64,10 @@
             </div>
           </div>
           <div class="card-body">
+            <label id="NIK" hidden>{{ session()->get('user')['NIK'] }}</label>
+            <label id="id_User" hidden>{{ session()->get('user')['id'] }}</label>
+            <label id="id_organisasi" hidden>{{ session()->get('user')['organisasi'] }}</label>
+            <label id="id_dept" hidden>{{ session()->get('user')['dept'] }}</label>
             <div class="table-responsive">
               <table class="table" id="TblReqFPTK" width=100%>
                 <thead class="thead-light">

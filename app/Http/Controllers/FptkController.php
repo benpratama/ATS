@@ -523,12 +523,4 @@ class FptkController extends Controller
         return $result;
     }
 
-    //REQUESTOR
-    public function R_ListFptk(Request $request){
-        // return $request;
-        $list_fptk = DB::select('EXEC SP_Get_ReqFPTK ?',array($request->nik));
-        return $list_fptk;
-    }
-
-
 }

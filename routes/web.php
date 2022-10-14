@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmailController;
+use App\Http\Middleware\Atasan;
 use App\Http\Middleware\CekLevel;
 use Illuminate\Support\Facades\Route;
 
@@ -186,8 +187,13 @@ Route::middleware('auth')->group(function(){
         Route::Post('/hrdats/menu/del/akses', 'MenuController@DelAkses')->name('hr_menu.DelAkses');
         Route::Post('/hrdats/menu/add/akses', 'MenuController@AddAkses')->name('hr_menu.AddAkses');
     });
+    Route::group([
+        'middleware' => [Atasan::class]
+    ],function () {
+        Route::get('/hrdats/requestor/mpp','RequestorController@indexMPP')->name('rq.indexMPP');
+    });
     Route::get('/hrdats/requestor/dashboard','RequestorController@index')->name('rq.home');
-    Route::post('/hrdats/requestor/listfptk','FptkController@R_ListFptk')->name('rq.R_ListFptk');
+    Route::post('/hrdats/requestor/listfptk','RequestorController@R_ListFptk')->name('rq.R_ListFptk');
 
     //Detail Kandidat
     Route::get('/hrdats/detail/kandidat/{id}/{noidentitas}', 'KandidatController@index')->name('dk.home');
