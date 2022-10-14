@@ -83,7 +83,6 @@
   </div>
   <!-- Page content -->
   <div class="container-fluid mt--6">
-     {{-- !! Url btn !! --}}
      <div class="row">
       <div class="col-xl-12">
         <div class="card">
@@ -140,7 +139,7 @@
                   <select id="username" class="form-control" data-toggle="select" data-minimum-results-for-search="Infinity">
                       <option value="" selected disabled>user</option>
                     @foreach ($listUser as $user)
-                      <option value="{{ $user->id }}">{{ $user->nama }}</option>
+                      <option value="{{ $user->id }}" data-idOrganisasi="{{ $user->id_Organisasi }}">{{ $user->nama }}</option>
                     @endforeach
                   </select>
                 </div>

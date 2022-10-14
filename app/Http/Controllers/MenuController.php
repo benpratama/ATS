@@ -10,7 +10,7 @@ class MenuController extends Controller
 {
     public function Index(){
         $list_user = DB::table('M_User')
-                    ->select('id','nama')
+                    ->select('id','nama','id_Organisasi')
                     ->where('id_Organisasi',Auth::user()->id_Organisasi)
                     ->get();
         $list_lob = DB::table('M_LobandSub')
@@ -49,16 +49,19 @@ class MenuController extends Controller
     public function AddAkses(Request $request){
         $listaksesLob = $request->id_lob;
         $id_user = $request->id_user;
+        $id_Organisasi = $request->id_organisasi;
 
         for ($i=0; $i <count($listaksesLob) ; $i++) { 
             $result = DB::table('M_AksesMPP')
                     ->where('id_MUser',$id_user)
+                    ->where('id_MOrganisasi',$id_Organisasi)
                     ->where('id_MLobandSub',$listaksesLob[$i])
                     ->count();
             if ($result<1) {
                 DB::table('M_AksesMPP')
                     ->insert([
                         'id_MUser'=>$id_user,
+                        'id_MOrganisasi'=>$id_Organisasi,
                         'id_MLobandSub'=>$listaksesLob[$i],
                         'active'=>1
                     ]);

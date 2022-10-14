@@ -33,9 +33,17 @@ function clearModal(){
 }
 
 function add_akses(){
+  var id_user=""
+  var id_organisasi=""
+  $('#username').change(function(){
+    id_user=$('#username').val();
+    id_organisasi = $(this).find(':selected').attr('data-idOrganisasi')
+});
+
   $('#btnAdd-akses').on('click',function(){
     var id_lob=$("select[name='lob_sublob[]']").map(function(){return $(this).val();}).get();
-    var id_user=$('#username').val();
+    // var id_user=$('#username').val();
+    // var id_organisasi = $('#username').attr('data-idOrganisasi');
     if(id_user != null && id_lob.length>0){
       $.ajaxSetup({
         headers: {
@@ -48,13 +56,15 @@ function add_akses(){
           type: 'post',
           data: {
               id_lob:id_lob,
-              id_user:id_user
+              id_user:id_user,
+              id_organisasi:id_organisasi
           }
         }).done((data) => {
           $(".modal-tambah-aksesmpp").modal('hide');
           $('#tblAksesMPP').DataTable().ajax.reload();
           console.log(JSON.stringify(data));
       });
+      // console.log('valid',id_user,id_lob,id_organisasi)
     }else{
       console.log('tdk valid',id_user,id_lob)
     }
