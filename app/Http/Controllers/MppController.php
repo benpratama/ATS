@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class MppController extends Controller
-{
+class MppController extends Controller{
     //
     public function index(){
         $list_LOB = DB::table('M_LobandSub')

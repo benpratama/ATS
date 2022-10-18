@@ -178,7 +178,7 @@ Route::middleware('auth')->group(function(){
         Route::get('/mailsourcing','EmailController@ESourcing')->name('em.ESourcing');
 
         //BUAT TESTING
-        Route::get('/test','FormKandidatController@Test')->name('fk.Test');
+        // Route::get('/test','FormKandidatController@Test')->name('fk.Test');
 
         //AKSES MENU
         Route::get('/hrdats/menu','MenuController@Index')->name('hr_menu.index');
@@ -191,9 +191,12 @@ Route::middleware('auth')->group(function(){
         'middleware' => [Atasan::class]
     ],function () {
         Route::get('/hrdats/requestor/mpp','RequestorController@indexMPP')->name('rq.indexMPP');
+        Route::post('/hrdats/requestor/show/mpp', 'RequestorController@ShowMpp')->name('rq.ShowMpp');
     });
     Route::get('/hrdats/requestor/dashboard','RequestorController@index')->name('rq.home');
+    Route::post('/hrdats/requestor/filterdashboard','RequestorController@indexFilter')->name('rq.indexFilter');
     Route::post('/hrdats/requestor/listfptk','RequestorController@R_ListFptk')->name('rq.R_ListFptk');
+    Route::post('/hrdats/requestor/summaryfptk','RequestorController@R_SummaryFptk')->name('rq.R_SummaryFptk');
 
     //Detail Kandidat
     Route::get('/hrdats/detail/kandidat/{id}/{noidentitas}', 'KandidatController@index')->name('dk.home');

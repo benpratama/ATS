@@ -61,6 +61,7 @@ class HomeController extends Controller
         $summary =  DB::select('EXEC SP_Get_Summary ?',array(strval($id_Organisasi)));
         return $summary;
     }
+    
     public function ShowDetail(Request $request){
 
         //filter periode

@@ -25,7 +25,6 @@ function alert(){
   })
 }
 
-
 function clearModal(){
   $('#modal-upload-mpp').on('hide.bs.modal', function() {
       $('#tahunBE').val('');
