@@ -112,7 +112,7 @@
                   <textarea  rows="3" cols="20" wrap="hard" type="text" class="form-control" id="urlphase2" name="urlphase2" readonly>{{ $url_phase2 }}</textarea>
               </div>
               <div class="col-md-3">
-                <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }}>Generate</button>
+                <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
               </div>
             </div>
             {{-- END URL PAHSE 2 --}}
@@ -136,7 +136,7 @@
               </div>
               <div class="col-4 text-right">
                 {{-- <a href="#!" class="btn btn-sm btn-primary">update</a> --}}
-                <button type="submit" class="btn btn-primary btnsbmt">Update</button>
+                <button type="submit" class="btn btn-primary btnsbmt" {{ $disabled == "true" ? 'hidden' : ''}}>Update</button>
               </div>
             </div>
           </div>
@@ -147,13 +147,14 @@
                 <div class="col-lg-4">
                   <div class="form-group">
                     <label class="form-control-label" for="namalengkap">Nama lengkap</label>
-                    <input type="text" id="namalengkap" name="namalengkap" class="form-control" placeholder="Nama Lengkap Kandidat" value="{{ $info_kandidat->namalengkap }}">
+                    <input type="text" id="namalengkap" name="namalengkap" class="form-control" placeholder="Nama Lengkap Kandidat" value="{{ $info_kandidat->namalengkap }}" {{ $disabled == "true" ? 'disabled' : ''}}>
+                    
                   </div>
                 </div>
                 <div class="col-lg-4">
                   <div class="form-group">
                     <label class="form-control-label" for="gender">Gender</label>
-                    <select class="form-control" id="gender" name="gender">
+                    <select class="form-control" id="gender" name="gender" {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="Pria" {{ $info_kandidat->gender == "Pria" ? 'selected' : ''}}>Pria</option>
                       <option value="Wanita"  {{ $info_kandidat->gender == "Wanita" ? 'selected' : ''}}>Wanita</option>
                     </select>
@@ -162,7 +163,7 @@
                 <div class="col-lg-4">
                   <div class="form-group">
                     <label class="form-control-label" for="status_perkawinan">Status Perkawinan</label>
-                    <select class="form-control" id="status_perkawinan" name="status_perkawinan">
+                    <select class="form-control" id="status_perkawinan" name="status_perkawinan" {{ $disabled == "true" ? 'disabled' : ''}}>
                       @foreach ($StatusPerkawinan  as $status )
                         <option value="{{ $status->keterangan }}" {{ $status->keterangan == $info_kandidat->status_perkawinan ? 'selected' : ''}}>{{ $status->nama }} - {{ $status->keterangan }}</option>
                       @endforeach
@@ -174,13 +175,13 @@
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="noidentitas">No. KTP / Passport</label>
-                  <input type="text" class="form-control" id="noidentitas" name="noidentitas"placeholder="NO Identitas"  value="{{ $info_kandidat->noidentitas }}"  maxlength="45" required>
+                  <input type="text" class="form-control" id="noidentitas" name="noidentitas"placeholder="NO Identitas"  value="{{ $info_kandidat->noidentitas }}"  maxlength="45" required {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="npwp">NPWP</label>
-                  <input type="text" class="form-control" id="npwp" name="npwp" value="{{ $info_kandidat->npwp }}" placeholder="NPWP" maxlength="45">
+                    <input type="text" class="form-control" id="npwp" name="npwp" value="{{ $info_kandidat->npwp }}" placeholder="NPWP" maxlength="45" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -188,13 +189,13 @@
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="nohp">NO HP</label>
-                    <input type="text" class="form-control" id="nohp" name="nohp" value="{{ $info_kandidat->nohp }}" maxlength="45" placeholder="08123456789" required>
+                    <input type="text" class="form-control" id="nohp" name="nohp" value="{{ $info_kandidat->nohp }}" maxlength="45" placeholder="08123456789" required {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="npwp">Email</label>
-                    <input type="email" class="form-control" id="email" value="{{ $info_kandidat->email }}" name="email" maxlength="45" required>
+                    <input type="email" class="form-control" id="email" value="{{ $info_kandidat->email }}" name="email" maxlength="45" required {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -203,7 +204,7 @@
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="tempatlahir">Tempat lahir</label>
-                    <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required>
+                    <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       @foreach ($kotas as $kota )
                       <option value="{{ $kota->provinsi }}" {{ $kota->provinsi == $info_kandidat->tempatlahir ? 'selected' : ''}}>{{ $kota->provinsi }}</option>
                       @endforeach
@@ -214,7 +215,7 @@
                   <div class="form-group">
                     <label class="form-control-label" for="tgllahir">Tanggal Lahir</label>
                     {{-- {{ dd($info_kandidat->tglLahir) }} --}}
-                    <input class="form-control" type="date" id="tgllahir" name="tgllahir" value="{{ $info_kandidat->tglLahir}}" required>
+                    <input class="form-control" type="date" id="tgllahir" name="tgllahir" value="{{ $info_kandidat->tglLahir}}" required {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -223,7 +224,7 @@
                 <div class="col-lg-12">
                   <div class="form-group">
                     <label class="form-control-label" for="tempatlahir">URL proto</label>
-                    <input type="text" class="form-control" id="porto" name="porto" value="{{ $info_kandidat->urlPorto }}">
+                    <input type="text" class="form-control" id="porto" name="porto" value="{{ $info_kandidat->urlPorto }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -512,7 +513,7 @@
                 <div class="col-lg-12">
                   <div class="form-group">
                     <label class="form-control-label" for="alamatlengkap">Alamat Lengkap(KTP)</label>
-                    <input type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" value="{{ $info_kandidat->alamatlengkap}}" maxlength="220" required>
+                    <input type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" value="{{ $info_kandidat->alamatlengkap}}" maxlength="220" required {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -520,7 +521,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="rumahmilik">Rumah Milik*</label>
-                    <select class="form-control" id="rumahmilik" name="rumahmilik" required>
+                    <select class="form-control" id="rumahmilik" name="rumahmilik" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="" disabled selected>rumah milik</option>
                       <option value="Sendiri" {{ "Sendiri" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Sendiri</option>
                       <option value="Orangtua" {{ "Orangtua" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Orangtua</option>
@@ -532,7 +533,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="kota">Kota*</label>
-                    <select class="js-example-basic-single form-control" name="kota1" id="kota1" required>
+                    <select class="js-example-basic-single form-control" name="kota1" id="kota1" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       @foreach ($kotas as $kota )
                           <option value="{{ $kota->kabupaten }}" {{ $kota->kabupaten == $info_kandidat->kota1 ? 'selected' : ''}}>{{ $kota->kabupaten }}</option>
                           @endforeach
@@ -543,7 +544,7 @@
                   <div class="form-group">
                     <label id="temp_kodepos">{{ $info_kandidat->kodepos}}</label>
                     <label class="form-control-label" for="kodepos">kode pos</label>
-                    <select class="js-example-basic-single form-control" name="kodepos" id="kodepos" required>
+                    <select class="js-example-basic-single form-control" name="kodepos" id="kodepos" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="{{ $info_kandidat->kodepos }}" selected>{{ $info_kandidat->kodepos }}</option>
                     </select>
                   </div>
@@ -554,7 +555,7 @@
                 <div class="col-lg-12">
                   <div class="form-group">
                     <label class="form-control-label" for="alamat_koresponden">Alamat Korespondensi*</label>
-                      <input type="text" class="form-control" id="alamat_koresponden" name="alamat_koresponden" value="{{ $info_kandidat->alamat_koresponden }}" maxlength="220" required>
+                      <input type="text" class="form-control" id="alamat_koresponden" name="alamat_koresponden" value="{{ $info_kandidat->alamat_koresponden }}" maxlength="220" required {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -562,7 +563,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="rumahmilik">Rumah Milik*</label>
-                    <select class="form-control" id="rumahmilik_koresponden" name="rumahmilik_koresponden" required>
+                    <select class="form-control" id="rumahmilik_koresponden" name="rumahmilik_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="" disabled selected>rumah milik</option>
                       <option value="Sendiri" {{ "Sendiri" == $info_kandidat->rumahmilik_koresponden ? 'selected' : ''}}>Sendiri</option>
                       <option value="Orangtua" {{ "Orangtua" == $info_kandidat->rumahmilik_koresponden ? 'selected' : ''}}>Orangtua</option>
@@ -574,7 +575,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="kota">Kota*</label>
-                    <select class="js-example-basic-single form-control" name="kota_koresponden" id="kota_koresponden" required>
+                    <select class="js-example-basic-single form-control" name="kota_koresponden" id="kota_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       @foreach ($kotas as $kota )
                           <option value="{{ $kota->kabupaten }}" {{ $kota->kabupaten == $info_kandidat->kota_koresponden ? 'selected' : ''}}>{{ $kota->kabupaten }}</option>
                           @endforeach
@@ -585,7 +586,7 @@
                   <div class="form-group">
                     <label id="temp_kodepos">{{ $info_kandidat->kodepos}}</label>
                     <label class="form-control-label" for="kodepos">kode pos</label>
-                    <select class="js-example-basic-single form-control" name="kodepos_koresponden" id="kodepos_koresponden" required>
+                    <select class="js-example-basic-single form-control" name="kodepos_koresponden" id="kodepos_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="{{ $info_kandidat->kodepos_koresponden }}" selected>{{ $info_kandidat->kodepos_koresponden }}</option>
                     </select>
                   </div>
@@ -608,7 +609,7 @@
                   <h5 class="h3 mb-0">SIM</h5>
                 </div>
                 <div class="col-1">
-                  <button id="btnhide_sim" type="button" class="btn btn-success d-flex btnhide" data-value="1">
+                  <button id="btnhide_sim" type="button" class="btn btn-success d-flex btnhide" data-value="1" >
                     <span id="span_sim" class="material-symbols-outlined">
                       open_in_full
                     </span>
@@ -623,7 +624,7 @@
                     <tr>
                       <th>SIM</th>
                       <th>NO SIM</th>
-                      <th>
+                      <th {{ $disabled == "true" ? 'hidden' : ''}}>
                         <button type="button" class="btn btn-success d-flex" id="btnAddRow-sim">
                         <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
                         </button>
@@ -706,7 +707,7 @@
             <div class="card-body" id="body_pekerjaan" hidden>
               <div class="d-flex">
                 <h5 class="h5 mb-0 mr-3">RIWAYAT PEKERJAAN</h5>
-                <button type="button" class="btn btn-primary" id="btnAddRow-pekerjaan">Tambah</button>
+                <button type="button" class="btn btn-primary" id="btnAddRow-pekerjaan" {{ $disabled == "true" ? 'hidden' : ''}}>Tambah</button>
               </div>
               <div id="rw_p">
                 {{-- isinya disni --}}
@@ -716,13 +717,13 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="gaji">gaji yang diterima terakhir</label>
-                    <input type="text" class="form-control" id="gaji" name="gaji" value="{{ $info_kandidat->gaji }}">
+                    <input type="text" class="form-control" id="gaji" name="gaji" value="{{ $info_kandidat->gaji }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="tujangan">tujangan yang diterima terakhir</label>
-                    <input type="text" class="form-control" id="tunjangan" name="tunjangan" value="{{ $info_kandidat->tunjangan }}">
+                    <input type="text" class="form-control" id="tunjangan" name="tunjangan" value="{{ $info_kandidat->tunjangan }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -741,13 +742,13 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label class="form-control-label" for="tanggungjawab">jelaskan tugas dan tanggung jawab saudara</label>
-                      <textarea class="form-control" id="tanggungjawab" rows="3" resize="none" name="tanggungjawab">{{$info_kandidat->tanggungjawab}}</textarea>
+                      <textarea class="form-control" id="tanggungjawab" rows="3" resize="none" name="tanggungjawab" {{ $disabled == "true" ? 'disabled' : ''}}>{{$info_kandidat->tanggungjawab}}</textarea>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
                       <label class="form-control-label" for="tanggungjawab">prestasi yang pernah saudara lakukan</label>
-                      <textarea class="form-control" id="tanggungjawab" rows="3" resize="none" name="tanggungjawab">{{$info_kandidat->prestasi}}</textarea>
+                      <textarea class="form-control" id="tanggungjawab" rows="3" resize="none" name="tanggungjawab" {{ $disabled == "true" ? 'disabled' : ''}}>{{$info_kandidat->prestasi}}</textarea>
                     </div>
                   </div>
                 </div>
@@ -757,19 +758,19 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="gaji">Jabatan yang Saudara inginkan</label>
-                    <input type="text" class="form-control" id="jabatanharapan" name="jabatanharapan" maxlength="200" required value="{{ $info_kandidat->jabatanharapan }}">
+                    <input type="text" class="form-control" id="jabatanharapan" name="jabatanharapan" maxlength="200" required value="{{ $info_kandidat->jabatanharapan }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="tujangan">Gaji yang yang diharapkan</label>
-                    <input type="text" class="form-control" id="gajiharapan" name="gajiharapan" required value="{{ $info_kandidat->gajiharapan }}">
+                    <input type="text" class="form-control" id="gajiharapan" name="gajiharapan" required value="{{ $info_kandidat->gajiharapan }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="tujangan">tujangan yang diharapkan</label>
-                    <input type="text" class="form-control" id="tujanganharapan" name="tujanganharapan" maxlength="200" required value="{{ $info_kandidat->tujanganharapan }}">
+                    <input type="text" class="form-control" id="tujanganharapan" name="tujanganharapan" maxlength="200" required value="{{ $info_kandidat->tujanganharapan }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -778,7 +779,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="gaji">bersedia Bertugas ke luar kota</label>
-                    <select class="form-control" id="bertugasluarkota" name="bertugasluarkota" required>
+                    <select class="form-control" id="bertugasluarkota" name="bertugasluarkota" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="Ya" {{$info_kandidat->bertugasluarkota=='Ya'? "selected":""  }}>Ya</option>
                       <option value="Tidak" {{$info_kandidat->bertugasluarkota=='Tidak'? "selected":""  }}>Tidak</option>
                     </select>
@@ -787,7 +788,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="tujangan">bersedia Ditempatkan di luar kota</label>
-                    <select class="form-control" id="ditempatkanluarkota" name="ditempatkanluarkota" required>
+                    <select class="form-control" id="ditempatkanluarkota" name="ditempatkanluarkota" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="Ya" {{$info_kandidat->ditempatkanluarkota=='Ya'? "selected":""  }}>Ya</option>
                       <option value="Tidak" {{$info_kandidat->ditempatkanluarkota=='Tidak'? "selected":""  }}>Tidak</option>
                     </select>
@@ -799,7 +800,7 @@
         </div>
       </div>
       {{-- END PEKERJAAN --}}
-      <button type="submit" class="btn btn-primary btnsbmt">Update</button>
+      <button type="submit" class="btn btn-primary btnsbmt" {{ $disabled == "true" ? 'hidden' : ''}}>Update</button>
     </form>
 
     {{-- PHASE2 --}}
@@ -831,7 +832,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="goldarah">Golongan Darah</label>
-                    <select class="form-control" id="goldarah" name="goldarah" required>
+                    <select class="form-control" id="goldarah" name="goldarah" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="O" {{ $info_kandidat2->golDarah=='O'?"selected":"" }} >O</option>
                       <option value="A" {{ $info_kandidat2->golDarah=='A'?"selected":"" }}>A</option>
                       <option value="B" {{ $info_kandidat2->golDarah=='B'?"selected":"" }}>B</option>
@@ -842,7 +843,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="tlprumah">Telp. rumah</label>
-                    <input type="text" class="form-control" id="tlprumah" name="tlprumah" placeholder="(kode)12312123" maxlength="18" value="{{ $info_kandidat2->noTlp }}" required>
+                    <input type="text" class="form-control" id="tlprumah" name="tlprumah" placeholder="(kode)12312123" maxlength="18" value="{{ $info_kandidat2->noTlp }}" required {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -851,13 +852,13 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="alasan">Alasan / tujuan Saudara melamar di perusahaan ini :</label>
-                    <input type="text" class="form-control" id="alasan" name="alasan" maxlength='2000' value="{{ $info_kandidat2->alasanMelamar }}">
+                    <input type="text" class="form-control" id="alasan" name="alasan" maxlength='2000' value="{{ $info_kandidat2->alasanMelamar }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="lingkungankerja">Lingkungan pekerjaan yang Saudara sukai :</label>
-                    <input type="text" class="form-control" id="lingkungankerja" name="lingkungankerja" maxlength='2000' value="{{ $info_kandidat2->lingkunganKerja }}">
+                    <input type="text" class="form-control" id="lingkungankerja" name="lingkungankerja" maxlength='2000' value="{{ $info_kandidat2->lingkunganKerja }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
               </div>
@@ -894,7 +895,7 @@
                       <th style="width: 30%;">jenis Kursus/Pelatihan</th>
                       <th style="width: 30%;">Penyelenggara</th>
                       <th style="width: 30%;">Tahun Pelaksanaan</th>
-                      <th style="width: 10%;"> 
+                      <th style="width: 10%;" {{ $disabled == "true" ? 'hidden' : ''}}> 
                         <button type="button" class="btn btn-success d-flex" id="btnAddRow-pelatihan">
                           <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
                         </button>
@@ -936,13 +937,13 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="prestasi">Prestasi karya luar biasa yang pernah Saudara peroleh selama pendidikan</label>
-                    <textarea class="form-control" id="prestasi" rows="3" resize="none" name="prestasi" maxlength="2000">{{ $info_kandidat2->prestasiPendidikan }}</textarea>
+                    <textarea class="form-control" id="prestasi" rows="3" resize="none" name="prestasi" maxlength="2000" {{ $disabled == "true" ? 'disabled' : ''}}>{{ $info_kandidat2->prestasiPendidikan }}</textarea>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="karyailmiah">Tulisan / karya ilmiah yang pernah Saudara tulis ( Skripsi, artikel, buku, dsb) / tahun:</label>
-                    <textarea class="form-control" id="karyailmiah" rows="3" resize="none" name="karyailmiah" maxlength="220">{{ $info_kandidat2->tulisanIlmiah }}</textarea>
+                    <textarea class="form-control" id="karyailmiah" rows="3" resize="none" name="karyailmiah" maxlength="220" {{ $disabled == "true" ? 'disabled' : ''}}>{{ $info_kandidat2->tulisanIlmiah }}</textarea>
                   </div>
                 </div>
               </div>
@@ -956,7 +957,7 @@
                         <th style="width: 23.75%;">Berbicara</th>
                         <th style="width: 23.75%;">Menulis</th>
                         <th style="width: 23.75%;">Membaca</th>
-                        <th style="width: 5%;"> 
+                        <th style="width: 5%;" {{ $disabled == "true" ? 'hidden' : ''}}> 
                           <button type="button" class="btn btn-success d-flex" id="btnAddRow-bahasa">
                             <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
                           </button>
@@ -1003,7 +1004,7 @@
                         <th style="width: 23.75%;">Kota</th>
                         <th style="width: 23.75%;">Jabatan</th>
                         <th style="width: 23.75%;">Dari/Sampai(Tahun)</th>
-                        <th style="width: 5%;"> 
+                        <th style="width: 5%;" {{ $disabled == "true" ? 'hidden' : ''}}> 
                           <button type="button" class="btn btn-success d-flex" id="btnAddRow-organisasi">
                             <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
                           </button>
@@ -1020,19 +1021,19 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label class="form-control-label" for="waktuluang">Kegiatan pada waktu luang</label>
-                      <input type="text" class="form-control" id="waktuluang" name="waktuluang" maxlength='2000' value="{{ $info_kandidat2->kegiatan }}">
+                      <input type="text" class="form-control" id="waktuluang" name="waktuluang" maxlength='2000' value="{{ $info_kandidat2->kegiatan }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label class="form-control-label" for="suratkabar">Surat kabar / majalah yang sering dibaca</label>
-                      <input type="text" class="form-control" id="suratkabar" name="suratkabar" maxlength='2000' value="{{ $info_kandidat2->suratKabar }}">
+                      <input type="text" class="form-control" id="suratkabar" name="suratkabar" maxlength='2000' value="{{ $info_kandidat2->suratKabar }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label class="form-control-label" for="topik">Topik yang diminati untuk dibaca</label>
-                      <input type="text" class="form-control" id="topik" name="topik" maxlength='2000' value="{{ $info_kandidat2->topik }}">
+                      <input type="text" class="form-control" id="topik" name="topik" maxlength='2000' value="{{ $info_kandidat2->topik }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                 </div>
@@ -1107,7 +1108,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="sakit">Pernahkah Saudara menderita sakit keras atau kecelakaan kerja ?*</label>
-                    <select class="form-control" id="sakit" name="sakit" required>
+                    <select class="form-control" id="sakit" name="sakit" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="Ya" {{ $info_kandidat2->sakit=="Ya"?"selected":"" }}>Ya</option>
                       <option value="Tidak" {{ $info_kandidat2->sakit=="Tidak"?"selected":"" }}>Tidak</option>
                     </select>
@@ -1117,7 +1118,7 @@
                   <div class="col-md-6" id="rowsakitkapan">
                     <div class="form-group">
                       <label class="form-control-label" for="sakitkapan">kapan</label>
-                      <input class="form-control" type="month" id="sakitkapan" name="sakitkapan" value="{{ $info_kandidat2->tahunSakit }}">
+                      <input class="form-control" type="month" id="sakitkapan" name="sakitkapan" value="{{ $info_kandidat2->tahunSakit }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                 @endif
@@ -1127,7 +1128,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="psikologis">Pernahkah Saudara mengikuti pemeriksaan psikologis ?</label>
-                    <select class="form-control" id="psikologis" name="psikologis" required>
+                    <select class="form-control" id="psikologis" name="psikologis" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="Ya" {{ $info_kandidat2->sakit=="Ya"?"selected":"" }}>Ya</option>
                       <option value="Tidak" {{ $info_kandidat2->sakit=="Tidak"?"selected":"" }}>Tidak</option>
                     </select>
@@ -1137,7 +1138,7 @@
                   <div class="col-md-6 rowpsikologis" >
                     <div class="form-group">
                       <label class="form-control-label" for="psikologiskapan">kapan</label>
-                      <input class="form-control" type="month" id="psikologiskapan" name="psikologiskapan" value="{{ $info_kandidat2->tahunPsikolog }}">
+                      <input class="form-control" type="month" id="psikologiskapan" name="psikologiskapan" value="{{ $info_kandidat2->tahunPsikolog }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                 @endif
@@ -1147,13 +1148,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label class="form-control-label" for="psikologislembaga">Tempat / Lembaga</label>
-                      <input class="form-control" type="text" id="psikologislembaga" name="psikologislembaga" maxlength='220' value="{{ $info_kandidat2->lembagaPsikolog }}">
+                      <input class="form-control" type="text" id="psikologislembaga" name="psikologislembaga" maxlength='220' value="{{ $info_kandidat2->lembagaPsikolog }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label class="form-control-label" for="psikologistujuan">tujuan</label>
-                      <input class="form-control" type="text" id="psikologistujuan" name="psikologistujuan" maxlength='220' value="{{ $info_kandidat2->tujuanPsikolog }}">
+                      <input class="form-control" type="text" id="psikologistujuan" name="psikologistujuan" maxlength='220' value="{{ $info_kandidat2->tujuanPsikolog }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                 </div>
@@ -1163,13 +1164,13 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="kendaraan">Jenis kendaraan yang digunakan</label>
-                    <input class="form-control" type="text" id="kendaraan" name="kendaraan" maxlength='220' value={{ $info_kandidat2->jenisKendaraan }}>
+                    <input class="form-control" type="text" id="kendaraan" name="kendaraan" maxlength='220' value={{ $info_kandidat2->jenisKendaraan }} {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="kendaraanmilik">Milik</label>
-                    <select id="kendaraanmilik" class="form-control" name="kendaraanmilik">
+                    <select id="kendaraanmilik" class="form-control" name="kendaraanmilik" {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="Pribadi" {{ $info_kandidat2->milikKendaraan=="Pribadi"?"selected":"" }}> Pribadi</option>
                       <option value="Orangtua" {{ $info_kandidat2->milikKendaraan=="Orangtua"?"selected":"" }}> Orangtua</option>
                       <option value="Dinas" {{ $info_kandidat2->milikKendaraan=="Dinas"?"selected":"" }}> Dinas</option>
@@ -1186,7 +1187,7 @@
                     <tr>
                       <th style="width: 47.5%;">Nama</th>
                       <th style="width: 47.5%;">hubungan</th>
-                      <th style="width: 5%;"> 
+                      <th style="width: 5%;" {{ $disabled == "true" ? 'hidden' : ''}}> 
                         <button type="button" class="btn btn-success d-flex" id="btnAddRow-kenal">
                           <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
                         </button>
@@ -1203,7 +1204,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="kendaraan"> Adakah kerabat atau anggota keluarga Saudara yang bekerja di perusahaan farmasi</label>
-                    <select class="form-control" id="kerabat" name="kerabat" required>
+                    <select class="form-control" id="kerabat" name="kerabat" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       <option value="" disabled selected>Ya/Tidak</option>
                       <option value="Ya" {{ $info_kandidat2->kerabatFarmasi=="Ya"?"selected":"" }}>Ya</option>
                       <option value="Tidak" {{ $info_kandidat2->kerabatFarmasi=="Tidak"?"selected":"" }}>Tidak</option>
@@ -1221,7 +1222,7 @@
                       <th style="width: 19%;">L/P*</th>
                       <th style="width: 19%;">Nama Perushaan*</th>
                       <th style="width: 19%;">Jabatan*</th>
-                      <th style="width: 5%;"> 
+                      <th style="width: 5%;" {{ $disabled == "true" ? 'hidden' : ''}}> 
                         <button type="button" class="btn btn-success d-flex" id="btnAddRow-saudarafarmasi">
                           <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
                         </button>
@@ -1251,16 +1252,16 @@
                         @foreach ($referensi as $ref )
                         <tr>
                           <td>
-                            <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]" value="{{ $ref->namaRef }}" maxlength='95'>
+                            <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]" value="{{ $ref->namaRef }}" maxlength='95' {{ $disabled == "true" ? 'disabled' : ''}}>
                           </td>
                           <td>
-                            <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]" value="{{ $ref->alamatRef }}" maxlength='220'>
+                            <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]" value="{{ $ref->alamatRef }}" maxlength='220' {{ $disabled == "true" ? 'disabled' : ''}}>
                           </td>
                           <td>
-                            <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]" value="{{ $ref->pekerjaanRef }}" maxlength='95'>
+                            <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]" value="{{ $ref->pekerjaanRef }}" maxlength='95' {{ $disabled == "true" ? 'disabled' : ''}}>
                           </td>
                           <td>
-                            <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]" value="{{ $ref->tlpRef }}" maxlength='95'>
+                            <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]" value="{{ $ref->tlpRef }}" maxlength='95' {{ $disabled == "true" ? 'disabled' : ''}}>
                           </td>
                         </tr>
                       @endforeach
@@ -1268,16 +1269,16 @@
                     @for ($index=count($referensi); $index<2;$index++)
                       <tr>
                         <td>
-                          <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]" maxlength='95'>
+                          <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]" maxlength='95' {{ $disabled == "true" ? 'disabled' : ''}}>
                         </td>
                         <td>
-                          <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]" maxlength='220'>
+                          <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]" maxlength='220' {{ $disabled == "true" ? 'disabled' : ''}}>
                         </td>
                         <td>
-                          <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]" maxlength='95'>
+                          <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]" maxlength='95' {{ $disabled == "true" ? 'disabled' : ''}}>
                         </td>
                         <td>
-                          <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]" maxlength='95'>
+                          <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]" maxlength='95' {{ $disabled == "true" ? 'disabled' : ''}}>
                         </td>
                       </tr>
                     @endfor
@@ -1300,13 +1301,13 @@
                       @foreach ($darurat as $dar )
                       <tr>
                         <td>
-                          <input class="form-control" type="text" id="nama_kontakdarurat" name="nama_kontakdarurat[]" maxlength='95' value="{{ $dar->namaDart }}" required>
+                          <input class="form-control" type="text" id="nama_kontakdarurat" name="nama_kontakdarurat[]" maxlength='95' value="{{ $dar->namaDart }}" required {{ $disabled == "true" ? 'disabled' : ''}}>
                         </td>
                         <td>
-                          <input class="form-control" type="text" id="alamat_kontakdarurat" name="alamat_kontakdarurat[]" maxlength='220' value="{{ $dar->alamatDart }}" required>
+                          <input class="form-control" type="text" id="alamat_kontakdarurat" name="alamat_kontakdarurat[]" maxlength='220' value="{{ $dar->alamatDart }}" required {{ $disabled == "true" ? 'disabled' : ''}}>
                         </td>
                         <td>
-                          <input class="form-control" type="text" id="tlp_kontakdarurat" name="tlp_kontakdarurat[]" maxlength='95' value="{{ $dar->tlpDart }}" required>
+                          <input class="form-control" type="text" id="tlp_kontakdarurat" name="tlp_kontakdarurat[]" maxlength='95' value="{{ $dar->tlpDart }}" required {{ $disabled == "true" ? 'disabled' : ''}}>
                         </td>
                       </tr>
                       @endforeach
@@ -1314,13 +1315,13 @@
                     @for ($index=count($darurat); $index<2;$index++)
                     <tr>
                       <td>
-                        <input class="form-control" type="text" id="nama_kontakdarurat" name="nama_kontakdarurat[]" maxlength='95' required>
+                        <input class="form-control" type="text" id="nama_kontakdarurat" name="nama_kontakdarurat[]" maxlength='95' required {{ $disabled == "true" ? 'disabled' : ''}}>
                       </td>
                       <td>
-                        <input class="form-control" type="text" id="alamat_kontakdarurat" name="alamat_kontakdarurat[]" maxlength='220' required>
+                        <input class="form-control" type="text" id="alamat_kontakdarurat" name="alamat_kontakdarurat[]" maxlength='220' required {{ $disabled == "true" ? 'disabled' : ''}}>
                       </td>
                       <td>
-                        <input class="form-control" type="text" id="tlp_kontakdarurat" name="tlp_kontakdarurat[]" maxlength='95' required>
+                        <input class="form-control" type="text" id="tlp_kontakdarurat" name="tlp_kontakdarurat[]" maxlength='95' required {{ $disabled == "true" ? 'disabled' : ''}}>
                       </td>
                     </tr>
                     @endfor
@@ -1332,7 +1333,7 @@
         </div>
       </div>
       {{-- End Lain-lain --}}
-      <button type="submit" class="btn btn-primary btnsbmt">Update</button>
+      <button type="submit" class="btn btn-primary btnsbmt" {{ $disabled == "true" ? 'hidden' : ''}}>Update</button>
     </form>
     @else
     <div class="row p2" hidden>  

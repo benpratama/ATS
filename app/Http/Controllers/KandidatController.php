@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Auth;
 
 class KandidatController extends Controller
 {
+    public $idDeptHR=[3,4,5];
     public function index($id,$noidentitas){
           // dd($server);
           $info_kandidat = DB::table('T_kandidat')
@@ -100,6 +102,12 @@ class KandidatController extends Controller
                     ->where('active',1)
                     ->where('deleted',0)
                     ->get();
+            
+        if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+            $disabled=true;
+        }else{
+            $disabled=false;
+        }
 
           if($info_kandidat){
                return view('detail_kandidat',
@@ -122,7 +130,8 @@ class KandidatController extends Controller
                          // schedule
                          'list_proses'=>$list_proses,
                          'list_cc'=>$list_cc,
-                         'list_mcu'=>$list_mcu
+                         'list_mcu'=>$list_mcu,
+                         'disabled'=>$disabled
                     ]);
           }else{
                return redirect()->route('home');
@@ -167,15 +176,22 @@ class KandidatController extends Controller
     }
 
     public function GetSim($id){
-     $sim = DB::table('T_kandidat_sim')
-          ->where('id_Tkandidat',$id)
-          ->get();
-     $list_sim = DB::table('M_SIM')
-               ->where('active',1)
-               ->where('deleted',0)
-               ->where('id','<>',1)
-               ->get();
-     return [$sim,$list_sim];
+        $sim = DB::table('T_kandidat_sim')
+            ->where('id_Tkandidat',$id)
+            ->get();
+
+        $list_sim = DB::table('M_SIM')
+                ->where('active',1)
+                ->where('deleted',0)
+                ->where('id','<>',1)
+                ->get();
+
+        if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+            $disabled=true;
+        }else{
+            $disabled=false;
+        }
+        return [$sim,$list_sim,$disabled];
     }
 
     public function GetPendidikan($id){
@@ -193,49 +209,84 @@ class KandidatController extends Controller
                               ->where('active',1)
                               ->where('deleted',0)
                               ->get();
-          return [$pendidikan,$jurusan_sma,$jurusan_sederajat];
+            if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+            $disabled=true;
+            }else{
+                $disabled=false;
+            }
+          return [$pendidikan,$jurusan_sma,$jurusan_sederajat,$disabled];
     }
 
     public function GetPekerjaan($id){
           $pekerjaan = DB::table('T_kandidat_pekerjaan')
                          ->where('id_Tkandidat',$id)
                          ->get();
-          return $pekerjaan;
+        if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+            $disabled=true;
+        }else{
+                $disabled=false;
+        }
+          return [$pekerjaan,$disabled];
     }
 
     public function GetPelatihan($id){
           $Pelatihan = DB::table('T_pelatihan')
                          ->where('id_Tkandidat',$id)
                          ->get();
-          return $Pelatihan;
+        if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+        $disabled=true;
+        }else{
+                $disabled=false;
+        }
+          return [$Pelatihan,$disabled];
     }
 
     public function GetBahasa($id){
           $bahasa = DB::table('T_bahasa')
                          ->where('id_Tkandidat',$id)
                          ->get();
-          return $bahasa;
+            if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+            $disabled=true;
+            }else{
+                    $disabled=false;
+            }
+          return [$bahasa,$disabled];
     }
 
     public function GetOrganisasi($id){
            $organisasi = DB::table('T_organisasi')
                          ->where('id_Tkandidat',$id)
                          ->get();
-          return $organisasi;
+            if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+            $disabled=true;
+            }else{
+                    $disabled=false;
+            }
+          return [$organisasi,$disabled];
     }
 
     public function GetKenal($id){
           $kenal = DB::table('T_kenal')
           ->where('id_Tkandidat',$id)
           ->get();
-          return $kenal;
+          if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+            $disabled=true;
+            }else{
+                    $disabled=false;
+            }
+          return [$kenal,$disabled];
     }
 
      public function GetKerabat($id){
           $kerabat = DB::table('T_Kerabat')
                ->where('id_Tkandidat',$id)
                ->get();
-          return $kerabat;
+            if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+            $disabled=true;
+            }else{
+                    $disabled=false;
+            }
+          return [$kerabat,$disabled];
      }
 
      public function GetKeluarga($id){
@@ -267,8 +318,12 @@ class KandidatController extends Controller
           $alamtkeluarga = DB::table('T_alamatKeluarga')
                          ->where('id_Tkandidat',$id)
                          ->get();
-
-          return [$ayahIbu,$ayahIbuMertua,$kakakAdik,$suamiIstri,$anak,$alamtkeluarga];
+            if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+                $disabled=true;
+            }else{
+                $disabled=false;
+            }
+          return [$ayahIbu,$ayahIbuMertua,$kakakAdik,$suamiIstri,$anak,$alamtkeluarga,$disabled];
      }
     
      //kebutuhan tambah data
