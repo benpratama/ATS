@@ -562,10 +562,20 @@ function get_Pendidikan(){
           if(pendidikans[index]==data[0][i].pendidikan){
             html+='<tr>'
             html+=  '<td>'+pendidikans[index]+'</td>'
-            html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45" value="'+data[0][i].namaSekolah+'"></td>'
+            if (data[3]==true) {
+              html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45" value="'+data[0][i].namaSekolah+'" disabled></td>'
+            } else {
+              html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45" value="'+data[0][i].namaSekolah+'"></td>'
+            }
+            
             if (pendidikans[index]=='SMA') {
               html+='<td>'
-              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              if (data[3]==true) {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45" disabled>'
+              } else {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              }
+             
               html+=    '<option value="" selected>jurusan</option>'
               data[1].forEach(element => {
                 if (element.nama==data[0][i].jurusan) {
@@ -578,7 +588,11 @@ function get_Pendidikan(){
             html+='</td>'
             } else if(pendidikans[index]=='Akademi') {
               html+='<td>'
-              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              if (data[3]==true) {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45" disabled>'
+              } else {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              }
               html+=    '<option value="" selected>jurusan</option>'
               data[2].forEach(element => {
                 if (element.nama==data[0][i].jurusan) {
@@ -590,11 +604,24 @@ function get_Pendidikan(){
               html+=  '</select>'
               html+='</td>'
             }else{
-              html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45" value="'+data[0][i].jurusan+'"></td>'
+              if (data[3]==true) {
+                html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45" value="'+data[0][i].jurusan+'" disabled></td>'
+              } else {
+                html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45" value="'+data[0][i].jurusan+'"></td>'
+              }
+              
+            }
+            if (data[3]==true) {
+              html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45" value="'+data[0][i].kota+'"disabled></td>'
+            } else {
+              html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45" value="'+data[0][i].kota+'"></td>'
+            }
+            if (data[3]==true) {
+              html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45" value="'+data[0][i].tahun+'" disabled></td>'
+            } else {
+              html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45" value="'+data[0][i].tahun+'"></td>'
             }
             
-            html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45" value="'+data[0][i].kota+'"></td>'
-            html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45" value="'+data[0][i].tahun+'"></td>'
             html+='</tr>'
             index++
             if (i<data[0].length-1) {
@@ -603,10 +630,20 @@ function get_Pendidikan(){
           }else{
             html+='<tr>'
             html+=  '<td>'+pendidikans[index]+'</td>'
-            html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>'
+            if (data[3]==true) {
+              html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45" disabled></td>'
+            } else {
+              html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>'
+            }
+            
             if (pendidikans[index]=='SMA') {
               html+='<td>'
-              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              if (data[3]==true) {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45" disabled>'
+              } else {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              }
+              
               html+=    '<option value="" selected>jurusan</option>'
               data[1].forEach(element => {
                 html+= '<option value="'+element.nama+'">'+element.nama+'</option>'
@@ -615,7 +652,12 @@ function get_Pendidikan(){
             html+='</td>'
             } else if(pendidikans[index]=='Akademi') {
               html+='<td>'
-              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              if (data[3]==true) {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45" disabled>'
+              }else{
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              }
+              
               html+=    '<option value="" selected>jurusan</option>'
               data[2].forEach(element => {
                   html+= '<option value="'+element.nama+'">'+element.nama+'</option>'
@@ -623,21 +665,44 @@ function get_Pendidikan(){
               html+=  '</select>'
               html+='</td>'
             }else{
-              html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
+              if (data[3]==true) {
+                html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45" disabled></td>'
+              } else {
+                html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
+              }
+              
             }
             // html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
-            html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>'
-            html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45"></td>'
+            if (data[3]==true) {
+              html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45" disabled></td>'
+            } else {
+              html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>'
+            }
+            if (data[3]==true) {
+              html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45" disabled></td>'
+            } else {
+              html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45"></td>'
+            }
             html+='</tr>'
             index++
           }
         }else{
           html+='<tr>'
             html+=  '<td>'+pendidikans[index]+'</td>'
-            html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>'
+            if (data[3]==true) {
+              html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45" disabled></td>'
+            } else {
+              html+=  '<td><input type="text" class="form-control" name="namasekolah[]" maxlength="45" ></td>'
+            }
+           
             if (pendidikans[index]=='SMA') {
               html+='<td>'
-              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              if (data[3]==true) {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45" disabled>'
+              } else {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              }
+              
               html+=    '<option value="" selected>jurusan</option>'
               data[1].forEach(element => {
                 html+= '<option value="'+element.id+'">'+element.nama+'</option>'
@@ -646,7 +711,12 @@ function get_Pendidikan(){
             html+='</td>'
             } else if(pendidikans[index]=='Akademi') {
               html+='<td>'
-              html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              if (data[3]==true) {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45" disabled>'
+              } else {
+                html+=  '<select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">'
+              }
+              
               html+=    '<option value="" selected>jurusan</option>'
               data[2].forEach(element => {
                   html+= '<option value="'+element.id+'">'+element.nama+'</option>'
@@ -654,11 +724,24 @@ function get_Pendidikan(){
               html+=  '</select>'
               html+='</td>'
             }else{
-              html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
+              if (data[3]) {
+                html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45" disabled></td>'
+              } else {
+                html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
+              }
+              
             }
             // html+=  '<td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>'
-            html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>'
-            html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45"></td>'
+            if (data[3]==true) {
+              html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45" disabled></td>'
+            } else {
+              html+=  '<td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>'
+            }
+            if (data[3]==true) {
+              html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45" disabled></td>'
+            } else {
+              html+=  '<td><input type="text" class="form-control" name="tahun[]" maxlength="45"></td>'
+            }
             html+='</tr>'
             index++
         }
@@ -667,7 +750,7 @@ function get_Pendidikan(){
       $('#tbody_pendidikan').append(html);
     })
 }
-data_pekerjaan = 0;
+var data_pekerjaan = 0;
 function get_Pekerjaan(){
   $.ajaxSetup({
     headers: {
@@ -682,22 +765,33 @@ function get_Pekerjaan(){
        
       }
     }).done((data) => {
+      // console.log(JSON.stringify(data));
       var html=''
-      data.forEach(element => {
+      data[0].forEach(element => {
         data_pekerjaan+=1;
         html+='<div class="border-rw" id="pekerjaan_rw'+data_pekerjaan+'">'
         html+='<div class="row">'
         html+=  '<div class="col-md-4">'
         html+=    '<div class="form-group">'
         html+=      '<label class="form-control-label" for="nama_perushaan">NAMA PERUSHAAN</label>'
-        html+=      '<input class="form-control"  type="text" name="nama_perushaan[]" maxlength="220" value="'+element.namaPerusahaan+'">'
+        if (data[1]==true) {
+          html+=      '<input class="form-control"  type="text" name="nama_perushaan[]" maxlength="220" value="'+element.namaPerusahaan+'" disabled>'
+        } else {
+          html+=      '<input class="form-control"  type="text" name="nama_perushaan[]" maxlength="220" value="'+element.namaPerusahaan+'">'
+        }
+        
         html+=    '</div>'
         html+=  '</div>'
 
         html+=  '<div class="col-md-3">'
         html+=    '<div class="form-group">'
         html+=      '<label class="form-control-label" for="jenis_perusahaan">JENIS</label>'
-        html+=      '<select class="form-control" id="status_perkawinan" name="jenis_perusahaan[]" required>'
+        if (data[1]==true) {
+          html+=      '<select class="form-control" id="status_perkawinan" name="jenis_perusahaan[]" required disabled>'
+        } else {
+          html+=      '<select class="form-control" id="status_perkawinan" name="jenis_perusahaan[]" required>'
+        }
+        
         if (element.jenisPerusahaan=='Farmasi') {
         html +=       "<option value='Farmasi' selected>Farmasi</option>"
         } else {
@@ -715,7 +809,12 @@ function get_Pekerjaan(){
         html+=  '<div class="col-md-5">'
         html+=    '<div class="form-group">'
         html+=      '<label class="form-control-label" for="alamat_perusahaan">ALAMAT PRUSHAAN</label>'
-        html+=      '<input class="form-control"  type="text" name="alamat_perusahaan[]" maxlength="220" value="'+element.alamatPerusahaan+'">'
+        if (data[1]==true) {
+          html+=      '<input class="form-control"  type="text" name="alamat_perusahaan[]" maxlength="220" value="'+element.alamatPerusahaan+'" disabled>'
+        } else {
+          html+=      '<input class="form-control"  type="text" name="alamat_perusahaan[]" maxlength="220" value="'+element.alamatPerusahaan+'">'
+        }
+        
         html+=    '</div>'
         html+=  '</div>'
         html+='</div>'
@@ -725,14 +824,24 @@ function get_Pekerjaan(){
         html+=    '<div class="col-md-5">'
         html+=      '<div class="form-group">'
         html+=        '<label class="form-control-label" for="jabatan_perusahaan">JABATAN</label>'
-        html+=        '<input class="form-control"  type="text" name="jabatan_perusahaan[]" maxlength="220" value="'+element.jabatanPerusahaan+'">'
+        if (data[1]==true) {
+          html+=        '<input class="form-control"  type="text" name="jabatan_perusahaan[]" maxlength="220" value="'+element.jabatanPerusahaan+'"disabled>'
+        } else {
+          html+=        '<input class="form-control"  type="text" name="jabatan_perusahaan[]" maxlength="220" value="'+element.jabatanPerusahaan+'">'
+        }
+        
         html+=      '</div>'
         html+=    '</div>'
 
         html+=    '<div class="col-md-5">'
         html+=      '<div class="form-group">'
         html+=        '<label class="form-control-label" for="atasan_perusahaan">NAMA ATASAN/ JABATAN</label>'
-        html+=        '<input class="form-control"  type="text" name="atasan_perusahaan[]" maxlength="220" value="'+element.atasanPerusahaan+'">'
+        if (data[1]==true) {
+          html+=        '<input class="form-control"  type="text" name="atasan_perusahaan[]" maxlength="220" value="'+element.atasanPerusahaan+'" disabled>'
+        } else {
+          html+=        '<input class="form-control"  type="text" name="atasan_perusahaan[]" maxlength="220" value="'+element.atasanPerusahaan+'">'
+        }
+        
         html+=      '</div>'
         html+=    '</div>'
         html+=  '</div>'
@@ -742,27 +851,43 @@ function get_Pekerjaan(){
         html+=    '<div class="col-md-3">'
         html+=      '<div class="form-group">'
         html+=        '<label class="form-control-label" for="jabatan_perusahaan">START KERJA</label>'
-        html+=        '<input class="form-control"  type="date" name="start_perusahaan[]" maxlength="220" value="'+element.startPerushaan+'">'
+        if (data[1]==true) {
+          html+=        '<input class="form-control"  type="date" name="start_perusahaan[]" maxlength="220" value="'+element.startPerushaan+'" disabled>'
+        } else {
+          html+=        '<input class="form-control"  type="date" name="start_perusahaan[]" maxlength="220" value="'+element.startPerushaan+'">'
+        }
+        
         html+=      '</div>'
         html+=    '</div>'
 
         html+=    '<div class="col-md-3">'
         html+=      '<div class="form-group">'
         html+=        '<label class="form-control-label" for="atasan_perusahaan">END KERJA</label>'
-        html+=        '<input class="form-control" id="checkrow'+data_pekerjaan+'"  type="date" name="end_perusahaan[]" maxlength="220" value="'+element.endPerushaan+'" >'
+        if (data[1]==true) {
+          html+=        '<input class="form-control" id="checkrow'+data_pekerjaan+'"  type="date" name="end_perusahaan[]" maxlength="220" value="'+element.endPerushaan+'" disabled>'
+        } else {
+          html+=        '<input class="form-control" id="checkrow'+data_pekerjaan+'"  type="date" name="end_perusahaan[]" maxlength="220" value="'+element.endPerushaan+'" >'
+        }
+        
         html +=       "<div class='form-check'>"
-        html +=         "<input class='form-check-input' type='checkbox' id='checknow' data-row='checkrow"+data_pekerjaan+"'>"
+        if (data[1]==true) {
+          html +=         "<input class='form-check-input' type='checkbox' id='checknow' data-row='checkrow"+data_pekerjaan+"' disabled>"
+        } else {
+          html +=         "<input class='form-check-input' type='checkbox' id='checknow' data-row='checkrow"+data_pekerjaan+"'>"
+        }
         html +=         "<label class='form-check-label' for='checkclose'> Sampai Sekarang </label>"
         html +=       "</div>"
         html+=      '</div>'
         html+=    '</div>'
 
+        if (!data[1]==true) {
         html+=    '<div class="col-md-2">'
         html+=      '<div class="form-group">'
         html+=        '<label class="form-control-label" for="alamat_perusahaan">Delete</label>'
         html+=        '<button type="button" class="btn btn-primary form-control btnDel-pekerjaan" data-row="pekerjaan_rw'+data_pekerjaan+'">Delete</button>'
         html+=      '</div>'
         html+=    '</div>'
+        }
         html+=  '</div>'
         html+='</div>'
       });
@@ -885,14 +1010,18 @@ function get_sim(){
       url: '/hrdats/detail/getsim/kandidat/'+id_kandidat,
       type: 'get'
     }).done((data) => {
-      // console.log(JSON.stringify(data[0]));
+      // console.log(JSON.stringify(data));
       var html=''
       for (let index = 0; index < data[0].length; index++) {
         data_sim+=1;
         // console.log("datasim1= "+data_sim)
         html+='<tr class="simbaris'+data_sim+'">'
         html+=  '<td>'
-        html+=    '<select name="sim[]" class="form-control">'
+        if (data[2]==true) {
+        html+=    '<select name="sim[]" class="form-control" disabled>'
+        } else {
+          html+=    '<select name="sim[]" class="form-control">'
+        }
         data[1].forEach(element => {
           if (element.id==data[0][index]['sim']) {
             html+='<option value="'+element.id+'"selected>'+element.nama+'</option>'
@@ -903,13 +1032,23 @@ function get_sim(){
         html+=    '</select>'
         html+=  '</td>'
         html+=  '<td>'
-        html+=    '<input name="nosim[]" class="form-control" type="text" value="'+data[0][index]['nosim']+'"required>'
+        if (data[2]==true) {
+          html+=    '<input name="nosim[]" class="form-control" type="text" value="'+data[0][index]['nosim']+'"required disabled >'
+        } else {
+          html+=    '<input name="nosim[]" class="form-control" type="text" value="'+data[0][index]['nosim']+'"required >'
+        }
+       
         html+=  '</td>'
+        if (data[2]==true) {
+        html+=  '<td hidden>'
+        html+=  '</td>'
+        } else {
         html+=  '<td>'
         html +=    "<button type='button' class='btn btn-danger d-flex btnDel-sim' data-row='simbaris"+data_sim+"'>"
         html +=       "<span class='material-symbols-outlined'>delete</span>"
         html +=    "</button>"
         html+=  '</td>'
+        }
         html+='</tr>'
       }
       $('#tbody_sim').append(html);
@@ -959,7 +1098,7 @@ function adddelete_sim(){
   })
 }
 
-data_pelatihan=0;
+var data_pelatihan=0;
 function get_pelatihan(){
   id_kandidat = $('#id_kandidat').val();
   $.ajaxSetup({
@@ -974,23 +1113,40 @@ function get_pelatihan(){
     }).done((data) => {
       // console.log(JSON.stringify(data[0]));
       var html=''
-      for (let index = 0; index < data.length; index++) {
+      for (let index = 0; index < data[0].length; index++) {
         data_pelatihan+=1;
         html+='<tr class="pelatihanbaris'+data_pelatihan+'">'
         html+=  '<td>'
-        html+=    '<input class="form-control"  type="text" name="jenis_pelatihan[]" value="'+data[index].jenisPlthn+'" maxlength="200">'
+        if (data[1]==true) {
+          html+=    '<input class="form-control"  type="text" name="jenis_pelatihan[]" value="'+data[0][index].jenisPlthn+'" maxlength="200" disabled>'
+        } else {
+          html+=    '<input class="form-control"  type="text" name="jenis_pelatihan[]" value="'+data[0][index].jenisPlthn+'" maxlength="200">'
+        }
+        
         html+=  '</td>'
         html+=  '<td>'
-        html+=    '<input class="form-control" type="text" name="penyelenggara_pelatihan[]" maxlength="200" value="'+data[index].penyelenggaraPlthn+'">'
+        if (data[1]==true) {
+          html+=    '<input class="form-control" type="text" name="penyelenggara_pelatihan[]" maxlength="200" value="'+data[0][index].penyelenggaraPlthn+'" disabled>'
+        } else {
+          html+=    '<input class="form-control" type="text" name="penyelenggara_pelatihan[]" maxlength="200" value="'+data[0][index].penyelenggaraPlthn+'">'
+        }
+        
         html+=  '</td>'
         html+=  '<td>'
-        html+=    '<input class="form-control" type="number" min="1800" max="2050" name="tahun_pelatihan[]" value="'+data[index].tahunPlthn+'">'
+        if (data[1]==true) {
+          html+=    '<input class="form-control" type="number" min="1800" max="2050" name="tahun_pelatihan[]" value="'+data[0][index].tahunPlthn+'" disabled>'
+        } else {
+          html+=    '<input class="form-control" type="number" min="1800" max="2050" name="tahun_pelatihan[]" value="'+data[0][index].tahunPlthn+'">'
+        }
         html+=  '</td>'
+        if (data[1]!=true) {
         html+=  '<td>'
         html +=    "<button type='button' class='btn btn-danger d-flex btnDel-pelatihan' data-row='pelatihanbaris"+data_pelatihan+"'>"
         html +=       "<span class='material-symbols-outlined'>delete</span>"
         html +=    "</button>"
         html+=  '</td>'
+        }
+        
         html+='</tr>'
       }
       $('#tbody_pelatihan').append(html);
@@ -1026,7 +1182,7 @@ function adddelete_pelatihan(){
   })
 }
 
-data_bahasa = 0;
+var data_bahasa = 0;
 function get_bahasa(){
   id_kandidat = $('#id_kandidat').val();
   $.ajaxSetup({
@@ -1041,19 +1197,29 @@ function get_bahasa(){
     }).done((data) => {
       // console.log(JSON.stringify(data[0]));
       var html=''
-      for (let index = 0; index < data.length; index++) {
+      for (let index = 0; index < data[0].length; index++) {
         data_bahasa+=1;
         html+='<tr class="bahasabaris'+data_bahasa+'">'
         html+=  '<td>'
-        html+=    '<input class="form-control"  type="text" name="bahasa[]" maxlength="250" value="'+data[index].bahasa+'">'
+        if (data[1]==true) {
+          html+=    '<input class="form-control"  type="text" name="bahasa[]" maxlength="250" value="'+data[0][index].bahasa+'" disabled>'
+        } else {
+          html+=    '<input class="form-control"  type="text" name="bahasa[]" maxlength="250" value="'+data[0][index].bahasa+'">'
+        }
+        
         html+=  '</td>'
         html+=  '<td>'
-        html +=     "<select class='form-control' id='berbicara[]' name='berbicara[]' required>"
-        if (data[index].berbicara=='Baik') {
+        if (data[1]==true) {
+          html +=     "<select class='form-control' id='berbicara[]' name='berbicara[]' required disabled>"
+        } else {
+          html +=     "<select class='form-control' id='berbicara[]' name='berbicara[]' required>"
+        }
+        
+        if (data[0][index].berbicara=='Baik') {
         html +=       "<option value='Baik'selected>Baik</option>"
         html +=       "<option value='Cukup'>Cukup</option>"
         html +=       "<option value='Kurang'>Kurang</option>"
-        }else if(data[index].berbicara=='Cukup'){
+        }else if(data[0][index].berbicara=='Cukup'){
         html +=       "<option value='Baik'>Baik</option>"
         html +=       "<option value='Cukup' selected>Cukup</option>"
         html +=       "<option value='Kurang'>Kurang</option>"
@@ -1066,12 +1232,17 @@ function get_bahasa(){
         html+=  '</td>'
         
         html+=  '<td>'
-        html +=     "<select class='form-control' id='menulis[]' name='menulis[]' required>"
-        if (data[index].menulis=='Baik') {
+        if (data[1]==true) {
+          html +=     "<select class='form-control' id='menulis[]' name='menulis[]' required disabled>"
+        } else {
+          html +=     "<select class='form-control' id='menulis[]' name='menulis[]' required>"
+        }
+        
+        if (data[0][index].menulis=='Baik') {
         html +=       "<option value='Baik'selected>Baik</option>"
         html +=       "<option value='Cukup'>Cukup</option>"
         html +=       "<option value='Kurang'>Kurang</option>"
-        }else if(data[index].menulis=='Cukup'){
+        }else if(data[0][index].menulis=='Cukup'){
         html +=       "<option value='Baik'>Baik</option>"
         html +=       "<option value='Cukup' selected>Cukup</option>"
         html +=       "<option value='Kurang'>Kurang</option>"
@@ -1084,12 +1255,17 @@ function get_bahasa(){
         html+=  '</td>'
 
         html+=  '<td>'
-        html +=     "<select class='form-control' id='membaca[]' name='membaca[]' required>"
-        if (data[index].membaca=='Baik') {
+        if (data[1]==true) {
+          html +=     "<select class='form-control' id='membaca[]' name='membaca[]' required disabled>"
+        } else {
+          html +=     "<select class='form-control' id='membaca[]' name='membaca[]' required>"
+        }
+        
+        if (data[0][index].membaca=='Baik') {
         html +=       "<option value='Baik'selected>Baik</option>"
         html +=       "<option value='Cukup'>Cukup</option>"
         html +=       "<option value='Kurang'>Kurang</option>"
-        }else if(data[index].membaca=='Cukup'){
+        }else if(data[0][index].membaca=='Cukup'){
         html +=       "<option value='Baik'>Baik</option>"
         html +=       "<option value='Cukup' selected>Cukup</option>"
         html +=       "<option value='Kurang'>Kurang</option>"
@@ -1100,11 +1276,14 @@ function get_bahasa(){
         }
         html +=     "</select>"
         html+=  '</td>'
+        if (data[1]!=true) {
         html+=  '<td>'
         html +=    "<button type='button' class='btn btn-danger d-flex btnDel-bahasa' data-row='bahasabaris"+data_bahasa+"'>"
         html +=       "<span class='material-symbols-outlined'>delete</span>"
         html +=    "</button>"
         html+=  '</td>'
+        }
+        
         html+='</tr>'
       }
       $('#tbody_bahasa').append(html);
@@ -1170,27 +1349,50 @@ function get_organisasi(){
       url: '/hrdats/detail/getorganisasi/kandidat/'+id_kandidat,
       type: 'get'
     }).done((data) => {
-      // console.log(JSON.stringify(data[0]));
+      // console.log(JSON.stringify(data));
       var html=''
-      for (let index = 0; index < data.length; index++) {
+      for (let index = 0; index < data[0].length; index++) {
         var html  = "<tr id='baris_organisasi"+baris_organisasi+"' class='detail_organisasi'>"
         html +=   "<td style='width: 23.75%;'>"
-        html +=     '<input class="form-control"  type="text" name="nama_organisasi[]"  value="'+data[index].namaOrg+'" maxlength="220">'
+        if (data[1]==true) {
+          html +=     '<input class="form-control"  type="text" name="nama_organisasi[]"  value="'+data[0][index].namaOrg+'" maxlength="220" disabled>'
+        } else {
+          html +=     '<input class="form-control"  type="text" name="nama_organisasi[]"  value="'+data[0][index].namaOrg+'" maxlength="220">'
+        }
         html +=   "</td>" 
+
         html +=   "<td style='width: 23.75%;'>"
-        html +=     '<input class="form-control"  type="text" name="kota_organisasi[]" value="'+data[index].kotaOrg+'" maxlength="220">'
+        if (data[1]==true) {
+          html +=     '<input class="form-control"  type="text" name="kota_organisasi[]" value="'+data[0][index].kotaOrg+'" maxlength="220" disabled>'
+        } else {
+          html +=     '<input class="form-control"  type="text" name="kota_organisasi[]" value="'+data[0][index].kotaOrg+'" maxlength="220">'
+        }
         html +=   "</td>"
+
         html +=   "<td style='width: 23.75%;'>"
-        html +=     '<input class="form-control"  type="text" name="jabatan_organisasi[]" value="'+data[index].jabatanOrg+'" maxlength="220">'
-        html +=   "</td>" 
+        if (data[1]==true) {
+          html +=     '<input class="form-control"  type="text" name="jabatan_organisasi[]" value="'+data[0][index].jabatanOrg+'" maxlength="220" disabled>'
+        } else {
+          html +=     '<input class="form-control"  type="text" name="jabatan_organisasi[]" value="'+data[0][index].jabatanOrg+'" maxlength="220">'
+        }
+        html +=   "</td>"
+
         html +=   "<td style='width: 23.75%;'>"
-        html +=     '<input class="form-control"  type="text" name="tahun_organisasi[]" value="'+data[index].tahunOrg+'" maxlength="220">'
-        html +=   "</td>" 
-        html +=   "<td style='width: 5%;'>"
-        html +=     "<button type='button' class='btn btn-danger' data-row='baris_organisasi"+baris_organisasi+"' id='btnDelRow-organisasi'>"
-        html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
-        html +=     "</button>"
-        html +=   "</td>"   
+        if (data[1]==true) {
+          html +=     '<input class="form-control"  type="text" name="tahun_organisasi[]" value="'+data[0][index].tahunOrg+'" maxlength="220" disabled>'
+        } else {
+          html +=     '<input class="form-control"  type="text" name="tahun_organisasi[]" value="'+data[0][index].tahunOrg+'" maxlength="220">'
+        }
+        html +=   "</td>"
+
+        if (data[1]!=true) {
+          html +=   "<td style='width: 5%;'>"
+          html +=     "<button type='button' class='btn btn-danger' data-row='baris_organisasi"+baris_organisasi+"' id='btnDelRow-organisasi'>"
+          html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
+          html +=     "</button>"
+          html +=   "</td>"      
+        }
+
         html +="</tr>"
       }
       $('#tbody_organisasi').append(html);
@@ -1245,19 +1447,32 @@ function get_kenal(){
     }).done((data) => {
       // console.log(JSON.stringify(data[0]));
       var html ='';
-      for (let index = 0; index < data.length; index++) {
+      for (let index = 0; index < data[0].length; index++) {
           html  += "<tr id='baris_kenal"+baris_kenal+"' class='detail_kenal'>"
           html +=   "<td style='width: 47.5%;'>"
-          html +=     '<input class="form-control"  type="text" name="nama_kenal[]" maxlength="80" value="'+data[index].namaKenalan+'">'
+          if (data[1]==true) {
+            html +=     '<input class="form-control"  type="text" name="nama_kenal[]" maxlength="80" value="'+data[0][index].namaKenalan+'" disabled>'
+          } else {
+            html +=     '<input class="form-control"  type="text" name="nama_kenal[]" maxlength="80" value="'+data[0][index].namaKenalan+'">'
+          }
           html +=   "</td>" 
+
           html +=   "<td style='width: 47.5%;'>"
-          html +=     '<input class="form-control"  type="text" name="hubungan_kenal[]" maxlength="80" value="'+data[index].hubunganKenalan+'">'
+          if (data[1]==true) {
+            html +=     '<input class="form-control"  type="text" name="hubungan_kenal[]" maxlength="80" value="'+data[0][index].hubunganKenalan+'" disabled>'
+          } else {
+            html +=     '<input class="form-control"  type="text" name="hubungan_kenal[]" maxlength="80" value="'+data[0][index].hubunganKenalan+'">'
+          }
+          
           html +=   "</td>"
+          if (data[1]!=true) {
           html +=   "<td style='width: 5%;'>"
           html +=     "<button type='button' class='btn btn-danger' data-row='baris_kenal"+baris_kenal+"' id='btnDelRow-kenal'>"
           html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
           html +=     "</button>"
           html +=   "</td>"   
+          }
+          
           html +="</tr>"
       }
       $('#tbody_kenal').append(html);
@@ -1306,37 +1521,62 @@ function get_saudara(){
     }).done((data) => {
       // console.log(JSON.stringify(data[0]));
       var html ='';
-      for (let index = 0; index < data.length; index++) {
+      for (let index = 0; index < data[0].length; index++) {
         html += '<tr id="baris_saudara"+baris_saudara+" class="detail_saudara">'
         html +=   '<td style="width: 19%;">'
-        html +=     '<input class="form-control"  type="text" name="hubungan_saudarafarmasi[]" maxlength="220" value="'+data[index].hubunganKrbt+'" required>'
+        if (data[1]==true) {
+          html +=     '<input class="form-control"  type="text" name="hubungan_saudarafarmasi[]" maxlength="220" value="'+data[0][index].hubunganKrbt+'" required disabled>'
+        } else {
+          html +=     '<input class="form-control"  type="text" name="hubungan_saudarafarmasi[]" maxlength="220" value="'+data[0][index].hubunganKrbt+'" required>'
+        }
         html +=   '</td>' 
+
         html +=   '<td style="width: 19%;">'
-        html +=     '<input class="form-control"  type="text" name="nama_saudarafarmasi[]" maxlength="220" value="'+data[index].namaKrbt+'" required>'
+        if (data[1]==true) {
+          html +=     '<input class="form-control"  type="text" name="nama_saudarafarmasi[]" maxlength="220" value="'+data[0][index].namaKrbt+'" required disabled>'
+        } else {
+          html +=     '<input class="form-control"  type="text" name="nama_saudarafarmasi[]" maxlength="220" value="'+data[0][index].namaKrbt+'" required>'
+        }
         html +=   '</td>' 
+
         html +=   '<td style="width: 19%;">'
-        html +=     '<select class="form-control" id="LPsaudara" name="LP_saudarafarmasi[]" required>'
+        if (data[1]==true) {
+          html +=     '<select class="form-control" id="LPsaudara" name="LP_saudarafarmasi[]" required disabled>'
+        } else {
+          html +=     '<select class="form-control" id="LPsaudara" name="LP_saudarafarmasi[]" required>'
+        }
         html +=       '<option value="" disabled selected>L/P</option>'
-        if (data[index].genderKrbt=="L") {
+        if (data[0][index].genderKrbt=="L") {
           html +=       '<option value="L" selected>L</option>'
           html +=       '<option value="P">P</option>'
-        } else if(data[index].genderKrbt=="P") {
+        } else if(data[0][index].genderKrbt=="P") {
           html +=       '<option value="L">L</option>'
           html +=       '<option value="P"selected>P</option>'
         }
         html +=     '</select>'
         html +=   '</td>' 
         html +=   '<td style="width: 19%;">'
-        html +=     '<input class="form-control"  type="text" name="perushaan_saudarafarmasi[]" maxlength="220" value="'+data[index].nmperusahaanKrbt+'" required>'
+        if (data[1]==true) {
+          html +=     '<input class="form-control"  type="text" name="perushaan_saudarafarmasi[]" maxlength="220" value="'+data[0][index].nmperusahaanKrbt+'" required disabled>'
+        } else {
+          html +=     '<input class="form-control"  type="text" name="perushaan_saudarafarmasi[]" maxlength="220" value="'+data[0][index].nmperusahaanKrbt+'" required>'
+        }
         html +=   '</td>'
+
         html +=   '<td style="width: 19%;">'
-        html +=     '<input class="form-control"  type="text" name="jabatan_saudarafarmasi[]"maxlength="220" value="'+data[index].jabatanKrbt+'" required>'
+        if (data[1]==true) {
+          html +=     '<input class="form-control"  type="text" name="jabatan_saudarafarmasi[]"maxlength="220" value="'+data[0][index].jabatanKrbt+'" required disabled>'
+        } else {
+          html +=     '<input class="form-control"  type="text" name="jabatan_saudarafarmasi[]"maxlength="220" value="'+data[0][index].jabatanKrbt+'" required>'
+        }
         html +=   '</td>'
-        html +=   '<td style="width: 5%;">'
-        html +=     '<button type="button" class="btn btn-danger" data-row="baris_saudara"'+baris_saudara+'" id="btnDelRow-saudarafarmasi">'
-        html +=       '<span class="material-symbols-outlined" style="font-size: 15px;">delete</span>' 
-        html +=     '</button>'
-        html +=   '</td>'   
+        if (data[1]!=true) {
+          html +=   '<td style="width: 5%;">'
+          html +=     '<button type="button" class="btn btn-danger" data-row="baris_saudara"'+baris_saudara+'" id="btnDelRow-saudarafarmasi">'
+          html +=       '<span class="material-symbols-outlined" style="font-size: 15px;">delete</span>' 
+          html +=     '</button>'
+          html +=   '</td>'
+        }
         html +='</tr>'
       }
       $('#tbody_saudara').append(html);
@@ -1415,19 +1655,34 @@ function get_keluarga(){
             html+=  '<div class="col-md-3">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="nama">NAMA</label>'
-            html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+data[0][i].namaKelurga+'">'
+            if (data[6]==true) {
+              html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+data[0][i].namaKelurga+'" disabled>'
+            } else {
+              html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+data[0][i].namaKelurga+'">'
+            }
             html+=    '</div>'
+
             html+=  '</div>'
             html+=  '<div class="col-md-2">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="usia">Usia</label>'
-            html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+data[0][i].usiaKeluarga+'">'
+            if (data[6]==true) {
+              html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+data[0][i].usiaKeluarga+'" disabled>'
+            } else {
+              html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+data[0][i].usiaKeluarga+'">'
+            }
+            
             html+=    '</div>'
             html+=  '</div>'
             html+=  '<div class="col-md-1">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="LP">L/P</label>'
-            html+=      '<select class="form-control" id="LP" name="LP[]">'
+            if (data[6]==true) {
+              html+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+            } else {
+              html+=      '<select class="form-control" id="LP" name="LP[]">'
+            }
+    
             if (data[0][i].genderKeluarga=="L") {
             html+='<option value="L" selected>L</option>'
             html+='<option value="P">P</option>'
@@ -1445,13 +1700,22 @@ function get_keluarga(){
             html+=  '<div class="col-md-3">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-            html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+data[0][i].pendidikanKeluarga+'">'
+            if (data[6]==true) {
+              html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+data[0][i].pendidikanKeluarga+'" disabled>'
+            } else {
+              html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+data[0][i].pendidikanKeluarga+'">'
+            }
             html+=    '</div>'
             html+=  '</div>'
             html+=  '<div class="col-md-3">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-            html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+data[0][i].perushaanKeluarga+'">'
+            if (data[6]==true) {
+              html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+data[0][i].perushaanKeluarga+'" disabled>'
+            } else {
+              html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+data[0][i].perushaanKeluarga+'">'
+            }
+            
             html+=    '</div>'
             html+=  '</div>'
             html+='</div>'
@@ -1471,19 +1735,34 @@ function get_keluarga(){
             html+=  '<div class="col-md-3">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="nama">NAMA</label>'
-            html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+            if (data[6]==true) {
+              html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" disabled>'
+            } else {
+              html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+            }
+            
             html+=    '</div>'
             html+=  '</div>'
             html+=  '<div class="col-md-2">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="usia">Usia</label>'
-            html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+            if (data[6]==true) {
+              html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" disabled>'
+            } else {
+              html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+            }
+            
             html+=    '</div>'
             html+=  '</div>'
             html+=  '<div class="col-md-1">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="LP">L/P</label>'
-            html+=      '<select class="form-control" id="LP" name="LP[]">'
+            if (data[6]==true) {
+              html+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+            } else {
+              html+=      '<select class="form-control" id="LP" name="LP[]">'
+            }
+            
             html+='<option value="" selected>L/P</option>'
             html+='<option value="L" >L</option>'
             html+='<option value="P">P</option>'
@@ -1493,13 +1772,23 @@ function get_keluarga(){
             html+=  '<div class="col-md-3">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-            html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+            if (data[6]==true) {
+              html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" disabled>'
+            } else {
+              html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+            }
+            
             html+=    '</div>'
             html+=  '</div>'
             html+=  '<div class="col-md-3">'
             html+=    '<div class="form-group">'
             html+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-            html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+            if (data[6]==true) {
+              html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" disabled>'
+            } else {
+              html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+            }
+            
             html+=    '</div>'
             html+=  '</div>'
             html+='</div>'
@@ -1518,19 +1807,34 @@ function get_keluarga(){
           html+=  '<div class="col-md-3">'
           html+=    '<div class="form-group">'
           html+=      '<label class="form-control-label" for="nama">NAMA</label>'
-          html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+          if (data[6]==true) {
+            html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" disabled>'
+          } else {
+            html+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+          }
+          
           html+=    '</div>'
           html+=  '</div>'
           html+=  '<div class="col-md-2">'
           html+=    '<div class="form-group">'
           html+=      '<label class="form-control-label" for="usia">Usia</label>'
-          html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+          if (data[6]==true) {
+            html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" disabled>'
+          } else {
+            html+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+          }
+          
           html+=    '</div>'
           html+=  '</div>'
           html+=  '<div class="col-md-1">'
           html+=    '<div class="form-group">'
           html+=      '<label class="form-control-label" for="LP">L/P</label>'
-          html+=      '<select class="form-control" id="LP" name="LP[]">'
+          if (data[6]==true) {
+            html+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+          } else {
+            html+=      '<select class="form-control" id="LP" name="LP[]">'
+          }
+          
           html+='<option value="" selected>L/P</option>'
           html+='<option value="L" >L</option>'
           html+='<option value="P">P</option>'
@@ -1540,13 +1844,23 @@ function get_keluarga(){
           html+=  '<div class="col-md-3">'
           html+=    '<div class="form-group">'
           html+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-          html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+          if (data[6]==true) {
+            html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" disabled>'
+          } else {
+            html+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+          }
+          
           html+=    '</div>'
           html+=  '</div>'
           html+=  '<div class="col-md-3">'
           html+=    '<div class="form-group">'
           html+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-          html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+          if (data[6]==true) {
+            html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" disabled>'
+          } else {
+            html+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+          }
+          
           html+=    '</div>'
           html+=  '</div>'
           html+='</div>'
@@ -1565,13 +1879,23 @@ function get_keluarga(){
           html+=  '<div class="col-md-5">'
           html+=    '<div class="form-group">'
           html+=      '<label class="form-control-label" for="nama">alamat</label>'
-          html+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" value="'+data[5][index].alamatKeluarga+'">'
+          if (data[6]==true) {
+            html+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" value="'+data[5][index].alamatKeluarga+'" disabled>'
+          } else {
+            html+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" value="'+data[5][index].alamatKeluarga+'">'
+          }
+          
           html+=    '</div>'
           html+=  '</div>'
           html+=  '<div class="col-md-3">'
           html+=    '<div class="form-group">'
           html+=      '<label class="form-control-label" for="nama">alamat</label>'
-          html+=      '<input type="text" class="form-control" id="notlp" name="notlp[]" maxlength="45" value="'+data[5][index].tlpKeluarga+'">'
+          if (data[6]==true) {
+            html+=      '<input type="text" class="form-control" id="notlp" name="notlp[]" maxlength="45" value="'+data[5][index].tlpKeluarga+'" disabled>'
+          } else {
+            html+=      '<input type="text" class="form-control" id="notlp" name="notlp[]" maxlength="45" value="'+data[5][index].tlpKeluarga+'">'
+          }
+          
           html+=    '</div>'
           html+=  '</div>'
           html+='</div>'
@@ -1587,13 +1911,22 @@ function get_keluarga(){
           html+=  '<div class="col-md-5">'
           html+=    '<div class="form-group">'
           html+=      '<label class="form-control-label" for="nama">alamat</label>'
-          html+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" >'
+          if (data[6]==true) {
+            html+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" disabled>'
+          } else {
+            html+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" >'
+          }
+          
           html+=    '</div>'
           html+=  '</div>'
           html+=  '<div class="col-md-3">'
           html+=    '<div class="form-group">'
           html+=      '<label class="form-control-label" for="nama">alamat</label>'
-          html+=      '<input type="text" class="form-control" id="notlp" name="notlp[]" maxlength="45">'
+          if (data[6]==true) {
+            html+=      '<input type="text" class="form-control" id="notlp" name="notlp[]" maxlength="45" disabled>'
+          } else {
+            html+=      '<input type="text" class="form-control" id="notlp" name="notlp[]" maxlength="45">'
+          }
           html+=    '</div>'
           html+=  '</div>'
           html+='</div>'
@@ -1615,19 +1948,34 @@ function get_keluarga(){
         html2+=  '<div class="col-md-3">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="nama">NAMA</label>'
-        html2+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'">'
+        if (data[6]==true) {
+          html2+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'" disabled>'
+        } else {
+          html2+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'">'
+        }
+        
         html2+=    '</div>'
         html2+=  '</div>'
         html2+=  '<div class="col-md-2">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="usia">Usia</label>'
-        html2+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'">'
+        if (data[6]==true) {
+          html2+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'"- disabled>'
+        } else {
+          html2+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'">'
+        }
+        
         html2+=    '</div>'
         html2+=  '</div>'
         html2+=  '<div class="col-md-1">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="LP">L/P</label>'
-        html2+=      '<select class="form-control" id="LP" name="LP[]">'
+        if (data[6]==true) {
+          html2+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+        } else {
+          html2+=      '<select class="form-control" id="LP" name="LP[]">'
+        }
+        
         if (element.genderKeluarga=="L") {
         html2+='<option value="L" selected>L</option>'
         html2+='<option value="P">P</option>'
@@ -1645,13 +1993,22 @@ function get_keluarga(){
         html2+=  '<div class="col-md-3">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-        html2+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'">'
+        if (data[6]==true) {
+          html2+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'" disabled>'
+        } else {
+          html2+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'">'
+        }
+        
         html2+=    '</div>'
         html2+=  '</div>'
         html2+=  '<div class="col-md-3">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-        html2+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'">'
+        if (data[6]==true) {
+          html2+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'" disabled>'
+        } else {
+          html2+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'">'
+        }
         html2+=    '</div>'
         html2+=  '</div>'
         html2+='</div>'
@@ -1669,19 +2026,34 @@ function get_keluarga(){
         html2+=  '<div class="col-md-3">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="nama">NAMA</label>'
-        html2+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+        if (data[6]==true) {
+          html2+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" disabled>'
+        } else {
+          html2+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+        }
+        
         html2+=    '</div>'
         html2+=  '</div>'
         html2+=  '<div class="col-md-2">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="usia">Usia</label>'
-        html2+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">'
+        if (data[6]==true) {
+          html2+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" disabled>'
+        } else {
+          html2+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">'
+        }
+        
         html2+=    '</div>'
         html2+=  '</div>'
         html2+=  '<div class="col-md-1">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="LP">L/P</label>'
-        html2+=      '<select class="form-control" id="LP" name="LP[]">'
+        if (data[6]==true) {
+          html2+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+        } else {
+          html2+=      '<select class="form-control" id="LP" name="LP[]">'
+        }
+        
         html2+=         '<option value="" selected>L/P</option>'
         html2+=         '<option value="L" >L</option>'
         html2+=         '<option value="P">P</option>'
@@ -1691,13 +2063,23 @@ function get_keluarga(){
         html2+=  '<div class="col-md-3">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-        html2+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90">'
+        if (data[6]==true) {
+          html2+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" disabled>'
+        } else {
+          html2+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90">'
+        }
+        
         html2+=    '</div>'
         html2+=  '</div>'
         html2+=  '<div class="col-md-3">'
         html2+=    '<div class="form-group">'
         html2+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-        html2+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+        if (data[6]==true) {
+          html2+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" disabled>'
+        } else {
+          html2+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+        }
+        
         html2+=    '</div>'
         html2+=  '</div>'
         html2+='</div>'
@@ -1719,19 +2101,34 @@ function get_keluarga(){
         html3+=  '<div class="col-md-3">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="nama">NAMA</label>'
-        html3+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'">'
+        if (data[6]==true) {
+          html3+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'" disabled>'
+        } else {
+          html3+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'">'
+        }
+        
         html3+=    '</div>'
         html3+=  '</div>'
         html3+=  '<div class="col-md-2">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="usia">Usia</label>'
-        html3+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'">'
+        if (data[6]==true) {
+          html3+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'" disabled>'
+        } else {
+          html3+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'">'
+        }
+        
         html3+=    '</div>'
         html3+=  '</div>'
         html3+=  '<div class="col-md-1">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="LP">L/P</label>'
-        html3+=      '<select class="form-control" id="LP" name="LP[]">'
+        if (data[6]==true) {
+          html3+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+        } else {
+          html3+=      '<select class="form-control" id="LP" name="LP[]">'
+        }
+
         if (element.genderKeluarga=="L") {
         html3+='<option value="L" selected>L</option>'
         html3+='<option value="P">P</option>'
@@ -1749,13 +2146,23 @@ function get_keluarga(){
         html3+=  '<div class="col-md-3">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-        html3+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'">'
+        if (data[6]==true) {
+          html3+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'" disabled>'
+        } else {
+          html3+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'">'
+        }
+        
         html3+=    '</div>'
         html3+=  '</div>'
         html3+=  '<div class="col-md-3">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-        html3+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'">'
+        if (data[6]==true) {
+          html3+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'" disabled>'
+        } else {
+          html3+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'">'
+        }
+        
         html3+=    '</div>'
         html3+=  '</div>'
         html3+='</div>'
@@ -1771,19 +2178,34 @@ function get_keluarga(){
         html3+=  '<div class="col-md-3">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="nama">NAMA</label>'
-        html3+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90">'
+        if (data[6]==true) {
+          html3+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" disabled>'
+        } else {
+          html3+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90">'
+        }
+        
         html3+=    '</div>'
         html3+=  '</div>'
         html3+=  '<div class="col-md-2">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="usia">Usia</label>'
-        html3+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">'
+        if (data[6]==true) {
+          html3+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" disabled>'
+        } else {
+          html3+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">'
+        }
+        
         html3+=    '</div>'
         html3+=  '</div>'
         html3+=  '<div class="col-md-1">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="LP">L/P</label>'
-        html3+=      '<select class="form-control" id="LP" name="LP[]">'
+        if (data[6]==true) {
+          html3+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+        } else {
+          html3+=      '<select class="form-control" id="LP" name="LP[]">'
+        }
+        
         html3+=         '<option value="" selected>L/P</option>'
         html3+=         '<option value="L" >L</option>'
         html3+=         '<option value="P">P</option>'
@@ -1793,13 +2215,23 @@ function get_keluarga(){
         html3+=  '<div class="col-md-3">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-        html3+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90">'
+        if (data[6]==true) {
+          html3+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" disabled>'
+        } else {
+          html3+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90">'
+        }
+        
         html3+=    '</div>'
         html3+=  '</div>'
         html3+=  '<div class="col-md-3">'
         html3+=    '<div class="form-group">'
         html3+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-        html3+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+        if (data[6]==true) {
+          html3+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" disabled>'
+        } else {
+          html3+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+        }
+        
         html3+=    '</div>'
         html3+=  '</div>'
         html3+='</div>'
@@ -1821,19 +2253,34 @@ function get_keluarga(){
         html4+=  '<div class="col-md-3">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="nama">NAMA</label>'
-        html4+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'">'
+        if (data[6]==true) {
+          html4+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'" disabled>'
+        } else {
+          html4+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+element.namaKelurga+'">'
+        }
+        
         html4+=    '</div>'
         html4+=  '</div>'
         html4+=  '<div class="col-md-2">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="usia">Usia</label>'
-        html4+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'">'
+        if (data[6]==true) {
+          html4+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'" disabled>'
+        } else {
+          html4+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+element.usiaKeluarga+'">'
+        }
+        
         html4+=    '</div>'
         html4+=  '</div>'
         html4+=  '<div class="col-md-1">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="LP">L/P</label>'
-        html4+=      '<select class="form-control" id="LP" name="LP[]">'
+        if (data[6]==true) {
+          html4+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+        } else {
+          html4+=      '<select class="form-control" id="LP" name="LP[]">'
+        }
+        
         if (element.genderKeluarga=="L") {
         html4+='<option value="L" selected>L</option>'
         html4+='<option value="P">P</option>'
@@ -1851,13 +2298,22 @@ function get_keluarga(){
         html4+=  '<div class="col-md-3">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-        html4+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'">'
+        if (data[6]==true) {
+          html4+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'" disabled>'
+        } else {
+          html4+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+element.pendidikanKeluarga+'">'
+        }
         html4+=    '</div>'
         html4+=  '</div>'
         html4+=  '<div class="col-md-3">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-        html4+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'">'
+        if (data[6]==true) {
+          html4+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'" disabled>'
+        } else {
+          html4+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+element.perushaanKeluarga+'">'
+        }
+        
         html4+=    '</div>'
         html4+=  '</div>'
         html4+='</div>'
@@ -1875,19 +2331,34 @@ function get_keluarga(){
         html4+=  '<div class="col-md-3">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="nama">NAMA</label>'
-        html4+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+        if (data[6]==true) {
+          html4+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" disabled>'
+        } else {
+          html4+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+        }
+        
         html4+=    '</div>'
         html4+=  '</div>'
         html4+=  '<div class="col-md-2">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="usia">Usia</label>'
-        html4+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">'
+        if (data[6]==true) {
+          html4+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" disabled>'
+        } else {
+          html4+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">'
+        }
+        
         html4+=    '</div>'
         html4+=  '</div>'
         html4+=  '<div class="col-md-1">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="LP">L/P</label>'
-        html4+=      '<select class="form-control" id="LP" name="LP[]">'
+        if (data[6]==true) {
+          html4+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+        } else {
+          html4+=      '<select class="form-control" id="LP" name="LP[]">'
+        }
+        
         html4+=         '<option value="" selected>L/P</option>'
         html4+=         '<option value="L" >L</option>'
         html4+=         '<option value="P">P</option>'
@@ -1897,13 +2368,23 @@ function get_keluarga(){
         html4+=  '<div class="col-md-3">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-        html4+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90">'
+        if (data[6]==true) {
+          html4+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" disabled>'
+        } else {
+          html4+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90">'
+        }
+        
         html4+=    '</div>'
         html4+=  '</div>'
         html4+=  '<div class="col-md-3">'
         html4+=    '<div class="form-group">'
         html4+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-        html4+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+        if (data[6]==true) {
+          html4+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" disabled>'
+        } else {
+          html4+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+        }
+        
         html4+=    '</div>'
         html4+=  '</div>'
         html4+='</div>'
@@ -1929,19 +2410,34 @@ function get_keluarga(){
             html5+=  '<div class="col-md-3">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="nama">NAMA</label>'
-            html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+data[1][j].namaKelurga+'">'
+            if (data[6]==true) {
+              html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+data[1][j].namaKelurga+'" disabled>'
+            } else {
+              html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" value="'+data[1][j].namaKelurga+'">'
+            }
+            
             html5+=    '</div>'
             html5+=  '</div>'
             html5+=  '<div class="col-md-2">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="usia">Usia</label>'
-            html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+data[1][j].usiaKeluarga+'">'
+            if (data[6]==true) {
+              html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+data[1][j].usiaKeluarga+'" disabled>'
+            } else {
+              html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" value="'+data[1][j].usiaKeluarga+'">'
+            }
+            
             html5+=    '</div>'
             html5+=  '</div>'
             html5+=  '<div class="col-md-1">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="LP">L/P</label>'
-            html5+=      '<select class="form-control" id="LP" name="LP[]">'
+            if (data[6]==true) {
+              html5+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+            } else {
+              html5+=      '<select class="form-control" id="LP" name="LP[]">'
+            }
+            
             if (data[1][j].genderKeluarga=="L") {
             html5+='<option value="L" selected>L</option>'
             html5+='<option value="P">P</option>'
@@ -1959,13 +2455,22 @@ function get_keluarga(){
             html5+=  '<div class="col-md-3">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-            html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+data[1][j].pendidikanKeluarga+'">'
+            if (data[6]==true) {
+              html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+data[1][j].pendidikanKeluarga+'" disabled>'
+            } else {
+              html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" value="'+data[1][j].pendidikanKeluarga+'">'
+            }
             html5+=    '</div>'
             html5+=  '</div>'
             html5+=  '<div class="col-md-3">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-            html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+data[1][j].perushaanKeluarga+'">'
+            if (data[6]==true) {
+              html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+data[1][j].perushaanKeluarga+'" disabled>'
+            } else {
+              html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" value="'+data[1][j].perushaanKeluarga+'">'
+            }
+            
             html5+=    '</div>'
             html5+=  '</div>'
             html5+='</div>'
@@ -1985,19 +2490,34 @@ function get_keluarga(){
             html5+=  '<div class="col-md-3">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="nama">NAMA</label>'
-            html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+            if (data[6]==true) {
+              html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" disabled>'
+            } else {
+              html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+            }
+            
             html5+=    '</div>'
             html5+=  '</div>'
             html5+=  '<div class="col-md-2">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="usia">Usia</label>'
-            html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+            if (data[6]==true) {
+              html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" disabled>'
+            } else {
+              html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+            }
+            
             html5+=    '</div>'
             html5+=  '</div>'
             html5+=  '<div class="col-md-1">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="LP">L/P</label>'
-            html5+=      '<select class="form-control" id="LP" name="LP[]">'
+            if (data[6]==true) {
+              html5+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+            } else {
+              html5+=      '<select class="form-control" id="LP" name="LP[]">'
+            }
+            
             html5+='<option value="" selected>L/P</option>'
             html5+='<option value="L" >L</option>'
             html5+='<option value="P">P</option>'
@@ -2007,13 +2527,23 @@ function get_keluarga(){
             html5+=  '<div class="col-md-3">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-            html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+            if (data[6]==true) {
+              html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" disabled>'
+            } else {
+              html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+            }
+            
             html5+=    '</div>'
             html5+=  '</div>'
             html5+=  '<div class="col-md-3">'
             html5+=    '<div class="form-group">'
             html5+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-            html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+            if (data[6]==true) {
+              html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" disabled>'
+            } else {
+              html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+            }
+            
             html5+=    '</div>'
             html5+=  '</div>'
             html5+='</div>'
@@ -2032,19 +2562,34 @@ function get_keluarga(){
           html5+=  '<div class="col-md-3">'
           html5+=    '<div class="form-group">'
           html5+=      '<label class="form-control-label" for="nama">NAMA</label>'
-          html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+          if (data[6]==true) {
+            html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" disabled>'
+          } else {
+            html5+=      '<input type="text" class="form-control" id="nama" name="nama[]" maxlength="90" >'
+          }
+          
           html5+=    '</div>'
           html5+=  '</div>'
           html5+=  '<div class="col-md-2">'
           html5+=    '<div class="form-group">'
           html5+=      '<label class="form-control-label" for="usia">Usia</label>'
-          html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+          if (data[6]==true) {
+            html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" disabled>'
+          } else {
+            html5+=      '<input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200" >'
+          }
+          
           html5+=    '</div>'
           html5+=  '</div>'
           html5+=  '<div class="col-md-1">'
           html5+=    '<div class="form-group">'
           html5+=      '<label class="form-control-label" for="LP">L/P</label>'
-          html5+=      '<select class="form-control" id="LP" name="LP[]">'
+          if (data[6]==true) {
+            html5+=      '<select class="form-control" id="LP" name="LP[]" disabled>'
+          } else {
+            html5+=      '<select class="form-control" id="LP" name="LP[]">'
+          }
+          
           html5+='<option value="" selected>L/P</option>'
           html5+='<option value="L" >L</option>'
           html5+='<option value="P">P</option>'
@@ -2054,13 +2599,22 @@ function get_keluarga(){
           html5+=  '<div class="col-md-3">'
           html5+=    '<div class="form-group">'
           html5+=      '<label class="form-control-label" for="pendidikan">PENDIDIKAN</label>'
-          html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+          if (data[6]==true) {
+            html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" disabled>'
+          } else {
+            html5+=      '<input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength="90" >'
+          }
           html5+=    '</div>'
           html5+=  '</div>'
           html5+=  '<div class="col-md-3">'
           html5+=    '<div class="form-group">'
           html5+=      '<label class="form-control-label" for="namaperushaan">Perusahaan</label>'
-          html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+          if (data[6]==true) {
+            html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90" disabled>'
+          } else {
+            html5+=      '<input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength="90">'
+          }
+          
           html5+=    '</div>'
           html5+=  '</div>'
           html5+='</div>'
@@ -2077,7 +2631,12 @@ function get_keluarga(){
           html5+=  '<div class="col-md-5">'
           html5+=    '<div class="form-group">'
           html5+=      '<label class="form-control-label" for="nama">alamat</label>'
-          html5+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" value="'+data[5][1].alamatKeluarga+'">'
+          if (data[6]==true) {
+            html5+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" value="'+data[5][1].alamatKeluarga+'" disabled>'
+          } else {
+            html5+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" value="'+data[5][1].alamatKeluarga+'">'
+          }
+          
           html5+=    '</div>'
           html5+=  '</div>'
           html5+='</div>'
@@ -2092,7 +2651,12 @@ function get_keluarga(){
           html5+=  '<div class="col-md-5">'
           html5+=    '<div class="form-group">'
           html5+=      '<label class="form-control-label" for="nama">alamat</label>'
-          html5+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" >'
+          if (data[6]==true) {
+            html5+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" disabled>'
+          } else {
+            html5+=      '<input type="text" class="form-control" id="alamt" name="alamat[]" maxlength="1000" >'
+          }
+          
           html5+=    '</div>'
           html5+=  '</div>'
           html5+='</div>'
