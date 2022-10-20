@@ -218,6 +218,58 @@ class RequestorController extends Controller
         return $list_fptk;
     }
 
+    public function TemplateLHW($golongan,$idkandidat,$idfptk){
+        $namalengkap = DB::table('T_kandidat')
+                    ->select('namalengkap')
+                    ->where('id',$idkandidat)
+                    ->first();
+        // dd($namalengkap->namalengkap);
+       if ($golongan==4) {
+        $file = storage_path('app\public\template').'\LHW Gol. 4 - Supporting.xls';
+        $filenameDownload ='LHW Gol. 4 - Supporting '.$namalengkap->namalengkap.'-'.$idfptk.'.xls';
+       } elseif ($golongan==5) {
+        $file = storage_path('app\public\template').'\LHW GOL. 5 - Managerial.xls';
+        $filenameDownload ='LHW GOL. 5 - Managerial '.$namalengkap->namalengkap.'-'.$idfptk.'.xls';
+       }elseif ($golongan==3) {
+        $file = storage_path('app\public\template').'\NEW_Form Gol.3(MR)-Seleksi-Promosi.xls';
+        $filenameDownload ='NEW_Form Gol.3(MR)-Seleksi-Promosi '.$namalengkap->namalengkap.'-'.$idfptk.'.xls';
+       }elseif ($golongan==2) {
+        $file = storage_path('app\public\template').'\NEW_Form Gol.2(ADMIN)-Seleksi-Promosi.xls';
+        $filenameDownload ='NEW_Form Gol.2(ADMIN)-Seleksi-Promosi '.$namalengkap->namalengkap.'-'.$idfptk.'.xls';
+       }
+       $success=copy($file, $filenameDownload);
+       if(!$success) die();
+
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename='.$filenameDownload);
+        readfile($filenameDownload); 
+        unlink($filenameDownload);
+       
+    }
+
+    //LHW
+    public function ImportLHW(Request $request){
+        $LHW = $request->file('upload_LHW');
+        $nama_file=$LHW->getClientOriginalName();
+        $idfptk = $request->idfptk;
+
+        $result = DB::table('T_FPTK')
+                    ->select('fileLhw')
+                    ->where('id',$idfptk)
+                    ->first();
+
+        if(!$result->fileLhw==null){
+            $deletefile = storage_path('app\public\LHW\\').$result->fileLhw;
+            unlink($deletefile);
+        }
+        $LHW->move(storage_path('app\public\LHW\\'),$nama_file);
+            DB::table('T_FPTK')
+                ->where('id',$idfptk)
+                ->update([
+                    "fileLhw"=>$nama_file
+                ]);
+        return redirect()->route('rq.home');
+    }
 
     //MPP
     public function indexMPP(){

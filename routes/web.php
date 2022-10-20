@@ -197,6 +197,8 @@ Route::middleware('auth')->group(function(){
     Route::post('/hrdats/requestor/filterdashboard','RequestorController@indexFilter')->name('rq.indexFilter');
     Route::post('/hrdats/requestor/listfptk','RequestorController@R_ListFptk')->name('rq.R_ListFptk');
     Route::post('/hrdats/requestor/summaryfptk','RequestorController@R_SummaryFptk')->name('rq.R_SummaryFptk');
+    Route::get('/hrdats/requestor/lhw/{golongan}/{idkandidat}/{idfptk}', 'RequestorController@TemplateLHW')->name('rq.TemplateLHW');
+    Route::post('/hrdats/requestor/import/lhw', 'RequestorController@ImportLHW')->name('rq.ImportLHW');
 
     //Detail Kandidat
     Route::get('/hrdats/detail/kandidat/{id}/{noidentitas}', 'KandidatController@index')->name('dk.home');

@@ -5,6 +5,7 @@ $( document ).ready(function() {
   filterstart()
   ShowSummary()
   filter_FPTK()
+  // downloadLHW()
   // Row_kandidat()
   // update_Fptk()
   // detailKandidat()
@@ -441,10 +442,27 @@ if (flag_atasan==1) {
             defaultContent: 'Tidak ada data'
           },
           {
+            defaultContent: '',
+            render: (data, type, row, meta)=> {
+                // return '<button type="button" class="btn btn-info" onclick="Modal_fptk(value)" data-toggle="modal" data-target=".modal-detail-fptk" value="'+row.id+'">Detail</button>'
+                if (row.golongan==null || row.namalengkap==null) {
+                  return '<button type="button"  class="btn btn-danger d-flex" data-toggle="modal" data-target="#modalLHW" disabled>LHW</button>'
+                } else {
+                  return '<button type="button" onclick="Modal_LHW(this)" class="btn btn-danger d-flex" data-toggle="modal" data-target="#modalLHW" data-golongan="'+row.golongan+'" data-idfptk="'+row.id+'" data-idkandidat="'+row.idkandidat+'">LHW</button>'
+                }
+                
+            }
+          },
+          {
               defaultContent: '',
               render: (data, type, row, meta)=> {
                   // return '<button type="button" class="btn btn-info" onclick="Modal_fptk(value)" data-toggle="modal" data-target=".modal-detail-fptk" value="'+row.id+'">Detail</button>'
-                  return '<a class="btn btn-info" href="/hrdats/detail/kandidat/'+row.id_TKandidat+'/'+row.noidentitas+'">Detail</a>'
+                  if (row.namalengkap==null) {
+                    return '<a class="btn btn-info" disabled>Detail</a>'
+                  } else {
+                    return '<a class="btn btn-info" href="/hrdats/detail/kandidat/'+row.id_TKandidat+'/'+row.noidentitas+'">Detail</a>'
+                  }
+                 
               }
           }
       ] 
@@ -452,6 +470,16 @@ if (flag_atasan==1) {
   }
   
 }
+
+function Modal_LHW(obj){
+ golongan= $(obj).data('golongan')
+ idkandidat= $(obj).data('idkandidat')
+ idfptk= $(obj).data('idfptk')
+//  console.log(asd)
+  $('#idfptk').val(idfptk)
+  $('#downloadLHW').attr("href", "/hrdats/requestor/lhw/"+golongan+"/"+idkandidat+"/"+idfptk)
+}
+
 
 //--------END FPTK------------
 
