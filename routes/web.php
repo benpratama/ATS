@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function(){
         Route::post('/hrdats/detail/update/phase1_1','KandidatController@UpdateForm1_1')->name('dk.UpdateForm1_1');
         Route::post('/hrdats/detail/update/phase2','KandidatController@UpdateForm2')->name('dk.UpdateForm2');
         Route::Post('/hrdats/detail/setschedule/kandidat','KandidatController@SetSchedule')->name('dk.SetSchedule');
+        Route::Post('/hrdats/konten/email','KandidatController@GetKonten')->name('dk.GetKonten');
+        Route::Post('/hrdats/send/email','KandidatController@SendEmail')->name('dk.SendEmail');
 
         //Master Table Internal
         Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');

@@ -336,6 +336,16 @@ class KandidatController extends Controller
      return $list_sim;
     }
 
+    //KONTEN EMAIL
+    public function GetKonten(Request $request){
+        $isi_konten = DB::table('konten')
+                    ->select('konten')
+                    ->where('id_Organisasi',session()->get('user')['organisasi'])
+                    ->where('jenis',$request->schedule)
+                    ->where('to','kandidat')
+                    ->get();
+        return $isi_konten;
+    }
 
 
     //update
@@ -736,6 +746,7 @@ class KandidatController extends Controller
         }else{
             $email=NULL;
         }
+
         if(empty($request->proses)){
             $proses=NULL;
         }else{
@@ -821,7 +832,7 @@ class KandidatController extends Controller
         
         // //ini email kekandidat
         // $sendTo=$emailKandidat->email;
-        // Mail::send('Email and WA/konten', array('datas'=>$data), function($message) use($sendTo)
+        //  ('Email and WA/konten', array('datas'=>$data), function($message) use($sendTo)
         // {
         // // $message->to("maptuh.mahpudin@kalbe.co.id")->subject('Pengajuan Beasiswa YKLB');
         //     $message->to($sendTo)->subject('MCU');
@@ -831,6 +842,29 @@ class KandidatController extends Controller
 
         // return $pdf_mcu_eth->stream('test.pdf');
         // return Redirect::back();
+    }
+
+    public function SendEmail (Request $request){
+        $email_raw = DB::table('T_kandidat')
+                ->select('email')
+                ->where('id',$request->id_kandidat)
+                ->get();
+        $email = $email_raw[0]->email;     
+        $subject = 'MCU';
+        $lab = DB::table('M_vendor')
+                ->select('NamaLab','alamat')
+                ->where('id',$request->id_lab)
+                ->where('jenis','MCU')
+                ->get();
+
+        $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]"],[$lab[0]->NamaLab,$lab[0]->alamat],$request->konten);
+        Mail::raw($konten, function ($message) use ($email,$subject) {
+            $message
+              ->to($email)
+              ->cc('kwjwkwkwk@gmail.com')
+              ->subject($subject);
+          });
+        return $konten;
     }
 
     public function GetNotes($id){

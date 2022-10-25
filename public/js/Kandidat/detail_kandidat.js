@@ -8,6 +8,34 @@
 //   enableHighAccuracy: true
 // })
 $( document ).ready(function() {
+  $('#summernote').summernote({
+    width: "100%",
+    height: "50%",
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          // ['insert', ['link', 'picture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+  });
+  SHOW_KONTEN_SUMMERNOTE()
+  // $('#summernote2').summernote({
+  //   width: "100%",
+  //   height: "50%",
+  //       toolbar: [
+  //         ['style', ['style']],
+  //         ['font', ['bold', 'underline', 'clear']],
+  //         ['color', ['color']],
+  //         ['para', ['ul', 'ol', 'paragraph']],
+  //         ['table', ['table']],
+  //         // ['insert', ['link', 'picture', 'video']],
+  //         ['view', ['fullscreen', 'codeview', 'help']]
+  //       ]
+  // });
+  kirimEmail()
   gen_url()
   getPostCode()
   hide()
@@ -105,10 +133,88 @@ function filterProses(){
   });
 }
 
+function SHOW_KONTEN_SUMMERNOTE(){
+  $('#schedule').on('change',function(){
+    schedule = $('#schedule').val();
+    // online = $('#proses').val();
+
+    // if (online=='Online') {
+    //   online_=1;
+    // } else {
+    //   online_=0
+    // }
+
+    // console.log(schedule);
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/konten/email',
+        type: 'post',
+        data: {
+          schedule:schedule
+        }
+      }).done((data) => {
+        console.log(JSON.stringify(data));
+        konten = data[0].konten
+        $('#konten').val(konten)
+        // $('#summernote').summernote('code', '');
+        // $('#summernote').summernote('code', $(konten));
+    });
+  })
+}
+
 function addSchedule(){
   $('#btnAdd-schedule').on('click',function(){
     
   })
+}
+
+function kirimEmail(){
+  $('#btnEmail').on('click',function(){
+    namaKandidat = $('#namalengkap').val();
+    posisi = $('#posisi').val();
+    tglWaktuRaw = $('#tglWaktu').val();
+    tglWaktu = tglWaktuRaw.replace("T", " Waktu: ");
+    Durasi = $('#mcu_Durasi').val() +' jam'
+    id_kandidat = $('#id_kandidat').val();
+    id_lab = $('#mcu_lab').val();
+    id_proses = $('#schedule').val();
+
+    konten = $('#konten').val();
+
+    var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+    var konten = konten.replace('[POSITION]',posisi)
+    var konten = konten.replace('[DATE&TIME]',tglWaktu)
+    var konten = konten.replace('[DURATION]',Durasi)
+
+    // console.log(id_kandidat)
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/send/email',
+        type: 'post',
+        data: {
+          konten:konten,
+          id_kandidat:id_kandidat,
+          id_lab:id_lab,
+          id_proses:id_proses
+        }
+      }).done((data) => {
+        console.log(JSON.stringify(data));
+        // $('#summernote').summernote('code', '');
+        // $('#summernote').summernote('code', $(konten));
+    });
+  })
+  
+
 }
 
 
@@ -122,6 +228,7 @@ function modal(){
     $('#ol_Br').val('');
     $('#tglWaktu').val('');
     $('#ccto').val(null).trigger('change');
+    $('#summernote').summernote('code', '');
 
     //mcu
     $('#form_mcu').attr('hidden',true)
@@ -2693,8 +2800,9 @@ function numberWithCommas() {
 
 //BAGIAN SCHEDULE
 function getSchedule(){
-  id = $('#id_kandidatModal').val();
+  id = $('#id_kandidat').val();
   today = new Date();
+  // console.log(id);
   // $.ajaxSetup({
   //   headers: {
   //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2703,71 +2811,86 @@ function getSchedule(){
   // $.ajax({
   //     _token: '{{ csrf_token() }}',
   //     url: '/hrdats/detail/getschedule/kandidat/'+id,
-  //     type: 'get'
-  // }).done((data) => {
-  //   console.log(JSON.stringify(data));
-  // })
-  // $('#tblSchedule').DataTable({
+  //     type: 'get',
+  //     data: {
+  //     }
+  //   }).done((data) => {
+  //     console.log(JSON.stringify(data));
+  // });
+
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  $.ajax({
+      _token: '{{ csrf_token() }}',
+      url: '/hrdats/detail/getschedule/kandidat/'+id,
+      type: 'get'
+  }).done((data) => {
+    // console.log(JSON.stringify(data));
+  })
+  $('#tblSchedule').DataTable({
     
-  //   "scrollY":        "400px",
-  //   "scrollCollapse": true,
-  //   pageLength : 5,
-  //   ajax: {
-  //   url: '/hrdats/detail/getschedule/kandidat/'+id,
-  //           data:{},
-  //           dataSrc:""
-  //       },
-  //   "paging":true,
-  //   "bInfo" : false,
-  //   "lengthChange": false,
-  //   language: {
-  //       paginate: {
-  //           previous: "<i class='fas fa-angle-left'>",
-  //           next: "<i class='fas fa-angle-right'>"
-  //       }
-  //   },
-  //   columns: [
-  //       {
-  //           data: 'proses',
-  //           defaultContent: ''
-  //       },
-  //       {
-  //         data: 'created_at',
-  //         defaultContent: 'NULL'
-  //       },
-  //       {
-  //         data: 'Summary',
-  //         defaultContent: 'NULL'
-  //       },
-  //       {
-  //           defaultContent: '',
-  //           render: (data, type, row, meta)=> {
-  //             if (row.proses=='Apply') {
-  //               return'NULL'
-  //             } else {
-  //               return '<button type="button" class="btn btn-info" onclick="Modal_notes(this)" data-toggle="modal" data-target=".modal-notes" value="'+row.id+'" data-statusp="'+row.proses+'">Note</button>'
-  //             }
+    "scrollY":        "400px",
+    "scrollCollapse": true,
+    pageLength : 5,
+    ajax: {
+    url: '/hrdats/detail/getschedule/kandidat/'+id,
+            data:{},
+            dataSrc:""
+        },
+    "paging":true,
+    "bInfo" : false,
+    "lengthChange": false,
+    language: {
+        paginate: {
+            previous: "<i class='fas fa-angle-left'>",
+            next: "<i class='fas fa-angle-right'>"
+        }
+    },
+    columns: [
+        {
+            data: 'proses',
+            defaultContent: ''
+        },
+        {
+          data: 'created_at',
+          defaultContent: 'NULL'
+        },
+        {
+          data: 'Summary',
+          defaultContent: 'NULL'
+        },
+        {
+            defaultContent: '',
+            render: (data, type, row, meta)=> {
+              if (row.proses=='Apply') {
+                return'NULL'
+              } else {
+                return '<button type="button" class="btn btn-info" onclick="Modal_notes(this)" data-toggle="modal" data-target=".modal-notes" value="'+row.id+'" data-statusp="'+row.proses+'">Note</button>'
+              }
                 
-  //           }
-  //       },
-  //       {
-  //         defaultContent: '',
-  //         render: (data, type, row, meta)=> {
-  //             if (row.proses=='Apply') {
-  //               return 'NULL'
-  //             } else {
-  //               if (row.created_at<today) {
-  //                 return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'">Edit</button>'
-  //               } else {
-  //                 return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'" disabled>Edit</button>'
-  //               }
+            }
+        },
+        {
+          defaultContent: '',
+          render: (data, type, row, meta)=> {
+              if (row.proses=='Apply') {
+                return 'NULL'
+              } else {
+                if (row.created_at<today) {
+                  return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'">Edit</button>'
+                } else {
+                  return '<button type="button" class="btn btn-info" onclick="Modal_sim(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'" disabled>Edit</button>'
+                }
                 
-  //             }
-  //         }
-  //       }
-  //   ],
-  //   order: [[1, 'desc']]
-  // }); 
+              }
+          }
+        }
+    ],
+    order: [[1, 'desc']]
+  }); 
 }
 
 function Modal_notes(obj){

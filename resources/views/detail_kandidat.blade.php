@@ -27,6 +27,8 @@
     margin: 0.5em;
   }
   </style>
+  <link rel="stylesheet" href="{{ asset('css/summernote.css') }}" type="text/css">
+  
 @endsection
 
 @section('content')
@@ -286,6 +288,8 @@
             <div class="modal-body">
               {{-- <form method="POST" action="{{ route('dk.SetSchedule') }}" >
                 @csrf --}}
+
+                {{-- INI INFORMASI KANDIDAT --}}
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
@@ -293,6 +297,16 @@
                       <input type="text" class="form-control" id="namalengkap" name="namalengkap" value="{{ $info_kandidat->namalengkap }}" readonly>
                     </div>
                   </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="posisi">Posisi</label>
+                      <input type="text" class="form-control" id="posisi" name="posisi" value="{{ $applyas[0]->nama }}" readonly>
+                    </div>
+                  </div>
+                </div>
+
+                {{-- INI DITANYA PROESES SAMA JENISNYA --}}
+                <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
                       <label class="form-control-label" for="schedule">list proses</label>
@@ -315,6 +329,7 @@
                     </div>
                   </div>
                 </div>
+
                 {{-- START INI BUAT FIELD ONLINE / OFLINE --}}
                 <div class="row" id="f_online" hidden>
                   <div class="col-md-3">
@@ -410,7 +425,15 @@
                     </div>
                   </div>
                 </div>
-              
+                <div class="row">
+                  <label class="form-control-label" for="alamatlengkap">Email to kandidat</label>
+                  {{-- <div id="summernote"></div> --}}
+                  <textarea name="konten" id="konten" class="form-control" cols="30" rows="20"></textarea>
+                </div>
+                {{-- <div class="row">
+                  <label class="form-control-label" for="alamatlengkap">Email to Vendor</label>
+                  <div id="summernote2"></div>
+                </div> --}}
               </div>
               <div class="modal-footer">
                 <div class="row">
@@ -1353,5 +1376,6 @@
 @endsection
 
 @section('script')
+  <script src="{{ asset('js/summernote.js') }}"></script>
   <script language="JavaScript" type="text/javascript" src="{{ asset('js/Kandidat/detail_kandidat.js') }}"></script>
 @endsection

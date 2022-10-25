@@ -10,7 +10,7 @@
 	<head>
 	<title>Suart 1</title>
 </head>
-<body>
+{{-- <body>
 	@if ($datas['jenisemail']==1)
 		@if ($datas['org']=='2')
 			Hi {{ $datas['nama'] }} <br>
@@ -295,7 +295,6 @@
 		@endif
 		
 	@elseif($datas['jenisemail']==4)
-		{{-- techtest gak ada emailnya --}}
 		@if ($datas['bahasa']=='IN')
 		@elseif ($datas['bahasa']=='ENG')
 		@endif
@@ -388,15 +387,19 @@
 		@endif
 		
 	@elseif ($datas['jenisemail']==6)
-		{{-- interview user gak ada email --}}
+
 		@if ($datas['bahasa']=='IN')
 		@elseif ($datas['bahasa']=='ENG')
 		@endif
 	@elseif ($datas['jenisemail']==9)
-		{{-- ada 2 pilh ynag mana? --}}
+
 		@if ($datas['bahasa']=='IN')
 		@elseif ($datas['bahasa']=='ENG')
 		@endif
 	@endif
+</body> --}}
+
+<body>
+	
 </body>
 </html>
