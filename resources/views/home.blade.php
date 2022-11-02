@@ -191,6 +191,11 @@
                 <h6 class="text-uppercase text-muted ls-1 mb-1">Overview</h6>
                 <h5 class="h3 mb-0">Kandidat</h5>
               </div>
+              <div class="d-flex col-8">
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-groupschedule">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah</span>
+                </button>
             </div>
           </div>
           <div class="card-body">
@@ -217,24 +222,6 @@
                     <th >Detail</th>
                   </tr>
                 </thead>
-                {{-- <thead id="DTsearch">
-                  <tr>
-                    <th></th>
-                    <th class="thseacrh">Usia</th>
-                    <th class="thseacrh">Domisili</th>
-                    <th class="thseacrh">Gender</th>
-                    <th class="thseacrh">Pendidikan</th>
-                    <th class="thseacrh">Jurusan</th>
-                    <th class="thseacrh">Fresh or not</th>
-                    <th class="thseacrh">Bidang lini</th>
-                    <th class="thseacrh">Penempatan luar indo</th>
-                    <th class="thseacrh">ditempatkan luar indo</th>
-                    <th class="thseacrh">SIM</th>
-                    <th class="thseacrh">Apply</th>
-                    <th class="thseacrh">Status</th>
-                    <th></th>
-                </tr>
-                </thead> --}}
               </table>
             </div>
           </div>
@@ -242,6 +229,318 @@
       </div>
     </div>
   </div>
+
+  {{--!!START MODAL TAMBAH!!--}}
+  <div class="modal fade bd-example-modal-xl modal-tambah-groupschedule" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Tambah Schedule</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{-- <form method="POST" action="{{ route('dk.SetSchedule') }}" >
+            @csrf --}}
+
+            {{-- INI INFORMASI KANDIDAT --}}
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="namagroup">Nama Group</label>
+                  <input type="text" class="form-control" id="namagroup" name="namagroup">
+                </div>
+              </div>
+              {{-- <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="posisi">Posisi</label>
+                  <input type="text" class="form-control" id="posisi" name="posisi" value="{{ $applyas[0]->nama }}" readonly>
+                </div>
+              </div> --}}
+            </div>
+
+            {{-- INI DITANYA PROESES SAMA JENISNYA --}}
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="schedule">list proses</label>
+                  <select class="form-control" id="schedule" name="schedule" required>
+                    <option value="" selected disabled>Proses</option>
+                    @foreach ($list_proses as $proses )
+                    <option value="{{ $proses->id }}">{{ $proses->proses }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4" id='onlineonsite'>
+                <div class="form-group">
+                  <label class="form-control-label" for="proses">Online/On-site</label>
+                  <select class="form-control" id="proses" name="proses" required>
+                    <option value="" selected disabled>Online/Onsite/Phone</option>
+                    <option value="1">Online</option>
+                    <option value="0">On-site</option>
+                    <option value="2">By phone</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div id="informasi1">
+              <div class="row" id="MCU">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="mcu_nosurat">No Surat</label>
+                    <input type="text" class="form-control" id="mcu_nosurat" name="mcu_nosurat" value="">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="mcu_Durasi">Durasi (dalam jam)</label>
+                    <input type="number" class="form-control" id="mcu_Durasi" name="Durasi" min=0 max=100>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alamatlengkap">Lab</label>
+                    <select id="mcu_lab" class="form-control" name="mcu_lab">
+                      <option value="" selected disabled>NAMA LAB</option>
+                      @foreach ($list_mcu as $mcu )
+                      <option value="{{ $mcu->id }}">{{ $mcu->namaLab }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="psikotest_1">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="psikotest_1_Durasi">Durasi (dalam jam)</label>
+                    <input type="number" class="form-control" id="psikotest_1_Durasi" name="Durasi" min=0 max=100>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="psikotest_1_Link">Link</label>
+                    <input type="text" class="form-control" id="psikotest_1_Link" name="psikotest_1_Link" value="">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="psikotest_1_PIC">PIC</label>
+                    <input type="text" class="form-control" id="psikotest_1_PIC" name="psikotest_1_PIC" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="psikotest_0">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="psikotest_0_Address">Address</label>
+                    <input type="text" class="form-control" id="psikotest_0_Address" name="psikotest_0_Address" value="">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="psikotest_0_Room">Room</label>
+                    <input type="text" class="form-control" id="psikotest_0_Room" name="psikotest_0_Room" value="">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="psikotest_0_PIC">PIC</label>
+                    <input type="text" class="form-control" id="psikotest_0_PIC" name="psikotest_0_PIC" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="test_1">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="test_1_Durasi">Durasi (dalam jam)</label>
+                    <input type="number" class="form-control" id="test_1_Durasi" name="test_1_Durasi" min=0 max=100>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="test_1_Link">LINK</label>
+                    <input type="text" class="form-control" id="test_1_Link" name="test_1_Link" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="test_0">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="test_0_Durasi">Durasi (dalam jam)</label>
+                    <input type="number" class="form-control" id="test_0_Durasi" name="test_0_Durasi" min=0 max=100>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="test_0_lokasi">Lokasi</label>
+                    <input type="text" class="form-control" id="test_0_lokasi" name="test_0_lokasi" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="interviewHR_1">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="interviewHR_1_Link">LINK</label>
+                    <input type="text" class="form-control" id="interviewHR_1_Link" name="interviewHR_1_Link" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="interviewHR_1_MeetingID">Meeting ID</label>
+                    <input type="text" class="form-control" id="interviewHR_1_MeetingID" name="interviewHR_1_MeetingID" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="interviewHR_1_Passcode">Passcode</label>
+                    <input type="text" class="form-control" id="interviewHR_1_Passcode" name="interviewHR_1_Passcode" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="interviewHR_1_BR">Breakout Room</label>
+                    <input type="text" class="form-control" id="interviewHR_1_BR" name="interviewHR_1_BR" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="interviewuser_1">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="interviewuser_1_Link">LINK</label>
+                    <input type="text" class="form-control" id="interviewuser_1_Link" name="interviewuser_1_Link" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="interviewuser_1_MeetingID">Meeting ID</label>
+                    <input type="text" class="form-control" id="interviewuser_1_MeetingID" name="interviewuser_1_MeetingID" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="interviewuser_1_Passcode">Passcode</label>
+                    <input type="text" class="form-control" id="interviewuser_1_Passcode" name="interviewuser_1_Passcode" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="interviewuser_1_BR">Breakout Room</label>
+                    <input type="text" class="form-control" id="interviewuser_1_BR" name="interviewuser_1_BR" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row offer_1">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_1_Link">LINK</label>
+                    <input type="text" class="form-control" id="offer_1_Link" name="offer_1_Link" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_1_MeetingID">Meeting ID</label>
+                    <input type="text" class="form-control" id="offer_1_MeetingID" name="offer_1_MeetingID" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_1_Passcode">Passcode</label>
+                    <input type="text" class="form-control" id="offer_1_Passcode" name="offer_1_Passcode" value="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_1_BR">Breakout Room</label>
+                    <input type="text" class="form-control" id="offer_1_BR" name="offer_1_BR" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row offer_1">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_1_Durasi">Durasi</label>
+                    <input type="number" class="form-control" id="offer_1_Durasi" name="offer_1_Durasi"  min=0 max=100>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_1_Deadline">Deadline</label>
+                    <input type="date" class="form-control" id="offer_1_Deadline" name="offer_1_Deadline" value="">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_1_URLPhase2">Link Phase2</label>
+                    <input type="text" class="form-control" id="offer_1_URLPhase2" name="offer_1_URLPhase2" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="row offer_2">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_2_Durasi">Durasi</label>
+                    <input type="number" class="form-control" id="offer_2_Durasi" name="offer_2_Durasi" min=0 max=100>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_2_Deadline">Deadline</label>
+                    <input type="date" class="form-control" id="offer_2_Deadline" name="offer_2_Deadline" value="">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="offer_2_URLPhase2">Link Phase2</label>
+                    <input type="text" class="form-control" id="offer_2_URLPhase2" name="offer_2_URLPhase2" value="">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="alamatlengkap">Tanggal dan waktu</label>
+                  <input type="datetime-local" class="form-control" id="tglWaktu" name="tglWaktu" value="">
+                </div>
+              </div>
+              <div class="col-md-8" id="f_ccto">
+                <div class="form-group">
+                  <label class="form-control-label" for="alamatlengkap">TCC To:</label>
+                  <select id="ccto" class="js-example-basic-multiple " name="ccto[]" multiple="multiple">
+                    @foreach ($list_cc as $ccto )
+                    <option value="{{ $ccto->email }}">{{ $ccto->nama }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="form-control-label" for="alamatlengkap">Email to kandidat</label>
+              {{-- <div id="summernote"></div> --}}
+              <textarea name="konten" id="konten" class="form-control" cols="30" rows="20"></textarea>
+            </div>
+            {{-- <div class="row">
+              <label class="form-control-label" for="alamatlengkap">Email to Vendor</label>
+              <div id="summernote2"></div>
+            </div> --}}
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <button id="btnAdd-schedule" type="button" class="btn btn-primary">Save changes</button>
+              <button id="btnUpdate-schedule" type="button" class="btn btn-primary" hidden>Update</button>
+              <button id="btnEmail" type="button" class="btn btn-primary">Email</button>
+            </div>
+          </div>
+        {{-- </form> --}}
+      </div>
+    </div>
+  </div>
+  {{--!!END MODAL TAMBAH!!--}}
+
 </div> 
 
 <!-- Code begins here -->

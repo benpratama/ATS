@@ -342,6 +342,7 @@ class KandidatController extends Controller
                     ->select('konten')
                     ->where('id_Organisasi',session()->get('user')['organisasi'])
                     ->where('jenis',$request->schedule)
+                    ->where('online',$request->online)
                     ->where('to','kandidat')
                     ->get();
         return $isi_konten;
@@ -740,138 +741,240 @@ class KandidatController extends Controller
     }
 
     public function SetSchedule(Request $request){
-        // return $request;
+        
         if ($request->ccTo>0) {
-            $email=implode(" | ",$request->ccTo);
+            // $email_raw=implode('","',$request->ccTo);
+            // $email = '"'.$email_raw.'"';
+            $email=implode(',',$request->ccTo);
+            // $email = '"'.$email_raw.'"';
         }else{
             $email=NULL;
         }
+        // return $email_raw;
+        // if ($request->detail>0) {
+        //     $detail="'"+$request->detail+"'";
+        // }else{
+        //     $detail=NULL;
+        // }
+        $waktu = str_replace("T"," ",$request->tglWaktu);
+        $date = Carbon::createFromFormat('Y-m-d H:i', $waktu)->format('Y-m-d H:i');
 
-        if(empty($request->proses)){
-            $proses=NULL;
+        $id_email= DB::table('T_LogKandidat')
+            ->insertGetId([
+                'id_Tkandidat'=>$request->id_kandidat,
+                'id_Rekrutmen'=>$request->schedule,
+                'id_Organisasi'=>session()->get('user')['organisasi'],
+                'jadwal'=>$date,
+                'ccEmail'=>$email,
+                'sendEmail'=>NULL,
+                'Summary'=>NULL,
+                'Notes'=>NULL,
+                'created_at'=>Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at'=>NULL,
+                'jenis'=>$request->online,
+                'test'=>json_encode($request->detail)
+            ]);
+        return $id_email;
+    }
+
+    public function SetGSchedule(Request $request){
+        if ($request->ccTo>0) {
+            // $email_raw=implode('","',$request->ccTo);
+            // $email = '"'.$email_raw.'"';
+            $email=implode(',',$request->ccTo);
+            // $email = '"'.$email_raw.'"';
         }else{
-            $proses=$request->proses;
+            $email=NULL;
         }
         $waktu = str_replace("T"," ",$request->tglWaktu);
         $date = Carbon::createFromFormat('Y-m-d H:i', $waktu)->format('Y-m-d H:i');
-        $id_log=DB::table('T_LogKandidat')
-        ->insertGetId([
-            'id_Tkandidat'=>$request->id_kandidat,
-            'id_Rekrutmen'=>$request->schedule,
-            'id_Organisasi'=>$request->id_Organisasi,
-            'Summary'=>NULL,
-            'Notes'=>NULL,
-            'ccEmail'=>$email,
-            'jenis'=>$proses,
-            'created_at'=>$date,
-            'updated_at'=>NULL
-        ]);
-        if($request->schedule==2){
-            DB::table('T_Dlogkandidat')
-            ->insert([
-                'id_log'=> $id_log,
-                'sendEmail'=>0,
-                'NoSurat'=>$request->mcu_nosurat,
-                'Durasi'=>$request->mcu_Durasi,
-                'id_lab'=>$request->mcu_lab,
-                'ol_link'=>null,
-                'ol_meetID'=>null,
-                'ol_pass'=>null,
-                'ol_Br'=>null,
-                'os_alamat'=>null,
-                'os_ruangan'=>null,
-                'os_bertemu'=>null
-            ]);
+        foreach ($request->arrId_kandidat as $key => $value) {
+            $id_Tlog = DB::table('T_LogKandidat')
+                ->insertGetId([
+                    'id_Tkandidat'=>$value,
+                    'id_Rekrutmen'=>$request->schedule,
+                    'id_Organisasi'=>session()->get('user')['organisasi'],
+                    'jadwal'=>$date,
+                    'ccEmail'=>$email,
+                    'sendEmail'=>NULL,
+                    'Summary'=>NULL,
+                    'Notes'=>NULL,
+                    'created_at'=>Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at'=>NULL,
+                    'jenis'=>$request->online,
+                    'test'=>json_encode($request->detail)
+                ]);
+
+            DB::table('T_logkandidat_group')
+                ->insert([
+                    'id_Tlogkandidat'=>$id_Tlog,
+                    'namaGroup'=>$request->namagroup,
+                    'created_at'=>Carbon::now()->format('Y-m-d H:i:s'),
+                ]);
         }
-        
-        // $emailKandidat = DB::table('T_kandidat')->select('email')->where('id',$request->id_kandidatModal)->first();
-        // // dd($emailKandidat->email);
-        // if(empty($request->labMCU)){
-        //     $namalab=NULL;
-        //     $alamatlab=NULL;
-        // }else{
-        //     $lab=DB::table('M_Vendor')
-        //         ->select('namaLab','alamat')
-        //         ->where('id',$request->labMCU)
-        //         ->get();
-        //     $namalab=$lab[0]->namaLab;
-        //     $alamatlab=$lab[0]->alamat;
-        //     // dd($lab[0]);
-            
-        // }
-        
-
-        // if($request->schedule==2){
-        //     //MCU
-        //     $data=[
-        //         'jenisemail'=>$request->schedule,
-        //         'org'=>$request->id_Organisasi,
-        //         'nama'=>$request->namalengkap,
-        //         'posisi'=>$request->applyas,
-        //         'durasi'=>$request->Durasi,
-        //         'dateTime'=>$date,
-        //         'namalab'=>$namalab,
-        //         'alamatlab'=>$alamatlab
-        //     ];
-        //     $details =['title' => 'test'];
-        //     $pdf = PDF::loadView('Surat MCU/eth', $details);
-        //     return $pdf->dowload('test.pdf');
-
-        //     // $pdf_mcu_ethf->
-        // }elseif ($request->schedule==3) {
-        //     // Psikotest
-        // }elseif ($request->schedule==4) {
-        //     // technical test
-        // }elseif ($request->schedule==5) {
-        //     // technical test
-        // }elseif ($request->schedule==6) {
-        //     // Interview User
-        // }elseif ($request->schedule==9) {
-        //     // Offer
-        // }
-        
-        // //ini email kekandidat
-        // $sendTo=$emailKandidat->email;
-        //  ('Email and WA/konten', array('datas'=>$data), function($message) use($sendTo)
-        // {
-        // // $message->to("maptuh.mahpudin@kalbe.co.id")->subject('Pengajuan Beasiswa YKLB');
-        //     $message->to($sendTo)->subject('MCU');
-
-        // });
-
-
-        // return $pdf_mcu_eth->stream('test.pdf');
-        // return Redirect::back();
+        return $request->namagroup;
     }
 
     public function SendEmail (Request $request){
+        $schedule=$request->schedule;
         $email_raw = DB::table('T_kandidat')
                 ->select('email')
                 ->where('id',$request->id_kandidat)
                 ->get();
-        $email = $email_raw[0]->email;     
-        $subject = 'MCU';
-        $lab = DB::table('M_vendor')
-                ->select('NamaLab','alamat')
-                ->where('id',$request->id_lab)
-                ->where('jenis','MCU')
-                ->get();
+        $email = $email_raw[0]->email; 
+        if ($schedule==2) {
+            $subject = 'MCU';
+            $lab = DB::table('M_vendor')
+                    ->select('NamaLab','alamat')
+                    ->where('id',$request->id_lab)
+                    ->where('jenis','MCU')
+                    ->get();
 
-        $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]"],[$lab[0]->NamaLab,$lab[0]->alamat],$request->konten);
+            $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]"],[$lab[0]->NamaLab,$lab[0]->alamat],$request->konten);
+        } else if($schedule==3) {
+            $konten = $request->konten;
+            $subject = 'Psikotest';
+        } else if($schedule==4){
+            $konten = $request->konten;
+            $subject = 'tech test';
+        }else if($schedule==5){
+            $konten = $request->konten;
+            $subject = 'interview HR';
+        }else if($schedule==6){
+            $konten = $request->konten;
+            $subject = 'interview User';
+        }else if($schedule==9){
+            $konten = $request->konten;
+            $subject = 'offer';
+        }
+        
+        
         Mail::raw($konten, function ($message) use ($email,$subject) {
             $message
-              ->to($email)
-              ->cc('kwjwkwkwk@gmail.com')
-              ->subject($subject);
-          });
-        return $konten;
+            ->to($email)
+            ->cc('kwjwkwkwk@gmail.com')
+            ->subject($subject);
+        });
+
+        DB::table('T_LogKandidat')
+            ->where('id',$request->id_email)
+            ->update([
+                'sendEmail'=>1
+            ]);
+
+        return $schedule;
+    }
+
+    public function SendGEmail(Request $request){
+        // return $request->arrId_kandidat;
+        $schedule=$request->schedule;
+        $info_kandiat = DB::table('T_kandidat as A')
+                        ->select('namalengkap','email','C.nama')
+                        ->join('T_link as B','B.id','A.id_Tlink')
+                        ->join('M_Job as C','C.id','B.id_Tjob')
+                        ->whereIn('A.id',$request->arrId_kandidat)
+                        ->get();
+        $array1=[];
+        $array2=array();
+        if ($schedule==2) {
+            $subject = 'MCU';
+            $lab = DB::table('M_vendor')
+                    ->select('NamaLab','alamat')
+                    ->where('id',$request->id_lab)
+                    ->where('jenis','MCU')
+                    ->get();
+            
+            
+            foreach ($info_kandiat as $key => $value) {
+                $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]","[CANDIDAT NAME]","[POSITION]"],[$lab[0]->NamaLab,$lab[0]->alamat,$value->namalengkap,$value->nama],$request->konten);
+                $array2["email"]=$value->email;
+                $array2["konten"]=$konten;
+                array_push($array1,$array2);
+            }
+        }
+        //  else if($schedule==3) {
+        //     $konten = $request->konten;
+        //     $subject = 'Psikotest';
+        // } else if($schedule==4){
+        //     $konten = $request->konten;
+        //     $subject = 'tech test';
+        // }else if($schedule==5){
+        //     $konten = $request->konten;
+        //     $subject = 'interview HR';
+        // }else if($schedule==6){
+        //     $konten = $request->konten;
+        //     $subject = 'interview User';
+        // }else if($schedule==9){
+        //     $konten = $request->konten;
+        //     $subject = 'offer';
+        // }
+        // $id_Tlog = DB::table('T_logkandidat_group')
+        //             // ->select('id_Tlogkandidat')
+        //             ->where('namaGroup',$request->namagroup)
+        //             ->pluck('id_Tlogkandidat');
+        // $id_kandiat = DB::table('T_logkandidat')
+        //                 ->select('id_Tkandidat','id_Rekrutmen','id_Organisasi','jenis')
+        //                 ->whereIn('id', $id_Tlog)
+        //                 ->get();
+
+        foreach ($array1 as $key => $value) {
+            // return $value["email"];
+            $email = $value["email"];
+            $konten = $value["konten"];
+            // return $konten;
+            Mail::raw($konten, function ($message) use ($email,$subject) {
+                $message
+                ->to($email)
+                ->cc('kwjwkwkwk@gmail.com')
+                ->subject($subject);
+            });
+        }
+        return 1;
     }
 
     public function GetNotes($id){
         $notes = DB::table('T_LogKandidat')
-                -> select('Summary','Notes')
+                -> select('Summary','notes')
                 ->where('id',$id)
                 ->get();
         return $notes;
     }
+
+    public function ShowDetailEmail($id){
+        $data = DB::table('T_LogKandidat')
+                ->where('id',$id)
+                ->get();
+        return $data;
+    }
+
+    public function EditSchedule(Request $request){
+        $id = $request->id;
+        if ($request->ccTo>0) {
+            $email=implode(',',$request->ccTo);
+        }else{
+            $email=NULL;
+        }
+        $waktu = str_replace("T"," ",$request->tglWaktu);
+        $date = Carbon::createFromFormat('Y-m-d H:i', $waktu)->format('Y-m-d H:i');
+
+        DB::table('T_LogKandidat')
+            ->where('id',$id)
+            ->update([
+                'ccEmail'=>$email,
+                'jadwal'=>$date,
+                'test'=>json_encode($request->detail)
+            ]);
+        return true;
+    }
+
+    public function SetNotes(Request $request){
+        DB::table('T_LogKandidat')
+            ->where('id',$request->id)
+            ->update([
+                'summary'=>$request->summary,
+                'notes'=>$request->notes
+            ]);
+        return true;
+    }
+
 }

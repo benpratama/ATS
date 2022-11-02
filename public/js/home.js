@@ -10,6 +10,16 @@ $( document ).ready(function() {
   $('#f_job').select2();
   $('#f_status').select2();
   $('#f_domisili').select2();
+  $('#ccto').select2();
+  $('#labMCU').select2();
+
+  create_schedule();
+  hidde();
+  modalInformasi();
+  filterProses();
+  kirimEmail();
+  $('#schedule, #proses').on('change',function(){tampilin_email()})
+  $('#schedule, #proses').on('change',function(){modalInformasi()})
 });
 
 function ShowSummary(){
@@ -458,4 +468,389 @@ function hide(){
     }
    
   });
+}
+
+//schedule
+function create_schedule(){
+  $('#btnAdd-schedule').on('click',function(){
+    var arrId_kandidat=[];
+    var cek = $('.cek-kandidat')
+    for(var i=0; cek[i]; ++i){
+        if(cek[i].checked){
+          arrId_kandidat.push(cek[i].value);
+        }
+    }
+    namagroup = $('#namagroup').val();
+    schedule = $('#schedule').val();
+    ccTo =$("select[name='ccto[]']").map(function(){return $(this).val();}).get();
+    tglWaktu = $('#tglWaktu').val()
+    online = $('#proses').val();
+    detail={}
+    
+
+    if (schedule==2) {
+      Durasi = $('#mcu_Durasi').val() +' jam'
+      id_lab = $('#mcu_lab').val();
+      online=0;
+
+      detail={durasi:Durasi,id_lab:id_lab}  
+    }else if(schedule==3 && online==1){
+      psikotest_1_Durasi = $('#psikotest_1_Durasi').val()
+      psikotest_1_Link = $('#psikotest_1_Link').val()
+      psikotest_1_PIC = $('#psikotest_1_PIC').val()
+
+      detail={psikotest_1_Durasi:psikotest_1_Durasi,psikotest_1_Link:psikotest_1_Link,psikotest_1_PIC:psikotest_1_PIC}
+    }else if(schedule==3 && online==0){
+      psikotest_0_Address = $('#psikotest_0_Address').val()
+      psikotest_0_Room = $('#psikotest_0_Room').val()
+      psikotest_0_PIC = $('#psikotest_0_PIC').val()
+
+      detail={psikotest_0_Address:psikotest_0_Address,psikotest_0_Room:psikotest_0_Room,psikotest_0_PIC:psikotest_0_PIC}
+    }else if(schedule==4 && online==1){
+      test_1_Durasi = $('#test_1_Durasi').val()
+      test_1_Link = $('#test_1_Link').val()
+
+      detail={test_1_Durasi:test_1_Durasi,test_1_Link:test_1_Link}
+    }else if(schedule==4 && online==0){
+      test_0_Durasi = $('#test_0_Durasi').val()
+      test_0_lokasi = $('#test_0_lokasi').val()
+
+      detail={test_0_Durasi:test_0_Durasi,test_0_lokasi:test_0_lokasi}
+    }else if(schedule==5 && online==1){
+      interviewHR_1_Link = $('#interviewHR_1_Link').val()
+      interviewHR_1_MeetingID = $('#interviewHR_1_MeetingID').val()
+      interviewHR_1_Passcode = $('#interviewHR_1_Passcode').val()
+      interviewHR_1_BR = $('#interviewHR_1_BR').val()
+
+      detail={interviewHR_1_Link:interviewHR_1_Link,interviewHR_1_MeetingID:interviewHR_1_MeetingID,interviewHR_1_Passcode:interviewHR_1_Passcode,interviewHR_1_BR:interviewHR_1_BR}
+    }else if(schedule==6 && online==1){
+      interviewuser_1_Link = $('#interviewuser_1_Link').val()
+      interviewuser_1_MeetingID = $('#interviewuser_1_MeetingID').val()
+      interviewuser_1_Passcode = $('#interviewuser_1_Passcode').val()
+      interviewuser_1_BR = $('#interviewuser_1_BR').val()
+
+      detail={interviewuser_1_Link:interviewuser_1_Link,interviewuser_1_MeetingID:interviewuser_1_MeetingID,interviewuser_1_Passcode:interviewuser_1_Passcode,interviewuser_1_BR:interviewuser_1_BR}
+    }else if(schedule==9 && online==1){
+      offer_1_Link = $('#offer_1_Link').val()
+      offer_1_MeetingID = $('#offer_1_MeetingID').val()
+      offer_1_Passcode = $('#offer_1_Passcode').val()
+      offer_1_BR = $('#offer_1_BR').val()
+      offer_1_Durasi = $('#offer_1_Durasi').val()
+      offer_1_Deadline = $('#offer_1_Deadline').val()
+      offer_1_URLPhase2 = $('#offer_1_URLPhase2').val()
+
+      detail={offer_1_Link:offer_1_Link,offer_1_MeetingID:offer_1_MeetingID,offer_1_Passcode:offer_1_Passcode,
+        offer_1_BR:offer_1_BR,offer_1_Durasi:offer_1_Durasi,offer_1_Deadline:offer_1_Deadline,offer_1_URLPhase2:offer_1_URLPhase2
+      }
+    }else if(schedule==9 && online==2){
+      offer_2_Durasi = $('#offer_2_Durasi').val()
+      offer_2_Deadline = $('#offer_2_Deadline').val()
+      offer_2_URLPhase2 = $('#offer_2_URLPhase2').val()
+
+      detail={offer_2_Durasi:offer_2_Durasi,offer_2_Deadline:offer_2_Deadline,offer_2_URLPhase2:offer_2_URLPhase2}
+    }
+   
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/detail/setschedule/groupkandidat',
+        type: 'post',
+        data: {
+          arrId_kandidat:arrId_kandidat,
+          schedule:schedule,
+          ccTo:ccTo,
+          tglWaktu:tglWaktu,
+          online:online,
+          namagroup:namagroup,
+          detail:detail
+        }
+      }).done((data) => {
+        console.log(JSON.stringify(data));
+        $('#btnEmail').attr('value',data)
+        // $('#tblSchedule').DataTable().ajax.reload();
+    });
+  });
+}
+
+function hidde(){
+$('#MCU').hide()
+$('#psikotest_1').hide()
+$('#psikotest_0').hide()
+$('#test_1').hide()
+$('#test_0').hide()
+$('#interviewHR_1').hide()
+$('#interviewuser_1').hide()
+$('.offer_1').hide()
+$('.offer_2').hide()
+
+$('#informasi1 .form-control').val('')  
+$('#informasi1 :input').attr('readonly',false)
+$('#f_ccto').attr('hidden',false);
+$('#tglWaktu').attr('readonly',false)
+$('#btnUpdate-schedule').attr('hidden',true);
+$('#schedule').attr('readonly',false);
+$('#proses').attr('readonly',false);
+}
+
+function modalInformasi(){
+  hidde()
+  schedule = $('#schedule').val();
+  online = $('#proses').val();
+
+  var list_onsite=['2']
+  if (list_onsite.includes(schedule)==true) {
+    online= 0
+  }
+
+  if (schedule==2  && online==0) {
+    $('#MCU').show();
+  } else if(schedule==3 && online==1) {
+    $('#psikotest_1').show();
+  }else if(schedule==3 && online==0) {
+    $('#psikotest_0').show();
+  }else if(schedule==4 && online==1){
+    $('#test_1').show();
+  }else if(schedule==4 && online==0){
+    $('#test_0').show();
+  }else if(schedule==5 && online==1){
+    $('#interviewHR_1').show();
+  }else if(schedule==6 && online==1){
+    $('#interviewuser_1').show();
+  }else if(schedule==9 && online==1){
+    $('.offer_1').show();
+  }else if(schedule==9 && online==2){
+    $('.offer_2').show();
+  }
+
+  
+}
+
+function onlineORonsite(){
+  $('#proses').on('change',function(){
+    proses = $('#proses').val();
+    if(proses==1){
+      $('#f_online').attr('hidden',false)
+      $('#f_onsite').attr('hidden',true)
+    }else if(proses==0){
+      $('#f_online').attr('hidden',true)
+      $('#f_onsite').attr('hidden',false)
+    }else{
+      $('#f_online').attr('hidden',true)
+      $('#f_onsite').attr('hidden',true)
+    }
+  })
+}
+
+function filterProses(){
+  $('#schedule').on('change',function(){
+    schedule = $('#schedule').val();
+    if (schedule==2) { 
+      $('#form_mcu').attr('hidden',false)
+      $('#onlineonsite').attr('hidden',true)
+      $('#proses').attr('required',false)
+    }else{
+      $('#form_mcu').attr('hidden',true)
+      $('#onlineonsite').attr('hidden',false)
+      $('#proses').attr('required',true)
+      $('#mcu_nosurat').val('')
+      $('#labMCU').val(null).trigger('change');
+    }
+  });
+}
+
+function tampilin_email(_schedule=null,_online=null){
+  // console.log(_schedule,_online)
+  $('#konten').val('')
+  schedule = $('#schedule').val();
+  online = $('#proses').val();
+  var list_onsite=['2']
+
+  if (list_onsite.includes(schedule)==true) {
+    online= 0
+  }
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  $.ajax({
+      _token: '{{ csrf_token() }}',
+      url: '/hrdats/konten/email',
+      type: 'post',
+      data: {
+        schedule:schedule,
+        online:online
+      }
+    }).done((data) => {
+      // console.log(JSON.stringify(data));
+      if (data.length>0) {
+        konten = data[0].konten
+        $('#konten').val(konten)
+      }
+      // $('#summernote').summernote('code', '');
+      // $('#summernote').summernote('code', $(konten));
+  });
+}
+
+function kirimEmail(){
+  $('#btnEmail').on('click',function(){
+    var arrId_kandidat=[];
+    var cek = $('.cek-kandidat')
+    for(var i=0; cek[i]; ++i){
+        if(cek[i].checked){
+          arrId_kandidat.push(cek[i].value);
+        }
+    }
+
+    schedule = $('#schedule').val();
+    online = $('#proses').val();
+
+    konten = $('#konten').val();
+    tglWaktuRaw = $('#tglWaktu').val();
+    tglWaktu = tglWaktuRaw.replace("T", " Waktu: ");
+    id_group=$('#btnEmail').val()
+    data={}
+    console.log(schedule);
+    if (schedule==2) {
+      Durasi = $('#mcu_Durasi').val() +' jam'
+      id_lab = $('#mcu_lab').val(); 
+
+      var konten = konten.replace('[DATE&TIME]',tglWaktu)
+      var konten = konten.replace('[DURATION]',Durasi)
+      data={konten:konten,arrId_kandidat:arrId_kandidat,id_lab:id_lab,schedule:schedule,id_group:id_group}
+    }else if(schedule==3 && online==1){
+      psikotest_1_Durasi = $('#psikotest_1_Durasi').val()
+      psikotest_1_Link = $('#psikotest_1_Link').val()
+      psikotest_1_PIC = $('#psikotest_1_PIC').val()
+
+      var konten = konten.replace('[DATE&TIME]',tglWaktu)
+      var konten = konten.replace('[DURATION]',psikotest_1_Durasi)
+      var konten = konten.replace('[TEST LINK]',psikotest_1_Link)
+      var konten = konten.replace('[PIC’s NAME]',psikotest_1_PIC)
+
+      data={konten:konten,arrId_kandidat:arrId_kandidat,schedule:schedule,id_group:id_group}
+    }else if(schedule==3 && online==0){
+      psikotest_0_Address = $('#psikotest_0_Address').val()
+      psikotest_0_Room = $('#psikotest_0_Room').val()
+      psikotest_0_PIC = $('#psikotest_0_PIC').val()
+
+      var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+      var konten = konten.replace('[ADDRESS]',psikotest_0_Address)
+      var konten = konten.replace('[ROOM]',psikotest_0_Room)
+      var konten = konten.replace('[PIC’s NAME]',psikotest_0_PIC)
+
+      data={konten:konten,arrId_kandidat:arrId_kandidat,schedule:schedule,id_group:id_group}
+    }else if(schedule==4 && online==1){
+      test_1_Durasi = $('#test_1_Durasi').val()
+      test_1_Link = $('#test_1_Link').val()
+
+      var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+      var konten = konten.replace('[DURATION]',test_1_Durasi)
+      var konten = konten.replace('[TEST LINK]',test_1_Link)
+
+      data={konten:konten,arrId_kandidat:arrId_kandidat,schedule:schedule,id_group:id_group}
+    }else if(schedule==4 && online==0){
+      test_0_Durasi = $('#test_0_Durasi').val()
+      test_0_lokasi = $('#test_0_lokasi').val()
+
+      var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+      var konten = konten.replace('[DURATION]',test_0_Durasi)
+      var konten = konten.replace('[ADDRESS]',test_0_lokasi)
+
+      data={konten:konten,arrId_kandidat:arrId_kandidat,schedule:schedule,id_group:id_group}
+    }else if(schedule==5 && online==1){
+      interviewHR_1_Link = $('#interviewHR_1_Link').val()
+      interviewHR_1_MeetingID = $('#interviewHR_1_MeetingID').val()
+      interviewHR_1_Passcode = $('#interviewHR_1_Passcode').val()
+      interviewHR_1_BR = $('#interviewHR_1_BR').val()
+
+      var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+      var konten = konten.replace('[LINK ZOOM]',interviewHR_1_Link)
+      var konten = konten.replace('[MEETING IS]',interviewHR_1_MeetingID)
+      var konten = konten.replace('[PASSCODE]',interviewHR_1_Passcode)
+      var konten = konten.replace('[BREAKOUT ROOM NAME]',interviewHR_1_BR)
+
+      data={konten:konten,arrId_kandidat:arrId_kandidat,schedule:schedule,id_group:id_group}
+    }else if(schedule==6 && online==1){
+      interviewuser_1_Link = $('#interviewuser_1_Link').val()
+      interviewuser_1_MeetingID = $('#interviewuser_1_MeetingID').val()
+      interviewuser_1_Passcode = $('#interviewuser_1_Passcode').val()
+      interviewuser_1_BR = $('#interviewuser_1_BR').val()
+
+      var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+      var konten = konten.replace('[LINK ZOOM]',interviewuser_1_Link)
+      var konten = konten.replace('[MEETING IS]',interviewuser_1_MeetingID)
+      var konten = konten.replace('[PASSCODE]',interviewuser_1_Passcode)
+      var konten = konten.replace('[BREAKOUT ROOM NAME]',interviewuser_1_BR)
+
+      data={konten:konten,arrId_kandidat:arrId_kandidat,schedule:schedule,id_group:id_group}
+    }else if(schedule==9 && online==1){
+      offer_1_Link = $('#offer_1_Link').val()
+      offer_1_MeetingID = $('#offer_1_MeetingID').val()
+      offer_1_Passcode = $('#offer_1_Passcode').val()
+      offer_1_BR = $('#offer_1_BR').val()
+      offer_1_Durasi = $('#offer_1_Durasi').val()
+      offer_1_Deadline = $('#offer_1_Deadline').val()
+      offer_1_URLPhase2 = $('#offer_1_URLPhase2').val()
+
+      var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+      var konten = konten.replace('[DURATION]',offer_1_Durasi)
+      var konten = konten.replace('[LINK ZOOM]',offer_1_Link)
+      var konten = konten.replace('[MEETING IS]',offer_1_MeetingID)
+      var konten = konten.replace('[PASSCODE]',offer_1_Passcode)
+      var konten = konten.replace('[BREAKOUT ROOM NAME]',offer_1_BR)
+      var konten = konten.replace('[DEADLINE]',offer_1_Deadline)
+      var konten = konten.replace('[LINK TO DATABASE PHASE – 2]',offer_1_URLPhase2)
+
+      data={konten:konten,arrId_kandidat:arrId_kandidat,schedule:schedule,id_group:id_group}
+    }else if(schedule==9 && online==2){
+      offer_2_Durasi = $('#offer_2_Durasi').val()
+      offer_2_Deadline = $('#offer_2_Deadline').val()
+      offer_2_URLPhase2 = $('#offer_2_URLPhase2').val()
+
+      var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+      var konten = konten.replace('[DURATION]',offer_2_Durasi)
+      var konten = konten.replace('[DEADLINE]',offer_2_Deadline)
+      var konten = konten.replace('[LINK TO DATABASE PHASE – 2]',offer_2_URLPhase2)
+
+      data={konten:konten,arrId_kandidat:arrId_kandidat,schedule:schedule,id_group:id_group}
+    }
+
+    // console.log(id_kandidat)
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/send/groupemail',
+        type: 'post',
+        // data: {
+        //   konten:konten,
+        //   id_kandidat:id_kandidat,
+        //   id_lab:id_lab,
+        //   id_proses:id_proses
+        // }
+        data:data
+      }).done((data) => {
+        console.log(JSON.stringify(data));
+        $('#tblSchedule').DataTable().ajax.reload();
+        // $('#summernote').summernote('code', '');
+        // $('#summernote').summernote('code', $(konten));
+    });
+  })
+  
+
 }

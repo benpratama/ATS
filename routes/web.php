@@ -38,8 +38,13 @@ Route::middleware('auth')->group(function(){
         Route::post('/hrdats/detail/update/phase1_1','KandidatController@UpdateForm1_1')->name('dk.UpdateForm1_1');
         Route::post('/hrdats/detail/update/phase2','KandidatController@UpdateForm2')->name('dk.UpdateForm2');
         Route::Post('/hrdats/detail/setschedule/kandidat','KandidatController@SetSchedule')->name('dk.SetSchedule');
+        Route::Post('/hrdats/detail/setschedule/groupkandidat','KandidatController@SetGSchedule')->name('dk.SetGSchedule');
         Route::Post('/hrdats/konten/email','KandidatController@GetKonten')->name('dk.GetKonten');
         Route::Post('/hrdats/send/email','KandidatController@SendEmail')->name('dk.SendEmail');
+        Route::Post('/hrdats/send/groupemail','KandidatController@SendGEmail')->name('dk.SendGEmail');
+        Route::get('/hrdats/detail/email/{id}','KandidatController@ShowDetailEmail')->name('dk.ShowDetailEmail');
+        Route::get('/hrdats/detail/schedule/{id}','KandidatController@ShowDetailSchedule')->name('dk.ShowDetailSchedule');
+        Route::Post('/hrdats/edit/schedule','KandidatController@EditSchedule')->name('dk.EditSchedule');
 
         //Master Table Internal
         Route::get('/hrdats/mt/internal', 'MasterTableController@indexInternal')->name('mt.internal');
@@ -218,6 +223,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/hrdats/detail/getkeluarga/kandidat/{id}','KandidatController@GetKeluarga')->name('dk.GetKeluarga');
     Route::get('/hrdats/detail/getschedule/kandidat/{id}','KandidatController@GetSchedule')->name('dk.GetSchedule');
     Route::get('/hrdats/detail/getschedule/notes/{id}','KandidatController@GetNotes')->name('dk.GetNotes');
+    Route::post('/hrdats/detail/getschedule/update/notes','KandidatController@SetNotes')->name('dk.SetNotes');
 });
 
 //--FORM Kandidat--

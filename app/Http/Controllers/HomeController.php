@@ -52,8 +52,26 @@ class HomeController extends Controller
                         ->where('deleted',0)
                         ->where('active',1)
                         ->get();
-        // dd($list_pendidikan);
-        return view('home',['ListPendidikan'=>$list_pendidikan,'ListJurusan'=>$list_jurusan,'ListJob'=>$list_job,'ListStatus'=>$list_status,'Domisili'=>$Domisili]);
+        // schedule
+        $list_cc = DB::table('M_User')
+                    ->select('nama','email')
+                    ->where('id_Organisasi',session()->get('user')['organisasi'])
+                    ->get();
+        $list_proses = DB::table('M_Rekrutmen')
+                    ->select('id','proses')
+                    ->where('active',1)
+                    ->where('deleted',0)
+                    ->whereNotIn('id', [1,7,8])
+                    ->get();
+        
+        $list_mcu = DB::table('M_Vendor')
+                    ->select('id','namaLab')
+                    ->where('Jenis','MCU')
+                    ->where('active',1)
+                    ->where('deleted',0)
+                    ->get();
+        return view('home',['ListPendidikan'=>$list_pendidikan,'ListJurusan'=>$list_jurusan,'ListJob'=>$list_job,'ListStatus'=>$list_status,'Domisili'=>$Domisili,'list_proses'=>$list_proses,
+        'list_cc'=>$list_cc,'list_mcu'=>$list_mcu]);
     }
 
     public function ShowSummary(){
