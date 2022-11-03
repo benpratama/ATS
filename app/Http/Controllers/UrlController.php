@@ -69,7 +69,8 @@ class UrlController extends Controller
                 'url'=>$url,
                 'active'=>'1',
                 'deleted'=>'0',
-                'id_Organisasi'=>Auth::user()->id_Organisasi
+                'id_Organisasi'=>Auth::user()->id_Organisasi,
+                'jobfair'=>$request->jenis
             ]);
 
         return True;

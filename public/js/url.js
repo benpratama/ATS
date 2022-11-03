@@ -4,6 +4,7 @@ $( document ).ready(function() {
   clearModal();
   Edit_Url();
   delete_Url();
+
 });
 
 function alert(){
@@ -41,6 +42,10 @@ function confirm(){
   })
 }
 
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
 function clearModal(){
   $('.modal-url').on('hide.bs.modal', function() {
       $('#TblDetailurl').DataTable().destroy();
@@ -54,7 +59,11 @@ function clearModal(){
     $('#edit_open_url').val('');
     $('#edit_close_url').val('');
     $('#btnEdit-url').val('');
+    if ($('.modal-url:visible').length) {
+      delay(310).then(() => $('body').addClass('modal-open'));
+    }
   })
+
 }
 
 function loadTbl_url(){
@@ -129,7 +138,7 @@ function addUrl(){
       var open =$('#open_url').val();
       var close =$('#close_url').val();
       var notes =$('#new_note').val();
-
+      var jenis = $('#new_jenis').val();
       $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -144,13 +153,15 @@ function addUrl(){
             notes:notes,
             open:open,
             close:close,
-            id_job:id_job
+            id_job:id_job,
+            jenis:jenis
           }
         }).done((data) => {
           $('#new_Source').val('');
           $('#new_note').val('');
           $('#open_url').val('');
           $('#close_url').val('');
+          $('#new_jenis').val('0');
           $('#TblUrl').DataTable().ajax.reload();
           $('#TblDetailurl').DataTable().ajax.reload();
           console.log(JSON.stringify(data));
@@ -161,10 +172,13 @@ function addUrl(){
 function Modal_url(id){
   $('#btnAdd-url').val(id);
   $('#TblDetailurl').DataTable({
-    "scrollX": true,
-    "scrollY":        "400px",
+    "scrollY":        "650px",
     "scrollCollapse": true,
-    pageLength : 3,
+    aLengthMenu: [
+        [5,10,25,50,100 , -1],
+        [5,10,25,50,100 , "All"]
+    ],
+    iDisplayLength: 5,
     ajax: {
     url: "/hrdats/hrd/modal/link/"+id,
             data:{},
@@ -172,7 +186,7 @@ function Modal_url(id){
         },
     "paging":true,
     "bInfo" : false,
-    "lengthChange": false,
+    "lengthChange": true,
     language: {
         paginate: {
             previous: "<i class='fas fa-angle-left'>",
@@ -215,12 +229,38 @@ function Modal_url(id){
             defaultContent: ''
         },
         {
-          data: 'openlink',
-          defaultContent: ''
+          // data: 'openlink',
+          // defaultContent: ''
+          render: (data, type, row, meta)=> {
+            // test='<button type="button" class="btn btn-success" onclick="CopyUrl(value)" data-toggle="tooltip" data-placement="top" title="Tooltip on top" value="'+row.url+'">'
+            // // test+='<span class=" tooltip tooltiptext" id="myTooltip">Copy to clipboard</span>'
+            // test+='Copy Url </button>'
+              if (row.jobfair==1) {
+                return 'Y'
+              } else {
+                return 'N'
+              }
+          }
         },
         {
-          data: 'closelink',
-          defaultContent: ''
+          // data: 'openlink',
+          // defaultContent: ''
+          render: (data, type, row, meta)=> {
+            // test='<button type="button" class="btn btn-success" onclick="CopyUrl(value)" data-toggle="tooltip" data-placement="top" title="Tooltip on top" value="'+row.url+'">'
+            // // test+='<span class=" tooltip tooltiptext" id="myTooltip">Copy to clipboard</span>'
+            // test+='Copy Url </button>'
+              return row.openlink.replace(':00.000','')
+          }
+        },
+        {
+          // data: 'closelink',
+          // defaultContent: ''
+          render: (data, type, row, meta)=> {
+            // test='<button type="button" class="btn btn-success" onclick="CopyUrl(value)" data-toggle="tooltip" data-placement="top" title="Tooltip on top" value="'+row.url+'">'
+            // // test+='<span class=" tooltip tooltiptext" id="myTooltip">Copy to clipboard</span>'
+            // test+='Copy Url </button>'
+              return row.closelink.replace(':00.000','')
+          }
         },
         {
           // data: 'url',
@@ -230,7 +270,12 @@ function Modal_url(id){
               // test='<button type="button" class="btn btn-success" onclick="CopyUrl(value)" data-toggle="tooltip" data-placement="top" title="Tooltip on top" value="'+row.url+'">'
               // // test+='<span class=" tooltip tooltiptext" id="myTooltip">Copy to clipboard</span>'
               // test+='Copy Url </button>'
+              if (row.jobfair==1) {
+                return '10.101.1.161:100/form-kandidat-jf/'+row.url
+              } else {
                 return '10.101.1.161:100/form-kandidat/'+row.url
+              }
+                
             }
         },
         {
@@ -263,6 +308,12 @@ function Modal_url2(id){
     $('#edit_close_url').val(data[0].closelink.slice(0, 16));
     $('#edit_Notes').val(data[0].noteslink);
     $('#btnEdit-url').val(id);
+    if (data[0].jobfair==1) {
+      var jobfair = 'Jobfair'
+    } else {
+      var jobfair = 'Non Jobfair'
+    }
+    $('#edit_Jenis').val(jobfair);
     // console.log(JSON.stringify(data));
   });
 }

@@ -123,7 +123,7 @@
             </div>
             <div class="modal-body">
               <div class="form-group row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label for="new_source" class="col-md-2 col-form-label form-control-label">Source</label>
                   <input class="form-control" type="text" id="new_Source">
                 </div>
@@ -133,9 +133,16 @@
                     <option value="" disabled selected>JOB</option>
                   </select>
                 </div> --}}
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label for="new_note" class="col-md-2 col-form-label form-control-label">Notes</label>
                   <input class="form-control" type="text" id="new_note">
+                </div>
+                <div class="col-md-4">
+                  <label for="new_jenis" class="col-md-2 col-form-label form-control-label">Jenis</label>
+                  <select class="form-control" id="new_jenis" name="new_jenis" required>
+                    <option value="1">Jobfair</option>
+                    <option value="0" selected>Non Jobfair</option>
+                  </select>
                 </div>
               </div>
               <div class="form-group row">
@@ -177,16 +184,17 @@
                 </div>
               </div>
               <div class="table-responsive">
-                <table class="table" id="TblDetailurl">
+                <table class="table" id="TblDetailurl" style="width:100%">
                   <thead class="thead-light">
                     <tr>
-                      <th style="width: 5%"><input type="checkbox" id="cekAll-detailurl"></th>
+                      <th><input type="checkbox" id="cekAll-detailurl"></th>
                       <th>Active</th>
                       <th>Source</th>
+                      <th>JobFair</th>
                       <th>Open Url</th>
                       <th>Close Url</th>
                       <th>Url</th>
-                      <th style="width: 5%">Update</th>
+                      <th>Update</th>
                     </tr>
                   </thead>
                 </table>
@@ -211,13 +219,17 @@
             </div>
             <div class="modal-body">
               <div class="form-group row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label for="edit_source" class="col-md-2 col-form-label form-control-label">Source</label>
                   <input class="form-control" type="text" id="edit_Source" readonly>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label for="edit_Notes" class="col-md-2 col-form-label form-control-label">Notes</label>
                   <input class="form-control" type="text" id="edit_Notes">
+                </div>
+                <div class="col-md-4">
+                  <label for="edit_Jenis" class="col-md-2 col-form-label form-control-label">Jenis</label>
+                  <input class="form-control" type="text" id="edit_Jenis" readonly>
                 </div>
               </div>
               <div class="form-group row">
