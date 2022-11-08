@@ -228,6 +228,8 @@ Route::middleware('auth')->group(function(){
 
 //--FORM Kandidat--
 // Route::view('/term-of-use','termofuse')->name('termofuse');
+Route::get('/form-kandidat-jf/{url}','FormKandidatController@ShowFormjf')->name('fk.ShowFormjf');
+Route::Post('/submit/form-kandidat-jf','FormKandidatController@SubmitFormjf')->name('fk.SubmitFormjf');
 Route::get('/form-kandidat/{url}','FormKandidatController@ShowForm1')->name('fk.ShowForm1');
 Route::get('/form-kandidat/get/sim','FormKandidatController@GetSIM')->name('fk.GetSIM');
 Route::post('/form-kandidat/kodepos','FormKandidatController@ShowKodePos')->name('fk.ShowKodePos');
