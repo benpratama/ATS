@@ -41,6 +41,12 @@
         margin-bottom: 2em;
         width: 100%;
       }
+      .brdr{
+        border-style: solid;
+        border-color: #D8D9CF;
+        padding: 1em;
+        margin: 0.5em
+      }
     </style>
 </head>
 <body class="stly">
@@ -52,7 +58,7 @@
           <div class="card">
             <div class="card-header bg-transparent">
               <div class="row align-items-center">
-                <div class="col-3">
+                <div class="col-12">
                   <h3 class="text-uppercase text-muted ls-1 mb-1">DATA PRIBADI</h3>
                 </div>
               </div>
@@ -107,12 +113,70 @@
                   </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="goldarah">Golongan Darah*</label>
+                    <select class="form-control" id="goldarah" name="goldarah" required>
+                      <option value="" disabled selected>Golongan Darah</option>
+                      <option value="O">O</option>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="AB">AB</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="tinggibadan">tinggi badan (cm)*</label>
+                    <input type="number" class="form-control" id="tinggibadan" name="tinggibadan" min="1" max="10000" required>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="beratbadan">berat badan (kg)*</label>
+                    <input type="number" class="form-control" id="beratbadan" name="beratbadan" min="1" max="1000" required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="noidentitas">No. KTP</label>
+                    <input type="text" class="form-control" id="noidentitas" name="noidentitas" maxlength="45" required>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-control-label" for="noidentitas">Kota Penerbit KTP</label>
+                    <input type="text" class="form-control" id="kotapenerbitKTP" name="kotapenerbitKTP" maxlength="45" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="npwp">NPWP</label>
+                    <input type="text" class="form-control" id="npwp" name="npwp" maxlength="45">
+                  </div>
+                </div>
+              </div>
               <hr class="my-4">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8">
                   <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Alamat Lengkap* (KTP)</label>
-                    <input type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" maxlength="220" required>
+                    <label class="form-control-label" for="KTP">Alamat Lengkap* (KTP)</label>
+                    <input type="text" class="form-control" id="alamat_KTP" name="alamat_KTP" maxlength="220" required>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                    <label class="form-control-label" for="KTP">RT (KTP)</label>
+                    <input type="text" class="form-control" id="RT_KTP" name="RT_KTP" maxlength="10">
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                    <label class="form-control-label" for="KTP">RW (KTP)</label>
+                    <input type="text" class="form-control" id="RT_KTP" name="RT_KTP" maxlength="10">
                   </div>
                 </div>
               </div>
@@ -151,10 +215,22 @@
               </div>
 
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8">
                   <div class="form-group">
                     <label class="form-control-label" for="alamat_koresponden">Alamat Korespondensi*</label>
                     <input type="text" class="form-control" id="alamat_koresponden" name="alamat_koresponden" maxlength="220" required>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                    <label class="form-control-label" for="koresponden">RT (KTP)</label>
+                    <input type="text" class="form-control" id="RT_koresponden" name="RT_koresponden" maxlength="10">
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-group">
+                    <label class="form-control-label" for="koresponden">RW (KTP)</label>
+                    <input type="text" class="form-control" id="RT_koresponden" name="RW_koresponden" maxlength="10">
                   </div>
                 </div>
               </div>
@@ -191,84 +267,6 @@
                   </div>
                 </div>
               </div>
-              <hr class="my-4">
-              
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="noidentitas">No. KTP / Passport*</label>
-                    <input type="text" class="form-control" id="noidentitas" name="noidentitas" maxlength="45" required>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="npwp">NPWP</label>
-                    <input type="text" class="form-control" id="npwp" name="npwp" maxlength="45">
-                  </div>
-                </div>
-              </div>
-              <hr class="my-4">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <button type="button" class="btn btn-success d-flex" id="btnAdd-sim">
-                    <span class="material-symbols-outlined">add</span>
-                    <span class="gap-logo">Tambah SIM</span>
-                  </button>
-                </div>
-              </div> 
-
-              <div id="sims">
-                <div class="row" id="simbaris1">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label class="form-control-label" for="jenissim">SIM yang dimiliki*</label>
-                      <select class="form-control sim" data-row="1" name="sim[]" required>
-                        <option value="" disabled selected>SIM</option>
-                        @foreach ($SIM as $sim )
-                        <option value="{{ $sim->id }}">{{ $sim->nama }}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-6" id='nosimbaris1'hidden>
-                    <div class="form-group">
-                      <label class="form-control-label" for="nosim">No SIM</label>
-                      <input type="text" class="form-control" data-row="1" name="nosim[]" maxlength="45">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <hr class="my-4">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="nohp">NO HP*</label>
-                    <input type="text" class="form-control" id="nohp" name="nohp" maxlength="45" placeholder="08123456789" required>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="email">Email*</label>
-                    <input type="email" class="form-control" id="email" name="email" maxlength="45" required>
-                  </div>
-                </div>
-              </div>
-              <hr class="my-4">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="tinggibadan">tinggi badan (cm)*</label>
-                    <input type="number" class="form-control" id="tinggibadan" name="tinggibadan" min="1" max="10000" required>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="beratbadan">berat badan (kg)*</label>
-                    <input type="number" class="form-control" id="beratbadan" name="beratbadan" min="1" max="1000" required>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -279,82 +277,161 @@
           <div class="card">
             <div class="card-header bg-transparent">
               <div class="row align-items-center">
+                <div class="col-12">
+                  <h3 class="text-uppercase text-muted ls-1 mb-1">Kontak</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                    <label class="form-control-label" for="notlp">NO TLP</label>
+                </div>
+              </div>
+              <div id="list_tlp">
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-control-label" for="notlp">Tipe</label>
+                      <select class="form-control" id="tipe_Tlp" name="tipe_Tlp[]" data-rowattr='attr_tlp1' required>
+                        <option value="" disabled selected>Tipe Tlp</option>
+                        <option value="H">Rumah</option>
+                        <option value="P">Seluler</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-1 attr_tlp1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="notlp">Area</label>
+                      <input type="text" class="form-control" id="Area_Tlp" name="Area_Tlp[]" maxlength="45" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-control-label" for="notlp">Nomer Tlp</label>
+                      <input type="text" class="form-control" id="no_Tlp" name="no_Tlp[]" maxlength="45" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-success d-flex" id="btnAdd-notlp">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah No Tlp</span>
+                </button>
+              </div>
+              <hr class="my-4">
+              <div class="row">
+                <div class="col-md-6">
+                    <label class="form-control-label" for="email">Email</label>
+                </div>
+              </div>
+              <div id="list_email">
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-control-label" for="email">Tipe</label>
+                      <select class="form-control" id="tipe_Tlp" name="tipe_Email[]" required>
+                        <option value="" disabled selected>Tipe Email</option>
+                        <option value="C">Corp</option>
+                        <option value="P">Pribadi</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3 attr_tlp1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="email">Email</label>
+                      <input type="text" class="form-control" id="email" name="email[]" maxlength="45" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-success d-flex" id="btnAdd-email">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Email</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
                 <div class="col-3">
+                  <h3 class="text-uppercase text-muted ls-1 mb-1">SIM</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="list_sim">
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-control-label" for="SIM">Jenis*</label>
+                      <select class="form-control" id="jenis_SIM" name="jenis_SIM[]" data-rowattr='attr_sim1' required>
+                        <option value="" disabled selected>Jenis SIM</option>
+                        <option value="0">Tidak punya</option>
+                        <option value="1">A</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3 attr_sim1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="SIM">NO SIM</label>
+                      <input type="text" class="form-control" id="no_SIM" name="no_SIM[]">
+                    </div>
+                  </div>
+                  <div class="col-md-3 attr_sim1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="SIM">Masa Berlaku</label>
+                      <input class="form-control" type="date" id="exp_sim" name="exp_sim[]">
+                    </div>
+                  </div>
+                  <div class="col-md-3 attr_sim1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="SIM">Kota Penerbit</label>
+                      <input class="form-control" type="text" id="kota_sim" name="kota_sim[]">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-success d-flex" id="btnAdd-sim">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah SIM</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-12">
                   <h3 class="text-uppercase text-muted ls-1 mb-1">Riwayat pendidikan</h3>
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table" id="TblSim">
-                  <thead class="thead-light">
-                    <tr>
-                      <th>Pendidikan</th>
-                      <th>Nama Sekolah</th>
-                      <th>Jurusan</th>
-                      <th>kota</th>
-                      <th>tahun</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>SD</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
-                    </tr>
-                    <tr>
-                      <td>SLTP</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="tahun[]" placeholder="2000-2006"></td>
-                    </tr>
-                    <tr>
-                      <td>SMA</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
-                      <th>
-                        <select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">
-                          <option value="" selected>jurusan</option>
-                          @foreach ($SMA as $sma )
-                          <option value="{{ $sma->nama }}">{{ $sma->nama }}</option>
-                          @endforeach
-                        </select>
-                      </th>
-                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
-                    </tr>
-                    <tr>
-                      <td>Akademi</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
-                      <th>
-                        <select class="form-control" id="jurusan[]" name="jurusan[]" maxlength="45">
-                          <option value="" selected>jurusan</option>
-                          @foreach ($Sederajat as $sederajat )
-                          <option value="{{ $sederajat->nama }}">{{ $sederajat->nama }}</option>
-                          @endforeach
-                        </select>
-                      </th>
-                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
-                    </tr>
-                    <tr>
-                      <td>S1</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
-                    </tr>
-                    <tr>
-                      <td>S2</td>
-                      <td><input type="text" class="form-control" name="namasekolah[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="jurusan[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="kota[]" maxlength="45"></td>
-                      <td><input type="text" class="form-control" name="tahun[]" maxlength="45" placeholder="2000-2006"></td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div id="list_pendidikan">
+                
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-success d-flex" id="btnAdd-pendidikan">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah Pendidikan</span>
+                </button>
               </div>
             </div>
           </div>
@@ -372,26 +449,18 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table" id="TblPerushaan">
-                  <thead class="thead-light">
-                    <tr>
-                      <th style="width: 17.25%;">Nama Perushaan</th>
-                      <th style="width: 13%;">Jenis Perushaan</th>
-                      <th style="width: 17.25%;">Alamat Prushaan</th>
-                      <th style="width: 17.25%;">Jabatan</th>
-                      <th style="width: 17.25%;">Nama Atasan/ Jabatan</th>
-                      <th style="width: 8%;">Start Kerja</th>
-                      <th style="width: 8%;">End kerja</th>
-                      <th style="width: 2%;"> 
-                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-perusahaan">
-                          <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
-                        </button>
-                      </th>
-                    </tr>
-                  </thead>
-                </table>
+
+              <div id="list_riwayat">
+
               </div>
+            
+              <div class="form-group">
+                <button type="button" class="btn btn-success d-flex" id="btnAdd-riwayat">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah Riwayat</span>
+                </button>
+              </div>
+
               <div class="row" style="margin-top: 1.7em">
                 <div class="col-md-6">
                   <div class="form-group">

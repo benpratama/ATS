@@ -41,6 +41,12 @@
         margin-bottom: 2em;
         width: 100%;
       }
+      .brdr{
+        border-style: solid;
+        border-color: #D8D9CF;
+        padding: 1em;
+        margin: 0.5em
+      }
     </style>
 </head>
 <body class="stly">
@@ -87,27 +93,6 @@
                   </div>
                 </div>
               </div>
-              <hr class="my-4">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="goldarah">Golongan Darah*</label>
-                    <select class="form-control" id="goldarah" name="goldarah" required>
-                      <option value="" disabled selected>Golongan Darah</option>
-                      <option value="O">O</option>
-                      <option value="A">A</option>
-                      <option value="B">B</option>
-                      <option value="AB">AB</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="tlprumah">Telp. rumah*</label>
-                    <input type="text" class="form-control" id="tlprumah" name="tlprumah" placeholder="(kode)12312123" maxlength="18" required>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -124,21 +109,14 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table" id="Tblpelatihan">
-                  <thead class="thead-light">
-                    <tr>
-                      <th style="width: 30%;">jenis Kursus/Pelatihan</th>
-                      <th style="width: 30%;">Penyelenggara</th>
-                      <th style="width: 30%;">Tahun Pelaksanaan</th>
-                      <th style="width: 10%;"> 
-                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-pelatihan">
-                          <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
-                        </button>
-                      </th>
-                    </tr>
-                  </thead>
-                </table>
+              <div id="list_pelatihan">
+                
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-success d-flex" id="btnAdd-pelatihan">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Pelatihan</span>
+                </button>
               </div>
             </div>
           </div>
@@ -172,7 +150,7 @@
               </div>
               <hr class="my-4">
               <label class="form-control-label" for="bahasa">Bahasa asing atau bahasa daerah yang dikuasai :</label>
-                <div class="table-responsive">
+                {{-- <div class="table-responsive">
                   <table class="table" id="Tblbahasa">
                     <thead class="thead-light">
                       <tr>
@@ -188,6 +166,15 @@
                       </tr>
                     </thead>
                   </table>
+                </div> --}}
+                <div id="list_bahasa">
+                  
+                </div>
+                <div class="form-group">
+                  <button type="button" class="btn btn-success d-flex" id="btnAdd-bahasa">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="gap-logo">Bahasa</span>
+                  </button>
                 </div>
             </div>
           </div>
@@ -206,22 +193,14 @@
             </div>
             <div class="card-body">
               <label class="form-control-label" for="organisasi">Keanggotaan dalam organisasi / lembaga :</label>
-                <div class="table-responsive">
-                  <table class="table" id="Tblorganisasi">
-                    <thead class="thead-light">
-                      <tr>
-                        <th style="width: 23.75%;">Nama Organisasi</th>
-                        <th style="width: 23.75%;">Kota</th>
-                        <th style="width: 23.75%;">Jabatan</th>
-                        <th style="width: 23.75%;">Dari/Sampai(Tahun)</th>
-                        <th style="width: 5%;"> 
-                          <button type="button" class="btn btn-success d-flex" id="btnAddRow-organisasi">
-                            <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
-                          </button>
-                        </th>
-                      </tr>
-                    </thead>
-                  </table>
+                <div id="list_organisasi">
+                  
+                </div>
+                <div class="form-group">
+                  <button type="button" class="btn btn-success d-flex" id="btnAdd-organisasi">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="gap-logo">Organisasi</span>
+                  </button>
                 </div>
                 <hr class="my-4">
                 <div class="row" >
@@ -713,20 +692,14 @@
               </div>
               <hr class="my-4">
               <label class="form-control-label" for="karyawankenal">Karyawan / Karyawati yang Saudara kenal di perusahaan ini :</label>
-              <div class="table-responsive">
-                <table class="table" id="Tblkenal">
-                  <thead class="thead-light">
-                    <tr>
-                      <th style="width: 47.5%;">Nama</th>
-                      <th style="width: 47.5%;">hubungan</th>
-                      <th style="width: 5%;"> 
-                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-kenal">
-                          <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
-                        </button>
-                      </th>
-                    </tr>
-                  </thead>
-                </table>
+              <div id="list_karyawan">
+                
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-success d-flex" id="btnAdd-karyawan">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Karyawan</span>
+                </button>
               </div>
               <hr class="my-4">
               <div class="row" >
@@ -761,85 +734,106 @@
               </div>
               <hr class="my-4">
               <label class="form-control-label" for="referensi"> Tuliskan 2 nama yang berkenan memberikan referensi bagi lamaran Saudara ke perusahaan ini :</label>
-              <div class="table-responsive">
-                <table class="table" id="Tblsaudarafarmasi">
-                  <thead class="thead-light">
-                    <tr>
-                      <th style="width: 25%;">Nama</th>
-                      <th style="width: 25%;">Alamat</th>
-                      <th style="width: 25%;">Pekerjaan</th>
-                      <th style="width: 25%;">No.Tlp</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]" maxlength='95'>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]" maxlength='220'>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]" maxlength='95'>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]" maxlength='95'>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]" maxlength='95'>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]" maxlength='220'>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]" maxlength='95'>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]" maxlength='95'>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {{-- <div class="table-responsive"> --}}
+                <div id="list_refrensi">
+                  <div class="row brdr">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-control-label" for="referensi">Nama</label>
+                        <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="referensi">Alamat</label>
+                        <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-control-label" for="referensi">Pekerjaan</label>
+                        <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <label class="form-control-label" for="referensi">No.Tlp</label>
+                        <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row brdr">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-control-label" for="referensi">Nama</label>
+                        <input class="form-control" type="text" id="nama_referensi" name="nama_referensi[]">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="referensi">Alamat</label>
+                        <input class="form-control" type="text" id="alamat_referensi" name="alamat_referensi[]">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-control-label" for="referensi">Pekerjaan</label>
+                        <input class="form-control" type="text" id="pekerjaan_referensi" name="pekerjaan_referensi[]">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <label class="form-control-label" for="referensi">No.Tlp</label>
+                        <input class="form-control" type="text" id="tlp_referensi" name="tlp_referensi[]">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {{-- </div> --}}
               <hr class="my-4">
               <label class="form-control-label" for="kendaraan"> Tuliskan 2 alamat kenalan Saudara yang dapat dihubungi dalam keadaan darurat</label>
-              <div class="table-responsive">
-                <table class="table" id="kontakdarurat">
-                  <thead class="thead-light">
-                    <tr>
-                      <th style="width: 33.3%;">Nama*</th>
-                      <th style="width: 33.3%;">Alamat*</th>
-                      <th style="width: 33.3%;">No.Tlp*</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <input class="form-control" type="text" id="nama_kontakdarurat" name="nama_kontakdarurat[]" maxlength='95' required>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="alamat_kontakdarurat" name="alamat_kontakdarurat[]" maxlength='220' required>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="tlp_kontakdarurat" name="tlp_kontakdarurat[]" maxlength='95' required>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input class="form-control" type="text" id="nama_kontakdarurat" name="nama_kontakdarurat[]" maxlength='95'  required>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="alamat_kontakdarurat" name="alamat_kontakdarurat[]" maxlength='220'  required>
-                      </td>
-                      <td>
-                        <input class="form-control" type="text" id="tlp_kontakdarurat" name="tlp_kontakdarurat[]" maxlength='95' required>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                <div id="list_refrensi">
+                  <div class="row brdr">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-control-label" for="darurat">Nama*</label>
+                        <input class="form-control" type="text" id="nama_darurat" name="nama_darurat[]" required>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="darurat">Alamat*</label>
+                        <input class="form-control" type="text" id="alamat_darurat" name="alamat_darurat[]" required>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <label class="form-control-label" for="darurat">No.Tlp*</label>
+                        <input class="form-control" type="text" id="tlp_darurat" name="tlp_darurat[]" required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row brdr">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-control-label" for="darurat">Nama*</label>
+                        <input class="form-control" type="text" id="nama_darurat" name="nama_darurat[]" required>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="darurat">Alamat*</label>
+                        <input class="form-control" type="text" id="alamat_darurat" name="alamat_darurat[]" required>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <label class="form-control-label" for="darurat">No.Tlp*</label>
+                        <input class="form-control" type="text" id="tlp_darurat" name="tlp_darurat[]" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
         </div>
