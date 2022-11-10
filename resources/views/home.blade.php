@@ -2,6 +2,7 @@
 
 @section('styles')
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
   .btnhide{
     padding: 0.3em !important;
@@ -179,13 +180,15 @@
         </div>
       </div>
     </div>
-    
+    <div id="notif">
+      
+    </div>
     {{-- {{dd(session()->get('user')['organisasi']) }} --}}
     {{-- TABLE KANDIDAT --}}
     <div class="row">
-      <div class="col-xl-12">
-        <div class="card">
-          <div class="card-header bg-transparent">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header bg-transparent">
             <div class="row align-items-center">
               <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">Overview</h6>
@@ -194,7 +197,11 @@
               <div class="d-flex col-8">
                 <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-groupschedule">
                   <span class="material-symbols-outlined">add</span>
-                  <span class="gap-logo">Tambah</span>
+                  <span class="gap-logo">Schedule</span>
+                </button>
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-transfer">
+                  <span class="material-symbols-outlined">change_circle</span>
+                  <span class="gap-logo">transfer</span>
                 </button>
             </div>
           </div>
@@ -540,7 +547,33 @@
     </div>
   </div>
   {{--!!END MODAL TAMBAH!!--}}
-
+  
+  {{--!!START MODAL TRANSFER!!--}}
+  <div class="modal fade modal-transfer"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <select id="organisasi" class="form-control" name="organisasi">
+            <option value="" selected disabled>NAMA Organisasi</option>
+            @foreach ($list_organisasi as $organisasi )
+            <option value="{{ $organisasi->id }}">{{ $organisasi->nama }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="btntransfer" class="btn btn-primary">Transfer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{--!!END MODAL TRANSFER!!--}}
+  
 </div> 
 
 <!-- Code begins here -->

@@ -70,8 +70,11 @@ class HomeController extends Controller
                     ->where('active',1)
                     ->where('deleted',0)
                     ->get();
+        $list_organisasi = DB::table('M_Organisasi')
+                            ->where('id','<>',Auth::user()->id_Organisasi)
+                            ->get();
         return view('home',['ListPendidikan'=>$list_pendidikan,'ListJurusan'=>$list_jurusan,'ListJob'=>$list_job,'ListStatus'=>$list_status,'Domisili'=>$Domisili,'list_proses'=>$list_proses,
-        'list_cc'=>$list_cc,'list_mcu'=>$list_mcu]);
+        'list_cc'=>$list_cc,'list_mcu'=>$list_mcu,'list_organisasi'=>$list_organisasi]);
     }
 
     public function ShowSummary(){
@@ -165,8 +168,41 @@ class HomeController extends Controller
                         ));
         return $detail;
     }
+
     public function GetName(){
         $name = Auth::user()->nama;
         return $name;
+    }
+
+    public function TransferKandidat(Request $request){
+        $array1=[];
+        $array2=array();
+        foreach ($request->arrId_kandidat as $key => $value) {
+
+            $cek = DB::table('T_DFPTK')
+                    ->join('T_FPTK','T_DFPTK.id_TFPTK','T_FPTK.id')
+                    ->where('id_TKandidat',$value)
+                    ->pluck('nofptk');
+            $info_kandidat = DB::table('T_kandidat')
+                            ->where('id', $value)
+                            ->pluck('namalengkap');
+            // return count($cek);
+            if (count($cek)<1) {
+                DB::table('T_kandidat')
+                ->where('id',$value)
+                ->update([
+                    'id_Organisasi'=>$request->id_Organisasi
+                ]);
+            }else{
+                
+                foreach ($cek as $key => $value) {
+                    $array2['nofptk']=$value;
+                    $array2['namalengkap']=$info_kandidat[0];
+                    array_push($array1,$array2);
+                }
+                
+            }
+        }
+        return $array1;
     }
 }

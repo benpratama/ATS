@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function(){
         Route::get('/hrdats/dashboard/hrd/summary','HomeController@ShowSummary')->name('hm.Summary');
         Route::get('/hrdats/dashboard/hrd/name','HomeController@GetName')->name('hm.GetName');
         Route::post('/hrdats/dashboard/hrd/detail','HomeController@ShowDetail')->name('hm.Detail');
+        Route::post('/hrdats/dashboard/hrd/transfer','HomeController@TransferKandidat')->name('hm.TransferKandidat');
 
         // //Detail Kandidat
         Route::post('/hrdats/detail/kandidat/genurl','KandidatController@GenUrl')->name('dk.GenUrl');

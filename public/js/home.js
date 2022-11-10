@@ -18,6 +18,7 @@ $( document ).ready(function() {
   modalInformasi();
   filterProses();
   kirimEmail();
+  transferKandidat();
   modal()
   $('#schedule, #proses').on('change',function(){tampilin_email()})
   $('#schedule, #proses').on('change',function(){modalInformasi()})
@@ -70,199 +71,199 @@ function filter(){
   })
 }
 
-function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,domisili){
-  // $.ajaxSetup({
-  //   headers: {
-  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  //   }
-  // });
-  // $.ajax({
-  //     _token: '{{ csrf_token() }}',
-  //     url: '/hrdats/dashboard/hrd/detail',
-  //     type: 'post',
-  //     data: {
-  //       Speriod:Speriod,
-  //       Eperiod:Eperiod,
-  //       Sumur:Sumur,
-  //       Eumur:Eumur,
-  //       pendidikan:pendidikan,
-  //       jurusan:jurusan,
-  //       job:job,
-  //       status:status,
-  //       domisili:domisili
-  //     }
-  //   }).done((data) => {
-  //     console.log(JSON.stringify(data));
-  // });
-  $('#TblKandidat').DataTable().destroy();
-  $('.filters').remove();
-  $('#TblKandidat thead tr')
-        .clone(true)
-        .addClass('filters')
-        .appendTo('#TblKandidat thead');
+// function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,domisili){
+//   // $.ajaxSetup({
+//   //   headers: {
+//   //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//   //   }
+//   // });
+//   // $.ajax({
+//   //     _token: '{{ csrf_token() }}',
+//   //     url: '/hrdats/dashboard/hrd/detail',
+//   //     type: 'post',
+//   //     data: {
+//   //       Speriod:Speriod,
+//   //       Eperiod:Eperiod,
+//   //       Sumur:Sumur,
+//   //       Eumur:Eumur,
+//   //       pendidikan:pendidikan,
+//   //       jurusan:jurusan,
+//   //       job:job,
+//   //       status:status,
+//   //       domisili:domisili
+//   //     }
+//   //   }).done((data) => {
+//   //     console.log(JSON.stringify(data));
+//   // });
+//   $('#TblKandidat').DataTable().destroy();
+//   $('.filters').remove();
+//   $('#TblKandidat thead tr')
+//         .clone(true)
+//         .addClass('filters')
+//         .appendTo('#TblKandidat thead');
         
-  $('#TblKandidat').DataTable({
-    orderCellsTop: true,
-    fixedHeader: true,
-    initComplete: function () {
-      var api = this.api();
-          api
-            .columns()
-            .eq(0)
-            .each(function (colIdx) {
-              // Set the header cell to contain the input element
-              var cell = $('.filters th').eq(
-                $(api.column(colIdx).header()).index()
-              );
+//   $('#TblKandidat').DataTable({
+//     orderCellsTop: true,
+//     fixedHeader: true,
+//     initComplete: function () {
+//       var api = this.api();
+//           api
+//             .columns()
+//             .eq(0)
+//             .each(function (colIdx) {
+//               // Set the header cell to contain the input element
+//               var cell = $('.filters th').eq(
+//                 $(api.column(colIdx).header()).index()
+//               );
 
-              var title = $(cell).text();
-              if(title!='' && title!="Detail"){
-                $(cell).html('<input type="text" style="width:100%" placeholder="' + title + '" />');
-              }else{
-                $(cell).html('');
-              }
+//               var title = $(cell).text();
+//               if(title!='' && title!="Detail"){
+//                 $(cell).html('<input type="text" style="width:100%" placeholder="' + title + '" />');
+//               }else{
+//                 $(cell).html('');
+//               }
                     
  
-              // On every keypress in this input
-              $(
-                  'input',
-                  $('.filters th').eq($(api.column(colIdx).header()).index())
-              )
-              .off('keyup change')
-              .on('change', function (e) {
-                // Get the search value
-                $(this).attr('title', $(this).val());
-                var regexr = '({search})'; //$(this).parents('th').find('select').val();
+//               // On every keypress in this input
+//               $(
+//                   'input',
+//                   $('.filters th').eq($(api.column(colIdx).header()).index())
+//               )
+//               .off('keyup change')
+//               .on('change', function (e) {
+//                 // Get the search value
+//                 $(this).attr('title', $(this).val());
+//                 var regexr = '({search})'; //$(this).parents('th').find('select').val();
  
-                  // var cursorPosition = this.selectionStart;
-                  // Search the column for that value
-                  api
-                      .column(colIdx)
-                      .search(
-                          this.value != ''
-                              ? regexr.replace('{search}', '(((' + this.value + ')))')
-                              : '',
-                          this.value != '',
-                          this.value == ''
-                      )
-                      .draw();
-              })
-              .on('keyup', function (e) {
-                  var cursorPosition = this.selectionStart;
-                  e.stopPropagation();
+//                   // var cursorPosition = this.selectionStart;
+//                   // Search the column for that value
+//                   api
+//                       .column(colIdx)
+//                       .search(
+//                           this.value != ''
+//                               ? regexr.replace('{search}', '(((' + this.value + ')))')
+//                               : '',
+//                           this.value != '',
+//                           this.value == ''
+//                       )
+//                       .draw();
+//               })
+//               .on('keyup', function (e) {
+//                   var cursorPosition = this.selectionStart;
+//                   e.stopPropagation();
 
-                  $(this).trigger('change');
-                  $(this)
-                      .focus()[0]
+//                   $(this).trigger('change');
+//                   $(this)
+//                       .focus()[0]
                       
-                      .setSelectionRange(cursorPosition, cursorPosition);
-              });
-            });
-    },
-    "scrollY":        "400px",
-    "scrollX": true,
-    "scrollCollapse": true,
-    pageLength : 5,
-        ajax: {
-          url: "/hrdats/dashboard/hrd/detail",
-          type: "POST",
-          data:{
-            Speriod:Speriod,
-            Eperiod:Eperiod,
-            Sumur:Sumur,
-            Eumur:Eumur,
-            pendidikan:pendidikan,
-            jurusan:jurusan,
-            job:job,
-            status:status,
-            domisili:domisili
-          },
-          dataSrc:""
-        },
-    "paging":true,
-    "bInfo" : false,
-    "lengthChange": false,
-    language: {
-        paginate: {
-            previous: "<i class='fas fa-angle-left'>",
-            next: "<i class='fas fa-angle-right'>"
-        }
-    },
-    columns: [
-        {
-            render: (data, type, row, meta)=> {
-                return '<input type="checkbox" class="cek-kandidat" value="'+row.id+'">'
-            },
-        },
-        {
-            data: 'umur',
-            defaultContent: ''
-        },
-        {
-            data: 'kota1',
-            defaultContent: ''
-        },
-        {
-            data: 'gender',
-            defaultContent: ''
-        },
-        {
-            data: 'pendidikan',
-            defaultContent: ''
-        },
-        {
-            data: 'jurusan',
-            defaultContent: ''
-        },
-        {
-            data: 'pengalaman',
-            defaultContent: ''
-        },
-        {
-            data: 'bidang',
-            defaultContent: ''
-        },
-        {
-          defaultContent: '',
-          render: (data, type, row, meta)=> {
-            return row.tahun+' Tahun '+row.bulan+' Bulan '+row.hari+' Hari'
-          }
-        },
-        {
-            data: 'bertugasluarkota',
-            defaultContent: ''
-        },
-        {
-          data: 'ditempatkanluarkota',
-          defaultContent: ''
-        },
-        {
-          data: 'SIM',
-          defaultContent: ''
-        },
-        {
-          data: 'nama',
-          defaultContent: ''
-        },
-        {
-          data: 'proses',
-          defaultContent: ''
-        },
-        {
-            defaultContent: '',
-            render: (data, type, row, meta)=> {
-                // return '<button type="button" class="btn btn-info" onclick="Modal_mcu(value)" data-toggle="modal" data-target=".modal-edit-mcu" value="'+row.id+'">Edit</button>'
-                return '<a href="/hrdats/detail/kandidat/'+row.id+'/'+row.noidentitas+'" type="button" class="btn btn-info">Detail</a>'
-            }
-        }
-    ] 
-  });
+//                       .setSelectionRange(cursorPosition, cursorPosition);
+//               });
+//             });
+//     },
+//     "scrollY":        "400px",
+//     "scrollX": true,
+//     "scrollCollapse": true,
+//     pageLength : 5,
+//         ajax: {
+//           url: "/hrdats/dashboard/hrd/detail",
+//           type: "POST",
+//           data:{
+//             Speriod:Speriod,
+//             Eperiod:Eperiod,
+//             Sumur:Sumur,
+//             Eumur:Eumur,
+//             pendidikan:pendidikan,
+//             jurusan:jurusan,
+//             job:job,
+//             status:status,
+//             domisili:domisili
+//           },
+//           dataSrc:""
+//         },
+//     "paging":true,
+//     "bInfo" : false,
+//     "lengthChange": false,
+//     language: {
+//         paginate: {
+//             previous: "<i class='fas fa-angle-left'>",
+//             next: "<i class='fas fa-angle-right'>"
+//         }
+//     },
+//     columns: [
+//         {
+//             render: (data, type, row, meta)=> {
+//                 return '<input type="checkbox" class="cek-kandidat" value="'+row.id+'">'
+//             },
+//         },
+//         {
+//             data: 'umur',
+//             defaultContent: ''
+//         },
+//         {
+//             data: 'kota1',
+//             defaultContent: ''
+//         },
+//         {
+//             data: 'gender',
+//             defaultContent: ''
+//         },
+//         {
+//             data: 'pendidikan',
+//             defaultContent: ''
+//         },
+//         {
+//             data: 'jurusan',
+//             defaultContent: ''
+//         },
+//         {
+//             data: 'pengalaman',
+//             defaultContent: ''
+//         },
+//         {
+//             data: 'bidang',
+//             defaultContent: ''
+//         },
+//         {
+//           defaultContent: '',
+//           render: (data, type, row, meta)=> {
+//             return row.tahun+' Tahun '+row.bulan+' Bulan '+row.hari+' Hari'
+//           }
+//         },
+//         {
+//             data: 'bertugasluarkota',
+//             defaultContent: ''
+//         },
+//         {
+//           data: 'ditempatkanluarkota',
+//           defaultContent: ''
+//         },
+//         {
+//           data: 'SIM',
+//           defaultContent: ''
+//         },
+//         {
+//           data: 'nama',
+//           defaultContent: ''
+//         },
+//         {
+//           data: 'proses',
+//           defaultContent: ''
+//         },
+//         {
+//             defaultContent: '',
+//             render: (data, type, row, meta)=> {
+//                 // return '<button type="button" class="btn btn-info" onclick="Modal_mcu(value)" data-toggle="modal" data-target=".modal-edit-mcu" value="'+row.id+'">Edit</button>'
+//                 return '<a href="/hrdats/detail/kandidat/'+row.id+'/'+row.noidentitas+'" type="button" class="btn btn-info">Detail</a>'
+//             }
+//         }
+//     ] 
+//   });
 
-  //buat check
-  $('#cekAll-kandidat').change(function(){
-      $("input.cek-kandidat:checkbox").prop("checked",$(this).prop("checked"));
-  })
-}
+//   //buat check
+//   $('#cekAll-kandidat').change(function(){
+//       $("input.cek-kandidat:checkbox").prop("checked",$(this).prop("checked"));
+//   })
+// }
 
 function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,domisili){
   $('#TblKandidat').DataTable().destroy();
@@ -711,7 +712,9 @@ function modal(){
     $('#konten').val('')
 
   })
-  
+  $('.modal-transfer').on('hidden.bs.modal', function() {
+    $('#organisasi').val('')
+  })
 }
 
 function kirimEmail(){
@@ -873,4 +876,52 @@ function kirimEmail(){
   })
   
 
+}
+
+function transferKandidat(){
+  $('#btntransfer').on('click',function(){
+    var arrId_kandidat=[];
+    var cek = $('.cek-kandidat')
+    for(var i=0; cek[i]; ++i){
+        if(cek[i].checked){
+          arrId_kandidat.push(cek[i].value);
+        }
+    }
+    var id_Organisasi = $('#organisasi').val();
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/dashboard/hrd/transfer',
+        type: 'post',
+        data: {
+          id_Organisasi:id_Organisasi,
+          arrId_kandidat:arrId_kandidat
+        }
+      }).done((data) => {
+        console.log(JSON.stringify(data.length));
+        html=""
+        if (data.length!=0) {
+          data.forEach(element => {
+            html += "<div class='alert alert-danger alert-dismissible fade show' role='alert'>"
+            html +=   "<span class='alert-icon'><i class='ni ni-notification-70'></i></span>"
+            html +=   "<span class='alert-text'><strong>Danger!</strong>"
+            html +=     "&emsp;"+element.namalengkap+" Terdaftar di NO FPTK <strong>"+element.nofptk+"</strong>"
+            html +=   "</span>"
+            html +=     "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"
+            html +=       "<span aria-hidden='true'>&times;</span>"
+            html +=     "</button>"
+            html += "</div>"
+          });
+          $('#notif').append(html)
+        }
+        $('#TblKandidat').DataTable().ajax.reload();
+        $('.modal-transfer').modal('toggle');
+        modal()
+    });
+  })
+  
 }
