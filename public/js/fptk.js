@@ -10,6 +10,8 @@ $( document ).ready(function() {
   clearFilter()
   cek_posisi_organisasi();
   cel_nikpeminta();
+  showlogFPTK();
+  // deleteKandidat()
 
   $('#filter_nofptk').select2();
   $('#filter_namapeminta').select2();
@@ -226,12 +228,42 @@ function Row_kandidat(){
       var hapus = $(this).data('row')
       // console.log(hapus);
       baris_kandidat-=1;
+      deleteKandidat()
       $('#'+hapus).remove();
+      
       if (baris_kandidat<=0) {
         console.log(baris_kandidat);
         $('#btnAddRow-kandidat').attr("disabled", false);
       }
     })
+}
+
+function deleteKandidat(){
+  var id_fptk = $('#btnUpdateFPTK').data('value');
+  var nofptk = $('#nofptk').val();
+  var id_kandidat = $("select[name='fptkkandidat[]']").map(function(){return $(this).val();}).get();
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  $.ajax({
+      _token: '{{ csrf_token() }}',
+      url: '/hrdats/hrd/delete/kandidat/fptk',
+      type: 'post',
+      data: {
+        id_fptk:id_fptk,
+        nofptk:nofptk,
+        id_kandidat:id_kandidat
+      }
+  }).done((data) => {
+      // location.reload()
+      console.log(JSON.stringify(data));
+      if (data==1) {
+        alert();
+      }
+  });
+  
 }
 
 function detailKandidat(){
@@ -254,7 +286,7 @@ function detailKandidat(){
           baris_kandidat+=1;
           var html  = "<tr id='baris"+baris_kandidat+"' class='detail-perusahaan'>"
               html +=   "<td style='width: 50%;'>"
-              html +=     "<select class='js-example-basic-single form-control fptkkandidat' name='fptkkandidat[]' >"
+              html +=     "<select class='js-example-basic-single form-control fptkkandidat' name='fptkkandidat[]' disabled>"
               html +=       "<option value='' disabled selected>ID Kandidat</option>"
               data[1].forEach(element => {
                 if (element.id==elements.id_TKandidat) {
@@ -291,6 +323,74 @@ function detailKandidat(){
         disable_add_kandidat();
       });
   }
+}
+
+function showlogFPTK(){
+  var nofptk = $('#nofptk').val();
+  // $.ajaxSetup({
+  //   headers: {
+  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //   }
+  // });
+  // $.ajax({
+  //     _token: '{{ csrf_token() }}',
+  //     url: '/hrdats/hrd/show/logfptk/'+nofptk,
+  //     type: 'get'
+  //   }).done((data) => {
+  //     console.log(JSON.stringify(data));
+  //   })
+
+  $('#TbllogFPTK').DataTable({
+    "scrollY":        "650px",
+    "scrollCollapse": true,
+    aLengthMenu: [
+        [5,10,25,50,100 , -1],
+        [5,10,25,50,100 , "All"]
+    ],
+    iDisplayLength: 5,
+    // pageLength : 5,
+    ajax: {
+    url: '/hrdats/hrd/show/logfptk/'+nofptk,
+            data:{},
+            dataSrc:""
+        },
+    "paging":true,
+    "bInfo" : false,
+    "lengthChange": true,
+    language: {
+        paginate: {
+            previous: "<i class='fas fa-angle-left'>",
+            next: "<i class='fas fa-angle-right'>"
+        }
+    },
+    columns: [
+      {
+          data: 'nofptk',
+          defaultContent: ''
+      },
+      {
+        data: 'namakandidat',
+        defaultContent: ''
+      },
+      {
+        data: 'status',
+        defaultContent: ''
+      },
+      {
+        // data: 'date',
+        // defaultContent: ''
+        render: (data, type, row, meta)=> {
+          return row.date.replace(':00.000','')
+        }
+      },
+      {
+        data: 'PIC_name',
+        defaultContent: ''
+      }
+
+    ],
+    order: [[3, 'desc']]
+  });
 }
 
 function update_Fptk(){

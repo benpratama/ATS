@@ -158,6 +158,8 @@ Route::middleware('auth')->group(function(){
         Route::post('/hrdats/hrd/cek/posisi','FptkController@CekPosisi')->name('hr_fptk.CekPosisi');
         Route::post('/hrdats/hrd/cek/organisasi','FptkController@CekOrganisasi')->name('hr_fptk.CekOrganisasi');
         Route::post('/hrdats/hrd/cek/nik','FptkController@CekNik')->name('hr_fptk.CekNik');
+        Route::post('/hrdats/hrd/delete/kandidat/fptk','FptkController@DelKandidat')->name('hr_fptk.DelKandidat');
+        Route::get('/hrdats/hrd/show/logfptk/{nofptk}', 'FptkController@Showlog')->name('hr_fptk.Showlog');
 
         //MPP
         Route::get('/hrdats/hrd/mpp', 'MppController@index')->name('hr_mpp.index');
@@ -213,6 +215,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/hrdats/detail/getpendidikan/kandidat/{id}','KandidatController@GetPendidikan')->name('dk.GetPendidikan');
     Route::get('/hrdats/detail/getpekerjaan/kandidat/{id}','KandidatController@GetPekerjaan')->name('dk.GetPekerjaan');
     Route::get('/hrdats/detail/listsim','KandidatController@ListSim')->name('dk.ListSim');
+    Route::get('/hrdats/detail/logfptk/{id}','KandidatController@Showlog')->name('dk.Showlog');
     
     //detail phase2
     Route::get('/hrdats/detail/getpelatihan/kandidat/{id}','KandidatController@GetPelatihan')->name('dk.GetPelatihan');

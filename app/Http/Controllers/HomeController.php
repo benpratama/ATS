@@ -84,7 +84,7 @@ class HomeController extends Controller
 
         //filter periode
         if (empty($request->Speriod)) {
-           $Speriod = Carbon::now()->subDays(30)->format('Y-m-d');
+           $Speriod = Carbon::now()->subDays(365)->format('Y-m-d');
         }else{
             $Speriod = $request->Speriod;
         }

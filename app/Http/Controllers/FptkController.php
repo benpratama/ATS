@@ -344,31 +344,60 @@ class FptkController extends Controller
                     'status'=>$request->status,
                     'leadtime'=>0,
                 ]);
-            DB::table('T_DFPTK')
-                ->where('id_TFPTK',$request->id_fptk)
-                ->delete();
+            // DB::table('T_DFPTK')
+            //     ->where('id_TFPTK',$request->id_fptk)
+            //     ->delete();
 
             if (!empty($request->id_kandidat)) {
                 $list_kandidat = array_unique($request->id_kandidat);
                 for ($i=0; $i <count($list_kandidat) ; $i++) {
                     
-                    $source = DB::table('T_kandidat')
+                    $cek1 = DB::table('T_DFPTK')
+                        ->where('id_TFPTK',$request->id_fptk)
+                        ->where('id_TKandidat',$list_kandidat[$i])
+                        ->count();
+                    if ($cek1<1) {
+                        $info_kandidat = DB::table('T_kandidat')
                             ->join('T_link','T_link.id','T_kandidat.id_Tlink')
                             ->where('T_kandidat.id',$list_kandidat[$i])
-                            ->select('T_link.source')
+                            ->select('T_link.source','T_kandidat.namalengkap')
                             ->get();
+                    
+                        DB::table('T_DFPTK')
+                            ->insert([
+                                'id_TFPTK'=>$request->id_fptk,
+                                'id_TKandidat'=>$list_kandidat[$i],
+                                'tglkonfirm'=>$request->tgl_konfirm[$i],
+                                'tgljoin'=>$request->tgl_join[$i],
+                                'tglbatal'=>$request->tgl_batal[$i],
+                                'ket'=>null,
+                                'sumber'=>$info_kandidat[0]->source,
+                                'jenis'=>null
+                            ]);
 
-                    DB::table('T_DFPTK')
-                        ->insert([
-                            'id_TFPTK'=>$request->id_fptk,
-                            'id_TKandidat'=>$list_kandidat[$i],
-                            'tglkonfirm'=>$request->tgl_konfirm[$i],
-                            'tgljoin'=>$request->tgl_join[$i],
-                            'tglbatal'=>$request->tgl_batal[$i],
-                            'ket'=>null,
-                            'sumber'=>$source[0]->source,
-                            'jenis'=>null
-                        ]);
+                        DB::table('T_logFPTK')
+                            ->insert([
+                                'id_TFPTK'=>$request->id_fptk,
+                                'nofptk'=>$request->nofptk,
+                                'id_TKandidat'=>$list_kandidat[$i],
+                                'namakandidat'=>$info_kandidat[0]->namalengkap,
+                                'status'=>'Ditambahkan',
+                                'date'=>Carbon::now()->format('Y-m-d H:i'),
+                                'PIC_name'=>Auth::user()->nama
+                            ]);
+                    }else{
+                        DB::table('T_DFPTK')
+                            ->where('id_TFPTK',$request->id_fptk)
+                            ->where('id_TKandidat',$list_kandidat[$i])
+                            ->update([
+                                'tglkonfirm'=>$request->tgl_konfirm[$i],
+                                'tgljoin'=>$request->tgl_join[$i],
+                                'tglbatal'=>$request->tgl_batal[$i]
+                                // 'ket'=>null,
+                                // 'jenis'=>null
+                            ]);
+                    }
+                    
                 }
                 
             }
@@ -383,8 +412,12 @@ class FptkController extends Controller
                 $workdays = $dt->diffInDaysFiltered(function(Carbon $date) {
                     return !$date->isWeekend();
                 }, $dt2);
-                $holiday  = DB::select('EXEC SP_Get_Holiday ?,?',array($request->tgl_disetujui,$result->tglkonfirm));
-                $leadtime = $workdays-$holiday[0]->jml_hari+1;
+
+                //!!!!!!!INI ERROR GARA2 DOWN !!!!!!!
+                // $holiday  = DB::select('EXEC SP_Get_Holiday ?,?',array($request->tgl_disetujui,$result->tglkonfirm));
+                // $leadtime = $workdays-$holiday[0]->jml_hari+1;
+                $leadtime=10;
+                
             }else{
                 $leadtime = 0;
             }
@@ -464,6 +497,13 @@ class FptkController extends Controller
                     ]);
     }
 
+    public function Showlog($nofptk){
+        $result = DB::table('T_logFPTK')
+                ->where('nofptk',$nofptk)
+                ->get();
+        return $result;
+    }
+
     //$id->id fptk
     public function ShowDetailKandidatFptk($id){
         $info_kandidat = DB::table('T_DFPTK')
@@ -482,6 +522,41 @@ class FptkController extends Controller
                         ->where('id_Organisasi',Auth::user()->id_Organisasi)
                         ->get();
         return $data_kandidat;
+    }
+
+    public function DelKandidat(Request $request){
+        $id_fptk =  $request->id_fptk;
+        $nofptk = $request->nofptk;
+        $id_kandidat = $request->id_kandidat[0];
+
+        $cek = DB::table('T_DFPTK')
+                ->where('id_TFPTK',$id_fptk)
+                ->where('id_TKandidat',$id_kandidat)
+                ->count();
+        if ($cek==1) {
+
+            $info_kandidat = DB::table('T_kandidat')
+                            ->where('id',$id_kandidat)
+                            ->pluck('namalengkap');
+            // return $info_kandidat[0];
+            DB::table('T_DFPTK')
+                ->where('id_TFPTK',$id_fptk)
+                ->where('id_TKandidat',$id_kandidat)
+                ->delete();
+            
+            DB::table('T_logFPTK')
+                ->insert([
+                    'id_TFPTK'=>$id_fptk,
+                    'nofptk'=>$nofptk,
+                    'id_TKandidat'=>$id_kandidat,
+                    'namakandidat'=>$info_kandidat[0],
+                    'status'=>'Dihapus',
+                    'date'=>Carbon::now()->format('Y-m-d H:i'),
+                    'PIC_name'=>Auth::user()->nama
+                ]);
+            return 1;
+        }
+        return 0;
     }
 
     public function ShowModalKandidat($idF,$idK){

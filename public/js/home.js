@@ -18,6 +18,7 @@ $( document ).ready(function() {
   modalInformasi();
   filterProses();
   kirimEmail();
+  modal()
   $('#schedule, #proses').on('change',function(){tampilin_email()})
   $('#schedule, #proses').on('change',function(){modalInformasi()})
 });
@@ -696,6 +697,23 @@ function tampilin_email(_schedule=null,_online=null){
   });
 }
 
+function modal(){
+  $('.modal-tambah-groupschedule').on('hidden.bs.modal', function() {
+    $('#namagroup').val('');
+    $('#btnEmail').removeAttr("value");
+    $('#schedule').val('');
+    $('#proses').val('');
+    $('#onlineonsite').attr('hidden',false)
+    $('#btnAdd-schedule').attr('hidden',false);
+    hidde()
+    $('#tglWaktu').val('');
+    $('#ccto').val(null).trigger('change');
+    $('#konten').val('')
+
+  })
+  
+}
+
 function kirimEmail(){
   $('#btnEmail').on('click',function(){
     var arrId_kandidat=[];
@@ -846,7 +864,9 @@ function kirimEmail(){
         data:data
       }).done((data) => {
         console.log(JSON.stringify(data));
-        $('#tblSchedule').DataTable().ajax.reload();
+        // $('#tblSchedule').DataTable().ajax.reload();
+        $('.modal-tambah-groupschedule').modal('hide');
+        modal()
         // $('#summernote').summernote('code', '');
         // $('#summernote').summernote('code', $(konten));
     });

@@ -239,6 +239,36 @@
       {{-- END CARD SEBELAJ KANAN --}}
     </div>
 
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col-3">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">FPTK</h6>
+                <h5 class="h3 mb-0">log</h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="TbllogFPTK">
+                <thead class="thead-light">
+                  <tr>
+                    <th>No FPTK</th>
+                    <th>Nama Kandidat</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Eksekutor</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
       {{-- START SCHEDULE --}}
       <div class="row">
         <div class="col-xl-12">
@@ -636,9 +666,8 @@
           </div>
         </div>
       </div>
-      {{--!!START MODAL Notes!!--}}
-
-    </div>
+      {{--!!END MODAL Notes!!--}}
+      </div>
       {{-- END SCHEDULE --}}
 
     {{-- PAGE --}}

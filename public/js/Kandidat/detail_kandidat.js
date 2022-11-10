@@ -34,6 +34,7 @@ $( document ).ready(function() {
   psikologis()
   saudara()
   filterProses();
+  showlogFPTK();
 
   modal()
   getSchedule()
@@ -3531,4 +3532,72 @@ function kirimEmail(){
   })
   
 
+}
+
+function showlogFPTK(){
+  var id = $('#id_kandidat').val();
+  // $.ajaxSetup({
+  //   headers: {
+  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //   }
+  // });
+  // $.ajax({
+  //     _token: '{{ csrf_token() }}',
+  //     url: '/hrdats/detail/logfptk/'+id,
+  //     type: 'get'
+  //   }).done((data) => {
+  //     console.log(JSON.stringify(data));
+  //   })
+
+  $('#TbllogFPTK').DataTable({
+    "scrollY":        "650px",
+    "scrollCollapse": true,
+    aLengthMenu: [
+        [5,10,25,50,100 , -1],
+        [5,10,25,50,100 , "All"]
+    ],
+    iDisplayLength: 5,
+    // pageLength : 5,
+    ajax: {
+    url: '/hrdats/detail/logfptk/'+id,
+            data:{},
+            dataSrc:""
+        },
+    "paging":true,
+    "bInfo" : false,
+    "lengthChange": true,
+    language: {
+        paginate: {
+            previous: "<i class='fas fa-angle-left'>",
+            next: "<i class='fas fa-angle-right'>"
+        }
+    },
+    columns: [
+      {
+          data: 'nofptk',
+          defaultContent: ''
+      },
+      {
+        data: 'namakandidat',
+        defaultContent: ''
+      },
+      {
+        data: 'status',
+        defaultContent: ''
+      },
+      {
+        // data: 'date',
+        // defaultContent: ''
+        render: (data, type, row, meta)=> {
+          return row.date.replace(':00.000','')
+        }
+      },
+      {
+        data: 'PIC_name',
+        defaultContent: ''
+      }
+
+    ],
+    order: [[3, 'desc']]
+  });
 }
