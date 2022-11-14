@@ -17,4 +17,7 @@ class DokumenController extends Controller
     public function HJsurat(){
         return view('Surat MCU.hj');
     }
+    public function fkpk(){
+        return view('form_kpk');
+    }
 }

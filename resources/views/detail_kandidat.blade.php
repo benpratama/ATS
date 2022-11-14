@@ -118,6 +118,11 @@
               </div>
             </div>
             {{-- END URL PAHSE 2 --}}
+            <div class="row">
+              <div class="col-md-3">
+                <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

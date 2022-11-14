@@ -183,6 +183,7 @@ Route::middleware('auth')->group(function(){
         Route::get('/hrdats/hrd/Dokumen/eth/mcu', 'DokumenController@ETHsurat')->name('doc.ETHsurat');
         Route::get('/hrdats/hrd/Dokumen/fima/mcu', 'DokumenController@Fimasurat')->name('doc.Fimasurat');
         Route::get('/hrdats/hrd/Dokumen/hj/mcu', 'DokumenController@HJsurat')->name('doc.HJsurat');
+        Route::get('/hrdats/hrd/Dokumen/fpkp', 'DokumenController@fkpk')->name('doc.fkpk');
 
         //EMAIL
         Route::get('/mailsourcing','EmailController@ESourcing')->name('em.ESourcing');
