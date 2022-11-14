@@ -44,7 +44,7 @@ $( document ).ready(function() {
   $('#labMCU').select2();
   hidde();
 
-  $('#schedule, #proses').on('change',function(){tampilin_email()})
+  $('#schedule, #proses, #konfirmasi').on('change',function(){tampilin_email()})
   $('#schedule, #proses').on('change',function(){modalInformasi()})
 });
 
@@ -3325,20 +3325,29 @@ function modalInformasi(){
   }else if(schedule==9 && online==2){
     $('.offer_2').show();
   }
-
-  
 }
 
 function tampilin_email(_schedule=null,_online=null){
   // console.log(_schedule,_online)
   $('#konten').val('')
-  schedule = $('#schedule').val();
-  online = $('#proses').val();
+  $('#btnAdd-schedule').attr('disabled',false)
+  var schedule = $('#schedule').val();
+  var online = $('#proses').val();
+  var konfirmasi = $('#konfirmasi').val();
+  var organisasi = $('#id_Organisasi').val();
   var list_onsite=['2']
-
+  var list_organisasi=['1','3']
+  console.log(konfirmasi);
   if (list_onsite.includes(schedule)==true) {
     online= 0
   }
+  if(list_organisasi.includes(organisasi)){
+    konfirmasi=0;
+  }
+  if(konfirmasi==1){
+    $('#btnAdd-schedule').attr('disabled',true)
+  }
+
   $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -3350,7 +3359,9 @@ function tampilin_email(_schedule=null,_online=null){
       type: 'post',
       data: {
         schedule:schedule,
-        online:online
+        online:online,
+        organisasi:organisasi,
+        konfirmasi:konfirmasi
       }
     }).done((data) => {
       // console.log(JSON.stringify(data));
@@ -3371,142 +3382,197 @@ function kirimEmail(){
     online = $('#proses').val();
     konten = $('#konten').val();
     tglWaktuRaw = $('#tglWaktu').val();
-    tglWaktu = tglWaktuRaw.replace("T", " Waktu: ");
-    id_kandidat = $('#id_kandidat').val();
-    id_email=$('#btnEmail').val()
-    data={}
-    console.log(schedule);
-    if (schedule==2) {
-      Durasi = $('#mcu_Durasi').val() +' jam'
-      id_lab = $('#mcu_lab').val(); 
-
-      var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
-      var konten = konten.replace('[POSITION]',posisi)
-      var konten = konten.replace('[DATE&TIME]',tglWaktu)
-      var konten = konten.replace('[DURATION]',Durasi)
-      data={konten:konten,id_kandidat:id_kandidat,id_lab:id_lab,schedule:schedule,id_email:id_email}
-    }else if(schedule==3 && online==1){
-      psikotest_1_Durasi = $('#psikotest_1_Durasi').val()
-      psikotest_1_Link = $('#psikotest_1_Link').val()
-      psikotest_1_PIC = $('#psikotest_1_PIC').val()
-
-      var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
-      var konten = konten.replace('[POSITION]',posisi)
-      var konten = konten.replace('[DATE&TIME]',tglWaktu)
-      var konten = konten.replace('[DURATION]',psikotest_1_Durasi)
-      var konten = konten.replace('[TEST LINK]',psikotest_1_Link)
-      var konten = konten.replace('[PIC’s NAME]',psikotest_1_PIC)
-
-      data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
-    }else if(schedule==3 && online==0){
-      psikotest_0_Address = $('#psikotest_0_Address').val()
-      psikotest_0_Room = $('#psikotest_0_Room').val()
-      psikotest_0_PIC = $('#psikotest_0_PIC').val()
-
-      var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
-      var konten = konten.replace('[POSITION]',posisi)
-      var konten = konten.replace('[DATE&TIME]',tglWaktu)
-
-      var konten = konten.replace('[ADDRESS]',psikotest_0_Address)
-      var konten = konten.replace('[ROOM]',psikotest_0_Room)
-      var konten = konten.replace('[PIC’s NAME]',psikotest_0_PIC)
-
-      data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
-    }else if(schedule==4 && online==1){
-      test_1_Durasi = $('#test_1_Durasi').val()
-      test_1_Link = $('#test_1_Link').val()
-
-      var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
-      var konten = konten.replace('[POSITION]',posisi)
-      var konten = konten.replace('[DATE&TIME]',tglWaktu)
-
-      var konten = konten.replace('[DURATION]',test_1_Durasi)
-      var konten = konten.replace('[TEST LINK]',test_1_Link)
-
-      data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
-    }else if(schedule==4 && online==0){
-      test_0_Durasi = $('#test_0_Durasi').val()
-      test_0_lokasi = $('#test_0_lokasi').val()
-
-      var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
-      var konten = konten.replace('[POSITION]',posisi)
-      var konten = konten.replace('[DATE&TIME]',tglWaktu)
-
-      var konten = konten.replace('[DURATION]',test_0_Durasi)
-      var konten = konten.replace('[ADDRESS]',test_0_lokasi)
-
-      data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
-    }else if(schedule==5 && online==1){
-      interviewHR_1_Link = $('#interviewHR_1_Link').val()
-      interviewHR_1_MeetingID = $('#interviewHR_1_MeetingID').val()
-      interviewHR_1_Passcode = $('#interviewHR_1_Passcode').val()
-      interviewHR_1_BR = $('#interviewHR_1_BR').val()
-
-      var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
-      var konten = konten.replace('[POSITION]',posisi)
-      var konten = konten.replace('[DATE&TIME]',tglWaktu)
-
-      var konten = konten.replace('[LINK ZOOM]',interviewHR_1_Link)
-      var konten = konten.replace('[MEETING IS]',interviewHR_1_MeetingID)
-      var konten = konten.replace('[PASSCODE]',interviewHR_1_Passcode)
-      var konten = konten.replace('[BREAKOUT ROOM NAME]',interviewHR_1_BR)
-
-      data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
-    }else if(schedule==6 && online==1){
-      interviewuser_1_Link = $('#interviewuser_1_Link').val()
-      interviewuser_1_MeetingID = $('#interviewuser_1_MeetingID').val()
-      interviewuser_1_Passcode = $('#interviewuser_1_Passcode').val()
-      interviewuser_1_BR = $('#interviewuser_1_BR').val()
-
-      var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
-      var konten = konten.replace('[POSITION]',posisi)
-      var konten = konten.replace('[DATE&TIME]',tglWaktu)
-
-      var konten = konten.replace('[LINK ZOOM]',interviewuser_1_Link)
-      var konten = konten.replace('[MEETING IS]',interviewuser_1_MeetingID)
-      var konten = konten.replace('[PASSCODE]',interviewuser_1_Passcode)
-      var konten = konten.replace('[BREAKOUT ROOM NAME]',interviewuser_1_BR)
-
-      data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
-    }else if(schedule==9 && online==1){
-      offer_1_Link = $('#offer_1_Link').val()
-      offer_1_MeetingID = $('#offer_1_MeetingID').val()
-      offer_1_Passcode = $('#offer_1_Passcode').val()
-      offer_1_BR = $('#offer_1_BR').val()
-      offer_1_Durasi = $('#offer_1_Durasi').val()
-      offer_1_Deadline = $('#offer_1_Deadline').val()
-      offer_1_URLPhase2 = $('#offer_1_URLPhase2').val()
-
-      var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
-      var konten = konten.replace('[POSITION]',posisi)
-      var konten = konten.replace('[DATE&TIME]',tglWaktu)
-
-      var konten = konten.replace('[DURATION]',offer_1_Durasi)
-      var konten = konten.replace('[LINK ZOOM]',offer_1_Link)
-      var konten = konten.replace('[MEETING IS]',offer_1_MeetingID)
-      var konten = konten.replace('[PASSCODE]',offer_1_Passcode)
-      var konten = konten.replace('[BREAKOUT ROOM NAME]',offer_1_BR)
-      var konten = konten.replace('[DEADLINE]',offer_1_Deadline)
-      var konten = konten.replace('[LINK TO DATABASE PHASE – 2]',offer_1_URLPhase2)
-
-      data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
-    }else if(schedule==9 && online==2){
-      offer_2_Durasi = $('#offer_2_Durasi').val()
-      offer_2_Deadline = $('#offer_2_Deadline').val()
-      offer_2_URLPhase2 = $('#offer_2_URLPhase2').val()
-
-      var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
-      var konten = konten.replace('[POSITION]',posisi)
-      var konten = konten.replace('[DATE&TIME]',tglWaktu)
-
-      var konten = konten.replace('[DURATION]',offer_2_Durasi)
-      var konten = konten.replace('[DEADLINE]',offer_2_Deadline)
-      var konten = konten.replace('[LINK TO DATABASE PHASE – 2]',offer_2_URLPhase2)
-
-      data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+    if (tglWaktuRaw.includes("T00:00")) {
+      tglWaktu = tglWaktuRaw.replace("T00:00", "");
+    } else {
+      tglWaktu = tglWaktuRaw.replace("T", " Waktu: ");
     }
 
-    // console.log(id_kandidat)
+    id_kandidat = $('#id_kandidat').val();
+    id_email=$('#btnEmail').val()
+    var organisasi = $('#id_Organisasi').val();
+    var pic_name = $('#PICname').text();
+    data={}
+    console.log(tglWaktuRaw);
+    var list_organisasi=['1','3']
+    
+    if (list_organisasi.includes(organisasi)) {
+      // console.log('1,3')
+      if (schedule==2) {
+        Durasi = $('#mcu_Durasi').val() +' jam'
+        id_lab = $('#mcu_lab').val(); 
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+        var konten = konten.replace('[DURATION]',Durasi)
+        data={konten:konten,id_kandidat:id_kandidat,id_lab:id_lab,schedule:schedule,id_email:id_email}
+      }else if(schedule==3 && online==1){
+        psikotest_1_Durasi = $('#psikotest_1_Durasi').val()
+        psikotest_1_Link = $('#psikotest_1_Link').val()
+        psikotest_1_PIC = $('#psikotest_1_PIC').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+        var konten = konten.replace('[DURATION]',psikotest_1_Durasi)
+        var konten = konten.replace('[TEST LINK]',psikotest_1_Link)
+        var konten = konten.replace('[PIC’s NAME]',psikotest_1_PIC)
+
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==3 && online==0){
+        psikotest_0_Address = $('#psikotest_0_Address').val()
+        psikotest_0_Room = $('#psikotest_0_Room').val()
+        psikotest_0_PIC = $('#psikotest_0_PIC').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+        var konten = konten.replace('[ADDRESS]',psikotest_0_Address)
+        var konten = konten.replace('[ROOM]',psikotest_0_Room)
+        var konten = konten.replace('[PIC’s NAME]',psikotest_0_PIC)
+
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==4 && online==1){
+        test_1_Durasi = $('#test_1_Durasi').val()
+        test_1_Link = $('#test_1_Link').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+        var konten = konten.replace('[DURATION]',test_1_Durasi)
+        var konten = konten.replace('[TEST LINK]',test_1_Link)
+
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==4 && online==0){
+        test_0_Durasi = $('#test_0_Durasi').val()
+        test_0_lokasi = $('#test_0_lokasi').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+        var konten = konten.replace('[DURATION]',test_0_Durasi)
+        var konten = konten.replace('[ADDRESS]',test_0_lokasi)
+
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==5 && online==1){
+        interviewHR_1_Link = $('#interviewHR_1_Link').val()
+        interviewHR_1_MeetingID = $('#interviewHR_1_MeetingID').val()
+        interviewHR_1_Passcode = $('#interviewHR_1_Passcode').val()
+        interviewHR_1_BR = $('#interviewHR_1_BR').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+        var konten = konten.replace('[LINK ZOOM]',interviewHR_1_Link)
+        var konten = konten.replace('[MEETING IS]',interviewHR_1_MeetingID)
+        var konten = konten.replace('[PASSCODE]',interviewHR_1_Passcode)
+        var konten = konten.replace('[BREAKOUT ROOM NAME]',interviewHR_1_BR)
+
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==6 && online==1){
+        interviewuser_1_Link = $('#interviewuser_1_Link').val()
+        interviewuser_1_MeetingID = $('#interviewuser_1_MeetingID').val()
+        interviewuser_1_Passcode = $('#interviewuser_1_Passcode').val()
+        interviewuser_1_BR = $('#interviewuser_1_BR').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+        var konten = konten.replace('[LINK ZOOM]',interviewuser_1_Link)
+        var konten = konten.replace('[MEETING IS]',interviewuser_1_MeetingID)
+        var konten = konten.replace('[PASSCODE]',interviewuser_1_Passcode)
+        var konten = konten.replace('[BREAKOUT ROOM NAME]',interviewuser_1_BR)
+
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==9 && online==1){
+        offer_1_Link = $('#offer_1_Link').val()
+        offer_1_MeetingID = $('#offer_1_MeetingID').val()
+        offer_1_Passcode = $('#offer_1_Passcode').val()
+        offer_1_BR = $('#offer_1_BR').val()
+        offer_1_Durasi = $('#offer_1_Durasi').val()
+        offer_1_Deadline = $('#offer_1_Deadline').val()
+        offer_1_URLPhase2 = $('#offer_1_URLPhase2').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+        var konten = konten.replace('[DURATION]',offer_1_Durasi)
+        var konten = konten.replace('[LINK ZOOM]',offer_1_Link)
+        var konten = konten.replace('[MEETING IS]',offer_1_MeetingID)
+        var konten = konten.replace('[PASSCODE]',offer_1_Passcode)
+        var konten = konten.replace('[BREAKOUT ROOM NAME]',offer_1_BR)
+        var konten = konten.replace('[DEADLINE]',offer_1_Deadline)
+        var konten = konten.replace('[LINK TO DATABASE PHASE – 2]',offer_1_URLPhase2)
+
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==9 && online==2){
+        offer_2_Durasi = $('#offer_2_Durasi').val()
+        offer_2_Deadline = $('#offer_2_Deadline').val()
+        offer_2_URLPhase2 = $('#offer_2_URLPhase2').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+        var konten = konten.replace('[DURATION]',offer_2_Durasi)
+        var konten = konten.replace('[DEADLINE]',offer_2_Deadline)
+        var konten = konten.replace('[LINK TO DATABASE PHASE – 2]',offer_2_URLPhase2)
+
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }
+    } else {
+      // console.log('2')
+      var konfirmasi = $('#konfirmasi').val();
+      if (schedule==5 && online==1 && konfirmasi==0) {
+        interviewHR_1_Link = $('#interviewHR_1_Link').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+        var konten = konten.replace('[PIC NAME]',pic_name)
+
+        var konten = konten.replace('[LINK]',interviewHR_1_Link)
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==6 && online==1 && konfirmasi==0){
+        interviewuser_1_Link = $('#interviewuser_1_Link').val()
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[POSITION]',posisi)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+        var konten = konten.replace('[PIC NAME]',pic_name)
+
+        var konten = konten.replace('[LINK]',interviewuser_1_Link)
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==3 && online==1 && konfirmasi==0){
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==3 && online==1 && konfirmasi==1){
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==2 && konfirmasi==1){
+        id_lab = $('#mcu_lab').val();
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        data={konten:konten,id_kandidat:id_kandidat,id_lab:id_lab,schedule:schedule,id_email:id_email}
+      }else if(schedule==2 && konfirmasi==0){
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
+        id_lab = $('#mcu_lab').val(); 
+
+        data={konten:konten,id_kandidat:id_kandidat,id_lab:id_lab,schedule:schedule,id_email:id_email}
+      }
+    }
+    
+    console.log(JSON.stringify(data));
     $.ajaxSetup({
       headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -3516,18 +3582,10 @@ function kirimEmail(){
         _token: '{{ csrf_token() }}',
         url: '/hrdats/send/email',
         type: 'post',
-        // data: {
-        //   konten:konten,
-        //   id_kandidat:id_kandidat,
-        //   id_lab:id_lab,
-        //   id_proses:id_proses
-        // }
         data:data
       }).done((data) => {
         console.log(JSON.stringify(data));
         $('#tblSchedule').DataTable().ajax.reload();
-        // $('#summernote').summernote('code', '');
-        // $('#summernote').summernote('code', $(konten));
     });
   })
   

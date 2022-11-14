@@ -667,8 +667,10 @@ function filterProses(){
 function tampilin_email(_schedule=null,_online=null){
   // console.log(_schedule,_online)
   $('#konten').val('')
-  schedule = $('#schedule').val();
-  online = $('#proses').val();
+  var schedule = $('#schedule').val();
+  var online = $('#proses').val();
+  var organisasi = $('#id_Organisasi').text();
+  console.log(organisasi);
   var list_onsite=['2']
 
   if (list_onsite.includes(schedule)==true) {
@@ -685,7 +687,8 @@ function tampilin_email(_schedule=null,_online=null){
       type: 'post',
       data: {
         schedule:schedule,
-        online:online
+        online:online,
+        organisasi:organisasi
       }
     }).done((data) => {
       // console.log(JSON.stringify(data));

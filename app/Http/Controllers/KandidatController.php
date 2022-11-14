@@ -343,6 +343,8 @@ class KandidatController extends Controller
                     ->where('id_Organisasi',session()->get('user')['organisasi'])
                     ->where('jenis',$request->schedule)
                     ->where('online',$request->online)
+                    ->where('id_Organisasi',$request->organisasi)
+                    ->where('konfirmasi',$request->konfirmasi)
                     ->where('to','kandidat')
                     ->get();
         return $isi_konten;
@@ -816,6 +818,7 @@ class KandidatController extends Controller
     }
 
     public function SendEmail (Request $request){
+        // return $request;
         $schedule=$request->schedule;
         $email_raw = DB::table('T_kandidat')
                 ->select('email')
@@ -824,13 +827,18 @@ class KandidatController extends Controller
         $email = $email_raw[0]->email; 
         if ($schedule==2) {
             $subject = 'MCU';
-            $lab = DB::table('M_vendor')
+            if ($request->id_lab!="") {
+                $lab = DB::table('M_vendor')
                     ->select('NamaLab','alamat')
                     ->where('id',$request->id_lab)
                     ->where('jenis','MCU')
                     ->get();
 
-            $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]"],[$lab[0]->NamaLab,$lab[0]->alamat],$request->konten);
+                $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]"],[$lab[0]->NamaLab,$lab[0]->alamat],$request->konten);
+            }else{
+                $konten = $request->konten;
+            }
+                
         } else if($schedule==3) {
             $konten = $request->konten;
             $subject = 'Psikotest';
