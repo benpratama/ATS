@@ -24,34 +24,70 @@ $( document ).ready(function() {
   $('#schedule, #proses').on('change',function(){modalInformasi()})
 });
 
-function ShowSummary(){
+// function ShowSummary(){
+//   $.ajaxSetup({
+//     headers: {
+//         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//     }
+//   });
+//   $.ajax({
+//     _token: '{{ csrf_token() }}',
+//     url: '/hrdats/dashboard/hrd/summary',
+//     type: 'get'
+//   }).done((data) => {
+//     data.forEach(element => {
+//       var html  = "<div class='col-xl-2 col-md-4'>"
+//           html +=   "<div class='card card-stats'>"
+//           html +=     "<div class='card-body'>"
+//           html +=       "<div class='row'>"
+//           html +=         "<div class='col'>"
+//           html +=            "<h5 class='card-title text-uppercase text-muted mb-0'>"+element.proses+"</h5>"
+//           html +=            "<span class='h2 font-weight-bold mb-0'>"+element.counts+"</span>"
+//           html +=         "</div>"
+//           html +=       "</div>"
+//           html +=     "</div>"
+//           html +=   "</div>"
+//           html += "</div>"
+      
+//       $('#summary').append(html);
+//     });
+//   });
+// }
+
+function ShowSummary(Speriod,Eperiod){
   $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
   $.ajax({
-    _token: '{{ csrf_token() }}',
-    url: '/hrdats/dashboard/hrd/summary',
-    type: 'get'
-  }).done((data) => {
-    data.forEach(element => {
-      var html  = "<div class='col-xl-2 col-md-4'>"
-          html +=   "<div class='card card-stats'>"
-          html +=     "<div class='card-body'>"
-          html +=       "<div class='row'>"
-          html +=         "<div class='col'>"
-          html +=            "<h5 class='card-title text-uppercase text-muted mb-0'>"+element.proses+"</h5>"
-          html +=            "<span class='h2 font-weight-bold mb-0'>"+element.counts+"</span>"
-          html +=         "</div>"
-          html +=       "</div>"
-          html +=     "</div>"
-          html +=   "</div>"
-          html += "</div>"
-      
-      $('#summary').append(html);
-    });
-  });
+      _token: '{{ csrf_token() }}',
+      url: '/hrdats/dashboard/hrd/summary',
+      type: 'post',
+      data: {
+        Speriod:Speriod,
+        Eperiod:Eperiod
+      }
+    }).done((data) => {
+      $('.sub_summary').remove();
+      console.log(JSON.stringify(data));
+      data.forEach(element => {
+        var html  = "<div class='col-xl-2 col-md-4 sub_summary'>"
+            html +=   "<div class='card card-stats'>"
+            html +=     "<div class='card-body'>"
+            html +=       "<div class='row'>"
+            html +=         "<div class='col'>"
+            html +=            "<h5 class='card-title text-uppercase text-muted mb-0'>"+element.proses+"</h5>"
+            html +=            "<span class='h2 font-weight-bold mb-0'>"+element.counts+"</span>"
+            html +=         "</div>"
+            html +=       "</div>"
+            html +=     "</div>"
+            html +=   "</div>"
+            html += "</div>"
+        
+        $('#summary').append(html);
+      });
+    })
 }
 
 function filter(){
@@ -68,6 +104,7 @@ function filter(){
   
   
   ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,domisili)
+  ShowSummary(Speriod,Eperiod)
   })
 }
 

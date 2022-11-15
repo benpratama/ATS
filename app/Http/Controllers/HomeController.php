@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+    public $date=365;
     /**
      * Create a new controller instance.
      *
@@ -77,17 +78,33 @@ class HomeController extends Controller
         'list_cc'=>$list_cc,'list_mcu'=>$list_mcu,'list_organisasi'=>$list_organisasi]);
     }
 
-    public function ShowSummary(){
+    public function ShowSummary(Request $request){
+        //filter periode
+        if (empty($request->Speriod)) {
+            //Ubah dari 365 ->90
+            $Speriod = Carbon::now()->subDays($this->date)->format('Y-m-d');
+         }else{
+             $Speriod = $request->Speriod;
+         }
+         if(empty($request->Eperiod)){
+             $Eperiod = Carbon::now()->format('Y-m-d');
+         }else{
+             $Eperiod = $request->Eperiod;
+         }
+
+        // return [ $Speriod,$Eperiod];
         $id_Organisasi = Auth::user()->id_Organisasi;
-        $summary =  DB::select('EXEC SP_Get_Summary ?',array(strval($id_Organisasi)));
+        $summary =  DB::select('EXEC SP_Get_Summary ?,?,?',array(strval($id_Organisasi),strval($Speriod),strval($Eperiod)));
+
         return $summary;
-    }
+    }   
     
     public function ShowDetail(Request $request){
 
         //filter periode
         if (empty($request->Speriod)) {
-           $Speriod = Carbon::now()->subDays(365)->format('Y-m-d');
+            //Ubah dari 365 ->90
+           $Speriod = Carbon::now()->subDays($this->date)->format('Y-m-d');
         }else{
             $Speriod = $request->Speriod;
         }
