@@ -68,10 +68,6 @@
                 <span class="material-symbols-outlined">file_upload</span>
                 <span class="gap-logo">Upload</span>
               </button>
-              {{-- <button id="btnExportFPTK" type="button" class="btn btn-danger d-flex">
-                <span class="material-symbols-outlined">file_download</span>
-                <span class="gap-logo">Export FPTK</span>
-              </button> --}}
             </div>
             <hr class="my-4">
             <div class="row d-flex col-12">
@@ -208,6 +204,12 @@
               <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">FPTK</h6>
                 <h5 class="h3 mb-0">List</h5>
+              </div>
+              <div class="d-flex col-8">
+                <button id="btnExportFPTK" type="button" class="btn btn-danger d-flex">
+                  <span class="material-symbols-outlined">file_download</span>
+                  <span class="gap-logo">Export FPTK</span>
+                </button>
               </div>
             </div>
           </div>

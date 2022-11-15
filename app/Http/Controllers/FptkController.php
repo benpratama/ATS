@@ -13,6 +13,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 // use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Facades\Storage;
 
 use League\CommonMark\Extension\Table\Table;
 use PhpOffice\PhpSpreadsheet\Calculation\TextData\Format;
@@ -20,6 +21,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
 
 class FptkController extends Controller
 {
+    public $date=365;
     public function index(){
         // $start = Carbon::now()->startOfMonth()->toDateString();
         // $end = Carbon::now()->endOfMonth()->toDateString();
@@ -242,7 +244,8 @@ class FptkController extends Controller
     }
 
     public function ShowFptk(Request $request){
-        $startdate =Carbon::now()->subDays(30)->toDateString();
+        //Ubah dari 365 ->90
+        $startdate =Carbon::now()->subDays($this->date)->toDateString();
         $enddate = Carbon::now()->endOfMonth()->toDateString();
 
         $fptk = DB::table('T_FPTK')
@@ -436,30 +439,71 @@ class FptkController extends Controller
         }
     }
 
-    public function ExportDataFptk($F_start,$F_end){
-        if ($F_start=="NULL") {
-            $F_start = Carbon::now()->startOfMonth()->toDateString();
+    public function ExportDataFptk($start,$end){
+        if ($start=="NULL") {
+            $F_start = Carbon::now()->subDays($this->date)->toDateString();
         }else{
-            $F_start = $F_start;
+            $F_start = $start;
         }
-        if ($F_end=="NULL") {
+        if ($end=="NULL") {
             $F_end = Carbon::now()->endOfMonth()->toDateString();
         }else{
-            $F_end =$F_end;
+            $F_end =$end;
+        }
+        $file = storage_path('app\public\template').'\eksport FPTK.xlsx';
+        $filenameDownload = 'Eksport FPTK_'.$F_start.'_'.$F_end.'.xlsx';
+
+        $success=copy($file, $filenameDownload);
+        if(!$success) die();
+
+        $ss = IOFactory::load($filenameDownload);
+
+        $ws1=null;
+
+        $ws1=$ss->getSheetByName('Sheet1');
+        $i=3;
+
+        $result = DB::select('EXEC SP_EXPORT_FPTK ?,?,?',array($F_start,$F_end,1));
+
+        foreach ($result as $key => $value) {
+            $ws1->setCellValue('B'.$i, $value->nofptk);
+            $ws1->setCellValue('C'.$i, $value->tglinputfptk);
+            $ws1->setCellValue('D'.$i, $value->tgldisetujui);
+            $ws1->setCellValue('E'.$i, $value->nikpeminta);
+            $ws1->setCellValue('F'.$i, $value->namapeminta);
+            $ws1->setCellValue('G'.$i, $value->namaatasanlangusng);
+            $ws1->setCellValue('H'.$i, $value->posisi);
+            $ws1->setCellValue('I'.$i, $value->golongan);
+            $ws1->setCellValue('J'.$i, $value->lobandsub);
+            $ws1->setCellValue('K'.$i, $value->penempatan);
+            $ws1->setCellValue('L'.$i, $value->alasandigantikan);
+            $ws1->setCellValue('M'.$i, $value->namaygdigantikan);
+            $ws1->setCellValue('N'.$i, $value->namaSpvDm);
+            $ws1->setCellValue('O'.$i, $value->pic);
+            $ws1->setCellValue('P'.$i, $value->created_at);
+            $ws1->setCellValue('Q'.$i, $value->namakarybergabung);
+            $ws1->setCellValue('R'.$i, $value->keterangan);
+            $ws1->setCellValue('S'.$i, $value->leadtime);
+            $ws1->setCellValue('T'.$i, $value->namalengkap);
+            $ws1->setCellValue('U'.$i, $value->tglkonfirm);
+            $ws1->setCellValue('V'.$i, $value->tgljoin);
+            $ws1->setCellValue('W'.$i, $value->tglbatal);
+            $ws1->setCellValue('X'.$i, $value->ket);
+            $ws1->setCellValue('Y'.$i, $value->sumber);
+            $ws1->setCellValue('Z'.$i, $value->jenis);
+            $i++;
         }
 
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'Hello World !');
-
-
-        header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="test.xlsx"');
-
-        $writer = IOFactory::createWriter($spreadsheet,'Xlsx');
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename='.$filenameDownload);
+        $writer = IOFactory::createWriter($ss, "Xlsx");
         $writer->save('php://output');
+
+        // readfile($filenameDownload);
+        unlink($filenameDownload);
     }
 
+    
     // DETAIL FPTK
     public function ShowDetailFptk($id){
         $detail_fptk = DB::table('T_FPTK')

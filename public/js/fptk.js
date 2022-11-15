@@ -532,20 +532,9 @@ function exportDataFPTK(){
     if (F_end=='') {
       F_end = 'NULL'
     }
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    $.ajax({
-        _token: '{{ csrf_token() }}',
-        url: '/hrdats/hrd/exportdata/fptk/'+F_start+"/"+F_end,
-        type: 'get',
-        data: {
-
-        }
-      })
+    // console.log(F_start,F_end)
+    url ='/hrdats/hrd/exportdata/fptk/'+F_start+'/'+F_end;
+    window.open(url);
   })
 }
 

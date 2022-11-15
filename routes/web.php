@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function(){
     ],function () {
         //Dashboar HRD
         Route::get('/hrdats/dashboard/hrd', 'HomeController@index')->name('home');
-        Route::get('/hrdats/dashboard/hrd/summary','HomeController@ShowSummary')->name('hm.Summary');
+        Route::post('/hrdats/dashboard/hrd/summary','HomeController@ShowSummary')->name('hm.Summary');
         Route::get('/hrdats/dashboard/hrd/name','HomeController@GetName')->name('hm.GetName');
         Route::post('/hrdats/dashboard/hrd/detail','HomeController@ShowDetail')->name('hm.Detail');
         Route::post('/hrdats/dashboard/hrd/transfer','HomeController@TransferKandidat')->name('hm.TransferKandidat');
@@ -146,7 +146,7 @@ Route::middleware('auth')->group(function(){
         //FPTK
         Route::get('/hrdats/hrd/fptk', 'FptkController@index')->name('hr_fptk.index');
         Route::get('/hrdats/hrd/export/fptk', 'FptkController@TemplateFptk')->name('hr_fptk.TemplateFptk');
-        Route::get('/hrdats/hrd/exportdata/fptk/{start}/{end}', 'FptkController@ExportDataFptk')->name('hr_fptk.ExportDataFptk');
+        Route::get('/hrdats/hrd/exportdata/fptk/{Fstart}/{Fend}', 'FptkController@ExportDataFptk')->name('hr_fptk.ExportDataFptk');
         Route::post('/hrdats/hrd/import/fptk', 'FptkController@ImportFptk')->name('hr_fptk.ImportFptk');
         Route::POST('/hrdats/hrd/show/fptk', 'FptkController@ShowFptk')->name('hr_fptk.ShowFptk');
         // -- masuk ke detail
