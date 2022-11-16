@@ -11,9 +11,9 @@ $( document ).ready(function() {
   AddDelSIM()
   hideSIM();
   $('#kota1').select2();
-  $('#kodepos').select2();
+  // $('#kodepos').select2();
   $('#kota_koresponden').select2();
-  $('#kodepos_koresponden').select2();
+  // $('#kodepos_koresponden').select2();
   $('#tempatlahir').select2();
   getPostCode();
   Row_perushaan();
@@ -371,7 +371,7 @@ function list_tlp(){
     html +=       "<select class='form-control' id='tipe_Tlp' name='tipe_Tlp[]' data-rowattr='attr_tlp"+baris_tlp+"' required>"
     html +=         "<option value='' disabled selected>Tipe Tlp</option>"
     html +=         "<option value='H'>Rumah</option>"
-    html +=         "<option value='P'>Seluler</option>"
+    html +=         "<option value='M'>Seluler</option>"
     html +=       "</select>"
     html +=     "</div>"
     html +=   "</div>"
@@ -414,7 +414,7 @@ function list_tlp(){
     var value = $(this).val();
     var obj = $(this).data('rowattr');
     console.log(obj)
-    if (value=="P" || value=="") {
+    if (value=="M" || value=="") {
       console.log(obj)
       $('.'+obj).attr('hidden',true)
       $('.'+obj+' :input').prop('required',false);
@@ -434,13 +434,13 @@ function list_email(){
 
     html +="<div class='row' id='email"+baris_email+"'>"
 
-    html +=   "<div class='col-md-1'>"
+    html +=   "<div class='col-md-2'>"
     html +=     "<div class='form-group'>"
     html +=       "<label class='form-control-label' for='email'>Tipe</label>"
     html +=       "<select class='form-control' id='tipe_Tlp' name='tipe_Email[]' required>"
     html +=         "<option value='' disabled selected>Tipe Email</option>"
-    html +=         "<option value='C'>Corp</option>"
-    html +=         "<option value='P'>Pribadi</option>"
+    html +=         "<option value='B'>Bisnis</option>"
+    html +=         "<option value='H'>Pribadi</option>"
     html +=       "</select>"
     html +=     "</div>"
     html +=   "</div>"
@@ -494,29 +494,31 @@ function AddDelSIM(){
     html +=       "<select class='form-control' id='jenis_SIM' name='jenis_SIM[]' data-rowattr='attr_sim"+data_sim+"' required>"
     html +=         "<option value='' disabled selected>Jenis SIM</option>"
     html +=         "<option value='0'>Tidak punya</option>"
-    html +=         "<option value='1'>A</option>"
+    html +=         "<option value='63'>SIM A</option>"
+    html +=         "<option value='64'>SIM B1</option>"
+    html +=         "<option value='65'>SIM C</option>"
     html +=       "</select>"
     html +=     "</div>"
     html +=   "</div>"
 
     html +=   "<div class='col-md-3 attr_sim"+data_sim+"'>"
     html +=      "<div class='form-group'>"
-    html +=         "<label class='form-control-label' for='SIM'>NO SIM</label>"
-    html +=         "<input type='text' class='form-control' id='no_SIM' name='no_SIM[]'>"
+    html +=         "<label class='form-control-label' for='SIM'>NO SIM*</label>"
+    html +=         "<input type='text' class='form-control' id='no_SIM' name='no_SIM[]'required>"
     html +=      "</div>"
     html +=   "</div>"
 
     html +=   "<div class='col-md-3 attr_sim"+data_sim+"'>"
     html +=      "<div class='form-group'>"
-    html +=         "<label class='form-control-label' for='SIM'>Masa Berlaku</label>"
-    html +=         "<input type='text' class='form-control' id='exp_sim' name='exp_sim[]'>"
+    html +=         "<label class='form-control-label' for='SIM'>Masa Berlaku*</label>"
+    html +=         "<input type='date' class='form-control' id='exp_sim' name='exp_sim[]'required>"
     html +=      "</div>"
     html +=   "</div>"
 
     html +=   "<div class='col-md-3 attr_sim"+data_sim+"'>"
     html +=      "<div class='form-group'>"
-    html +=         "<label class='form-control-label' for='SIM'>Kota Penerbit</label>"
-    html +=         "<input type='text' class='form-control' id='kota_sim' name='kota_sim[]'>"
+    html +=         "<label class='form-control-label' for='SIM'>Kota Penerbit*</label>"
+    html +=         "<input type='text' class='form-control' id='kota_sim' name='kota_sim[]'required>"
     html +=      "</div>"
     html +=   "</div>"
 
@@ -688,7 +690,7 @@ function AddDelRiwayat(){
     html +=     "<div class='col-md-2'>"
     html +=       "<div class='form-group'>"
     html +=         "<label class='form-control-label' for='Rpekerjaan'>Tahun Masuk*</label>"
-    html +=         "<input type='number' class='form-control' id='ThnMasuk_Rpekerjaan' name='ThnMasuk_Rpekerjaan[]' min=1700 max=2100 required>"
+    html +=         "<input type='month' class='form-control' id='ThnMasuk_Rpekerjaan' name='ThnMasuk_Rpekerjaan[]' min=1700 max=2100 required>"
     html +=       "</div>"
     html +=     "</div>"
     html +=     "<div class='col-md-2'>"

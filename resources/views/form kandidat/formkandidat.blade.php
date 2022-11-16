@@ -77,8 +77,8 @@
                     <label class="form-control-label" for="gender">Gender*</label>
                     <select class="form-control" id="gender" name="gender" required>
                       <option value="" disabled selected>Gender</option>
-                      <option value="Pria">Pria</option>
-                      <option value="Wanita">Wanita</option>
+                      <option value="1">Pria</option>
+                      <option value="2">Wanita</option>
                     </select>
                   </div>
                 </div>
@@ -90,7 +90,7 @@
                     <select class="form-control" id="status_perkawinan" name="status_perkawinan" required>
                       <option value="" disabled selected>Status Perkawinan</option>
                       @foreach ($Pernikahan as $pernikahan )
-                      <option value="{{ $pernikahan->keterangan }}">{{ $pernikahan->nama }}</option>
+                      <option value="{{ $pernikahan->MaritalStId }}">{{ $pernikahan->MaritalSt }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -101,7 +101,7 @@
                     <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required>
                       <option value="" disabled selected>Tempat lahir</option>
                       @foreach ($TempatLahir as $tempatlahir )
-                      <option value="{{ $tempatlahir->provinsi }}">{{ $tempatlahir->provinsi }}</option>
+                      <option value="{{ $tempatlahir->StateId }}">{{ $tempatlahir->StateName }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -140,13 +140,13 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                   <div class="form-group">
-                    <label class="form-control-label" for="noidentitas">No. KTP</label>
+                    <label class="form-control-label" for="noidentitas">No. KTP*</label>
                     <input type="text" class="form-control" id="noidentitas" name="noidentitas" maxlength="45" required>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label class="form-control-label" for="noidentitas">Kota Penerbit KTP</label>
                     <input type="text" class="form-control" id="kotapenerbitKTP" name="kotapenerbitKTP" maxlength="45" required>
@@ -176,20 +176,19 @@
                 <div class="col-md-1">
                   <div class="form-group">
                     <label class="form-control-label" for="KTP">RW (KTP)</label>
-                    <input type="text" class="form-control" id="RT_KTP" name="RT_KTP" maxlength="10">
+                    <input type="text" class="form-control" id="RW_KTP" name="RW_KTP" maxlength="10">
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label class="form-control-label" for="rumahmilik">Rumah Milik*</label>
+                    <label class="form-control-label" for="rumahmilik">Status*</label>
                     <select class="form-control" id="rumahmilik" name="rumahmilik" required>
-                      <option value="" disabled selected>rumah milik</option>
-                      <option value="Sendiri">Sendiri</option>
-                      <option value="Orangtua">Orangtua</option>
-                      <option value="Sewa">Sewa</option>
-                      <option value="Indekost">Indekost</option>
+                      <option value="" disabled selected>Status</option>
+                      @foreach ($Status as $s )
+                      <option value="{{ $s->HouseStatusId }}">{{ $s->HouseStatus }}</option>
+                      @endforeach
                     </select>
                   </div>
                 </div>
@@ -199,7 +198,7 @@
                     <select class="js-example-basic-single form-control" name="kota1" id="kota1" required>
                       <option value="" disabled selected>Domisili</option>
                       @foreach ($Domisili as $domisili )
-                      <option value="{{ $domisili->kabupaten }}">{{ $domisili->kabupaten }}</option>
+                      <option value="{{ $domisili->CityId }}">{{ $domisili->CityName }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -207,9 +206,10 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="kodepos">kode pos*</label>
-                    <select class="js-example-basic-single form-control" name="kodepos" id="kodepos" required>
+                    {{-- <select class="js-example-basic-single form-control" name="kodepos" id="kodepos" required>
                       <option value="" disabled selected>kode pos</option>
-                    </select>
+                    </select> --}}
+                    <input type="number" class="form-control" id="kodepos" name="kodepos" min="1" required>
                   </div>
                 </div>
               </div>
@@ -223,14 +223,14 @@
                 </div>
                 <div class="col-md-1">
                   <div class="form-group">
-                    <label class="form-control-label" for="koresponden">RT (KTP)</label>
+                    <label class="form-control-label" for="koresponden">RT</label>
                     <input type="text" class="form-control" id="RT_koresponden" name="RT_koresponden" maxlength="10">
                   </div>
                 </div>
                 <div class="col-md-1">
                   <div class="form-group">
-                    <label class="form-control-label" for="koresponden">RW (KTP)</label>
-                    <input type="text" class="form-control" id="RT_koresponden" name="RW_koresponden" maxlength="10">
+                    <label class="form-control-label" for="koresponden">RW</label>
+                    <input type="text" class="form-control" id="RW_koresponden" name="RW_koresponden" maxlength="10">
                   </div>
                 </div>
               </div>
@@ -239,11 +239,10 @@
                   <div class="form-group">
                     <label class="form-control-label" for="rumahmilik_koresponden">Rumah Milik*</label>
                     <select class="form-control" id="rumahmilik_koresponden" name="rumahmilik_koresponden" required>
-                      <option value="" disabled selected>rumah milik</option>
-                      <option value="Sendiri">Sendiri</option>
-                      <option value="Orangtua">Orangtua</option>
-                      <option value="Sewa">Sewa</option>
-                      <option value="Indekost">Indekost</option>
+                      <option value="" disabled selected>Status</option>
+                      @foreach ($Status as $s )
+                      <option value="{{ $s->HouseStatusId }}">{{ $s->HouseStatus }}</option>
+                      @endforeach
                     </select>
                   </div>
                 </div>
@@ -253,7 +252,7 @@
                     <select class="js-example-basic-single form-control" name="kota_koresponden" id="kota_koresponden" required>
                       <option value="" disabled selected>Domisili</option>
                       @foreach ($Domisili as $domisili )
-                      <option value="{{ $domisili->kabupaten }}">{{ $domisili->kabupaten }}</option>
+                      <option value="{{ $domisili->CityId }}">{{ $domisili->CityName }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -261,9 +260,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="kodepos_koresponden">kodepos*</label>
-                    <select class="js-example-basic-single form-control" name="kodepos_koresponden" id="kodepos_koresponden" required>
-                      <option value="" disabled selected>kode pos</option>
-                    </select>
+                    <input type="number" class="form-control" id="kodepos_koresponden" name="kodepos_koresponden" min="1" required>
                   </div>
                 </div>
               </div>
@@ -296,7 +293,7 @@
                       <select class="form-control" id="tipe_Tlp" name="tipe_Tlp[]" data-rowattr='attr_tlp1' required>
                         <option value="" disabled selected>Tipe Tlp</option>
                         <option value="H">Rumah</option>
-                        <option value="P">Seluler</option>
+                        <option value="M">Seluler</option>
                       </select>
                     </div>
                   </div>
@@ -333,15 +330,15 @@
                       <label class="form-control-label" for="email">Tipe</label>
                       <select class="form-control" id="tipe_Tlp" name="tipe_Email[]" required>
                         <option value="" disabled selected>Tipe Email</option>
-                        <option value="C">Corp</option>
-                        <option value="P">Pribadi</option>
+                        <option value="B">Bisnis</option>
+                        <option value="H">Pribadi</option>
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-3 attr_tlp1">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <label class="form-control-label" for="email">Email</label>
-                      <input type="text" class="form-control" id="email" name="email[]" maxlength="45" required>
+                      <input type="email" class="form-control" id="email" name="email[]" maxlength="45" required>
                     </div>
                   </div>
                 </div>
@@ -377,26 +374,28 @@
                       <select class="form-control" id="jenis_SIM" name="jenis_SIM[]" data-rowattr='attr_sim1' required>
                         <option value="" disabled selected>Jenis SIM</option>
                         <option value="0">Tidak punya</option>
-                        <option value="1">A</option>
+                        <option value="63">SIM A</option>
+                        <option value="64">SIM B1</option>
+                        <option value="65">SIM C</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-md-3 attr_sim1">
                     <div class="form-group">
-                      <label class="form-control-label" for="SIM">NO SIM</label>
-                      <input type="text" class="form-control" id="no_SIM" name="no_SIM[]">
+                      <label class="form-control-label" for="SIM">NO SIM*</label>
+                      <input type="text" class="form-control" id="no_SIM" name="no_SIM[]" required>
                     </div>
                   </div>
                   <div class="col-md-3 attr_sim1">
                     <div class="form-group">
-                      <label class="form-control-label" for="SIM">Masa Berlaku</label>
-                      <input class="form-control" type="date" id="exp_sim" name="exp_sim[]">
+                      <label class="form-control-label" for="SIM">Masa Berlaku*</label>
+                      <input class="form-control" type="date" id="exp_sim" name="exp_sim[]" required>
                     </div>
                   </div>
                   <div class="col-md-3 attr_sim1">
                     <div class="form-group">
-                      <label class="form-control-label" for="SIM">Kota Penerbit</label>
-                      <input class="form-control" type="text" id="kota_sim" name="kota_sim[]">
+                      <label class="form-control-label" for="SIM">Kota Penerbit*</label>
+                      <input class="form-control" type="text" id="kota_sim" name="kota_sim[]" required> 
                     </div>
                   </div>
                 </div>
@@ -586,7 +585,7 @@
 
       <div class="row">
         <input name='urlid' value='{{ $URL->id }}' hidden>
-        <input name='organisasiid' value='{{ $URL->id_Organisasi }}' hidden>
+        {{-- <input name='organisasiid' value='{{ $URL->id_Organisasi }}' hidden> --}}
         <button type="submit" class="btn btn-primary btnsbmt">Submit</button>
       </div>
     </div>
