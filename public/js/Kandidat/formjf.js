@@ -76,7 +76,6 @@ function AddDelPendidikan(){
   })
 }
 
-/** */
 data_sim = 1;
 function AddDelSIM(){
   $('#btnAdd-sim').on('click',function(){

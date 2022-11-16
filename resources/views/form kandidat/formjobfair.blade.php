@@ -82,7 +82,9 @@
                     <label class="form-control-label" for="tempatlahir">Tempat Lahir*</label>
                     <select class="form-control" id="tempatlahir" name="tempatlahir" required>
                       <option value="" disabled selected>Tempat lahir</option>
-                      <option value="1">Jakarta</option>
+                      @foreach ($States as $state )
+                      <option value="{{ $state->StateId }}">{{ $state->StateName }}</option>
+                      @endforeach
                     </select>
                   </div>
                 </div>
@@ -94,10 +96,16 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group">
-                    <label class="form-control-label" for="noidentitas">No. KTP / Passport*</label>
+                    <label class="form-control-label" for="noidentitas">No. KTP*</label>
                     <input type="text" class="form-control" id="noidentitas" name="noidentitas" maxlength="45" required>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label class="form-control-label" for="kota_noidentitas">Kota penerbit(KTP)*</label>
+                    <input type="text" class="form-control" id="kota_noidentitas" name="kota_noidentitas" maxlength="45" required>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -105,7 +113,9 @@
                     <label class="form-control-label" for="domisili">Domisili saat ini*</label>
                     <select class="form-control" id="domisili" name="domisili" required>
                       <option value="" disabled selected>Domisili</option>
-                      <option value="1">Jakarta</option>
+                      @foreach ($Citys as $city )
+                      <option value="{{ $city->CityId }}">{{ $city->CityName }}</option>
+                      @endforeach
                     </select>
                   </div>
                 </div>
@@ -118,10 +128,20 @@
                     <input type="text" class="form-control" id="nohp" name="nohp" maxlength="45" placeholder="08123456789" required>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="email">Email*</label>
                     <input type="email" class="form-control" id="email" name="email" maxlength="45" required>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label class="form-control-label" for="jenis_email">Jenis email*</label>
+                    <select class="form-control" id="jenis_email" name="jenis_email" required>
+                      <option value="" disabled selected>Jenis Email</option>
+                      <option value="B">Business</option>
+                      <option value="H">Personal</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -156,7 +176,10 @@
                       <label class="form-control-label" for="pendidikan">Nama Institusi*</label>
                       <select class="form-control" id="nama_pendidikan" name="nama_pendidikan[]" required>
                         <option value="" selected disabled>Nama Institusi</option>
-                        <option value="SMA 123">SMA 123</option>
+                        <option value="1">ASD</option>
+                        {{-- @foreach ($Institusis as $institusi)
+                        <option value="{{ $institusi->EduInsId }}">{{ $institusi->EduInsName }}</option>
+                        @endforeach --}}
                       </select>
                     </div>
                   </div>
@@ -165,7 +188,10 @@
                       <label class="form-control-label" for="pendidikan">Jurusan*</label>
                       <select class="form-control" id="jurusan_pendidikan" name="jurusan_pendidikan[]" required>
                         <option value="" selected disabled>Jurusan</option>
-                        <option value="IPA">IPA</option>
+                        <option value="1">ASD</option>
+                        {{-- @foreach ($Majors as $major)
+                        <option value="{{ $major->EduMjrId }}">{{ $major->EduMjrName }}</option>
+                        @endforeach --}}
                       </select>
                     </div>
                   </div>
@@ -224,7 +250,9 @@
                       <select class="form-control" id="jenis_SIM" name="jenis_SIM[]" data-rowattr='attr_sim1' required>
                         <option value="" disabled selected>Jenis SIM</option>
                         <option value="0">Tidak punya</option>
-                        <option value="1">A</option>
+                        <option value="63">SIM A</option>
+                        <option value="64">SIM B1</option>
+                        <option value="65">SIM C</option>
                       </select>
                     </div>
                   </div>
@@ -278,8 +306,7 @@
         </div>
       </div>
       <div class="row">
-        {{-- <input name='urlid' value='{{ $URL->id }}' hidden>
-        <input name='organisasiid' value='{{ $URL->id_Organisasi }}' hidden> --}}
+        <input name='urlid' value='{{ $idlink }}' hidden>
         <button type="submit" class="btn btn-primary btnsbmt">Submit</button>
       </div>
     </div>
