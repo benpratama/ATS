@@ -6,48 +6,52 @@ $( document ).ready(function() {
   $('#domisili').select2();
 });
 
- data_pendidikan =1;
+ var data_pendidikan =0;
 function AddDelPendidikan(){
   $('#btnAdd-pendidikan').on('click',function(){
     data_pendidikan+=1;
     var html=''
-    // $.ajaxSetup({
-    //   headers: {
-    //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //   }
-    // });
-    // $.ajax({
-    //   _token: '{{ csrf_token() }}',
-    //   url: '/form-kandidat/get/sim',
-    //   type: 'get'
-    // }).done((data) => {
-      // console.log(JSON.stringify(data));
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+      _token: '{{ csrf_token() }}',
+      url: '/form-kandidat/get/edulvl',
+      type: 'get'
+    }).done((data) => {
+      console.log(JSON.stringify(data));
     html  ="<div class='row' id='pendidikan"+data_pendidikan+"'>"
     html +=   "<div class='col-md-3'>"
     html +=     "<div class='form-group'>"
     html +=       "<label class='form-control-label' for='pendidikan'>Jenis*</label>"
     html +=       "<select class='form-control' id='jenis_pendidikan' name='jenis_pendidikan[]' required>"
     html +=         "<option value='' selected disabled>Jenis Pendidikan</option>"
-    html +=         "<option value='1'>S1</option>"
+    data.forEach(element => {
+    html +=         "<option value='"+element.EduLvlId+"'>"+element.EduLvlName+"</option>"
+    });
     html +=       "</select>"
     html +=     "</div>"
     html +=   "</div>"
     html +=   "<div class='col-md-3'>"
     html +=     "<div class='form-group'>"
     html +=       "<label class='form-control-label' for='pendidikan'>Nama Institusi*</label>"
-    html +=       "<select class='form-control' id='nama_pendidikan' name='nama_pendidikan[]' required>"
-    html +=         "<option value='' selected disabled>Nama Institusi</option>"
-    html +=         "<option value='UMN'>UMN</option>"
-    html +=       "</select>"
+    // html +=       "<select class='form-control' id='nama_pendidikan' name='nama_pendidikan[]' required>"
+    // html +=         "<option value='' selected disabled>Nama Institusi</option>"
+    // html +=         "<option value='UMN'>UMN</option>"
+    // html +=       "</select>"
+    html +=       "<input class='form-control' for='pendidikan' type='text' id='nama_pendidikan' name='nama_pendidikan[]' required>"
     html +=     "</div>"
     html +=   "</div>"
     html +=   "<div class='col-md-3'>"
     html +=     "<div class='form-group'>"
     html +=       "<label class='form-control-label' for='pendidikan'>Jurusan*</label>"
-    html +=       "<select class='form-control' id='jurusan_pendidikan' name='jurusan_pendidikan[]' required>"
-    html +=         "<option value='' selected disabled>Jurusan</option>"
-    html +=         "<option value='IT'>IT</option>"
-    html +=       "</select>"
+    // html +=       "<select class='form-control' id='jurusan_pendidikan' name='jurusan_pendidikan[]' required>"
+    // html +=         "<option value='' selected disabled>Jurusan</option>"
+    // html +=         "<option value='IT'>IT</option>"
+    // html +=       "</select>"
+    html +=       "<input class='form-control' for='pendidikan' type='text' id='jurusan_pendidikan' name='jurusan_pendidikan[]' required>"
     html +=     "</div>"
     html +=   "</div>"
     html +=   "<div class='col-md-2'>"
@@ -66,7 +70,7 @@ function AddDelPendidikan(){
     html +="</div>"
 
     $('#list_pendidikan').append(html);
-    // });
+    });
   });
 
   $(document).on('click','#btnDel-pendidikan',function(){
@@ -99,7 +103,9 @@ function AddDelSIM(){
     html +=       "<select class='form-control' id='jenis_SIM' name='jenis_SIM[]' data-rowattr='attr_sim"+data_sim+"' required>"
     html +=         "<option value='' disabled selected>Jenis SIM</option>"
     html +=         "<option value='0'>Tidak punya</option>"
-    html +=         "<option value='1'>A</option>"
+    html +=         "<option value='63'>SIM A</option>"
+    html +=         "<option value='64'>SIM B1</option>"
+    html +=         "<option value='65'>SIM C</option>"
     html +=       "</select>"
     html +=     "</div>"
     html +=   "</div>"
@@ -157,3 +163,5 @@ function hideSIM(){
     }
   })
 }
+
+

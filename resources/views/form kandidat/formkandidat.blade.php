@@ -60,6 +60,7 @@
               <div class="row align-items-center">
                 <div class="col-12">
                   <h3 class="text-uppercase text-muted ls-1 mb-1">DATA PRIBADI</h3>
+                  <label for="">{{ $jobfair }}</label>
                 </div>
               </div>
             </div>
@@ -69,17 +70,29 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="namalengkap">Nama Lengkap*</label>
+                    @if ($jobfair==true)
+                    <input type="text" class="form-control" id="namalengkap" name="namalengkap" value='{{ $info_kandidat_->namalengkap }}' readonly maxlength="200" required>
+                    @else
                     <input type="text" class="form-control" id="namalengkap" name="namalengkap" maxlength="200" required>
+                    @endif
+                    
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="gender">Gender*</label>
+                    @if ($jobfair==true)
+                    <select class="form-control" id="gender" name="gender" required disabled>
+                      <option value="1" {{ $info_kandidat_->gender==1 ?"selected":"" }}>Pria</option>
+                      <option value="2" {{ $info_kandidat_->gender==2 ?"selected":"" }}>Wanita</option>
+                    </select>
+                    @else
                     <select class="form-control" id="gender" name="gender" required>
                       <option value="" disabled selected>Gender</option>
                       <option value="1">Pria</option>
                       <option value="2">Wanita</option>
                     </select>
+                    @endif
                   </div>
                 </div>
               </div>
@@ -98,18 +111,32 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="tempatlahir">Tempat lahir*</label>
+                    @if ($jobfair==true)
+                    <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required disabled>
+                      <option value="" disabled selected>Tempat lahir</option>
+                      @foreach ($TempatLahir as $tempatlahir )
+                      <option value="{{ $tempatlahir->StateId }}"{{ $info_kandidat_->tempatlahir == $tempatlahir->StateId? "selected":"" }}>{{ $tempatlahir->StateName }}</option>
+                      @endforeach
+                    </select>
+                    @else
                     <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required>
                       <option value="" disabled selected>Tempat lahir</option>
                       @foreach ($TempatLahir as $tempatlahir )
                       <option value="{{ $tempatlahir->StateId }}">{{ $tempatlahir->StateName }}</option>
                       @endforeach
                     </select>
+                    @endif
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="tgllahir">Tanggal Lahir*</label>
+                    @if ($jobfair==true)
+                    <input class="form-control" type="date" id="tgllahir" value='{{ str_replace(" 00:00:00.000","",$info_kandidat_->tglLahir) }}' name="tgllahir" required readonly>
+                    @else
                     <input class="form-control" type="date" id="tgllahir" name="tgllahir" required>
+                    @endif
+                    
                   </div>
                 </div>
               </div>
@@ -143,19 +170,49 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="noidentitas">No. KTP*</label>
-                    <input type="text" class="form-control" id="noidentitas" name="noidentitas" maxlength="45" required>
+                    @if ($jobfair==true)
+                    <input type="text" class="form-control" id="noidentitas" name="noidentitas" value='{{ $info_kandidat_->noidentitas }}' maxlength="45" required readonly>
+                    @else
+                    <input type="text" class="form-control" id="noidentitas" name="noidentitas" maxlength="45" required>  
+                    @endif
                   </div>
                 </div>
                 <div class="col-md-2">
                   <div class="form-group">
-                    <label class="form-control-label" for="noidentitas">Kota Penerbit KTP</label>
-                    <input type="text" class="form-control" id="kotapenerbitKTP" name="kotapenerbitKTP" maxlength="45" required>
+                    <label class="form-control-label" for="noidentitas">Kota Penerbit KTP*</label>
+                    @if ($jobfair==true)
+                    <input type="text" class="form-control" id="kotapenerbitKTP" name="kotapenerbitKTP" value='{{ $info_kota_ktp }}' readonly maxlength="45" required>
+                    @else
+                    <input type="text" class="form-control" id="kotapenerbitKTP" name="kotapenerbitKTP" maxlength="45" required>  
+                    @endif
+                    
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-control-label" for="npwp">NPWP</label>
                     <input type="text" class="form-control" id="npwp" name="npwp" maxlength="45">
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label class="form-control-label" for="domisili">Domisili saat ini*</label>
+                    @if ($jobfair==true)
+                    <select class="form-control" id="domisili" name="domisili" required disabled>
+                      <option value="" disabled selected>Domisili</option>
+                      @foreach ($Citys as $city )
+                      <option value="{{ $city->CityId }}" {{ $info_kandidat_->domisilisaatini==$city->CityId? "selected":"" }}>{{ $city->CityName }}</option>
+                      @endforeach
+                    </select>
+                    @else
+                    <select class="form-control" id="domisili" name="domisili" required>
+                      <option value="" disabled selected>Domisili</option>
+                      @foreach ($Citys as $city )
+                      <option value="{{ $city->CityId }}">{{ $city->CityName }}</option>
+                      @endforeach
+                    </select>
+                    @endif
+                    
                   </div>
                 </div>
               </div>
@@ -196,7 +253,7 @@
                   <div class="form-group">
                     <label class="form-control-label" for="kota">Kota*</label>
                     <select class="js-example-basic-single form-control" name="kota1" id="kota1" required>
-                      <option value="" disabled selected>Domisili</option>
+                      <option value="" disabled selected>kota</option>
                       @foreach ($Domisili as $domisili )
                       <option value="{{ $domisili->CityId }}">{{ $domisili->CityName }}</option>
                       @endforeach
@@ -250,7 +307,7 @@
                   <div class="form-group">
                     <label class="form-control-label" for="kota_koresponden">Kota*</label>
                     <select class="js-example-basic-single form-control" name="kota_koresponden" id="kota_koresponden" required>
-                      <option value="" disabled selected>Domisili</option>
+                      <option value="" disabled selected>Kota</option>
                       @foreach ($Domisili as $domisili )
                       <option value="{{ $domisili->CityId }}">{{ $domisili->CityName }}</option>
                       @endforeach
@@ -290,23 +347,41 @@
                   <div class="col-md-2">
                     <div class="form-group">
                       <label class="form-control-label" for="notlp">Tipe</label>
+                      @if ($jobfair==true)
+                      <select class="form-control" id="tipe_Tlp" name="tipe_Tlp[]" data-rowattr='attr_tlp1' required>
+                        <option value="M">Seluler</option>
+                      </select>
+                      @else
                       <select class="form-control" id="tipe_Tlp" name="tipe_Tlp[]" data-rowattr='attr_tlp1' required>
                         <option value="" disabled selected>Tipe Tlp</option>
                         <option value="H">Rumah</option>
                         <option value="M">Seluler</option>
                       </select>
+                      @endif
+                      
                     </div>
                   </div>
-                  <div class="col-md-1 attr_tlp1">
+                  
+                  <div class="col-md-1  ">
                     <div class="form-group">
                       <label class="form-control-label" for="notlp">Area</label>
-                      <input type="text" class="form-control" id="Area_Tlp" name="Area_Tlp[]" maxlength="45" required>
+                      @if ($jobfair!=true)
+                      <input type="text" class="form-control attr_tlp1" id="Area_Tlp" name="Area_Tlp[]" maxlength="45" required>
+                      @else
+                      <input type="text" class="form-control attr_tlp1" id="Area_Tlp" name="Area_Tlp[]" maxlength="45" readonly>
+                      @endif
                     </div>
                   </div>
+                  
+                  
                   <div class="col-md-2">
                     <div class="form-group">
                       <label class="form-control-label" for="notlp">Nomer Tlp</label>
-                      <input type="text" class="form-control" id="no_Tlp" name="no_Tlp[]" maxlength="45" required>
+                      @if ($jobfair==true)
+                      <input type="text" class="form-control" id="no_Tlp" name="no_Tlp[]" value='{{ $info_phone->phoneNumber }}' maxlength="45" required readonly>
+                      @else
+                      <input type="text" class="form-control" id="no_Tlp" name="no_Tlp[]" maxlength="45" required>  
+                      @endif
                     </div>
                   </div>
                 </div>
@@ -323,22 +398,39 @@
                     <label class="form-control-label" for="email">Email</label>
                 </div>
               </div>
+              {{-- {{ dd($info_email) }} --}}
               <div id="list_email">
                 <div class="row">
                   <div class="col-md-2">
                     <div class="form-group">
                       <label class="form-control-label" for="email">Tipe</label>
+                      @if ($jobfair==true)
+                      <select class="form-control" id="tipe_Tlp" name="tipe_Email[]" required>
+                        @if ($info_email->emailTpye=="B ")
+                        <option value="B" selected>Bisnis</option>
+                        @else
+                        <option value="H" selected>Pribadi</option>
+                        @endif
+                      </select>
+                      @else
                       <select class="form-control" id="tipe_Tlp" name="tipe_Email[]" required>
                         <option value="" disabled selected>Tipe Email</option>
                         <option value="B">Bisnis</option>
                         <option value="H">Pribadi</option>
                       </select>
+                      @endif
+                      
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label class="form-control-label" for="email">Email</label>
-                      <input type="email" class="form-control" id="email" name="email[]" maxlength="45" required>
+                      @if ($jobfair==true)
+                      <input type="email" class="form-control" id="email" name="email[]" value='{{ $info_email->email }}' readonly maxlength="45" required>
+                      @else
+                      <input type="email" class="form-control" id="email" name="email[]" maxlength="45" required>  
+                      @endif
+                      
                     </div>
                   </div>
                 </div>
@@ -367,6 +459,50 @@
             </div>
             <div class="card-body">
               <div id="list_sim">
+                @if ($jobfair==true)
+                  {{-- {{ dd($info_sim) }} --}}
+                  @for ($i=0; $i<count($info_sim);$i++)
+                  <div class="row" id="sim{{ $i }}">
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <label class="form-control-label" for="SIM">Jenis*</label>
+                        <select class="form-control" id="jenis_SIM" name="jenis_SIM[]" data-rowattr='attr_sim1' required>
+                          <option value="" disabled>Jenis SIM</option>
+                          {{-- <option value="0">Tidak punya</option> --}}
+                          <option value="63" {{ $info_sim[$i]->cardType==63? "selected":"" }}>SIM A</option>
+                          <option value="64" {{ $info_sim[$i]->cardType==64? "selected":"" }}>SIM B1</option>
+                          <option value="65" {{ $info_sim[$i]->cardType==65? "selected":"" }}>SIM C</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3 attr_sim1">
+                      <div class="form-group">
+                        <label class="form-control-label" for="SIM">NO SIM*</label>
+                        <input type="text" class="form-control" id="no_SIM" name="no_SIM[]" value='{{ $info_sim[$i]->cardNumber }}' required>
+                      </div>
+                    </div>
+                    <div class="col-md-3 attr_sim1">
+                      <div class="form-group">
+                        <label class="form-control-label" for="SIM">Masa Berlaku*</label>
+                        <input class="form-control" type="date" id="exp_sim" name="exp_sim[]" value='{{ $info_sim[$i]->expiredDate }}' required>
+                      </div>
+                    </div>
+                    <div class="col-md-3 attr_sim1">
+                      <div class="form-group">
+                        <label class="form-control-label" for="SIM">Kota Penerbit*</label>
+                        <input class="form-control" type="text" id="kota_sim" name="kota_sim[]" value='{{ $info_sim[$i]->publisher }}' required> 
+                      </div>
+                    </div>
+                    <div class='col-md-1'>
+                      <div class='form-group'>
+                        <button id='btnDel-sim' type='button' class='btn btn-danger d-flex' style='margin-top: 2.3em;' data-row='sim{{ $i }}'>
+                          <span class='material-symbols-outlined'>delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  @endfor
+                @else
                 <div class="row">
                   <div class="col-md-2">
                     <div class="form-group">
@@ -399,6 +535,7 @@
                     </div>
                   </div>
                 </div>
+                @endif
               </div>
               <div class="form-group">
                 <button type="button" class="btn btn-success d-flex" id="btnAdd-sim">
@@ -584,8 +721,14 @@
       </div>
 
       <div class="row">
-        <input name='urlid' value='{{ $URL->id }}' hidden>
-        {{-- <input name='organisasiid' value='{{ $URL->id_Organisasi }}' hidden> --}}
+        @if ($jobfair==false)
+        <input name='jobfairflag' value='{{ $jobfair }}'>
+        <input name='urlid' value='{{ $URL->id }}'>
+        @else
+        <input name='jobfairflag' value='{{ $jobfair }}'>
+        <input name='urlidkandidat' value='{{ $info_kandidat_->id }}'>
+        @endif
+        
         <button type="submit" class="btn btn-primary btnsbmt">Submit</button>
       </div>
     </div>

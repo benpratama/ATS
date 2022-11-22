@@ -16,7 +16,7 @@ class KandidatController extends Controller
     public $idDeptHR=[3,4,5];
     public function index($id,$noidentitas){
           // dd($server);
-          $info_kandidat = DB::table('T_kandidat')
+          $info_kandidat = DB::table('T_kandidat_N')
                     ->where('id',$id)
                     ->where('noidentitas',$noidentitas)
                     ->first();
@@ -33,7 +33,6 @@ class KandidatController extends Controller
           $last_pendidikan = DB::table('last_Pendidikan')
                               ->where('id_Tkandidat',$id)
                               ->first();
-
           $FreshorNot = DB::table('freshornot')
                          ->where('id_Tkandidat',$id)
                          ->first();
@@ -46,18 +45,39 @@ class KandidatController extends Controller
                               ->where('id_Tkandidat',$id)
                               ->first();
           }
-          $status_perkawinan = DB::table('M_Statuspernikahan')
-                              ->where('active',1)
-                              ->where('deleted',0)
-                              ->get();
-          $kota = DB::table('M_kodepos_Final')
-                              ->distinct()
-                              ->select('kabupaten','provinsi')
-                              ->where('deleted',0)
-                              ->where('active',1)
-                              ->get();
+        //   $status_perkawinan = DB::table('M_Statuspernikahan')
+        //                       ->where('active',1)
+        //                       ->where('deleted',0)
+        //                       ->get();
+
+          $status_perkawinan = DB::table('PMMaritalSt')
+                                ->select('MaritalStId','MaritalSt')
+                                ->get();
+
+        //   $kota = DB::table('M_kodepos_Final')
+        //                       ->distinct()
+        //                       ->select('kabupaten','provinsi')
+        //                       ->where('deleted',0)
+        //                       ->where('active',1)
+        //                       ->get();
+          $kota = DB::table('PMCity')
+                ->select('CityId','CityName')
+                ->where('CityCountryId',115)
+                ->get();
           // End UMUR, last pendidikan, Fresh or Not
-          
+
+          //START ulr phase 1
+          $url_pahse1 = DB::table('T_linkPhase1')
+                        ->select('url')
+                        ->where('id_Tkandidat',$id)
+                        ->first();
+            if($url_pahse1){
+            $server = $_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'];
+            $url1 = $server.'/form-kandidat/'.$url_pahse1->url;
+            }else{
+            $url1='BLM ada';
+            }
+          // End url phase 1
 
           // Start url pahse 2
           $url_pahse2 = DB::table('T_linkPhase2')
@@ -120,6 +140,7 @@ class KandidatController extends Controller
                          'info_kandidat' => $info_kandidat,
                          'umur'=>$age,
                          'url_phase2' => $url,
+                         'url_phase1'=> $url1,
                          'applyas'=>$applyAs,
                          
                          // phase2
@@ -175,9 +196,49 @@ class KandidatController extends Controller
           return $url;
     }
 
+    public function GenUrl1(Request $request){
+        $id_kandidat = $request->id_kandidat;
+        $noidentitas = $request->noidentitas;
+        $date = Carbon::now();
+        $join = $id_kandidat.$noidentitas.$date;
+        $url = base64_encode($join);
+        
+        $result = DB::table('T_linkPhase1')
+                  ->where('id_Tkandidat',$id_kandidat)
+                  ->first();
+        if($result){
+             DB::table('T_linkPhase1')
+                  ->where('id_Tkandidat',$id_kandidat)
+                  ->update([
+                       'openlink'=>Carbon::now(),
+                       'closelink'=>null,
+                       'url'=>$url,
+                       'active'=>1,
+                       'deleted'=>0
+                  ]);
+             // HAPUS SEMUA TBALE YANG MSUK PHASE1
+            //  DB::select('EXEC SP_Clear_FormPhase2  ?',array($id_kandidat));
+        }else{
+             // return 'tdk ada';
+             DB::table('T_linkPhase1')
+             ->insert([
+                  'id_Tkandidat'=>$id_kandidat,
+                  'openlink'=>Carbon::now(),
+                  'closelink'=>null,
+                  'url'=>$url,
+                  'active'=>1,
+                  'deleted'=>0
+             ]);
+        }
+        return $url;
+  }
+
     public function GetSim($id){
-        $sim = DB::table('T_kandidat_sim')
+        $sim = DB::table('T_kandidat_card_N')
+            ->select('cardType','nama','cardNumber','expiredDate')
+            ->join('M_SIM','M_SIM.id_proint','T_kandidat_card_N.cardType')
             ->where('id_Tkandidat',$id)
+            ->where('cardType','<>',57)
             ->get();
 
         $list_sim = DB::table('M_SIM')
@@ -1031,5 +1092,15 @@ class KandidatController extends Controller
                 ->where('id_TKandidat',$id)
                 ->get();
         return $result;
+    }
+
+    public function GetKontak($id){
+        $phone = DB::table('T_kandidat_phone_N')
+                ->where('id_TKandidat',$id)
+                ->get();
+        $email = DB::table('T_kandidat_email_N')
+                ->where('id_TKandidat',$id)
+                ->get();
+        return [$phone,$email];
     }
 }

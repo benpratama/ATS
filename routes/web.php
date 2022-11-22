@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function(){
 
         // //Detail Kandidat
         Route::post('/hrdats/detail/kandidat/genurl','KandidatController@GenUrl')->name('dk.GenUrl');
+        Route::post('/hrdats/detail/kandidat/genurl1','KandidatController@GenUrl1')->name('dk.GenUrl1');
         Route::post('/hrdats/detail/update/phase1','KandidatController@UpdateForm1')->name('dk.UpdateForm1');
         Route::post('/hrdats/detail/update/phase1_1','KandidatController@UpdateForm1_1')->name('dk.UpdateForm1_1');
         Route::post('/hrdats/detail/update/phase2','KandidatController@UpdateForm2')->name('dk.UpdateForm2');
@@ -213,6 +214,7 @@ Route::middleware('auth')->group(function(){
 
     //Detail Kandidat
     Route::get('/hrdats/detail/kandidat/{id}/{noidentitas}', 'KandidatController@index')->name('dk.home');
+    Route::get('/hrdats/detail/getkontak/kandidat/{id}','KandidatController@GetKontak')->name('dk.GetKontak');
     Route::get('/hrdats/detail/getsim/kandidat/{id}','KandidatController@GetSim')->name('dk.GetSim');
     Route::get('/hrdats/detail/getpendidikan/kandidat/{id}','KandidatController@GetPendidikan')->name('dk.GetPendidikan');
     Route::get('/hrdats/detail/getpekerjaan/kandidat/{id}','KandidatController@GetPekerjaan')->name('dk.GetPekerjaan');
@@ -237,8 +239,10 @@ Route::get('/form-kandidat-jf/{url}','FormKandidatController@ShowFormjf')->name(
 Route::Post('/submit/form-kandidat-jf','FormKandidatController@SubmitFormjf')->name('fk.SubmitFormjf');
 Route::get('/form-kandidat/{url}','FormKandidatController@ShowForm1')->name('fk.ShowForm1');
 Route::get('/form-kandidat/get/sim','FormKandidatController@GetSIM')->name('fk.GetSIM');
+Route::get('/form-kandidat/get/edulvlandcity','FormKandidatController@GetEduLvlandCity')->name('fk.GetEduLvlandCity');
 Route::post('/form-kandidat/kodepos','FormKandidatController@ShowKodePos')->name('fk.ShowKodePos');
 Route::Post('/submit/form-kandidat','FormKandidatController@SubmitForm1')->name('fk.SubmitForm1');
+Route::get('/getpendidikan/form-kandidat-jf/{id}','FormKandidatController@GetPendidikanF')->name('fk.GetPendidikanF');
 Route::view('/submit/finish','form kandidat/terimakasih')->name('fk.terimakasih');
 
 Route::get('/form-kandidat/phase2/{url}','FormKandidatController@ShowForm2')->name('fk.ShowForm2');

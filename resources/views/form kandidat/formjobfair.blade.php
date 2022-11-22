@@ -174,25 +174,28 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label class="form-control-label" for="pendidikan">Nama Institusi*</label>
-                      <select class="form-control" id="nama_pendidikan" name="nama_pendidikan[]" required>
+                      <input class="form-control" for="pendidikan"type="text" id= "nama_pendidikan" name="nama_pendidikan[]" required>
+                      {{-- <select class="form-control" id="nama_pendidikan" name="nama_pendidikan[]" required>
                         <option value="" selected disabled>Nama Institusi</option>
-                        <option value="1">ASD</option>
+                        <option value="1">ASD</option> --}}
                         {{-- @foreach ($Institusis as $institusi)
                         <option value="{{ $institusi->EduInsId }}">{{ $institusi->EduInsName }}</option>
                         @endforeach --}}
-                      </select>
+                      {{-- </select> --}}
+
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label class="form-control-label" for="pendidikan">Jurusan*</label>
-                      <select class="form-control" id="jurusan_pendidikan" name="jurusan_pendidikan[]" required>
+                      <input class="form-control" for="pendidikan"type="text" id= "jurusan_pendidikan" name="jurusan_pendidikan[]" required>
+                      {{-- <select class="form-control" id="jurusan_pendidikan" name="jurusan_pendidikan[]" required>
                         <option value="" selected disabled>Jurusan</option>
-                        <option value="1">ASD</option>
+                        <option value="1">ASD</option> --}}
                         {{-- @foreach ($Majors as $major)
                         <option value="{{ $major->EduMjrId }}">{{ $major->EduMjrName }}</option>
                         @endforeach --}}
-                      </select>
+                      {{-- </select> --}}
                     </div>
                   </div>
                   <div class="col-md-2">
@@ -231,8 +234,8 @@
                     <label class="form-control-label" for="luarkota">Bersedia penempatan seluruh Indonesia*</label>
                     <select class="form-control" id="luarkota" name="luarkota" required>
                       <option value="" disabled selected>Bersedia penempatan seluruh Indonesia</option>
-                      <option value="1">Ya</option>
-                      <option value="0">Tidak</option>
+                      <option value="Ya">Ya</option>
+                      <option value="Tidak">Tidak</option>
                     </select>
                   </div>
                 </div>

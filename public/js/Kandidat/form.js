@@ -15,17 +15,21 @@ $( document ).ready(function() {
   $('#kota_koresponden').select2();
   // $('#kodepos_koresponden').select2();
   $('#tempatlahir').select2();
+  $('#domisili').select2();
   getPostCode();
   Row_perushaan();
   numberWithCommas();
   validatesize();
 
   /**PROINT */
+  $('#kota_p').select2();
   list_tlp()
   list_email()
   AddDelPendidikan()
   AddDelRiwayat();
   checkRiwayat();
+  getPendidikan();
+  
 });
 
 // const options = {
@@ -376,10 +380,10 @@ function list_tlp(){
     html +=     "</div>"
     html +=   "</div>"
 
-    html +=   "<div class='col-md-1 attr_tlp"+baris_tlp+"'>"
+    html +=   "<div class='col-md-1'>"
     html +=     "<div class='form-group'>"
     html +=       "<label class='form-control-label' for='notlp'>Area*</label>"
-    html +=       "<input type='text' class='form-control' id='Area_Tlp' name='Area_Tlp[]' maxlength='45' required>"
+    html +=       "<input type='text' class='form-control attr_tlp"+baris_tlp+"' id='Area_Tlp' name='Area_Tlp[]' maxlength='45' required>"
     html +=     "</div>"
     html +=   "</div>"
     
@@ -414,14 +418,14 @@ function list_tlp(){
     var value = $(this).val();
     var obj = $(this).data('rowattr');
     console.log(obj)
-    if (value=="M" || value=="") {
+    if (value=="M" || value==" ") {
       console.log(obj)
-      $('.'+obj).attr('hidden',true)
-      $('.'+obj+' :input').prop('required',false);
-      $('.'+obj+' :input').val('')
+      $('.'+obj).prop('readonly',true)
+      $('.'+obj).prop('required',false);
+      $('.'+obj).val('')
     }else{
       $('.'+obj+' :input').prop('required',true);
-      $('.'+obj).attr('hidden',false)
+      $('.'+obj).prop('readonly',false)
     }
   })
 }
@@ -555,9 +559,133 @@ function hideSIM(){
   })
 }
 
-data_pendidikan=0
+var data_pendidikan=0
 function AddDelPendidikan(){
   $('#btnAdd-pendidikan').on('click',function(){
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/form-kandidat/get/edulvlandcity',
+        type: 'get'
+      }).done((data) => {
+        data_pendidikan+=1;
+        var html=''
+        html+="<div id='p_"+data_pendidikan+"' class='brdr'>"
+    
+        html +=  "<div class='row'>"
+        html +=    "<div class='col-md-3'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='Pendidikan'>Tingkat*</label>"
+        html +=       "<select class='form-control' id='tingkap_p' name='tingkap_p[]' required>"
+        html +=         "<option value='' disabled selected>Tingkat pendidikan</option>"
+        
+        data[0].forEach(element => {
+        html +=         "<option value='"+element.EduLvlId+"'>"+element.EduLvlName+"</option>"
+        });
+        
+        html +=       "</select>"
+        html +=     "</div>"
+        html +=    "</div>"
+    
+        html +=    "<div class='col-md-3'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='Pendidikan'>Jurusan*</label>"
+        html +=       "<input class='form-control' type='text' id='jurusan_p' name='jurusan_p[]'>"
+        html +=     "</div>"
+        html +=    "</div>"
+    
+        html +=    "<div class='col-md-3'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='Pendidikan'>Nama Institusi*</label>"
+        html +=       "<input class='form-control' type='text' id='namaInst_p' name='namaInst_p[]'>"
+        html +=     "</div>"
+        html +=    "</div>"
+
+        html +=   "<div class='col-md-2'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='pendidikan'>Nilai*</label>"
+        html +=       "<input type='number' step='0.01' class='form-control' id='nilai_pendidikan' name='nilai_pendidikan[]' min=0 max=100 required>"
+        html +=     "</div>"
+        html +=   "</div>"
+
+        html +=  "</div>"
+    
+        html +=  "<div class='row'>"
+        html +=   "<div class='col-md-3'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='Pendidikan'>kota</label>"
+        html +=       "<select class='form-control' id='kota_p' name='kota_p[]' >"
+        html +=         "<option value='' disabled selected>Kota Pendidikan</option>"
+        data[1].forEach(element2 => {
+        html +=         "<option value='"+element2.CityId+"'>"+element2.CityName+"</option>"
+        });
+        html +=       "</select>"
+        html +=     "</div>"
+        html +=   "</div>"
+    
+        html +=   "<div class='col-md-2'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='Pendidikan'>Tahun Mulai</label>"
+        html +=       "<input class='form-control' type='number' id='thnMulai_p' name='thnMulai_p[]' min=1800 max=2100>"
+        html +=     "</div>"
+        html +=   "</div>"
+    
+        html +=   "<div class='col-md-2'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='Pendidikan'>Tahun Selesai</label>"
+        html +=       "<input class='form-control' type='number' id='thnSelesai_p' name='thnSelesai_p[]' min=1800 max=2100>"
+        html +=     "</div>"
+        html +=   "</div>"
+    
+        html +=   "<div class='col-md-1'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<button id='btnDel-pendidikan' type='button' class='btn btn-danger d-flex' style='margin-top: 2.3em;' data-row='p_"+data_pendidikan+"'>"
+        html +=         "<span class='material-symbols-outlined'>delete</span>"
+        html +=       "</button>"
+        html +=     "</div>"
+        html +=   "</div>"
+    
+        html +=  "</div>"
+    
+        html+="</div>"
+    
+        $('#list_pendidikan').append(html);
+      })
+
+
+
+    
+  })
+
+  $(document).on('click','#btnDel-pendidikan',function(){
+    var hapus = $(this).data('row')
+    // console.log(hapus);
+    $('#'+hapus).remove();
+  })
+}
+
+function getPendidikan(){
+  var jobfair=$("input[name=jobfairflag]").val();
+  var id = $("input[name=urlidkandidat]").val();
+  console.log(jobfair);
+  console.log(id);
+  if (jobfair==1) {
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+  });
+  $.ajax({
+      _token: '{{ csrf_token() }}',
+      url: '/getpendidikan/form-kandidat-jf/'+id,
+      type: 'get'
+    }).done((data) => {
+    console.log(JSON.stringify(data[1]));
+    data[0].forEach(element1 => {
     data_pendidikan+=1;
     var html=''
     html+="<div id='p_"+data_pendidikan+"' class='brdr'>"
@@ -567,8 +695,11 @@ function AddDelPendidikan(){
     html +=     "<div class='form-group'>"
     html +=       "<label class='form-control-label' for='Pendidikan'>Tingkat*</label>"
     html +=       "<select class='form-control' id='tingkap_p' name='tingkap_p[]' required>"
-    html +=         "<option value='' disabled selected>Tingkat pendidikan</option>"
-    html +=         "<option value='1'>SD</option>"
+    data[1].forEach(element => {
+      if (element1.jenisPendidikan == element.EduLvlId) {
+        html +=         "<option value='"+element.EduLvlId+"'>"+element.EduLvlName+"</option>"   
+      }
+    });
     html +=       "</select>"
     html +=     "</div>"
     html +=    "</div>"
@@ -576,28 +707,39 @@ function AddDelPendidikan(){
     html +=    "<div class='col-md-3'>"
     html +=     "<div class='form-group'>"
     html +=       "<label class='form-control-label' for='Pendidikan'>Jurusan*</label>"
-    html +=       "<select class='form-control' id='jurusan_p' name='jurusan_p[]' required>"
-    html +=         "<option value='' disabled selected>Jurusan Pendidikan</option>"
-    html +=         "<option value='1'>SD</option>"
-    html +=       "</select>"
+    // html +=       "<select class='form-control' id='jurusan_p' name='jurusan_p[]' required>"
+    // html +=         "<option value='' disabled selected>Jurusan Pendidikan</option>"
+    // html +=         "<option value='1'>SD</option>"
+    // html +=       "</select>"
+    html +=       "<input class='form-control' type='text' id='jurusan_p' name='jurusan_p[]' value='"+element1.jurusanPendidikan+"'>"
     html +=     "</div>"
     html +=    "</div>"
 
     html +=    "<div class='col-md-3'>"
     html +=     "<div class='form-group'>"
     html +=       "<label class='form-control-label' for='Pendidikan'>Nama Institusi</label>"
-    html +=       "<input class='form-control' type='text' id='namaInst_p' name='namaInst_p[]'>"
+    html +=       "<input class='form-control' type='text' id='namaInst_p' name='namaInst_p[]' value='"+element1.namaPendidikan+"'>"
     html +=     "</div>"
     html +=    "</div>"
+
+    html +=   "<div class='col-md-2'>"
+    html +=     "<div class='form-group'>"
+    html +=       "<label class='form-control-label' for='pendidikan'>Nilai*</label>"
+    html +=       "<input type='number' step='0.01' class='form-control' id='nilai_pendidikan' name='nilai_pendidikan[]' value='"+element1.nilai+"'  min=0 max=100 >"
+    html +=     "</div>"
+    html +=   "</div>"
+
     html +=  "</div>"
 
     html +=  "<div class='row'>"
     html +=   "<div class='col-md-3'>"
     html +=     "<div class='form-group'>"
     html +=       "<label class='form-control-label' for='Pendidikan'>kota</label>"
-    html +=       "<select class='form-control' id='kota_p' name='kota_p[]' >"
+    html +=       "<select class='js-example-basic-single form-control' id='kota_p' name='kota_p[]' >"
     html +=         "<option value='' disabled selected>Kota Pendidikan</option>"
-    html +=         "<option value='1'>Bekasi</option>"
+    data[2].forEach(element2 => {
+    html +=         "<option value='"+element2.CityId+"'>"+element2.CityName+"</option>" 
+    });
     html +=       "</select>"
     html +=     "</div>"
     html +=   "</div>"
@@ -629,13 +771,9 @@ function AddDelPendidikan(){
     html+="</div>"
 
     $('#list_pendidikan').append(html);
-  })
-
-  $(document).on('click','#btnDel-pendidikan',function(){
-    var hapus = $(this).data('row')
-    // console.log(hapus);
-    $('#'+hapus).remove();
-  })
+      });
+    });
+  }
 }
 
 data_riwayat=0
@@ -667,8 +805,8 @@ function AddDelRiwayat(){
     html +=         "<label class='form-control-label' for='Rpekerjaan'>Farmasi/Non farmasi*</label>"
     html +=         "<select class='form-control' id='fnf_Rpekerjaan' name='fnf_Rpekerjaan[]' required>"
     html +=           "<option value='' disabled selected>Farmasi/Non farmasi*</option>"
-    html +=           "<option value='0'>Farmasi</option>"
-    html +=           "<option value='1'>Non Farmasi</option>"
+    html +=           "<option value='Farmasi'>Farmasi</option>"
+    html +=           "<option value='Bukan Farmasi'>Non Farmasi</option>"
     html +=         "</select>"
     html +=       "</div>"
     html +=     "</div>"
