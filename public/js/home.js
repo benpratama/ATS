@@ -12,7 +12,7 @@ $( document ).ready(function() {
   $('#f_domisili').select2();
   $('#ccto').select2();
   $('#labMCU').select2();
-
+  
   create_schedule();
   hidde();
   modalInformasi();
@@ -70,7 +70,7 @@ function ShowSummary(Speriod,Eperiod){
       }
     }).done((data) => {
       $('.sub_summary').remove();
-      console.log(JSON.stringify(data));
+      // console.log(JSON.stringify(data));
       data.forEach(element => {
         var html  = "<div class='col-xl-2 col-md-4 sub_summary'>"
             html +=   "<div class='card card-stats'>"
@@ -109,197 +109,197 @@ function filter(){
 }
 
 // function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,domisili){
-//   // $.ajaxSetup({
-//   //   headers: {
-//   //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//   //   }
-//   // });
-//   // $.ajax({
-//   //     _token: '{{ csrf_token() }}',
-//   //     url: '/hrdats/dashboard/hrd/detail',
-//   //     type: 'post',
-//   //     data: {
-//   //       Speriod:Speriod,
-//   //       Eperiod:Eperiod,
-//   //       Sumur:Sumur,
-//   //       Eumur:Eumur,
-//   //       pendidikan:pendidikan,
-//   //       jurusan:jurusan,
-//   //       job:job,
-//   //       status:status,
-//   //       domisili:domisili
-//   //     }
-//   //   }).done((data) => {
-//   //     console.log(JSON.stringify(data));
-//   // });
-//   $('#TblKandidat').DataTable().destroy();
-//   $('.filters').remove();
-//   $('#TblKandidat thead tr')
-//         .clone(true)
-//         .addClass('filters')
-//         .appendTo('#TblKandidat thead');
+//   $.ajaxSetup({
+//     headers: {
+//         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//     }
+//   });
+//   $.ajax({
+//       _token: '{{ csrf_token() }}',
+//       url: '/hrdats/dashboard/hrd/detail',
+//       type: 'post',
+//       data: {
+//         Speriod:Speriod,
+//         Eperiod:Eperiod,
+//         Sumur:Sumur,
+//         Eumur:Eumur,
+//         pendidikan:pendidikan,
+//         jurusan:jurusan,
+//         job:job,
+//         status:status,
+//         domisili:domisili
+//       }
+//     }).done((data) => {
+//       console.log(JSON.stringify(data));
+//   });
+//   // $('#TblKandidat').DataTable().destroy();
+//   // $('.filters').remove();
+//   // $('#TblKandidat thead tr')
+//   //       .clone(true)
+//   //       .addClass('filters')
+//   //       .appendTo('#TblKandidat thead');
         
-//   $('#TblKandidat').DataTable({
-//     orderCellsTop: true,
-//     fixedHeader: true,
-//     initComplete: function () {
-//       var api = this.api();
-//           api
-//             .columns()
-//             .eq(0)
-//             .each(function (colIdx) {
-//               // Set the header cell to contain the input element
-//               var cell = $('.filters th').eq(
-//                 $(api.column(colIdx).header()).index()
-//               );
+//   // $('#TblKandidat').DataTable({
+//   //   orderCellsTop: true,
+//   //   fixedHeader: true,
+//   //   initComplete: function () {
+//   //     var api = this.api();
+//   //         api
+//   //           .columns()
+//   //           .eq(0)
+//   //           .each(function (colIdx) {
+//   //             // Set the header cell to contain the input element
+//   //             var cell = $('.filters th').eq(
+//   //               $(api.column(colIdx).header()).index()
+//   //             );
 
-//               var title = $(cell).text();
-//               if(title!='' && title!="Detail"){
-//                 $(cell).html('<input type="text" style="width:100%" placeholder="' + title + '" />');
-//               }else{
-//                 $(cell).html('');
-//               }
+//   //             var title = $(cell).text();
+//   //             if(title!='' && title!="Detail"){
+//   //               $(cell).html('<input type="text" style="width:100%" placeholder="' + title + '" />');
+//   //             }else{
+//   //               $(cell).html('');
+//   //             }
                     
  
-//               // On every keypress in this input
-//               $(
-//                   'input',
-//                   $('.filters th').eq($(api.column(colIdx).header()).index())
-//               )
-//               .off('keyup change')
-//               .on('change', function (e) {
-//                 // Get the search value
-//                 $(this).attr('title', $(this).val());
-//                 var regexr = '({search})'; //$(this).parents('th').find('select').val();
+//   //             // On every keypress in this input
+//   //             $(
+//   //                 'input',
+//   //                 $('.filters th').eq($(api.column(colIdx).header()).index())
+//   //             )
+//   //             .off('keyup change')
+//   //             .on('change', function (e) {
+//   //               // Get the search value
+//   //               $(this).attr('title', $(this).val());
+//   //               var regexr = '({search})'; //$(this).parents('th').find('select').val();
  
-//                   // var cursorPosition = this.selectionStart;
-//                   // Search the column for that value
-//                   api
-//                       .column(colIdx)
-//                       .search(
-//                           this.value != ''
-//                               ? regexr.replace('{search}', '(((' + this.value + ')))')
-//                               : '',
-//                           this.value != '',
-//                           this.value == ''
-//                       )
-//                       .draw();
-//               })
-//               .on('keyup', function (e) {
-//                   var cursorPosition = this.selectionStart;
-//                   e.stopPropagation();
+//   //                 // var cursorPosition = this.selectionStart;
+//   //                 // Search the column for that value
+//   //                 api
+//   //                     .column(colIdx)
+//   //                     .search(
+//   //                         this.value != ''
+//   //                             ? regexr.replace('{search}', '(((' + this.value + ')))')
+//   //                             : '',
+//   //                         this.value != '',
+//   //                         this.value == ''
+//   //                     )
+//   //                     .draw();
+//   //             })
+//   //             .on('keyup', function (e) {
+//   //                 var cursorPosition = this.selectionStart;
+//   //                 e.stopPropagation();
 
-//                   $(this).trigger('change');
-//                   $(this)
-//                       .focus()[0]
+//   //                 $(this).trigger('change');
+//   //                 $(this)
+//   //                     .focus()[0]
                       
-//                       .setSelectionRange(cursorPosition, cursorPosition);
-//               });
-//             });
-//     },
-//     "scrollY":        "400px",
-//     "scrollX": true,
-//     "scrollCollapse": true,
-//     pageLength : 5,
-//         ajax: {
-//           url: "/hrdats/dashboard/hrd/detail",
-//           type: "POST",
-//           data:{
-//             Speriod:Speriod,
-//             Eperiod:Eperiod,
-//             Sumur:Sumur,
-//             Eumur:Eumur,
-//             pendidikan:pendidikan,
-//             jurusan:jurusan,
-//             job:job,
-//             status:status,
-//             domisili:domisili
-//           },
-//           dataSrc:""
-//         },
-//     "paging":true,
-//     "bInfo" : false,
-//     "lengthChange": false,
-//     language: {
-//         paginate: {
-//             previous: "<i class='fas fa-angle-left'>",
-//             next: "<i class='fas fa-angle-right'>"
-//         }
-//     },
-//     columns: [
-//         {
-//             render: (data, type, row, meta)=> {
-//                 return '<input type="checkbox" class="cek-kandidat" value="'+row.id+'">'
-//             },
-//         },
-//         {
-//             data: 'umur',
-//             defaultContent: ''
-//         },
-//         {
-//             data: 'kota1',
-//             defaultContent: ''
-//         },
-//         {
-//             data: 'gender',
-//             defaultContent: ''
-//         },
-//         {
-//             data: 'pendidikan',
-//             defaultContent: ''
-//         },
-//         {
-//             data: 'jurusan',
-//             defaultContent: ''
-//         },
-//         {
-//             data: 'pengalaman',
-//             defaultContent: ''
-//         },
-//         {
-//             data: 'bidang',
-//             defaultContent: ''
-//         },
-//         {
-//           defaultContent: '',
-//           render: (data, type, row, meta)=> {
-//             return row.tahun+' Tahun '+row.bulan+' Bulan '+row.hari+' Hari'
-//           }
-//         },
-//         {
-//             data: 'bertugasluarkota',
-//             defaultContent: ''
-//         },
-//         {
-//           data: 'ditempatkanluarkota',
-//           defaultContent: ''
-//         },
-//         {
-//           data: 'SIM',
-//           defaultContent: ''
-//         },
-//         {
-//           data: 'nama',
-//           defaultContent: ''
-//         },
-//         {
-//           data: 'proses',
-//           defaultContent: ''
-//         },
-//         {
-//             defaultContent: '',
-//             render: (data, type, row, meta)=> {
-//                 // return '<button type="button" class="btn btn-info" onclick="Modal_mcu(value)" data-toggle="modal" data-target=".modal-edit-mcu" value="'+row.id+'">Edit</button>'
-//                 return '<a href="/hrdats/detail/kandidat/'+row.id+'/'+row.noidentitas+'" type="button" class="btn btn-info">Detail</a>'
-//             }
-//         }
-//     ] 
-//   });
+//   //                     .setSelectionRange(cursorPosition, cursorPosition);
+//   //             });
+//   //           });
+//   //   },
+//   //   "scrollY":        "400px",
+//   //   "scrollX": true,
+//   //   "scrollCollapse": true,
+//   //   pageLength : 5,
+//   //       ajax: {
+//   //         url: "/hrdats/dashboard/hrd/detail",
+//   //         type: "POST",
+//   //         data:{
+//   //           Speriod:Speriod,
+//   //           Eperiod:Eperiod,
+//   //           Sumur:Sumur,
+//   //           Eumur:Eumur,
+//   //           pendidikan:pendidikan,
+//   //           jurusan:jurusan,
+//   //           job:job,
+//   //           status:status,
+//   //           domisili:domisili
+//   //         },
+//   //         dataSrc:""
+//   //       },
+//   //   "paging":true,
+//   //   "bInfo" : false,
+//   //   "lengthChange": false,
+//   //   language: {
+//   //       paginate: {
+//   //           previous: "<i class='fas fa-angle-left'>",
+//   //           next: "<i class='fas fa-angle-right'>"
+//   //       }
+//   //   },
+//   //   columns: [
+//   //       {
+//   //           render: (data, type, row, meta)=> {
+//   //               return '<input type="checkbox" class="cek-kandidat" value="'+row.id+'">'
+//   //           },
+//   //       },
+//   //       {
+//   //           data: 'umur',
+//   //           defaultContent: ''
+//   //       },
+//   //       {
+//   //           data: 'domisilisaatini',
+//   //           defaultContent: ''
+//   //       },
+//   //       {
+//   //           data: 'gender',
+//   //           defaultContent: ''
+//   //       },
+//   //       {
+//   //           data: 'pendidikan',
+//   //           defaultContent: ''
+//   //       },
+//   //       {
+//   //           data: 'jurusan',
+//   //           defaultContent: ''
+//   //       },
+//   //       {
+//   //           data: 'pengalaman',
+//   //           defaultContent: ''
+//   //       },
+//   //       {
+//   //           data: 'bidang',
+//   //           defaultContent: ''
+//   //       },
+//   //       {
+//   //         defaultContent: '',
+//   //         render: (data, type, row, meta)=> {
+//   //           return row.tahun+' Tahun '+row.bulan+' Bulan '+row.hari+' Hari'
+//   //         }
+//   //       },
+//   //       {
+//   //           data: 'bertugasluarkota',
+//   //           defaultContent: ''
+//   //       },
+//   //       {
+//   //         data: 'ditempatkanluarkota',
+//   //         defaultContent: ''
+//   //       },
+//   //       {
+//   //         data: 'SIM',
+//   //         defaultContent: ''
+//   //       },
+//   //       {
+//   //         data: 'nama',
+//   //         defaultContent: ''
+//   //       },
+//   //       {
+//   //         data: 'proses',
+//   //         defaultContent: ''
+//   //       },
+//   //       {
+//   //           defaultContent: '',
+//   //           render: (data, type, row, meta)=> {
+//   //               // return '<button type="button" class="btn btn-info" onclick="Modal_mcu(value)" data-toggle="modal" data-target=".modal-edit-mcu" value="'+row.id+'">Edit</button>'
+//   //               return '<a href="/hrdats/detail/kandidat/'+row.id+'/'+row.noidentitas+'" type="button" class="btn btn-info">Detail</a>'
+//   //           }
+//   //       }
+//   //   ] 
+//   // });
 
-//   //buat check
-//   $('#cekAll-kandidat').change(function(){
-//       $("input.cek-kandidat:checkbox").prop("checked",$(this).prop("checked"));
-//   })
+//   // buat check
+//   // $('#cekAll-kandidat').change(function(){
+//   //     $("input.cek-kandidat:checkbox").prop("checked",$(this).prop("checked"));
+//   // })
 // }
 
 function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,domisili){
@@ -404,16 +404,34 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
                     },
                 },
                 {
+                  // data: 'jobfair',
+                  defaultContent: '',
+                  render: (data, type, row, meta)=> {
+                    if (row.jobfair==1) {
+                      return 'YA'
+                    }else{
+                      return 'TIDAK'
+                    }
+                  }
+                },
+                {
                     data: 'umur',
                     defaultContent: ''
                 },
                 {
-                    data: 'kota1',
+                    data: 'CityName',
                     defaultContent: ''
                 },
                 {
-                    data: 'gender',
-                    defaultContent: ''
+                    // data: 'gender',
+                    defaultContent: '',
+                    render: (data, type, row, meta)=> {
+                      if (row.gender==1 ) {
+                        return 'PRIA'
+                      }else{
+                        return 'WANITA'
+                      }
+                    }
                 },
                 {
                     data: 'pendidikan',
@@ -425,7 +443,14 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
                 },
                 {
                     data: 'pengalaman',
-                    defaultContent: ''
+                    defaultContent: '',
+                    render: (data, type, row, meta)=> {
+                      if (row.jobfair==1 && row.updated_at==null) {
+                        return ''
+                      } else {
+                        return data
+                      }
+                    }
                 },
                 {
                     data: 'bidang',
@@ -434,16 +459,20 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
                 {
                   defaultContent: '',
                   render: (data, type, row, meta)=> {
-                    return row.tahun+' Tahun '+row.bulan+' Bulan '+row.hari+' Hari'
+                    if (row.jobfair==1 && row.updated_at==null) {
+                      return ''
+                    } else {
+                      return row.tahun+' Tahun '+row.bulan+' Bulan '+row.hari+' Hari'
+                    }
                   }
                 },
                 {
                     data: 'bertugasluarkota',
-                    defaultContent: ''
+                    defaultContent: '',
                 },
                 {
                   data: 'ditempatkanluarkota',
-                  defaultContent: ''
+                  defaultContent: '',
                 },
                 {
                   data: 'SIM',

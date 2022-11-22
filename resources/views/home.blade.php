@@ -211,7 +211,8 @@
                 <thead class="thead-light">
                   <tr>
                     <th  class="thseacrh"><input type="checkbox" id="cekAll-kandidat"></th>
-                    <th  >Usia</th>
+                    <th> Jobfair </th>
+                    <th>Usia</th>
                     <th >Domisili</th>
                     <th >Gender</th>
                     <th >Pendidikan</th>

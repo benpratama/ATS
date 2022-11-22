@@ -165,8 +165,7 @@ class HomeController extends Controller
             $domisili = implode('\',\'',$request->domisili);
             $domisili="('".$domisili."')";
         }
-       
-        // return $request;
+
         $id_Organisasi = Auth::user()->id_Organisasi;
         // $detail =  DB::select('EXEC SP_Get_Detail_Kandidat ?',array(strval($id_Organisasi)));
 
@@ -175,7 +174,7 @@ class HomeController extends Controller
                     array(
                         strval($id_Organisasi),
                         strval($Speriod),
-                        strval($Eperiod),
+                        strval($Eperiod.' 23:59'),
                         $Sumur,$Eumur,
                         strval($pendidikan),
                         strval($jurusan),
