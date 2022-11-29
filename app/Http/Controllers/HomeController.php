@@ -94,7 +94,7 @@ class HomeController extends Controller
 
         // return [ $Speriod,$Eperiod];
         $id_Organisasi = Auth::user()->id_Organisasi;
-        $summary =  DB::select('EXEC SP_Get_Summary ?,?,?',array(strval($id_Organisasi),strval($Speriod),strval($Eperiod)));
+        $summary =  DB::select('EXEC SP_Get_Summary ?,?,?',array(strval($id_Organisasi),strval($Speriod),strval($Eperiod. " 23:59:00.000")));
 
         return $summary;
     }   
