@@ -677,6 +677,25 @@
                   </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="form-control-label" for="motor">Memiliki motor*</label>
+                  <select class="form-control" id="motor" name="motor"required>
+                    <option value="" disabled selected>Memiliki motor</option>
+                    <option value="0">Tidak punya</option>
+                    <option value="1">Punya</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-control-label" for="PMR">pengalaman MR*</label>
+                  <select class="form-control" id="PMR" name="PMR"required>
+                    <option value="" disabled selected>Pengalaman MR</option>
+                    <option value="0">Tidak ada</option>
+                    <option value="<1">< 1 Tahun</option>
+                    <option value=">1">> 1 Tahun</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -722,11 +741,11 @@
 
       <div class="row">
         @if ($jobfair==false)
-        <input name='jobfairflag' value='{{ $jobfair }}'>
-        <input name='urlid' value='{{ $URL->id }}'>
+        <input name='jobfairflag' value='{{ $jobfair }}' hidden>
+        <input name='urlid' value='{{ $URL->id }}' hidden>
         @else
-        <input name='jobfairflag' value='{{ $jobfair }}'>
-        <input name='urlidkandidat' value='{{ $info_kandidat_->id }}'>
+        <input name='jobfairflag' value='{{ $jobfair }}' hidden>
+        <input name='urlidkandidat' value='{{ $info_kandidat_->id }}' hidden>
         @endif
         
         <button type="submit" class="btn btn-primary btnsbmt">Submit</button>

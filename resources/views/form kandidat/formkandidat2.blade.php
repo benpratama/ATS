@@ -83,13 +83,13 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="tempatlahir">Tempat lahir</label>
-                    <input type="text" class="form-control" id="tempatlahir" name="tempatlahir" value="{{ $info_kandidat->tempatlahir }}" readonly>
+                    <input type="text" class="form-control" id="tempatlahir" name="tempatlahir" value="{{ trim($info_kandidat->StateName) }}" readonly>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-control-label" for="tgllahir">Tanggal Lahir</label>
-                    <input type="text" class="form-control" id="tgllahir" name="tgllahir" value="{{ $info_kandidat->tglLahir }}" readonly>
+                    <input type="text" class="form-control" id="tgllahir" name="tgllahir" value="{{ str_replace(" 00:00:00.000","",$info_kandidat->tglLahir) }}" readonly>
                   </div>
                 </div>
               </div>
@@ -236,338 +236,20 @@
             <div class="card-header bg-transparent">
               <div class="row align-items-center">
                 <div class="col-5">
-                  <h3 class="text-uppercase text-muted ls-1 mb-1">SUSUNAN KELUARGA (TERMASUK DIRI ANDA)</h3>
+                  <h3 class="text-uppercase text-muted ls-1 mb-1">SUSUNAN KELUARGA</h3>
                 </div>
               </div>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table" id="Tblorganisasi">
-                    <thead class="thead-light">
-                      <tr>
-                        <th style="width: 14%;">Orang tua</th>
-                        <th style="width: 21.6%;">Nama</th>
-                        <th style="width: 10%;">usia</th>
-                        <th style="width: 11%;">L/P</th>
-                        <th style="width: 21.6%;">Pendidikan</th>
-                        <th style="width: 21.6%;">Nama Perushaan</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Ayah</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Ibu</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Alamat Rumah</td>
-                        <td colspan="3">
-                          <input type="text" class="form-control" id="alamt" name="alamat[]" maxlength='1000'>
-                        </td>
-                        <td>
-                          No Tlp:
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="notlp" name="notlp[]" maxlength='45'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="6" style="text-align: center; background:#CFD2CF" >Kakak/Adik</td>
-                        
-                      </tr>
-                      <tr>
-                        <td>1</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>4</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Istri/Suami</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="6" style="text-align: center; background:#CFD2CF" >Anak</td>
-                      </tr>
-                      <tr>
-                        <td>1</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>4</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Ayah Mertua</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Ibu Mertua</td>
-                        <td>
-                          <input type="text" class="form-control" id="nama" name="nama[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" id="usia" name="usia[]" min="0" max="200">
-                        </td>
-                        <td>
-                          <select class="form-control" id="LP" name="LP[]">
-                            <option value="" selected>L/P</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="pendidikan" name="pendidikan[]" maxlength='90'>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" id="namaperushaan" name="namaperushaan[]" maxlength='90'>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Alamat Mertua</td>
-                        <td colspan="5">
-                          <input type="text" class="form-control" id="alamt" name="alamat[]" maxlength='1000'>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              <div id="list_keluarga">
+                
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-success d-flex" id="btnAdd-keluarga">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Keluarga</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -714,7 +396,7 @@
                   </div>
                 </div>
               </div>
-              <div class="table-responsive" >
+              {{-- <div class="table-responsive" >
                 <table class="table" id="Tblsaudarafarmasi" hidden>
                   <thead class="thead-light">
                     <tr>
@@ -731,6 +413,50 @@
                     </tr>
                   </thead>
                 </table>
+              </div> --}}
+              <div class="saudarafarmasi" id='datasaudarafarmasi' hidden>
+                <div class="row sdr1">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-control-label" for="kerabat">Hubungan</label>
+                      <input class="form-control" type="text" id="hubungan_saudarafarmasi" name="hubungan_saudarafarmasi[]" maxlength='220'required>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="kerabat">Nama</label>
+                      <input class="form-control" type="text" id="nama_saudarafarmasi" name="nama_saudarafarmasi[]" maxlength='220'required>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="kerabat">Gender</label>
+                      <select class='form-control' id='LPsaudara' name='LP_saudarafarmasi[]' required>
+                        <option value='' disabled selected>L/P</option>
+                        <option value='L'>L</option>
+                        <option value='P'>P</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="kerabat">Nama Perushaan*</label>
+                      <input class="form-control" type="text" id="perushaan_saudarafarmasi" name="perushaan_saudarafarmasi[]" maxlength='220' required>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="kerabat">Jabatan*</label>
+                      <input class="form-control" type="text" id="jabatan_saudarafarmasi" name="jabatan_saudarafarmasi[]" maxlength='220' required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group saudarafarmasi" hidden>
+                <button type="button" class="btn btn-success d-flex" id="btnAdd-saudarafarmasi">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Saudara</span>
+                </button>
               </div>
               <hr class="my-4">
               <label class="form-control-label" for="referensi"> Tuliskan 2 nama yang berkenan memberikan referensi bagi lamaran Saudara ke perusahaan ini :</label>

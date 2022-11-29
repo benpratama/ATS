@@ -881,6 +881,8 @@ class FormKandidatController extends Controller
                             'flag'=>1,
                             'created_at'=>Carbon::now(),
                             'updated_at'=>NULL,
+                            'memilikiMotor'=>$request->motor,
+                            'pengalamanMR'=>$request->PMR,
                             'jobfair'=>0,
                             'domisilisaatini'=>$request->domisili,
                         ]);
@@ -1045,6 +1047,8 @@ class FormKandidatController extends Controller
                                     'flag'=>1,
                                     'created_at'=>Carbon::now(),
                                     'updated_at'=>NULL,
+                                    'memilikiMotor'=>$request->motor,
+                                    'pengalamanMR'=>$request->PMR,
                                     'jobfair'=>0,
                                     'domisilisaatini'=>$request->domisili,
                                 ]);
@@ -1318,6 +1322,8 @@ class FormKandidatController extends Controller
                                 'flag'=>NULL,
                                 'created_at'=>Carbon::now(),
                                 'updated_at'=>NULL,
+                                'memilikiMotor'=>$request->motor,
+                                'pengalamanMR'=>$request->PMR,
                                 'jobfair'=>0,
                                 'domisilisaatini'=>$request->domisili,
                             ]);
@@ -1498,7 +1504,7 @@ class FormKandidatController extends Controller
                             $alamatperushaan = trim($request->alamat_Rpekerjaan[$k],''); 
                             $jabatanperusahaan = trim($request->jabatan_Rpekerjaan[$k],''); 
                             $atasanperusahaan = trim($request->atasan_Rpekerjaan[$k],''); 
-                            $startperusahaan = $request->ThnMasuk_Rpekerjaan[$k].'-01';
+                            $startperusahaan = $request->ThnMasuk_Rpekerjaan[$k];
             
                             if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)) {
                                 DB::table('T_kandidat_pekerjaan')
@@ -1736,7 +1742,7 @@ class FormKandidatController extends Controller
                         $alamatperushaan = trim($request->alamat_Rpekerjaan[$k],''); 
                         $jabatanperusahaan = trim($request->jabatan_Rpekerjaan[$k],''); 
                         $atasanperusahaan = trim($request->atasan_Rpekerjaan[$k],''); 
-                        $startperusahaan = $request->ThnMasuk_Rpekerjaan[$k].'-01';
+                        $startperusahaan = $request->ThnMasuk_Rpekerjaan[$k];
         
                         if (!empty($namaperusahaan)&&!empty($alamatperushaan)&&!empty($jabatanperusahaan)&&!empty($atasanperusahaan)) {
                             DB::table('T_kandidat_pekerjaan')
@@ -1759,7 +1765,7 @@ class FormKandidatController extends Controller
                 }
 
                 DB::table('T_kandidat_pendidikan_N')->where('id_Tkandidat',$id_kandidat)->delete();
-                if(!empty($request->nama_Rpekerjaan)){
+                if(!empty($request->tingkap_p)){
                     for ($i=0; $i < count($request->tingkap_p); $i++) {
                         if ($request->tingkap_p[$i]!=0) {
                             DB::table('T_kandidat_pendidikan_N')
@@ -1780,6 +1786,12 @@ class FormKandidatController extends Controller
                         } 
                     }
                 }
+
+                DB::table('T_linkPhase1')
+                    ->where('id_Tkandidat',$id_kandidat)
+                    ->update([
+                        'active'=>0
+                    ]);
             }
             DB::commit();
             // $data=[
@@ -1955,16 +1967,47 @@ class FormKandidatController extends Controller
                 
             }
 
-            $statuskeluarga = ['Ayah','Ibu','Kaka/Adik 1',
-                                'Kaka/Adik 2','kaka/adik 3',
-                                'Kaka/Adik 4','Suami/Istri',
-                                'Anak 1','Anak 2','Anak 3','Anak 4',
-                                'Ayah Mertua','Ibu Mertua'
-            ];
-            $statusalamt = [
-                'Alamat Keluarga',
-                'Alamat Merrtua'
-            ];
+            // $statuskeluarga = ['Ayah','Ibu','Kaka/Adik 1',
+            //                     'Kaka/Adik 2','kaka/adik 3',
+            //                     'Kaka/Adik 4','Suami/Istri',
+            //                     'Anak 1','Anak 2','Anak 3','Anak 4',
+            //                     'Ayah Mertua','Ibu Mertua'
+            // ];
+            // $statusalamt = [
+            //     'Alamat Keluarga',
+            //     'Alamat Merrtua'
+            // ];
+
+            if(!empty($request->hubungan_kel)){
+                for ($k=0; $k <count($request->hubungan_kel) ; $k++) {
+                    $hubungan = $request->hubungan_kel[$k]; 
+                    $nama = trim($request->nama_kel[$k]);
+                    $gender = $request->gender_kel[$k]; 
+                    $tgl_lahir = $request->tgl_kel[$k]; 
+                    $alamat = trim($request->alamat_kel[$k]); 
+
+                    if (!empty($hubungan)&&!empty($nama)&&!empty($gender)&&!empty($tgl_lahir)&&!empty($alamat)) {
+
+                        $FamRelName = DB::table('PMFamRel')
+                                        ->select('FamRelType')
+                                        ->where('FamRelId',$hubungan)
+                                        ->pluck('FamRelType');
+
+                        DB::table('T_kandidat_keluarga_N')
+                            ->insert([
+                                'id_Tkandidat'=>$request->kandidat,
+                                'hubungan'=>$hubungan,
+                                'FamRelType'=>$FamRelName[0],
+                                'nama'=>$nama,
+                                'tgl_lahir'=>$tgl_lahir,
+                                'alamat'=>$alamat,
+                                'gender'=>$gender
+                            ]);
+                    }
+                }
+            }
+
+
 
             // if(!empty($request->nama)){
             //     for ($k=0; $k <count($request->nama) ; $k++) {
@@ -2108,6 +2151,14 @@ class FormKandidatController extends Controller
                 ->get();
 
         return [$info_pendidikan,$edu,$city];
+    }
+
+    public function GetFamRel(){
+        $list_keluarga = DB::table('PMFamRel')
+                        ->select('FamRelId','FamRelName')
+                        ->orderBy('FamRelType', 'asc')
+                        ->get();
+        return $list_keluarga;
     }
 
 }
