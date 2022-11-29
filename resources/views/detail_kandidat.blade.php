@@ -84,8 +84,9 @@
                 <i class="ni location_pin mr-2"></i>Berat Badan: {{ $info_kandidat->beratbadan }}
               </div>
               <div class="h5 font-weight-500 mt-4">
-                <i class="ni location_pin mr-2"></i>{{ $info_kandidat->email }}<br>
-                <i class="ni location_pin mr-2"></i>{{ $info_kandidat->nohp }}
+                {{-- disini --}}
+                {{-- <i class="ni location_pin mr-2"></i>{{ $info_kandidat->email }}<br> --}}
+                {{-- <i class="ni location_pin mr-2"></i>{{ $info_kandidat->nohp }} --}}
               </div>
               <div class="h5 mt-4">
                 <i class="ni business_briefcase-24 mr-2"></i>{{ $FreshorNot }}<br>
@@ -93,7 +94,7 @@
               </div>
               <div class="mt-3">
                 @if (!empty($pendidikan))
-                  <i class="ni education_hat mr-2"></i>{{ $pendidikan->pendidikan }} {{ $pendidikan->namaSekolah }} {{ $pendidikan->jurusan }}
+                  <i class="ni education_hat mr-2"></i>{{ $pendidikan->pendidikan }} {{ $pendidikan->namaPendidikan }} {{ $pendidikan->jurusan }}
                 @endif
               </div>
               <div class="h3 mt-4">
@@ -108,6 +109,19 @@
                 @endif
               </div>
             </div>
+            {{-- START URL PHASE 1 --}}
+            @if ($info_kandidat->jobfair !=0)
+            <div class="row pt-3">
+              <div class="col-md-8">
+                  <textarea  rows="3" cols="20" wrap="hard" type="text" class="form-control" id="urlphase1" name="urlphase1" readonly>{{ $url_phase1 }}</textarea>
+              </div>
+              <div class="col-md-3">
+                <button id="btnGen-url1" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
+              </div>
+            </div>
+            @endif
+            {{-- END URL PHASE 1 --}}
+
             {{-- START URL PAHSE 2 --}}
             <div class="row pt-3">
               <div class="col-md-8">
@@ -118,11 +132,11 @@
               </div>
             </div>
             {{-- END URL PAHSE 2 --}}
-            <div class="row">
+            {{-- <div class="row">
               <div class="col-md-3">
                 <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
               </div>
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>
@@ -132,113 +146,161 @@
       <div class="col-xl-8 order-xl-2">
         <form method="POST" action="{{ route('dk.UpdateForm1') }}" >
           @csrf
-        <div class="card">
-          <div class="card-header">
-            <div class="row align-items-center">
-              <div class="col-8">
-                <input id="id_kandidat" name="id_kandidat" value="{{ $info_kandidat->id }}" hidden>
-                <input id="id_Organisasi" name="id_Organisasi" value="{{ $info_kandidat->id_Organisasi }}" hidden>
-                <input id="applyas" name="applyas" value="{{ $applyas[0]->nama }}" hidden>
-                <h3 class="mb-0">Kandidat id: {{ $info_kandidat->id }} </h3>
-              </div>
-              <div class="col-4 text-right">
-                {{-- <a href="#!" class="btn btn-sm btn-primary">update</a> --}}
-                <button type="submit" class="btn btn-primary btnsbmt" {{ $disabled == "true" ? 'hidden' : ''}}>Update</button>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            {{-- <h6 class="heading-small text-muted mb-4">Info Kandidat</h6> --}}
-            <div class="pl-lg-4">
-              <div class="row">
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="namalengkap">Nama lengkap</label>
-                    <input type="text" id="namalengkap" name="namalengkap" class="form-control" placeholder="Nama Lengkap Kandidat" value="{{ $info_kandidat->namalengkap }}" {{ $disabled == "true" ? 'disabled' : ''}}>
-                    
-                  </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <input id="id_kandidat" name="id_kandidat" value="{{ $info_kandidat->id }}" hidden>
+                  <input id="id_Organisasi" name="id_Organisasi" value="{{ $info_kandidat->id_Organisasi }}" hidden>
+                  <input id="applyas" name="applyas" value="{{ $applyas[0]->nama }}" hidden>
+                  <h3 class="mb-0">Kandidat id: {{ $info_kandidat->id }} </h3>
                 </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="gender">Gender</label>
-                    <select class="form-control" id="gender" name="gender" {{ $disabled == "true" ? 'disabled' : ''}}>
-                      <option value="Pria" {{ $info_kandidat->gender == "Pria" ? 'selected' : ''}}>Pria</option>
-                      <option value="Wanita"  {{ $info_kandidat->gender == "Wanita" ? 'selected' : ''}}>Wanita</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="status_perkawinan">Status Perkawinan</label>
-                    <select class="form-control" id="status_perkawinan" name="status_perkawinan" {{ $disabled == "true" ? 'disabled' : ''}}>
-                      @foreach ($StatusPerkawinan  as $status )
-                        <option value="{{ $status->keterangan }}" {{ $status->keterangan == $info_kandidat->status_perkawinan ? 'selected' : ''}}>{{ $status->nama }} - {{ $status->keterangan }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="noidentitas">No. KTP / Passport</label>
-                  <input type="text" class="form-control" id="noidentitas" name="noidentitas"placeholder="NO Identitas"  value="{{ $info_kandidat->noidentitas }}"  maxlength="45" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="npwp">NPWP</label>
-                    <input type="text" class="form-control" id="npwp" name="npwp" value="{{ $info_kandidat->npwp }}" placeholder="NPWP" maxlength="45" {{ $disabled == "true" ? 'disabled' : ''}}>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="nohp">NO HP</label>
-                    <input type="text" class="form-control" id="nohp" name="nohp" value="{{ $info_kandidat->nohp }}" maxlength="45" placeholder="08123456789" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="npwp">Email</label>
-                    <input type="email" class="form-control" id="email" value="{{ $info_kandidat->email }}" name="email" maxlength="45" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                  </div>
-                </div>
-              </div>
-              <hr class="my-4" />
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="tempatlahir">Tempat lahir</label>
-                    <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                      @foreach ($kotas as $kota )
-                      <option value="{{ $kota->provinsi }}" {{ $kota->provinsi == $info_kandidat->tempatlahir ? 'selected' : ''}}>{{ $kota->provinsi }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="tgllahir">Tanggal Lahir</label>
-                    {{-- {{ dd($info_kandidat->tglLahir) }} --}}
-                    <input class="form-control" type="date" id="tgllahir" name="tgllahir" value="{{ $info_kandidat->tglLahir}}" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                  </div>
-                </div>
-              </div>
-              <hr class="my-4" />
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label class="form-control-label" for="tempatlahir">URL proto</label>
-                    <input type="text" class="form-control" id="porto" name="porto" value="{{ $info_kandidat->urlPorto }}" {{ $disabled == "true" ? 'disabled' : ''}}>
-                  </div>
+                <div class="col-4 text-right">
+                  {{-- <a href="#!" class="btn btn-sm btn-primary">update</a> --}}
+                  <button type="submit" class="btn btn-primary btnsbmt" {{ $disabled == "true" ? 'hidden' : ''}}>Update</button>
                 </div>
               </div>
             </div>
+            <div class="card-body">
+              {{-- <h6 class="heading-small text-muted mb-4">Info Kandidat</h6> --}}
+              <div class="pl-lg-4">
+                <div class="row">
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="namalengkap">Nama lengkap</label>
+                      <input type="text" id="namalengkap" name="namalengkap" class="form-control" placeholder="Nama Lengkap Kandidat" value="{{ $info_kandidat->namalengkap }}" {{ $disabled == "true" ? 'disabled' : ''}}>
+                      
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="gender">Gender</label>
+                      <select class="form-control" id="gender" name="gender" {{ $disabled == "true" ? 'disabled' : ''}}>
+                        <option value="Pria" {{ $info_kandidat->gender == "Pria" ? 'selected' : ''}}>Pria</option>
+                        <option value="Wanita"  {{ $info_kandidat->gender == "Wanita" ? 'selected' : ''}}>Wanita</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="status_perkawinan">Status Perkawinan</label>
+                      <select class="form-control" id="status_perkawinan" name="status_perkawinan" {{ $disabled == "true" ? 'disabled' : ''}}>
+                          <option value="" selected disabled>Status</option>
+                        @foreach ($StatusPerkawinan  as $status )
+                          <option value="{{ $status->MaritalStId }}" {{ $status->MaritalStId == $info_kandidat->status_perkawinan ? 'selected' : ''}}>{{ $status->MaritalSt }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="noidentitas">No Idendtias (KTP)</label>
+                    <input type="text" class="form-control" id="noidentitas" name="noidentitas"placeholder="NO Identitas"  value="{{ $info_kandidat->noidentitas }}"  maxlength="45" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="npwp">NPWP</label>
+                      <input type="text" class="form-control" id="npwp" name="npwp" value="{{ $info_kandidat->npwp }}" placeholder="NPWP" maxlength="45" {{ $disabled == "true" ? 'disabled' : ''}}>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-control-label" for="goldarah">Gol. Darah</label>
+                      <select class="form-control" id="goldarah" name="goldarah" {{ $disabled == "true" ? 'disabled' : ''}}>
+                        <option value="" selected >Gol.Darah</option>
+                        <option value="O" {{ $info_kandidat->golDarah=='O'?"selected":"" }} >O</option>
+                        <option value="A" {{ $info_kandidat->golDarah=='A'?"selected":"" }}>A</option>
+                        <option value="B" {{ $info_kandidat->golDarah=='B'?"selected":"" }}>B</option>
+                        <option value="AB" {{ $info_kandidat->golDarah=='AB'?"selected":"" }}>AB</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-control-label" for="motor">Memiliki motor</label>
+                      <select class="form-control" id="motor" name="motor" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        <option value="0" {{ $info_kandidat->memilikiMotor=='0'?"selected":"" }}>Tidak punya</option>
+                        <option value="1" {{ $info_kandidat->memilikiMotor=='1'?"selected":"" }}>Punya</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label class="form-control-label" for="PMR">Pengalaman MR</label>
+                      <select class="form-control" id="PMR" name="PMR" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        <option value="0" {{ $info_kandidat->pengalamanMR=='0'?"selected":"" }}>Tidak ada</option>
+                        <option value="<1" {{ $info_kandidat->pengalamanMR=='<1'?"selected":"" }}>< 1 Tahun</option>
+                        <option value=">1" {{ $info_kandidat->pengalamanMR=='>1'?"selected":"" }}>> 1 Tahun</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="domisili">Domisili saatini</label>
+                      <select class="form-control" id="domisili" name="domisili" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        @foreach ($kotas as $kota )
+                        <option value="{{ $kota->CityId }}" {{ $kota->CityId == $info_kandidat->domisilisaatini ? 'selected' : ''}}>{{ $kota->CityName }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {{-- disini --}}
+                {{-- <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="nohp">NO HP</label> --}}
+                      {{-- disini --}}
+                      {{-- <input type="text" class="form-control" id="nohp" name="nohp" value="{{ $info_kandidat->nohp }}" maxlength="45" placeholder="08123456789" required {{ $disabled == "true" ? 'disabled' : ''}}> --}}
+                    {{-- </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="npwp">Email</label> --}}
+                      {{-- disini --}}
+                      {{-- <input type="email" class="form-control" id="email" value="{{ $info_kandidat->email }}" name="email" maxlength="45" required {{ $disabled == "true" ? 'disabled' : ''}}> --}}
+                    {{-- </div>
+                  </div>
+                </div> --}}
+                {{-- <hr class="my-4" /> --}}
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="tempatlahir">Tempat lahir</label>
+                      <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        @foreach ($kotas as $kota )
+                        <option value="{{ $kota->CityId }}" {{ $kota->CityId == $info_kandidat->tempatlahir ? 'selected' : ''}}>{{ $kota->CityName }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" for="tgllahir">Tanggal Lahir</label>
+                      {{-- {{ dd($info_kandidat->tglLahir) }} --}}
+                      <input class="form-control" type="date" id="tgllahir" name="tgllahir" value="{{ str_replace(" 00:00:00.000","",$info_kandidat->tglLahir)}}" requiredd>
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4" />
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label class="form-control-label" for="tempatlahir">URL proto</label>
+                      <input type="text" class="form-control" id="porto" name="porto" value="{{ $info_kandidat->urlPorto }}" {{ $disabled == "true" ? 'disabled' : ''}}>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
           </div>
-          
-        </div>
         </form>
       </div>
       {{-- END CARD SEBELAJ KANAN --}}
@@ -745,6 +807,76 @@
     <form method="POST" action="{{ route('dk.UpdateForm1_1') }}" class="p1">
       @csrf
       <input name="id_kandidat2" value="{{ $info_kandidat->id }}" hidden>
+      {{-- KONTAK --}}
+      <div class="row p1">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col-11">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">info kandidat</h6>
+                  <h5 class="h3 mb-0">KONTAK</h5>
+                </div>
+                <div class="col-1">
+                  <button id="btnhide_kontak" type="button" class="btn btn-success d-flex btnhide" data-value="1">
+                    <span id="span_kontak" class="material-symbols-outlined">
+                      open_in_full
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" id="body_kontak" hidden>
+              {{-- <div id="list_tlp">
+                
+              </div> --}}
+              <div class="table-responsive">
+                <table class="table" id="Tbltlp">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Tipe</th>
+                      <th>Area</th>
+                      <th>No Tlp</th>
+                      <th {{ $disabled == "true" ? 'hidden' : ''}}>
+                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-tlp">
+                        <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_tlp">
+
+                  </tbody>
+                </table>
+              </div>
+              <hr class="my-4">
+              {{-- <div id="list_email">
+                
+              </div> --}}
+              <div class="table-responsive">
+                <table class="table" id="Tblemail">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Tipe</th>
+                      <th>Email</th>
+                      <th {{ $disabled == "true" ? 'hidden' : ''}}>
+                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-email">
+                        <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_email">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{-- END KONTAK --}}
+
       {{-- ALAMAT --}}
       <div class="row p1">
         <div class="col-xl-12">
@@ -764,90 +896,124 @@
                 </div>
               </div>
             </div>
+            {{-- {{ dd($info_kandidat) }} --}}
             <div class="card-body" id="body_alamat" hidden>
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamatlengkap">Alamat Lengkap(KTP)</label>
-                    <input type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" value="{{ $info_kandidat->alamatlengkap}}" maxlength="220" required {{ $disabled == "true" ? 'disabled' : ''}}>
+              @if ($info_kandidat->jobfair==1 && $info_kandidat->updated_at ==null)
+                <h1>data blm ada</h1>
+              @elseif($info_kandidat->jobfair!=1 || ($info_kandidat->jobfair==1 && $info_kandidat->updated_at <>null))
+                <div class="row">
+                  <div class="col-lg-8">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Alamat Lengkap(KTP)</label>
+                      <input type="text" class="form-control" id="alamatlengkap" name="alamatlengkap" value="{{ $info_kandidat->alamatlengkap}}" maxlength="220" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="KTP">RT (KTP)</label>
+                      <input type="text" class="form-control" id="RT_KTP" name="RT_KTP" value="{{ $info_kandidat->RT_ktp}}" maxlength="10">
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="KTP">RW (KTP)</label>
+                      <input type="text" class="form-control" id="RW_KTP" name="RW_KTP" value="{{ $info_kandidat->RW_ktp}}" maxlength="10">
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="rumahmilik">Rumah Milik*</label>
-                    <select class="form-control" id="rumahmilik" name="rumahmilik" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                      <option value="" disabled selected>rumah milik</option>
-                      <option value="Sendiri" {{ "Sendiri" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Sendiri</option>
-                      <option value="Orangtua" {{ "Orangtua" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Orangtua</option>
-                      <option value="Sewa" {{ "Sewa" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Sewa</option>
-                      <option value="Indekost" {{ "Indekost" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Indekost</option>
-                    </select>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="rumahmilik">Rumah Milik*</label>
+                      <select class="form-control" id="rumahmilik" name="rumahmilik" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        <option value="" disabled selected>rumah milik</option>
+                        @foreach ( $StatusRumah as $status )
+                        <option value="{{ $status->HouseStatusId }}" {{ $info_kandidat->rumahmilik==$status->HouseStatusId ? "selected":"" }}>{{ $status->HouseStatus }}</option>
+                        @endforeach
+                        {{-- <option value="Sendiri" {{ "Sendiri" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Sendiri</option>
+                        <option value="Orangtua" {{ "Orangtua" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Orangtua</option>
+                        <option value="Sewa" {{ "Sewa" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Sewa</option>
+                        <option value="Indekost" {{ "Indekost" == $info_kandidat->rumahmilik ? 'selected' : ''}}>Indekost</option> --}}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="kota">Kota*</label>
+                      <select class="js-example-basic-single form-control" name="kota1" id="kota1" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        @foreach ($kotas as $kota )
+                          <option value="{{ $kota->CityId }}" {{ $info_kandidat->kota1 == $kota->CityId ? "selected":"" }}>{{ $kota->CityName }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+
+                      <label class="form-control-label" for="kodepos">kode pos</label>
+                      <input type="number" class="form-control" id="kodepos" name="kodepos" value="{{ $info_kandidat->kodepos }}" min="1" required>
+                      {{-- <select class="js-example-basic-single form-control" name="kodepos" id="kodepos" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        <option value="{{ $info_kandidat->kodepos }}" selected>{{ $info_kandidat->kodepos }}</option>
+                      </select> --}}
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="kota">Kota*</label>
-                    <select class="js-example-basic-single form-control" name="kota1" id="kota1" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                      @foreach ($kotas as $kota )
-                          <option value="{{ $kota->kabupaten }}" {{ $kota->kabupaten == $info_kandidat->kota1 ? 'selected' : ''}}>{{ $kota->kabupaten }}</option>
-                          @endforeach
-                    </select>
+                <hr class="my-4">
+                <div class="row">
+                  <div class="col-lg-8">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamat_koresponden">Alamat Korespondensi*</label>
+                        <input type="text" class="form-control" id="alamat_koresponden" name="alamat_koresponden" value="{{ $info_kandidat->alamat_koresponden }}" maxlength="220" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="koresponden">RT</label>
+                      <input type="text" class="form-control" id="RT_koresponden" name="RT_koresponden" value="{{ $info_kandidat->RT_koresponden }}" maxlength="10">
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <div class="form-group">
+                      <label class="form-control-label" for="koresponden">RW</label>
+                      <input type="text" class="form-control" id="RW_koresponden" name="RW_koresponden" value="{{ $info_kandidat->RW_koresponden }}" maxlength="10">
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label id="temp_kodepos">{{ $info_kandidat->kodepos}}</label>
-                    <label class="form-control-label" for="kodepos">kode pos</label>
-                    <select class="js-example-basic-single form-control" name="kodepos" id="kodepos" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                      <option value="{{ $info_kandidat->kodepos }}" selected>{{ $info_kandidat->kodepos }}</option>
-                    </select>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="rumahmilik">Rumah Milik*</label>
+                      <select class="form-control" id="rumahmilik_koresponden" name="rumahmilik_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        <option value="" disabled selected>rumah milik</option>
+                        @foreach ( $StatusRumah as $status )
+                        <option value="{{ $status->HouseStatusId }}" {{ $info_kandidat->rumahmilik_koresponden==$status->HouseStatusId ? "selected":"" }}>{{ $status->HouseStatus }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="kota">Kota*</label>
+                      <select class="js-example-basic-single form-control" name="kota_koresponden" id="kota_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        @foreach ($kotas as $kota )
+                          <option value="{{ $kota->CityId }}" {{ $info_kandidat->kota_koresponden == $kota->CityId ? "selected":"" }}>{{ $kota->CityName }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="kodepos">kode pos</label>
+                      {{-- <select class="js-example-basic-single form-control" name="kodepos_koresponden" id="kodepos_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
+                        <option value="{{ $info_kandidat->kodepos_koresponden }}" selected>{{ $info_kandidat->kodepos_koresponden }}</option>
+                      </select> --}}
+                      <input type="number" class="form-control" id="kodepos_koresponden" name="kodepos_koresponden" value="{{ $info_kandidat->kodepos_koresponden }}" min="1" required>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <hr class="my-4">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label class="form-control-label" for="alamat_koresponden">Alamat Korespondensi*</label>
-                      <input type="text" class="form-control" id="alamat_koresponden" name="alamat_koresponden" value="{{ $info_kandidat->alamat_koresponden }}" maxlength="220" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="rumahmilik">Rumah Milik*</label>
-                    <select class="form-control" id="rumahmilik_koresponden" name="rumahmilik_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                      <option value="" disabled selected>rumah milik</option>
-                      <option value="Sendiri" {{ "Sendiri" == $info_kandidat->rumahmilik_koresponden ? 'selected' : ''}}>Sendiri</option>
-                      <option value="Orangtua" {{ "Orangtua" == $info_kandidat->rumahmilik_koresponden ? 'selected' : ''}}>Orangtua</option>
-                      <option value="Sewa" {{ "Sewa" == $info_kandidat->rumahmilik_koresponden ? 'selected' : ''}}>Sewa</option>
-                      <option value="Indekost" {{ "Indekost" == $info_kandidat->rumahmilik_koresponden ? 'selected' : ''}}>Indekost</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="kota">Kota*</label>
-                    <select class="js-example-basic-single form-control" name="kota_koresponden" id="kota_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                      @foreach ($kotas as $kota )
-                          <option value="{{ $kota->kabupaten }}" {{ $kota->kabupaten == $info_kandidat->kota_koresponden ? 'selected' : ''}}>{{ $kota->kabupaten }}</option>
-                          @endforeach
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label id="temp_kodepos">{{ $info_kandidat->kodepos}}</label>
-                    <label class="form-control-label" for="kodepos">kode pos</label>
-                    <select class="js-example-basic-single form-control" name="kodepos_koresponden" id="kodepos_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                      <option value="{{ $info_kandidat->kodepos_koresponden }}" selected>{{ $info_kandidat->kodepos_koresponden }}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
+              @endif
+              
+              
             </div>
           </div>
         </div>
@@ -880,6 +1046,8 @@
                     <tr>
                       <th>SIM</th>
                       <th>NO SIM</th>
+                      <th>Kota Penerbit</th>
+                      <th>Expired</th>
                       <th {{ $disabled == "true" ? 'hidden' : ''}}>
                         <button type="button" class="btn btn-success d-flex" id="btnAddRow-sim">
                         <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
@@ -918,23 +1086,14 @@
               </div>
             </div>
             <div class="card-body" id="body_pendidikan" hidden>
-              <div class="table-responsive">
-                <div class="table-responsive">
-                  <table class="table" id="TblSim">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>Pendidikan</th>
-                        <th>Nama Sekolah</th>
-                        <th>Jurusan</th>
-                        <th>kota</th>
-                        <th>tahun</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tbody_pendidikan">
-                    </tbody>
-                  </table>
-                </div>
+              {{-- @if ($info_kandidat->jobfair==1 && $info_kandidat->updated_at ==null)
+                <h3>data tidak ada</h3>
+              @elseif($info_kandidat->jobfair!=1 || ($info_kandidat->jobfair==1 && $info_kandidat->updated_at <>null)) --}}
+              <div id="list_pendidikan">
+                
               </div>
+              {{-- @endif --}}
+              
             </div>
           </div>
         </div>
@@ -961,12 +1120,15 @@
               </div>
             </div>
             <div class="card-body" id="body_pekerjaan" hidden>
+              @if ($info_kandidat->jobfair==1 && $info_kandidat->updated_at ==null)
+                <h3>data blm ada</h3>
+              @elseif($info_kandidat->jobfair!=1 || ($info_kandidat->jobfair==1 && $info_kandidat->updated_at <>null))
+              <div id="rw_p">
+                {{-- isinya disni --}}
+              </div>
               <div class="d-flex">
                 <h5 class="h5 mb-0 mr-3">RIWAYAT PEKERJAAN</h5>
                 <button type="button" class="btn btn-primary" id="btnAddRow-pekerjaan" {{ $disabled == "true" ? 'hidden' : ''}}>Tambah</button>
-              </div>
-              <div id="rw_p">
-                {{-- isinya disni --}}
               </div>
               <hr class="my-4">
               <div class="row">
@@ -1004,7 +1166,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label class="form-control-label" for="tanggungjawab">prestasi yang pernah saudara lakukan</label>
-                      <textarea class="form-control" id="tanggungjawab" rows="3" resize="none" name="tanggungjawab" {{ $disabled == "true" ? 'disabled' : ''}}>{{$info_kandidat->prestasi}}</textarea>
+                      <textarea class="form-control" id="prestasi" rows="3" resize="none" name="prestasi" {{ $disabled == "true" ? 'disabled' : ''}}>{{$info_kandidat->prestasi}}</textarea>
                     </div>
                   </div>
                 </div>
@@ -1051,6 +1213,8 @@
                   </div>
                 </div>
               </div>
+              @endif
+              
             </div>
           </div>
         </div>
@@ -1065,7 +1229,7 @@
       @csrf
       <input name="id_kandidat3" value="{{ $info_kandidat->id }}" hidden>
       {{-- Start data --}}
-      <div class="row p2">
+      {{-- <div class="row p2">
         <div class="col-xl-12">
           <div class="card">
             <div class="card-header bg-transparent">
@@ -1084,26 +1248,6 @@
               </div>
             </div>
             <div class="card-body" id="body_data" hidden>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="goldarah">Golongan Darah</label>
-                    <select class="form-control" id="goldarah" name="goldarah" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                      <option value="O" {{ $info_kandidat2->golDarah=='O'?"selected":"" }} >O</option>
-                      <option value="A" {{ $info_kandidat2->golDarah=='A'?"selected":"" }}>A</option>
-                      <option value="B" {{ $info_kandidat2->golDarah=='B'?"selected":"" }}>B</option>
-                      <option value="AB" {{ $info_kandidat2->golDarah=='AB'?"selected":"" }}>AB</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="tlprumah">Telp. rumah</label>
-                    <input type="text" class="form-control" id="tlprumah" name="tlprumah" placeholder="(kode)12312123" maxlength="18" value="{{ $info_kandidat2->noTlp }}" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                  </div>
-                </div>
-              </div>
-              <hr class="my-4">
               <div class="row" >
                 <div class="col-md-6">
                   <div class="form-group">
@@ -1121,7 +1265,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
       {{-- End data --}}
 
       {{-- Start pelatihan --}}
@@ -1144,6 +1288,9 @@
               </div>
             </div>
             <div class="card-body" id="body_pelatihan" hidden>
+              @if ($info_kandidat->jobfair==1)
+                <h3>data blm ada</h3>
+              @else
               <div class="table-responsive">
                 <table class="table" id="Tblpelatihan">
                   <thead class="thead-light">
@@ -1163,6 +1310,7 @@
                   </tbody>
                 </table>
               </div>
+              @endif
             </div>
           </div>
         </div>
@@ -1189,6 +1337,9 @@
               </div>
             </div>
             <div class="card-body" id="body_pendidikan2" hidden>
+              @if ($info_kandidat->jobfair==1)
+                <h3>data blm ada</h3>
+              @else
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
@@ -1225,6 +1376,7 @@
                     </tbody>
                   </table>
                 </div>
+              @endif
             </div>
           </div>
         </div>
@@ -1251,48 +1403,53 @@
               </div>
             </div>
             <div class="card-body" id="body_aktivitas" hidden>
+              @if ($info_kandidat->jobfair==1)
+                <h3>data blm ada</h3>
+              @else
               <label class="form-control-label" for="organisasi">Keanggotaan dalam organisasi / lembaga :</label>
-                <div class="table-responsive">
-                  <table class="table" id="Tblorganisasi">
-                    <thead class="thead-light">
-                      <tr>
-                        <th style="width: 23.75%;">Nama Organisasi</th>
-                        <th style="width: 23.75%;">Kota</th>
-                        <th style="width: 23.75%;">Jabatan</th>
-                        <th style="width: 23.75%;">Dari/Sampai(Tahun)</th>
-                        <th style="width: 5%;" {{ $disabled == "true" ? 'hidden' : ''}}> 
-                          <button type="button" class="btn btn-success d-flex" id="btnAddRow-organisasi">
-                            <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
-                          </button>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody id="tbody_organisasi">
+              <div class="table-responsive">
+                <table class="table" id="Tblorganisasi">
+                  <thead class="thead-light">
+                    <tr>
+                      <th style="width: 23.75%;">Nama Organisasi</th>
+                      <th style="width: 23.75%;">Kota</th>
+                      <th style="width: 23.75%;">Jabatan</th>
+                      <th style="width: 23.75%;">Dari/Sampai(Tahun)</th>
+                      <th style="width: 5%;" {{ $disabled == "true" ? 'hidden' : ''}}> 
+                        <button type="button" class="btn btn-success d-flex" id="btnAddRow-organisasi">
+                          <span class="material-symbols-outlined" style="font-size: 15px;">add</span>
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_organisasi">
 
-                    </tbody>
-                  </table>
-                </div>
-                <hr class="my-4">
-                <div class="row" >
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label class="form-control-label" for="waktuluang">Kegiatan pada waktu luang</label>
-                      <input type="text" class="form-control" id="waktuluang" name="waktuluang" maxlength='2000' value="{{ $info_kandidat2->kegiatan }}" {{ $disabled == "true" ? 'disabled' : ''}}>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label class="form-control-label" for="suratkabar">Surat kabar / majalah yang sering dibaca</label>
-                      <input type="text" class="form-control" id="suratkabar" name="suratkabar" maxlength='2000' value="{{ $info_kandidat2->suratKabar }}" {{ $disabled == "true" ? 'disabled' : ''}}>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label class="form-control-label" for="topik">Topik yang diminati untuk dibaca</label>
-                      <input type="text" class="form-control" id="topik" name="topik" maxlength='2000' value="{{ $info_kandidat2->topik }}" {{ $disabled == "true" ? 'disabled' : ''}}>
-                    </div>
+                  </tbody>
+                </table>
+              </div>
+              <hr class="my-4">
+              <div class="row" >
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="waktuluang">Kegiatan pada waktu luang</label>
+                    <input type="text" class="form-control" id="waktuluang" name="waktuluang" maxlength='2000' value="{{ $info_kandidat2->kegiatan }}" {{ $disabled == "true" ? 'disabled' : ''}}>
                   </div>
                 </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="suratkabar">Surat kabar / majalah yang sering dibaca</label>
+                    <input type="text" class="form-control" id="suratkabar" name="suratkabar" maxlength='2000' value="{{ $info_kandidat2->suratKabar }}" {{ $disabled == "true" ? 'disabled' : ''}}>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label" for="topik">Topik yang diminati untuk dibaca</label>
+                    <input type="text" class="form-control" id="topik" name="topik" maxlength='2000' value="{{ $info_kandidat2->topik }}" {{ $disabled == "true" ? 'disabled' : ''}}>
+                  </div>
+                </div>
+              </div>
+              @endif
+              
             </div>
           </div>
         </div>
@@ -1319,21 +1476,19 @@
               </div>
             </div>
             <div class="card-body" id="body_keluarga" hidden>
-              <div id="kelaurga1">
-                {{-- isinya ayah ibu --}}
-              </div>
-              <div id="kelaurga2">
-                {{-- isinya kakak adik --}}
-              </div>
-              <div id="kelaurga3">
-                {{-- isinya suami istri --}}
-              </div>
-              <div id="kelaurga4">
-                {{-- isinya anak --}}
-              </div>
-              <div id="kelaurga5">
-                {{-- isinya mertua --}}
-              </div>
+              @if ($info_kandidat->jobfair==1)
+                <h3>data blm ada</h3>
+              @else
+                <div id="list_keluarga">
+
+                </div>
+                <div class="form-group">
+                  <button type="button" class="btn btn-success d-flex" id="btnAdd-keluarga">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="gap-logo">Keluarga</span>
+                  </button>
+                </div>
+              @endif
             </div>
           </div>
         </div>
@@ -1360,6 +1515,24 @@
               </div>
             </div>
             <div class="card-body" id="body_lain2" hidden>
+              @if ($info_kandidat->jobfair==1)
+                <h3>data blm ada</h3>
+              @else
+              <div class="row" >
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="alasan">Alasan / tujuan Saudara melamar di perusahaan ini :</label>
+                    <input type="text" class="form-control" id="alasan" name="alasan" maxlength='2000' value="{{ $info_kandidat2->alasanMelamar }}" {{ $disabled == "true" ? 'disabled' : ''}}>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="lingkungankerja">Lingkungan pekerjaan yang Saudara sukai :</label>
+                    <input type="text" class="form-control" id="lingkungankerja" name="lingkungankerja" maxlength='2000' value="{{ $info_kandidat2->lingkunganKerja }}" {{ $disabled == "true" ? 'disabled' : ''}}>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4">
               <div class="row" >
                 <div class="col-md-6">
                   <div class="form-group">
@@ -1584,11 +1757,14 @@
                   </tbody>
                 </table>
               </div>
+              @endif
+              
             </div>
           </div>
         </div>
       </div>
       {{-- End Lain-lain --}}
+
       <button type="submit" class="btn btn-primary btnsbmt" {{ $disabled == "true" ? 'hidden' : ''}}>Update</button>
     </form>
     @else

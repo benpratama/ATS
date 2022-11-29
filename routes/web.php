@@ -238,8 +238,6 @@ Route::middleware('auth')->group(function(){
 Route::get('/form-kandidat-jf/{url}','FormKandidatController@ShowFormjf')->name('fk.ShowFormjf');
 Route::Post('/submit/form-kandidat-jf','FormKandidatController@SubmitFormjf')->name('fk.SubmitFormjf');
 Route::get('/form-kandidat/{url}','FormKandidatController@ShowForm1')->name('fk.ShowForm1');
-Route::get('/form-kandidat/get/sim','FormKandidatController@GetSIM')->name('fk.GetSIM');
-Route::get('/form-kandidat/get/edulvlandcity','FormKandidatController@GetEduLvlandCity')->name('fk.GetEduLvlandCity');
 Route::post('/form-kandidat/kodepos','FormKandidatController@ShowKodePos')->name('fk.ShowKodePos');
 Route::Post('/submit/form-kandidat','FormKandidatController@SubmitForm1')->name('fk.SubmitForm1');
 Route::get('/getpendidikan/form-kandidat-jf/{id}','FormKandidatController@GetPendidikanF')->name('fk.GetPendidikanF');
@@ -248,6 +246,10 @@ Route::view('/submit/finish','form kandidat/terimakasih')->name('fk.terimakasih'
 Route::get('/form-kandidat/phase2/{url}','FormKandidatController@ShowForm2')->name('fk.ShowForm2');
 Route::Post('/submit/form-kandidat2','FormKandidatController@SubmitForm2')->name('fk.SubmitForm2');
 
+//data form
+Route::get('/form-kandidat/get/edulvlandcity','FormKandidatController@GetEduLvlandCity')->name('fk.GetEduLvlandCity');
+Route::get('/form-kandidat/get/famrel','FormKandidatController@GetFamRel')->name('fk.GetFamRel');
+Route::get('/form-kandidat/get/sim','FormKandidatController@GetSIM')->name('fk.GetSIM');
 
 ///////////////REQUESTOR///////////////////
 
