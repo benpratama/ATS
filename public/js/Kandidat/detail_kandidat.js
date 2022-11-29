@@ -1004,22 +1004,23 @@ function adddelete_sim(){
         html+='<tr class="simbaris'+data_sim+'">'
         html+=  '<td>'
         html+=    '<select name="sim[]" class="form-control">'
+        html +=     "<option value='' disabled selected>Jenis SIM</option>"
         data.forEach(element => {
         html+=      '<option value="'+element.id_proint+'">'+element.nama+'</option>'
         });
         html+=    '</select>'
         html+=  '</td>'
         html+=  '<td>'
-        html+=    '<input name="nosim[]" class="form-control" type="text" required>'
+        html+=    '<input name="nosim[]" class="form-control" type="text">'
         html+=  '</td>'
         html+=  '<td>'
-        html+=    '<input name="publisher[]" class="form-control" type="text" required>'
+        html+=    '<input name="publisher[]" class="form-control" type="text">'
         html+=  '</td>'
         html+=  '<td>'
-        html+=    '<input name="expired[]" class="form-control" type="date" required>'
+        html+=    '<input name="expired[]" class="form-control" type="date">'
         html+=  '</td>'
         html+=  '<td>'
-        html +=    "<button type='button' class='btn btn-danger d-flex btnDel-sim' data-row='simbaris"+data_sim+"'required>"
+        html +=    "<button type='button' class='btn btn-danger d-flex btnDel-sim' data-row='simbaris"+data_sim+"'>"
         html +=       "<span class='material-symbols-outlined'>delete</span>"
         html +=    "</button>"
         html+=  '</td>'
