@@ -18,7 +18,7 @@ function AddDelPendidikan(){
     });
     $.ajax({
       _token: '{{ csrf_token() }}',
-      url: '/form-kandidat/get/edulvl',
+      url: '/form-kandidat/get/edulvlandcity',
       type: 'get'
     }).done((data) => {
       console.log(JSON.stringify(data));
@@ -28,7 +28,7 @@ function AddDelPendidikan(){
     html +=       "<label class='form-control-label' for='pendidikan'>Jenis*</label>"
     html +=       "<select class='form-control' id='jenis_pendidikan' name='jenis_pendidikan[]' required>"
     html +=         "<option value='' selected disabled>Jenis Pendidikan</option>"
-    data.forEach(element => {
+    data[0].forEach(element => {
     html +=         "<option value='"+element.EduLvlId+"'>"+element.EduLvlName+"</option>"
     });
     html +=       "</select>"

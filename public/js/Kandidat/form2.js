@@ -12,6 +12,7 @@ $( document ).ready(function() {
   sakit();
   psikologis();
   saudara();
+  AddDelKeluarga();
 });
 
 var data_pelatihan=0
@@ -219,7 +220,7 @@ function AddDelOrganisasi(){
     html +=     "<div class='col-md-3'>"
     html +=       "<div class='form-group'>"
     html +=         "<label class='form-control-label' for='organisasi'>Kota</label>"
-    html +=         "<input type='text' class='form-control' id='nama_organisasi' name='nama_organisasi[]' maxlength='2000'>"
+    html +=         "<input type='text' class='form-control' id='kota_organisasi' name='kota_organisasi[]' maxlength='2000'>"
     html +=       "</div>"
     html +=     "</div>"
     html +=     "<div class='col-md-3'>"
@@ -354,42 +355,176 @@ function AddDellKaryawan(){
 
 var baris_saudara=0
 function Row_saudara(){
-  $('#btnAddRow-saudarafarmasi').on('click',function(){
+  $('#btnAdd-saudarafarmasi').on('click',function(){
     baris_saudara+=1;
-    
-    var html  = "<tr id='baris_saudara"+baris_saudara+"' class='detail_saudara'>"
-        html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='hubungan_saudarafarmasi[]' maxlength='220' required>"
-        html +=   "</td>" 
-        html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='nama_saudarafarmasi[]' maxlength='220' required>"
-        html +=   "</td>" 
-        html +=   "<td style='width: 19%;'>"
-        html +=     "<select class='form-control' id='LPsaudara' name='LP_saudarafarmasi[]' required>"
-        html +=       "<option value='' disabled selected>L/P</option>"
-        html +=       "<option value='L'>L</option>"
-        html +=       "<option value='P'>P</option>"
-        html +=     "</select>"
-        html +=   "</td>" 
-        html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='perushaan_saudarafarmasi[]' maxlength='220' required>"
-        html +=   "</td>"
-        html +=   "<td style='width: 19%;'>"
-        html +=     "<input class='form-control'  type='text' name='jabatan_saudarafarmasi[]'maxlength='220' required>"
-        html +=   "</td>"
-        html +=   "<td style='width: 5%;'>"
-        html +=     "<button type='button' class='btn btn-danger' data-row='baris_saudara"+baris_saudara+"' id='btnDelRow-saudarafarmasi'>"
+    var html = "<div class='row sdr' id='baris_saudara"+baris_saudara+"'>"
+
+        html +=   "<div class='col-md-2'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='kerabat'>Hubungan</label>"
+        html +=       "<input class='form-control' type='text' id='hubungan_saudarafarmasi' name='hubungan_saudarafarmasi[]' maxlength='220'required>"
+        html +=     "</div>"
+        html +=   "</div>"
+
+        html +=   "<div class='col-md-3'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='kerabat'>Nama</label>"
+        html +=       "<input class='form-control' type='text' id='nama_saudarafarmasi' name='nama_saudarafarmasi[]' maxlength='220'required>"
+        html +=     "</div>"
+        html +=   "</div>"
+
+        html +=   "<div class='col-md-1'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='kerabat'>Gender</label>"
+        html +=       "<select class='form-control' id='LPsaudara' name='LP_saudarafarmasi[]' required>"
+        html +=         "<option value='' disabled selected>L/P</option>"
+        html +=         "<option value='L'>L</option>"
+        html +=         "<option value='P'>P</option>"
+        html +=       "</select>"
+        html +=     "</div>"
+        html +=   "</div>"
+
+        html +=   "<div class='col-md-3'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='kerabat'>Nama Perushaan*</label>"
+        html +=       "<input class='form-control' type='text' id='perushaan_saudarafarmasi' name='perushaan_saudarafarmasi[]' maxlength='220'required>"
+        html +=     "</div>"
+        html +=   "</div>"
+
+        html +=   "<div class='col-md-2'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='kerabat'>Jabatan*</label>"
+        html +=       "<input class='form-control' type='text' id='jabatan_saudarafarmasi' name='jabatan_saudarafarmasi[]' maxlength='220'required>"
+        html +=     "</div>"
+        html +=   "</div>"
+
+        html +=   "<div class='col-md-1'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='kerabat'> </label>"
+        html +=     "<button type='button' class='btn btn-danger' style='margin-top: 2.3em;' data-row='baris_saudara"+baris_saudara+"' id='btnDelRow-saudarafarmasi'>"
         html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
         html +=     "</button>"
-        html +=   "</td>"   
-        html +="</tr>"
+        html +=     "</div>"
+        html +=   "</div>"
 
-    $('#Tblsaudarafarmasi').append(html);
+        html += "</div>"
+    // var html  = "<tr id='baris_saudara"+baris_saudara+"' class='detail_saudara'>"
+    //     html +=   "<td style='width: 19%;'>"
+    //     html +=     "<input class='form-control'  type='text' name='hubungan_saudarafarmasi[]' maxlength='220' required>"
+    //     html +=   "</td>" 
+    //     html +=   "<td style='width: 19%;'>"
+    //     html +=     "<input class='form-control'  type='text' name='nama_saudarafarmasi[]' maxlength='220' required>"
+    //     html +=   "</td>" 
+    //     html +=   "<td style='width: 19%;'>"
+    //     html +=     "<select class='form-control' id='LPsaudara' name='LP_saudarafarmasi[]' required>"
+    //     html +=       "<option value='' disabled selected>L/P</option>"
+    //     html +=       "<option value='L'>L</option>"
+    //     html +=       "<option value='P'>P</option>"
+    //     html +=     "</select>"
+    //     html +=   "</td>" 
+    //     html +=   "<td style='width: 19%;'>"
+    //     html +=     "<input class='form-control'  type='text' name='perushaan_saudarafarmasi[]' maxlength='220' required>"
+    //     html +=   "</td>"
+    //     html +=   "<td style='width: 19%;'>"
+    //     html +=     "<input class='form-control'  type='text' name='jabatan_saudarafarmasi[]'maxlength='220' required>"
+    //     html +=   "</td>"
+    //     html +=   "<td style='width: 5%;'>"
+    //     html +=     "<button type='button' class='btn btn-danger' data-row='baris_saudara"+baris_saudara+"' id='btnDelRow-saudarafarmasi'>"
+    //     html +=       "<span class='material-symbols-outlined' style='font-size: 15px;'>delete</span>" 
+    //     html +=     "</button>"
+    //     html +=   "</td>"   
+    //     html +="</tr>"
+
+    $('#datasaudarafarmasi').append(html);
   })
     $(document).on('click','#btnDelRow-saudarafarmasi',function(){
       var hapus = $(this).data('row')
       console.log(hapus);
       $('#'+hapus).remove();
+  })
+}
+
+var baris_keluarga =0
+function AddDelKeluarga(){
+  $('#btnAdd-keluarga').on('click',function(){
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/form-kandidat/get/famrel',
+        type: 'get',
+      }).done((data) => {
+        baris_keluarga+=1;
+        var html =''
+        html +="<div id='keluarga"+baris_keluarga+"' class='brdr'>"
+        html +=   "<div class='row'>"
+        html +=     "<div class='col-md-3'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='keluarga'>Hubungan*</label>"
+        html +=         "<select class='form-control' id='hubungan_kel' name='hubungan_kel[]'>"
+        html +=           "<option value='' disabled selected>Hubungan</option>"
+        data.forEach(element => {
+        html +=           "<option value='"+element.FamRelId+"'>"+element.FamRelName+"</option>" 
+        });
+        html +=         "</select>"
+        html +=       "</div>"
+        html +=     "</div>"
+
+        html +=     "<div class='col-md-3'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='keluarga'>Nama*</label>"
+        html +=         "<input type='text' class='form-control' id='nama_kel' name='nama_kel[]' maxlength='2000'>"
+        html +=       "</div>"
+        html +=     "</div>"
+
+        html +=     "<div class='col-md-2'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='keluarga'>Gender</label>"
+        html +=         "<select class='form-control' id='gender_kel' name='gender_kel[]'>"
+        html +=           "<option value='' disabled selected>Gender</option>"
+        html +=           "<option value='1'>Pria</option>"
+        html +=           "<option value='2'>Wanita</option>"
+        html +=         "</select>"
+        html +=       "</div>"
+        html +=     "</div>"
+
+        html +=     "<div class='col-md-2'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='keluarga'>Tanggal Lahir*</label>"
+        html +=         "<input type='date' class='form-control' id='tgl_kel' name='tgl_kel[]' required>"
+        html +=       "</div>"
+        html +=     "</div>"
+        html +=   "</div>"
+
+        html +=   "<div class='row'>"
+        html +=     "<div class='col-md-6'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='keluarga'>Alamat</label>"
+        html +=         "<input type='text' class='form-control' id='alamat_kel' name='alamat_kel[]'>"
+        html +=       "</div>"
+        html +=     "</div>"
+        html +=     "<div class='col-md-1'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<button id='btnDel-keluarga' type='button' class='btn btn-danger d-flex' style='margin-top: 2.3em;' data-row='keluarga"+baris_keluarga+"'>"
+        html +=           "<span class='material-symbols-outlined'>delete</span>"
+        html +=         "</button>"
+        html +=       "</div>"
+        html +=     "</div>"
+        html +=   "</div>"
+
+        html +="</div>"
+
+        $('#list_keluarga').append(html);
+    });
+    
+  })
+  $(document).on('click','#btnDel-keluarga',function(){
+    var hapus = $(this).data('row')
+    // console.log(hapus);
+    $('#'+hapus).remove();
   })
 }
 
@@ -433,10 +568,11 @@ function saudara(){
     var kerabat = $('#kerabat').val();
 
     if (kerabat=='Ya') {
-      $('#Tblsaudarafarmasi').removeAttr('hidden');
+      $('.saudarafarmasi').removeAttr('hidden');
     } else {
-      $('#Tblsaudarafarmasi').attr("hidden",true);
-      $('.detail_saudara').remove();
+      $('.saudarafarmasi').attr("hidden",true);
+      $('.sdr').remove();
+      $('.sdr1 :input').val('');
     }
   });
 }
