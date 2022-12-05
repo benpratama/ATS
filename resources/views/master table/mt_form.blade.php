@@ -75,6 +75,7 @@
                     <th><input type="checkbox" id="cekAll-sim"></th>
                     <th>Active</th>
                     <th>SIM</th>
+                    <th>ID proint</th>
                     <th>Edit</th>
                   </tr>
                 </thead>
@@ -99,6 +100,12 @@
                 <label for="new-sim" class="col-md-2 col-form-label form-control-label">Jenis SIM</label>
                 <div class="col-md-10">
                   <input class="form-control" type="text" id="new-sim">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-sim" class="col-md-2 col-form-label form-control-label">ID Proint</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="number" id="new-sim-proint">
                 </div>
               </div>
             </div>
@@ -127,6 +134,12 @@
                 <label for="edit-sim" class="col-md-2 col-form-label form-control-label">Jenis SIM</label>
                 <div class="col-md-10">
                   <input class="form-control" type="text" id="edit-sim">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="edit-sim" class="col-md-2 col-form-label form-control-label">ID Proint</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="number" id="edit-sim-proint">
                 </div>
               </div>
             </div>
@@ -265,8 +278,336 @@
       
     </div>
 
-    {{-- !! JURUSAN !! --}}
+    {{-- EDUKASI LVL --}}
     <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col-3">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">form</h6>
+                <h5 class="h3 mb-0">edulvl</h5>
+              </div>
+              <div class="d-flex col-8">
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-edulvl">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah</span>
+                </button>
+                <button id="btnDel-edulvl" type="button" class="btn btn-danger d-flex">
+                  <span class="material-symbols-outlined">delete</span>
+                  <span class="gap-logo">Hapus</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="TblEdulvl">
+                <thead class="thead-light">
+                  <tr>
+                    <th><input type="checkbox" id="cekAll-edulvl"></th>
+                    <th>Active</th>
+                    <th>Name</th>
+                    <th>ID proint</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{--!!START MODAL TAMBAH!!--}}
+      <div class="modal fade bd-example-modal-lg modal-tambah-edulvl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Edulvl</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="new-edulvl" class="col-md-2 col-form-label form-control-label">Name</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="new-edulvl">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-edulvl" class="col-md-2 col-form-label form-control-label">ID proint</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="number" id="new-edulvl-idproint">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnAdd-edulvl" type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL TAMBAH!!--}}
+
+      {{--!!START MODAL EDIT!!--}}
+      <div class="modal fade bd-example-modal-lg modal-edit-edulvl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Edulvl</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="edit-edulvl" class="col-md-2 col-form-label form-control-label">Name</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-edulvl">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-edulvl" class="col-md-2 col-form-label form-control-label">ID proint</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="number" id="edit-edulvl-idproint">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnEdit-edulvl" type="button" class="btn btn-primary" value="">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL EDIT!!--}}
+    </div>
+
+    {{-- INSTITUSI --}}
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col-3">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">form</h6>
+                <h5 class="h3 mb-0">Edu Istitusi</h5>
+              </div>
+              <div class="d-flex col-6">
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-institusi">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah</span>
+                </button>
+                <button id="btnDel-institusi" type="button" class="btn btn-danger d-flex">
+                  <span class="material-symbols-outlined">delete</span>
+                  <span class="gap-logo">Hapus</span>
+                </button>
+                <input class="form-control" type="text" id="search_inst" name="search_inst" placeholder="type >=5 char">
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="TblInstitusi">
+                <thead class="thead-light">
+                  <tr>
+                    <th><input type="checkbox" id="cekAll-institusi"></th>
+                    <th>Active</th>
+                    <th>Name</th>
+                    <th>ID proint</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{--!!START MODAL TAMBAH!!--}}
+      <div class="modal fade bd-example-modal-lg modal-tambah-institusi" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Institusi</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="new-institusi" class="col-md-2 col-form-label form-control-label">Name</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="new-institusi">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-institusi" class="col-md-2 col-form-label form-control-label">ID proint</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="number" id="new-institusi-idproint">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnAdd-institusi" type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL TAMBAH!!--}}
+
+      {{--!!START MODAL EDIT!!--}}
+      <div class="modal fade bd-example-modal-lg modal-edit-institusi" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Institusi</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="edit-institusi" class="col-md-2 col-form-label form-control-label">Name</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-institusi">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-institusi" class="col-md-2 col-form-label form-control-label">ID proint</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="number" id="edit-institusi-idproint">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnEdit-institusi" type="button" class="btn btn-primary" value="">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL EDIT!!--}}
+    </div>
+
+        {{-- EDUKASI LVL --}}
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="card">
+              <div class="card-header bg-transparent">
+                <div class="row align-items-center">
+                  <div class="col-3">
+                    <h6 class="text-uppercase text-muted ls-1 mb-1">form</h6>
+                    <h5 class="h3 mb-0">Major</h5>
+                  </div>
+                  <div class="d-flex col-8">
+                    <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-major">
+                      <span class="material-symbols-outlined">add</span>
+                      <span class="gap-logo">Tambah</span>
+                    </button>
+                    <button id="btnDel-major" type="button" class="btn btn-danger d-flex">
+                      <span class="material-symbols-outlined">delete</span>
+                      <span class="gap-logo">Hapus</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table" id="TblMajor">
+                    <thead class="thead-light">
+                      <tr>
+                        <th><input type="checkbox" id="cekAll-major"></th>
+                        <th>Active</th>
+                        <th>Name</th>
+                        <th>ID proint</th>
+                        <th>Edit</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          {{--!!START MODAL TAMBAH!!--}}
+          <div class="modal fade bd-example-modal-lg modal-tambah-major" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Tambah Major</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group row">
+                    <label for="new-major" class="col-md-2 col-form-label form-control-label">Name</label>
+                    <div class="col-md-10">
+                      <input class="form-control" type="text" id="new-major">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="new-major" class="col-md-2 col-form-label form-control-label">ID proint</label>
+                    <div class="col-md-10">
+                      <input class="form-control" type="number" id="new-major-idproint">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <div class="row">
+                    <button id="btnAdd-major" type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{--!!END MODAL TAMBAH!!--}}
+    
+          {{--!!START MODAL EDIT!!--}}
+          <div class="modal fade bd-example-modal-lg modal-edit-major" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Major</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group row">
+                    <label for="edit-major" class="col-md-2 col-form-label form-control-label">Name</label>
+                    <div class="col-md-10">
+                      <input class="form-control" type="text" id="edit-major">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="new-major" class="col-md-2 col-form-label form-control-label">ID proint</label>
+                    <div class="col-md-10">
+                      <input class="form-control" type="number" id="edit-major-idproint">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <div class="row">
+                    <button id="btnEdit-major" type="button" class="btn btn-primary" value="">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{--!!END MODAL EDIT!!--}}
+        </div>
+
+    {{-- !! JURUSAN !! --}}
+    {{-- <div class="row">
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header bg-transparent">
@@ -303,10 +644,10 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
 
       {{--!!START MODAL TAMBAH!!--}}
-      <div class="modal fade bd-example-modal-lg modal-tambah-jurusan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      {{-- <div class="modal fade bd-example-modal-lg modal-tambah-jurusan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -340,11 +681,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
       {{--!!END MODAL TAMBAH!!--}}
 
       {{--!!START MODAL EDIT!!--}}
-      <div class="modal fade bd-example-modal-lg modal-edit-jurusan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      {{-- <div class="modal fade bd-example-modal-lg modal-edit-jurusan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -377,9 +718,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
       {{--!!END MODAL EDIT!!--}}
-    </div>
+    {{-- </div> --}}
 
     {{-- !! PERKAWINAN !! --}}
     <div class="row">
@@ -410,8 +751,8 @@
                   <tr>
                     <th><input type="checkbox" id="cekAll-perkawinan"></th>
                     <th>Active</th>
-                    <th>Status</th>
                     <th>Keterangan</th>
+                    <th>ID Proint</th>
                     <th>Edit</th>
                   </tr>
                 </thead>
@@ -438,9 +779,9 @@
                 </div>
               </div>
               <div class="form-group row">
-                <label for="new-keterangan" class="col-md-2 col-form-label form-control-label">Keterangan</label>
+                <label for="new-keterangan" class="col-md-2 col-form-label form-control-label">ID proint</label>
                 <div class="col-md-10">
-                  <input class="form-control" type="text" id="new-keterangan">
+                  <input class="form-control" type="number" id="new-idproint">
                 </div>
               </div>
             </div>
@@ -472,15 +813,146 @@
                 </div>
               </div>
               <div class="form-group row">
-                <label for="edit-keterangan" class="col-md-2 col-form-label form-control-label">Keterangan</label>
+                <label for="edit-keterangan" class="col-md-2 col-form-label form-control-label">ID proint</label>
                 <div class="col-md-10">
-                  <input class="form-control" type="text" id="edit-keterangan">
+                  <input class="form-control" type="number" id="edit-idproint">
                 </div>
               </div>
             </div>
             <div class="modal-footer">
               <div class="row">
                 <button id="btnEdit-perkawinan" type="button" class="btn btn-primary" value="">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL EDIT!!--}}
+    </div>
+
+    {{-- KELUARGA --}}
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col-3">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">form</h6>
+                <h5 class="h3 mb-0">Keluarga</h5>
+              </div>
+              <div class="d-flex col-8">
+                <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-keluarga">
+                  <span class="material-symbols-outlined">add</span>
+                  <span class="gap-logo">Tambah</span>
+                </button>
+                <button id="btnDel-keluarga" type="button" class="btn btn-danger d-flex">
+                  <span class="material-symbols-outlined">delete</span>
+                  <span class="gap-logo">Hapus</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" id="TblKeluarga">
+                <thead class="thead-light">
+                  <tr>
+                    <th><input type="checkbox" id="cekAll-keluarga"></th>
+                    <th>Active</th>
+                    <th>Hubungan</th>
+                    <th>type</th>
+                    <th>id proint</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!START MODAL TAMBAH!!--}}
+      <div class="modal fade bd-example-modal-lg modal-tambah-keluarga" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Keluarga</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="new-Keluarga" class="col-md-2 col-form-label form-control-label">Keluarga</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="new-keluarga">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-keterangan" class="col-md-2 col-form-label form-control-label">ID proint</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="number" id="new-keluarga-idproint">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-keterangan" class="col-md-2 col-form-label form-control-label">Type Keluarga</label>
+                <div class="col-md-10">
+                  <select class="form-control" id="new-typekeluarga" required>
+                    <option value="" disabled selected>Type</option>
+                    @foreach ($TypeKeluarga as $type )
+                      <option value="{{ $type->RelTypeId }}">{{ $type->FamRelTypeName }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnAdd-keluarga" type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--!!END MODAL TAMBAH!!--}}
+
+      {{--!!START MODAL EDIT!!--}}
+      <div class="modal fade bd-example-modal-lg modal-edit-keluarga" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit keluarga</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="edit-Keluarga" class="col-md-2 col-form-label form-control-label">Keluarga</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" id="edit-keluarga">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="edit-keterangan" class="col-md-2 col-form-label form-control-label">ID proint</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="number" id="edit-keluarga-idproint">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="new-keterangan" class="col-md-2 col-form-label form-control-label">Type Keluarga</label>
+                <div class="col-md-10">
+                  <select class="form-control" id="edit-typekeluarga" required>
+                    <option value="" disabled selected>Type</option>
+                    @foreach ($TypeKeluarga as $type )
+                      <option value="{{ $type->RelTypeId }}">{{ $type->FamRelTypeName }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="row">
+                <button id="btnEdit-keluarga" type="button" class="btn btn-primary" value="">Save changes</button>
               </div>
             </div>
           </div>

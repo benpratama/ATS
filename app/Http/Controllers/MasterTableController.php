@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
 use App\User;
+use Yajra\DataTables\DataTables as DataTablesDataTables;
 
 class MasterTableController extends Controller
 {   
@@ -309,12 +310,15 @@ class MasterTableController extends Controller
 
     //MASTER TABLE FORM
     public function indexForm(){
-        return view('master table/mt_form');
+        $listTypeKeluarga = DB::table('PMFamilyRelType')
+                            ->select('RelTypeId','FamRelTypeName')
+                            ->get();
+        return view('master table/mt_form',['TypeKeluarga'=>$listTypeKeluarga]);
     }
     //----SIM----
     public function ShowSim(){
         $sims = DB::table('M_SIM')
-            ->select('id','nama','active','deleted')
+            ->select('id','nama','active','id_proint','deleted')
             ->where('deleted',0)
             ->get();
         return $sims;
@@ -330,26 +334,49 @@ class MasterTableController extends Controller
         return true;
     }
     public function AddSim(Request $request){
-        DB::table('M_sim')
+        DB::beginTransaction();
+        try {
+            DB::table('M_sim')
             ->insert([
                 'nama'=>$request->new_sim,
+                'id_proint'=>$request->new_sim_proint,
                 'active'=>'1',
                 'deleted'=>'0'
             ]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+            //throw $th;
+        }
+       
         return true;
     }
     public function ModalSim($id){
         $SIM = DB::table('M_sim')
-            ->select('nama')
+            ->select('nama','id_proint')
             ->where('id',$id)
             ->get();
         return $SIM;
     }
     public function EditSim(Request $request){
-        DB::table('M_sim')
-        ->where('id',$request->id_sim)
-        ->update(['nama'=>$request->Edit_sim]);
-        return true;
+        DB::beginTransaction();
+        try {
+            DB::table('M_sim')
+            ->where('id',$request->id_sim)
+            ->update([
+                'nama'=>$request->Edit_sim,
+                'id_proint'=>$request->Edit_sim_proint
+            ]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+            //throw $th;
+        }
+        
     }
     public function ActiveSim(Request $request){
         DB::table('M_sim')
@@ -358,7 +385,7 @@ class MasterTableController extends Controller
         return true;
     }
 
-    //----SIM----
+    //----DOMISILI----
     public function ShowDomisili(){
         $domisili = DB::table('M_kodepos_Final')
             ->select('id','provinsi','kabupaten','kodepos','active','deleted')
@@ -410,99 +437,302 @@ class MasterTableController extends Controller
         ]);
         return true;
     }
-
-    //----JURUSAN----
-    public function ShowJurusan(){
-        $jurusan = DB::table('M_SMASederajat')
-            ->select('id','nama','jenis','active','deleted')
+    //----Edu lvl----
+    public function ShowEdulvl(){
+        $edulvl = DB::table('PMEduLevel')
+            ->select('EduLvlId','EduLvlName','active','deleted')
             ->where('deleted',0)
+            ->where('EduLvlStatus','F')
             ->get();
-        return $jurusan;
+        return $edulvl;
     }
-    public function DelJurusan(Request $request){
+    public function DelEdulvl(Request $request){
         $delted =1;
         $active =0;
-        for ($i=0; $i <count($request->arrId_jurusan) ; $i++) { 
-            DB::table('M_SMASederajat')
-                ->where('id',$request->arrId_jurusan[$i])
+        for ($i=0; $i <count($request->arrId_edulvl) ; $i++) { 
+            DB::table('PMEduLevel')
+                ->where('EduLvlId',$request->arrId_edulvl[$i])
                 ->update(['deleted'=>$delted,'active'=>$active]);
         }
         return true;
     }
-    public function AddJurusan(Request $request){
-        DB::table('M_SMASederajat')
+    public function AddEdulvl(Request $request){
+        DB::beginTransaction();
+        try {
+            DB::table('PMEduLevel')
             ->insert([
-                'nama'=>$request->new_jurusan,
-                'jenis'=>$request->new_jenis,
+                'EduLvlId'=>$request->new_edulvl_idproint,
+                'EduLvlName'=>$request->new_edulvl,
                 'active'=>'1',
-                'deleted'=>'0'
+                'deleted'=>'0',
+                'EduLvlStatus'=>'F',
+                
             ]);
-        return true;
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+       
     }
-    public function ModalJurusan($id){
-        $SIM = DB::table('M_SMASederajat')
-            ->select('nama','jenis')
-            ->where('id',$id)
+    public function ModalEdulvl($id){
+        $Edulvl = DB::table('PMEduLevel')
+            ->select('EduLvlId','EduLvlName')
+            ->where('EduLvlId',$id)
             ->get();
-        return $SIM;
+        return $Edulvl;
     }
-    public function Editjurusan(Request $request){
-        DB::table('M_SMASederajat')
-        ->where('id',$request->id_jurusan)
-        ->update(['nama'=>$request->Edit_jurusan,'jenis'=>$request->Edit_jenis]);
-        return true;
-    }
-    public function ActiveJurusan(Request $request){
-        DB::table('M_SMASederajat')
-            ->where('id',$request->id_jurusan)
+    public function ActiveEdulvl(Request $request){
+        DB::table('PMEduLevel')
+            ->where('EduLvlId',$request->id_edulvl)
             ->update(['active'=>$request->active]);
         return true;
     }
+    public function EditEdulvl(Request $request){
+        DB::beginTransaction();
+        try {
+            DB::table('PMEduLevel')
+            ->where('EduLvlId',$request->id_edulvl)
+            ->update(['EduLvlName'=>$request->Edit_edulvl,'EduLvlId'=>$request->Edit_edulvl_idproint]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+        }
+    }
+    //------INST------
+    public function ShowInst(Request $request){
+        $search ='%'.$request->search.'%';
+        $inst = DB::table('PMEduInstitution_N')
+            ->select('EduInsId','EduInsName','active','deleted')
+            ->where('deleted',0)
+            ->where('EduInsName','like',$search)
+            ->get();
+
+        // return DataTablesDataTables::of($inst)->make(true);
+        return $inst;
+    }
+    public function DelInst(Request $request){
+        $delted =1;
+        $active =0;
+        for ($i=0; $i <count($request->arrId_inst) ; $i++) { 
+            DB::table('PMEduInstitution_N')
+                ->where('EduInsId',$request->arrId_inst[$i])
+                ->update(['deleted'=>$delted,'active'=>$active]);
+        }
+        return true;
+    }
+    public function AddInst(Request $request){
+        DB::beginTransaction();
+        try {
+            DB::table('PMEduInstitution_N')
+            ->insert([
+                'EduInsId'=>$request->new_inst_idproint,
+                'EduInsName'=>$request->new_inst,
+                'active'=>'1',
+                'deleted'=>'0',
+                
+            ]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+    public function ModalInst($id){
+        $inst = DB::table('PMEduInstitution_N')
+            ->select('EduInsId','EduInsName')
+            ->where('EduInsId',$id)
+            ->get();
+        return $inst;
+    }
+    public function ActiveInst(Request $request){
+        DB::table('PMEduInstitution_N')
+            ->where('EduInsId',$request->id_inst)
+            ->update(['active'=>$request->active]);
+        return true;
+    }
+    public function EditInst(Request $request){
+        DB::beginTransaction();
+        try {
+            DB::table('PMEduInstitution_N')
+            ->where('EduInsId',$request->id_inst)
+            ->update(['EduInsName'=>$request->Edit_inst,'EduInsId'=>$request->Edit_inst_idproint]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+        }
+    }
+    //-------Major-----
+    public function ShowMajor(){
+        $major = DB::table('PMEduMajor_N')
+                    ->where('deleted',0)
+                    ->get();
+
+        return DataTablesDataTables::of($major)->make(true);
+    }
+    public function DelMajor(Request $request){
+        $delted =1;
+        $active =0;
+        for ($i=0; $i <count($request->arrId_major) ; $i++) { 
+            DB::table('PMEduMajor_N')
+                ->where('EduMjrId',$request->arrId_major[$i])
+                ->update(['deleted'=>$delted,'active'=>$active]);
+        }
+        return true;
+    }
+    public function AddMajor(Request $request){
+        DB::beginTransaction();
+        try {
+            DB::table('PMEduMajor_N')
+            ->insert([
+                'EduMjrId'=>$request->new_major_idproint,
+                'EduMjrName'=>$request->new_major,
+                'active'=>'1',
+                'deleted'=>'0',
+                
+            ]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+    public function ModalMajor($id){
+        $major = DB::table('PMEduMajor_N')
+            ->select('EduMjrId','EduMjrName')
+            ->where('EduMjrId',$id)
+            ->get();
+        return $major;
+    }
+    public function ActiveMajor(Request $request){
+        DB::table('PMEduMajor_N')
+            ->where('EduMjrId',$request->id_major)
+            ->update(['active'=>$request->active]);
+        return true;
+    }
+    public function EditMajor(Request $request){
+        DB::beginTransaction();
+        try {
+            DB::table('PMEduMajor_N')
+            ->where('EduMjrId',$request->id_major)
+            ->update(['EduMjrName'=>$request->Edit_major,'EduMjrId'=>$request->Edit_major_idproint]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+        }
+    }
+
+    //----JURUSAN----
+    // public function ShowJurusan(){
+    //     $jurusan = DB::table('M_SMASederajat')
+    //         ->select('id','nama','jenis','active','deleted')
+    //         ->where('deleted',0)
+    //         ->get();
+    //     return $jurusan;
+    // }
+    // public function DelJurusan(Request $request){
+    //     $delted =1;
+    //     $active =0;
+    //     for ($i=0; $i <count($request->arrId_jurusan) ; $i++) { 
+    //         DB::table('M_SMASederajat')
+    //             ->where('id',$request->arrId_jurusan[$i])
+    //             ->update(['deleted'=>$delted,'active'=>$active]);
+    //     }
+    //     return true;
+    // }
+    // public function AddJurusan(Request $request){
+    //     DB::table('M_SMASederajat')
+    //         ->insert([
+    //             'nama'=>$request->new_jurusan,
+    //             'jenis'=>$request->new_jenis,
+    //             'active'=>'1',
+    //             'deleted'=>'0'
+    //         ]);
+    //     return true;
+    // }
+    // public function ModalJurusan($id){
+    //     $SIM = DB::table('M_SMASederajat')
+    //         ->select('nama','jenis')
+    //         ->where('id',$id)
+    //         ->get();
+    //     return $SIM;
+    // }
+    // public function Editjurusan(Request $request){
+    //     DB::table('M_SMASederajat')
+    //     ->where('id',$request->id_jurusan)
+    //     ->update(['nama'=>$request->Edit_jurusan,'jenis'=>$request->Edit_jenis]);
+    //     return true;
+    // }
+    // public function ActiveJurusan(Request $request){
+    //     DB::table('M_SMASederajat')
+    //         ->where('id',$request->id_jurusan)
+    //         ->update(['active'=>$request->active]);
+    //     return true;
+    // }
 
     //----PERKAWINAN----
     public function ShowPerkawinan(){
-        $perkawinan = DB::table('M_Statuspernikahan')
-            ->select('id','nama','keterangan','active','deleted')
-            ->where('deleted',0)
-            ->get();
+        // $perkawinan = DB::table('M_Statuspernikahan')
+        //     ->select('id','nama','keterangan','active','deleted')
+        //     ->where('deleted',0)
+        //     ->get();
+        $perkawinan = DB::table('PMMaritalSt')
+                    ->select('MaritalStId','MaritalSt','active','deleted')
+                    ->where('deleted',0)
+                    ->get();
         return $perkawinan;
     }
     public function DelPerkawinan(Request $request){
         $delted =1;
         $active =0;
         for ($i=0; $i <count($request->arrId_perkawinan) ; $i++) { 
-            DB::table('M_Statuspernikahan')
-                ->where('id',$request->arrId_perkawinan[$i])
+            DB::table('PMMaritalSt')
+                ->where('MaritalStId',$request->arrId_perkawinan[$i])
                 ->update(['deleted'=>$delted,'active'=>$active]);
         }
         return true;
     }
     public function AddPerkawinan(Request $request){
-        DB::table('M_Statuspernikahan')
+        // DB::beginTransaction();
+        // try {
+            DB::table('PMMaritalSt')
             ->insert([
-                'nama'=>$request->new_perkawinan,
-                'keterangan'=>$request->new_keterangan,
+                'MaritalSt'=>$request->new_perkawinan,
+                'MaritalStId'=>$request->new_idproint,
                 'active'=>'1',
                 'deleted'=>'0'
             ]);
-        return true;
+            // DB::commit();
+            return true;
+        // } catch (Exception $e) {
+        //     DB::commit();
+        //     return $e;
+        // }
+        
+        
     }
     public function ModalPerkawinan($id){
-        $perkawinan = DB::table('M_Statuspernikahan')
-            ->select('nama','keterangan')
-            ->where('id',$id)
+        $perkawinan = DB::table('PMMaritalSt')
+            ->select('MaritalStId','MaritalSt')
+            ->where('MaritalStId',$id)
             ->get();
         return $perkawinan;
     }
     public function EditPerkawinan(Request $request){
-        DB::table('M_Statuspernikahan')
-        ->where('id',$request->id_perkawinan)
-        ->update(['nama'=>$request->Edit_perkawinan,'keterangan'=>$request->Edit_keterangan]);
+        DB::table('PMMaritalSt')
+        ->where('MaritalStId',$request->id_perkawinan)
+        ->update(['MaritalSt'=>$request->Edit_perkawinan,'MaritalStId'=>$request->Edit_idproint]);
         return true;
     }
     public function ActivePerkawinan(Request $request){
-        DB::table('M_Statuspernikahan')
-            ->where('id',$request->id_perkawinan)
+        DB::table('PMMaritalSt')
+            ->where('MaritalStId',$request->id_perkawinan)
             ->update(['active'=>$request->active]);
         return true;
     }
@@ -699,10 +929,93 @@ class MasterTableController extends Controller
         return true;
     }
 
+    //----FAM----
+    public function ShowFam(){
+        $keluarga = DB::table('PMFamRel as A')
+                    ->select('A.FamRelId','A.FamRelName','B.FamRelTypeName','A.active')
+                    ->join('PMFamilyRelType as B','A.FamRelType','B.RelTypeId')
+                    ->where('deleted',0)
+                    ->get();
+
+        return DataTablesDataTables::of($keluarga)->make(true);
+    }
+    public function DelFam (Request $request){
+        $delted =1;
+        $active =0;
+        for ($i=0; $i <count($request->arrId_keluarga) ; $i++) { 
+            DB::table('PMFamRel')
+                ->where('FamRelId',$request->arrId_keluarga[$i])
+                ->update(['deleted'=>$delted,'active'=>$active]);
+        }
+        return true;
+    }
+    public function AddFam(Request $request){
+        // DB::beginTransaction();
+        // try {
+            DB::table('PMFamRel')
+            ->insert([
+                'FamRelId'=>$request->idProint,
+                'FamRelSeq'=>null,
+                'FamRelCode'=>null,
+                'FamRelName'=>trim($request->keluarga),
+                'FamRelType'=>$request->type,
+                'UpdDate'=>null,
+                'UpdUser'=>null,
+                'UpdFlag'=>null,
+                'FgDefaultERec'=>null,
+                'FgRpt'=>null,
+                'ExportDate'=>null,
+                'FgFamCan'=>null,
+                'FgRelType'=>null,
+                'active'=>1,
+                'deleted'=>0
+            ]);
+            // DB::commit();
+            return true;
+        // } catch (Exception $e) {
+        //     DB::rollBack();
+        //     return $e;
+        // }
+    }
+    public function ModalFam($id){
+        $keluarga = DB::table('PMFamRel')
+                    ->where('FamRelId',$id)
+                    ->get();
+
+        // $listType = DB::table('PMFamilyRelType')
+        //             ->get();
+        return $keluarga;
+    }
+    public function ActiveFam(Request $request){
+        DB::table('PMFamRel')
+            ->where('FamRelId',$request->id_keluarga)
+            ->update(['active'=>$request->active]);
+        return $request;
+    }
+    public function EditFam(Request $request){
+        DB::beginTransaction();
+        try {
+            DB::table('PMFamRel')
+            ->where('FamRelId',$request->id_keluarga)
+            ->update([
+                'FamRelId'=>$request->Edit_idproint,
+                'FamRelName'=>trim($request->Edit_keluarga),
+                'FamRelType'=>$request->Edit_typekeluarga,
+            ]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+        }
+        
+    }
+
     //MASTER TABLE VENDOR
     public function indexVendor(){
         return view('master table/mt_vendor');
     }
+
     //----MCU----
     public function ShowMCU(){
         $filter='MCU';
@@ -930,4 +1243,6 @@ class MasterTableController extends Controller
             return $e;
         }
     }
+
+    
 }

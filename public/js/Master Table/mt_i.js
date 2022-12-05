@@ -76,7 +76,11 @@ function loadTbl_JOB(){
         "scrollY":        "400px",
         "scrollX": true,
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/job",
                 data:{},
@@ -298,15 +302,15 @@ function loadTbl_ORGANISASI(){
         "scrollY":        "400px",
         "scrollX": true,
         "scrollCollapse": true,
-        pageLength : 5,
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/organisasi",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -380,8 +384,8 @@ function loadTbl_DEPARMENT(){
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -448,15 +452,19 @@ function loadTbl_USER(){
         "scrollY":        "400px",
         "scrollX": true,
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/user",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",

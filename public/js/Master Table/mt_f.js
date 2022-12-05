@@ -11,10 +11,11 @@ $( document ).ready(function() {
     add_DOMISILI();
     Edit_DOMISILI()
 
-    loadTbl_JURUSAN();
-    delete_JURUSAN();
-    add_JURUSAN();
-    Edit_JURUSAN();
+
+    // loadTbl_JURUSAN();
+    // delete_JURUSAN();
+    // add_JURUSAN();
+    // Edit_JURUSAN();
 
     loadTbl_PERKAWINAN();
     delete_PERKAWINAN();
@@ -40,14 +41,35 @@ $( document ).ready(function() {
     delete_SREK();
     add_SREK();
     Edit_SREK();
+
+    loadTbl_Fam();
+    delete_fam();
+    add_fam();
+    Edit_fam();
+
+    loadTbl_Edulvl();
+    delete_Edulvl();
+    add_Edulvl();
+    Edit_Edulvl();
+
+    delete_inst();
+    add_inst();
+    Edit_inst();
+
+    loadTbl_major();
+    delete_major();
+    add_major();
+    Edit_major();
 });
 
 function clearModal(){
     $('.modal-tambah-sim').on('hide.bs.modal', function() {
         $('#new-sim').val('');
+        $('#new-sim-proint').val('');
     })
     $('.modal-edit-sim').on('hide.bs.modal', function() {
         $('#edit-sim').val('');
+        $('#edit-sim-proint').val('');
         $('#btnEdit-sim').val('');
     })
 
@@ -63,15 +85,15 @@ function clearModal(){
         $('#btnEdit-domisili').val('');
     })
 
-    $('.modal-tambah-jurusan').on('hide.bs.modal', function() {
-        $('#new-jurusan').val('');
-        $('#new-jenis').val('');
-    })
-    $('.modal-edit-jurusan').on('hide.bs.modal', function() {
-        $('#edit-jurusan').val('');
-        $('#edit-jenis').val('');
-        $('#btnEdit-jurusan').val('');
-    })
+    // $('.modal-tambah-jurusan').on('hide.bs.modal', function() {
+    //     $('#new-jurusan').val('');
+    //     $('#new-jenis').val('');
+    // })
+    // $('.modal-edit-jurusan').on('hide.bs.modal', function() {
+    //     $('#edit-jurusan').val('');
+    //     $('#edit-jenis').val('');
+    //     $('#btnEdit-jurusan').val('');
+    // })
 
     $('.modal-tambah-perkawinan').on('hide.bs.modal', function() {
         $('#new-perkawinan').val('');
@@ -114,6 +136,48 @@ function clearModal(){
         $('#edit-srek').val('');
         $('#btnEdit-srek').val('');
     })
+
+    $('.modal-tambah-keluarga').on('hide.bs.modal', function() {
+        $('#new-keluarga').val('');
+        $('#new-keluarga-idproint').val('');
+        $('#new-typekeluarga').val('');
+    })
+    $('.modal-edit-keluarga').on('hide.bs.modal', function() {
+        $('#edit-keluarga').val('');
+        $('#edit-keluarga-idproint').val('');
+        $('#edit-typekeluarga').val('');
+        $('#btnEdit-keluarga').val('');
+    })
+
+    $('.modal-tambah-edulvl').on('hide.bs.modal', function() {
+        $('#new-edulvl').val('');
+        $('#new-edulvl-idproint').val('');
+    })
+    $('.modal-edit-edulvl').on('hide.bs.modal', function() {
+        $('#edit-edulvl').val('');
+        $('#edit-edulvl-idproint').val('');
+        $('#btnEdit-edulvl').val('');
+    })
+    
+    $('.modal-tambah-institusi').on('hide.bs.modal', function() {
+        $('#new-institusi').val('');
+        $('#new-institusi-idproint').val('');
+    })
+    $('.modal-edit-institusi').on('hide.bs.modal', function() {
+        $('#edit-institusi').val('');
+        $('#edit-institusi-idproint').val('');
+        $('#btnEdit-institusi').val('');
+    })
+
+    $('.modal-tambah-major').on('hide.bs.modal', function() {
+        $('#new-major').val('');
+        $('#new-major-idproint').val('');
+    })
+    $('.modal-edit-major').on('hide.bs.modal', function() {
+        $('#edit-major').val('');
+        $('#edit-major-idproint').val('');
+        $('#btnEdit-major').val('');
+    })
 }
 
 function alert(){
@@ -135,6 +199,24 @@ function alert(){
     })
 }
 
+function alert_error(){
+    const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+    })
+    
+    Toast.fire({
+    icon: 'error',
+    title: 'Proses gagal'
+    })
+}
 function confirm(){
     Swal.fire({
         title: 'Are you sure?',
@@ -156,15 +238,19 @@ function loadTbl_SIM(){
     $('#TblSim').DataTable({
         "scrollY":        "400px",
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/sim",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -204,6 +290,10 @@ function loadTbl_SIM(){
             },
             {
                 data: 'nama',
+                defaultContent: ''
+            },
+            {
+                data: 'id_proint',
                 defaultContent: ''
             },
             {
@@ -266,6 +356,7 @@ function delete_SIM(){
 function add_SIM(){
     $('#btnAdd-sim').on('click', function() {
         var new_sim = $('#new-sim').val();
+        var new_sim_proint = $('#new-sim-proint').val();
 
         $.ajaxSetup({
             headers: {
@@ -277,15 +368,20 @@ function add_SIM(){
             url: '/hrdats/mt/add/sim',
             type: 'post',
             data: {
-                new_sim:new_sim
+                new_sim:new_sim,
+                new_sim_proint:new_sim_proint
             }
           }).done((data) => {
             
             $(".modal-tambah-sim").modal('hide');
             $('#TblSim').DataTable().ajax.reload();
-            // console.log(JSON.stringify(data));
-            alert();
-          });
+            
+            if (data==1) {
+                alert();
+            } else {
+                alert_error()
+            }
+        });
     })
 }
 function Modal_sim(id){
@@ -301,6 +397,7 @@ function Modal_sim(id){
       }).done((data) => {
         $('#btnEdit-sim').val(id);
         $('#edit-sim').val(data[0].nama);
+        $('#edit-sim-proint').val(data[0].id_proint);
         console.log(JSON.stringify(data));
       });
 }
@@ -337,6 +434,7 @@ function checkSIM(obj){
 function Edit_SIM(){
     $('#btnEdit-sim').on('click', function() {
         var Edit_sim = $('#edit-sim').val();
+        var Edit_sim_proint = $('#edit-sim-proint').val();
         var id_sim=$('#btnEdit-sim').val();
 
         $.ajaxSetup({
@@ -350,13 +448,18 @@ function Edit_SIM(){
             type: 'post',
             data: {
                 Edit_sim:Edit_sim,
+                Edit_sim_proint:Edit_sim_proint,
                 id_sim:id_sim
             }
           }).done((data) => {
             
             $(".modal-edit-sim").modal('hide');
             $('#TblSim').DataTable().ajax.reload();
-            alert();
+            if (data==1) {
+                alert();
+            } else {
+                alert_error()
+            }
             // console.log(JSON.stringify(data));
         });
     });
@@ -379,7 +482,7 @@ function loadTbl_DOMISILI(){
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
+        "bInfo" : true,
         "lengthChange": true,
         language: {
             paginate: {
@@ -595,21 +698,24 @@ function Edit_DOMISILI(){
         });
     });
 }
-
-//----JURUSAN----
-function loadTbl_JURUSAN(){
-    $('#TblJurusan').DataTable({
+//---EDU lvl------
+function loadTbl_Edulvl(){
+    $('#TblEdulvl').DataTable({
         "scrollY":        "400px",
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
-        url: "/hrdats/mt/show/jurusan",
+        url: "/hrdats/mt/show/edulvl",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -619,7 +725,7 @@ function loadTbl_JURUSAN(){
         columns: [
             {
                 render: (data, type, row, meta)=> {
-                    return '<input type="checkbox" class="cek-jurusan" value="'+row.id+'">'
+                    return '<input type="checkbox" class="cek-edulvl" value="'+row.EduLvlId+'">'
                 }
             },
             {
@@ -630,13 +736,13 @@ function loadTbl_JURUSAN(){
                     switch(data){
                         case'1':
                         return'<label class="custom-toggle">'+
-                                    '<input type="checkbox" onclick="checkJurusan(this)" checked value="'+row.id+'">'+
+                                    '<input type="checkbox" onclick="checkEdulvl(this)" checked value="'+row.EduLvlId+'">'+
                                     '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
                                 '</label>'
                         break;
                         case'0':
                         return'<label class="custom-toggle">'+
-                                    '<input type="checkbox" onclick="checkJurusan(this)" value="'+row.id+'">'+
+                                    '<input type="checkbox" onclick="checkEdulvl(this)" value="'+row.EduLvlId+'">'+
                                     '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
                                 '</label>'
                         break;
@@ -648,39 +754,39 @@ function loadTbl_JURUSAN(){
                 }
             },
             {
-                data: 'nama',
+                data: 'EduLvlName',
                 defaultContent: ''
             },
             {
-                data: 'jenis',
+                data: 'EduLvlId',
                 defaultContent: ''
             },
             {
                 defaultContent: '',
                 render: (data, type, row, meta)=> {
-                    return '<button type="button" class="btn btn-info" onclick="Modal_jurusan(value)" data-toggle="modal" data-target=".modal-edit-jurusan" value="'+row.id+'">Edit</button>'
+                    return '<button type="button" class="btn btn-info" onclick="Modal_edulvl(value)" data-toggle="modal" data-target=".modal-edit-edulvl" value="'+row.EduLvlId+'">Edit</button>'
                 }
             }
         ] 
     });
 
     //buat check
-    $('#cekAll-jurusan').change(function(){
-        $("input.cek-jurusan:checkbox").prop("checked",$(this).prop("checked"));
+    $('#cekAll-edulvl').change(function(){
+        $("input.cek-edulvl:checkbox").prop("checked",$(this).prop("checked"));
     })
 }
-function delete_JURUSAN(){
-    $('#btnDel-jurusan').on('click', function() {
+function delete_Edulvl(){
+    $('#btnDel-edulvl').on('click', function() {
         //ini buat ambil ID-nya
-        var arrId_jurusan=[];
-        var cek = $('.cek-jurusan')
+        var arrId_edulvl=[];
+        var cek = $('.cek-edulvl')
         for(var i=0; cek[i]; ++i){
             if(cek[i].checked){
-                arrId_jurusan.push(cek[i].value);
+                arrId_edulvl.push(cek[i].value);
             }
         }
 
-        if (arrId_jurusan>0) {
+        if (arrId_edulvl>0) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -699,13 +805,13 @@ function delete_JURUSAN(){
                     });
                     $.ajax({
                         _token: '{{ csrf_token() }}',
-                        url: '/hrdats/mt/del/jurusan',
+                        url: '/hrdats/mt/del/edulvl',
                         type: 'post',
                         data: {
-                            arrId_jurusan:arrId_jurusan
+                            arrId_edulvl:arrId_edulvl
                         }
                     }).done((data) => {
-                        $('#TblJurusan').DataTable().ajax.reload();
+                        $('#TblEdulvl').DataTable().ajax.reload();
                         // console.log(JSON.stringify(data));
                     });
                     alert()
@@ -714,10 +820,10 @@ function delete_JURUSAN(){
         }
     })
 }
-function add_JURUSAN(){
-    $('#btnAdd-jurusan').on('click', function() {
-        var new_jurusan = $('#new-jurusan').val();
-        var new_jenis = $('#new-jenis').val();
+function add_Edulvl(){
+    $('#btnAdd-edulvl').on('click', function() {
+        var new_edulvl = $('#new-edulvl').val();
+        var new_edulvl_idproint = $('#new-edulvl-idproint').val();
 
         $.ajaxSetup({
             headers: {
@@ -726,21 +832,24 @@ function add_JURUSAN(){
         });
         $.ajax({
             _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/add/jurusan',
+            url: '/hrdats/mt/add/edulvl',
             type: 'post',
             data: {
-                new_jurusan:new_jurusan,
-                new_jenis:new_jenis
+                new_edulvl:new_edulvl,
+                new_edulvl_idproint:new_edulvl_idproint
             }
           }).done((data) => {
-            $(".modal-tambah-jurusan").modal('hide');
-            $('#TblJurusan').DataTable().ajax.reload();
-            console.log(JSON.stringify(data));
-            alert()
+            $(".modal-tambah-edulvl").modal('hide');
+            $('#TblEdulvl').DataTable().ajax.reload();
+            if (data==1) {
+                alert()
+            } else {
+                alert_error()
+            }
           });
     })
 }
-function Modal_jurusan(id){
+function Modal_edulvl(id){
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -748,16 +857,16 @@ function Modal_jurusan(id){
     });
     $.ajax({
         _token: '{{ csrf_token() }}',
-        url: '/hrdats/mt/modal/jurusan/'+id,
+        url: '/hrdats/mt/modal/edulvl/'+id,
         type: 'get'
       }).done((data) => {
-        $('#btnEdit-jurusan').val(id);
-        $('#edit-jurusan').val(data[0].nama);
-        $('#edit-jenis').val(data[0].jenis);
+        $('#btnEdit-edulvl').val(data[0].EduLvlId);
+        $('#edit-edulvl').val(data[0].EduLvlName.trim());
+        $('#edit-edulvl-idproint').val(data[0].EduLvlId);
         console.log(JSON.stringify(data));
       });
 }
-function checkJurusan(obj){
+function checkEdulvl(obj){
     if (obj.checked==false) {
         console.log('nonactive')
         var active=0;
@@ -766,7 +875,7 @@ function checkJurusan(obj){
         var active=1;
     }
     
-    var id_jurusan= obj.value;
+    var id_edulvl= obj.value;
 
     $.ajaxSetup({
         headers: {
@@ -775,23 +884,23 @@ function checkJurusan(obj){
     });
     $.ajax({
         _token: '{{ csrf_token() }}',
-        url: '/hrdats/mt/active/jurusan',
+        url: '/hrdats/mt/active/edulvl',
         type: 'post',
         data: {
             active:active,
-            id_jurusan:id_jurusan
+            id_edulvl:id_edulvl
         }
       }).done((data) => {
-        $('#TblJurusan').DataTable().ajax.reload();
+        $('#TblEdulvl').DataTable().ajax.reload();
         console.log(JSON.stringify(data));
     });
 
 }
-function Edit_JURUSAN(){
-    $('#btnEdit-jurusan').on('click', function() {
-        var Edit_jurusan = $('#edit-jurusan').val();
-        var Edit_jenis = $('#edit-jenis').val();
-        var id_jurusan=$('#btnEdit-jurusan').val();
+function Edit_Edulvl(){
+    $('#btnEdit-edulvl').on('click', function() {
+        var Edit_edulvl = $('#edit-edulvl').val();
+        var Edit_edulvl_idproint = $('#edit-edulvl-idproint').val();
+        var id_edulvl=$('#btnEdit-edulvl').val();
 
         $.ajaxSetup({
             headers: {
@@ -800,36 +909,76 @@ function Edit_JURUSAN(){
         });
         $.ajax({
             _token: '{{ csrf_token() }}',
-            url: '/hrdats/mt/edit/jurusan',
+            url: '/hrdats/mt/edit/edulvl',
             type: 'post',
             data: {
-                Edit_jurusan:Edit_jurusan,
-                Edit_jenis:Edit_jenis,
-                id_jurusan:id_jurusan
+                Edit_edulvl:Edit_edulvl,
+                Edit_edulvl_idproint:Edit_edulvl_idproint,
+                id_edulvl:id_edulvl
             }
           }).done((data) => {
-            $(".modal-edit-jurusan").modal('hide');
-            $('#TblJurusan').DataTable().ajax.reload();
+            $(".modal-edit-edulvl").modal('hide');
+            $('#TblEdulvl').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
-            alert()
+            if (data==1) {
+                alert()
+            } else {
+                alert_error()
+            }
         });
     });
 }
 
-//----PERKAWINAN----
-function loadTbl_PERKAWINAN(){
-    $('#TblPerkawinan').DataTable({
+//----INST-----
+var typingTimer;
+var doneTypingInterval = 1500;  
+var $input = $('#search_inst');
+
+//on keyup, start the countdown
+$input.on('keyup', function () {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(doneTyping, doneTypingInterval);
+});
+
+//on keydown, clear the countdown 
+$input.on('keydown', function () {
+  clearTimeout(typingTimer);
+});
+
+//user is "finished typing," do something
+function doneTyping () {
+  //do something
+  var search = $('#search_inst').val()
+  if (search.length>=5) {
+    loadTbl_inst(search);
+  }
+//   console.log($('#search_inst').val())
+}
+
+function loadTbl_inst(search){
+    $('#TblInstitusi').DataTable().destroy();
+    $('#TblInstitusi').DataTable({
         "scrollY":        "400px",
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
+        // processing: true,
+        // serverSide: true,
+        scroller:true,
+        "paging": true,
         ajax: {
-        url: "/hrdats/mt/show/perkawinan",
-                data:{},
-                dataSrc:""
-            },
+            
+            url: "/hrdats/mt/show/inst",
+            type: "get",
+            data:{search:search},
+            dataSrc:""
+          },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -839,7 +988,7 @@ function loadTbl_PERKAWINAN(){
         columns: [
             {
                 render: (data, type, row, meta)=> {
-                    return '<input type="checkbox" class="cek-perkawinan" value="'+row.id+'">'
+                    return '<input type="checkbox" class="cek-inst" value="'+row.EduInsId+'">'
                 }
             },
             {
@@ -850,13 +999,13 @@ function loadTbl_PERKAWINAN(){
                     switch(data){
                         case'1':
                         return'<label class="custom-toggle">'+
-                                    '<input type="checkbox" onclick="checkPerkawinan(this)" checked value="'+row.id+'">'+
+                                    '<input type="checkbox" onclick="checkInst(this)" checked value="'+row.EduInsId+'">'+
                                     '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
                                 '</label>'
                         break;
                         case'0':
                         return'<label class="custom-toggle">'+
-                                    '<input type="checkbox" onclick="checkPerkawinan(this)" value="'+row.id+'">'+
+                                    '<input type="checkbox" onclick="checkInst(this)" value="'+row.EduInsId+'">'+
                                     '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
                                 '</label>'
                         break;
@@ -868,17 +1017,721 @@ function loadTbl_PERKAWINAN(){
                 }
             },
             {
-                data: 'nama',
+                data: 'EduInsName',
                 defaultContent: ''
             },
             {
-                data: 'keterangan',
+                data: 'EduInsId',
                 defaultContent: ''
             },
             {
                 defaultContent: '',
                 render: (data, type, row, meta)=> {
-                    return '<button type="button" class="btn btn-info" onclick="Modal_perkawinan(value)" data-toggle="modal" data-target=".modal-edit-perkawinan" value="'+row.id+'">Edit</button>'
+                    return '<button type="button" class="btn btn-info" onclick="Modal_inst(value)" data-toggle="modal" data-target=".modal-edit-institusi" value="'+row.EduInsId+'">Edit</button>'
+                }
+            }
+        ] 
+    });
+
+    //buat check
+    $('#cekAll-institusi').change(function(){
+        $("input.cek-inst:checkbox").prop("checked",$(this).prop("checked"));
+    })
+}
+
+// function loadTbl_inst(search){
+//     $.ajaxSetup({
+//     headers: {
+//         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//     }
+//     });
+//     $.ajax({
+//         _token: '{{ csrf_token() }}',
+//         url: '/hrdats/mt/show/inst',
+//         type: 'get',
+//         data: {
+//             search:search
+//         }
+//     }).done((data) => {
+//         console.log(JSON.stringify(data));
+//     });
+// }
+function delete_inst(){
+    $('#btnDel-institusi').on('click', function() {
+        //ini buat ambil ID-nya
+        var arrId_inst=[];
+        var cek = $('.cek-inst')
+        for(var i=0; cek[i]; ++i){
+            if(cek[i].checked){
+                arrId_inst.push(cek[i].value);
+            }
+        }
+
+        if (arrId_inst.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/inst',
+                        type: 'post',
+                        data: {
+                            arrId_inst:arrId_inst
+                        }
+                    }).done((data) => {
+                        $('#TblInstitusi').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
+        
+    })
+}
+function add_inst(){
+    $('#btnAdd-institusi').on('click', function() {
+        var new_inst = $('#new-institusi').val();
+        var new_inst_idproint = $('#new-institusi-idproint').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/add/inst',
+            type: 'post',
+            data: {
+                new_inst:new_inst,
+                new_inst_idproint:new_inst_idproint
+            }
+          }).done((data) => {
+            $(".modal-tambah-institusi").modal('hide');
+            $('#TblInstitusi').DataTable().ajax.reload();
+            if (data==1) {
+                alert()
+            } else {
+                alert_error()
+            }
+          });
+    })
+}
+function Modal_inst(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/modal/inst/'+id,
+        type: 'get'
+      }).done((data) => {
+        $('#btnEdit-institusi').val(data[0].EduInsId);
+        $('#edit-institusi').val(data[0].EduInsName.trim());
+        $('#edit-institusi-idproint').val(data[0].EduInsId);
+        console.log(JSON.stringify(data));
+      });
+}
+function checkInst(obj){
+    if (obj.checked==false) {
+        console.log('nonactive')
+        var active=0;
+    } else {
+        console.log('active')
+        var active=1;
+    }
+    
+    var id_inst= obj.value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/active/inst',
+        type: 'post',
+        data: {
+            active:active,
+            id_inst:id_inst
+        }
+      }).done((data) => {
+        $('#TblInstitusi').DataTable().ajax.reload();
+        console.log(JSON.stringify(data));
+    });
+
+}
+function Edit_inst(){
+    $('#btnEdit-institusi').on('click', function() {
+        var Edit_inst = $('#edit-institusi').val();
+        var Edit_inst_idproint = $('#edit-institusi-idproint').val();
+        var id_inst=$('#btnEdit-institusi').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/edit/inst',
+            type: 'post',
+            data: {
+                Edit_inst:Edit_inst,
+                Edit_inst_idproint:Edit_inst_idproint,
+                id_inst:id_inst
+            }
+          }).done((data) => {
+            $(".modal-edit-institusi").modal('hide');
+            $('#TblInstitusi').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+            if (data==1) {
+                alert()
+            } else {
+                alert_error()
+            }
+        });
+    });
+}
+
+//----Major-----
+function loadTbl_major(){
+    $('#TblMajor').DataTable({
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
+        processing: true,
+        serverSide: true,
+        scroller:true,
+        "paging": true,
+        ajax: {
+            
+            url: "/hrdats/mt/show/major",
+            data:{},
+          },
+        "paging":true,
+        "bInfo" : true,
+        "lengthChange": true,
+        language: {
+            paginate: {
+                previous: "<i class='fas fa-angle-left'>",
+                next: "<i class='fas fa-angle-right'>"
+            }
+        },
+        columns: [
+            {
+                render: (data, type, row, meta)=> {
+                    return '<input type="checkbox" class="cek-major" value="'+row.EduMjrId+'">'
+                }
+            },
+            {
+                data: 'active',
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+  
+                    switch(data){
+                        case'1':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkMajor(this)" checked value="'+row.EduMjrId+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        case'0':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkMajor(this)" value="'+row.EduMjrId+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        default:
+                            return data;
+                            break;
+                    }
+                    
+                }
+            },
+            {
+                data: 'EduMjrName',
+                defaultContent: ''
+            },
+            {
+                data: 'EduMjrId',
+                defaultContent: ''
+            },
+            {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+                    return '<button type="button" class="btn btn-info" onclick="Modal_major(value)" data-toggle="modal" data-target=".modal-edit-major" value="'+row.EduMjrId+'">Edit</button>'
+                }
+            }
+        ] 
+    });
+
+    //buat check
+    $('#cekAll-major').change(function(){
+        $("input.cek-major:checkbox").prop("checked",$(this).prop("checked"));
+    })
+}
+function delete_major(){
+    $('#btnDel-major').on('click', function() {
+        //ini buat ambil ID-nya
+        var arrId_major=[];
+        var cek = $('.cek-major')
+        for(var i=0; cek[i]; ++i){
+            if(cek[i].checked){
+                arrId_major.push(cek[i].value);
+            }
+        }
+
+        if (arrId_major.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/major',
+                        type: 'post',
+                        data: {
+                            arrId_major:arrId_major
+                        }
+                    }).done((data) => {
+                        $('#TblMajor').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
+        
+    })
+}
+function add_major(){
+    $('#btnAdd-major').on('click', function() {
+        var new_major = $('#new-major').val();
+        var new_major_idproint = $('#new-major-idproint').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/add/major',
+            type: 'post',
+            data: {
+                new_major:new_major,
+                new_major_idproint:new_major_idproint
+            }
+          }).done((data) => {
+            $(".modal-tambah-major").modal('hide');
+            $('#TblMajor').DataTable().ajax.reload();
+            if (data==1) {
+                alert()
+            } else {
+                alert_error()
+            }
+          });
+    })
+}
+function Modal_major(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/modal/major/'+id,
+        type: 'get'
+      }).done((data) => {
+        $('#btnEdit-major').val(data[0].EduMjrId);
+        $('#edit-major').val(data[0].EduMjrName.trim());
+        $('#edit-major-idproint').val(data[0].EduMjrId);
+        console.log(JSON.stringify(data));
+      });
+}
+function checkMajor(obj){
+    if (obj.checked==false) {
+        console.log('nonactive')
+        var active=0;
+    } else {
+        console.log('active')
+        var active=1;
+    }
+    
+    var id_major= obj.value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/active/major',
+        type: 'post',
+        data: {
+            active:active,
+            id_major:id_major
+        }
+      }).done((data) => {
+        $('#TblMajor').DataTable().ajax.reload();
+        console.log(JSON.stringify(data));
+    });
+
+}
+function Edit_major(){
+    $('#btnEdit-major').on('click', function() {
+        var Edit_major = $('#edit-major').val();
+        var Edit_major_idproint = $('#edit-major-idproint').val();
+        var id_major=$('#btnEdit-major').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/edit/major',
+            type: 'post',
+            data: {
+                Edit_major:Edit_major,
+                Edit_major_idproint:Edit_major_idproint,
+                id_major:id_major
+            }
+          }).done((data) => {
+            $(".modal-edit-major").modal('hide');
+            $('#TblMajor').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+            if (data==1) {
+                alert()
+            } else {
+                alert_error()
+            }
+        });
+    });
+}
+
+//----JURUSAN----
+// function loadTbl_JURUSAN(){
+//     $('#TblJurusan').DataTable({
+//         "scrollY":        "400px",
+//         "scrollCollapse": true,
+//         pageLength : 5,
+//         ajax: {
+//         url: "/hrdats/mt/show/jurusan",
+//                 data:{},
+//                 dataSrc:""
+//             },
+//         "paging":true,
+//         "bInfo" : false,
+//         "lengthChange": false,
+//         language: {
+//             paginate: {
+//                 previous: "<i class='fas fa-angle-left'>",
+//                 next: "<i class='fas fa-angle-right'>"
+//             }
+//         },
+//         columns: [
+//             {
+//                 render: (data, type, row, meta)=> {
+//                     return '<input type="checkbox" class="cek-jurusan" value="'+row.id+'">'
+//                 }
+//             },
+//             {
+//                 data: 'active',
+//                 defaultContent: '',
+//                 render: (data, type, row, meta)=> {
+  
+//                     switch(data){
+//                         case'1':
+//                         return'<label class="custom-toggle">'+
+//                                     '<input type="checkbox" onclick="checkJurusan(this)" checked value="'+row.id+'">'+
+//                                     '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+//                                 '</label>'
+//                         break;
+//                         case'0':
+//                         return'<label class="custom-toggle">'+
+//                                     '<input type="checkbox" onclick="checkJurusan(this)" value="'+row.id+'">'+
+//                                     '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+//                                 '</label>'
+//                         break;
+//                         default:
+//                             return data;
+//                             break;
+//                     }
+                    
+//                 }
+//             },
+//             {
+//                 data: 'nama',
+//                 defaultContent: ''
+//             },
+//             {
+//                 data: 'jenis',
+//                 defaultContent: ''
+//             },
+//             {
+//                 defaultContent: '',
+//                 render: (data, type, row, meta)=> {
+//                     return '<button type="button" class="btn btn-info" onclick="Modal_jurusan(value)" data-toggle="modal" data-target=".modal-edit-jurusan" value="'+row.id+'">Edit</button>'
+//                 }
+//             }
+//         ] 
+//     });
+
+//     //buat check
+//     $('#cekAll-jurusan').change(function(){
+//         $("input.cek-jurusan:checkbox").prop("checked",$(this).prop("checked"));
+//     })
+// }
+// function delete_JURUSAN(){
+//     $('#btnDel-jurusan').on('click', function() {
+//         //ini buat ambil ID-nya
+//         var arrId_jurusan=[];
+//         var cek = $('.cek-jurusan')
+//         for(var i=0; cek[i]; ++i){
+//             if(cek[i].checked){
+//                 arrId_jurusan.push(cek[i].value);
+//             }
+//         }
+
+//         if (arrId_jurusan>0) {
+//             Swal.fire({
+//                 title: 'Are you sure?',
+//                 text: "You won't be able to revert this!",
+//                 icon: 'warning',
+//                 showCancelButton: true,
+//                 confirmButtonColor: '#3085d6',
+//                 cancelButtonColor: '#d33',
+//                 confirmButtonText: 'Yes, delete it!'
+//             }).then((result) => {
+//                 if (result.isConfirmed) {
+                
+//                     $.ajaxSetup({
+//                         headers: {
+//                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//                         }
+//                     });
+//                     $.ajax({
+//                         _token: '{{ csrf_token() }}',
+//                         url: '/hrdats/mt/del/jurusan',
+//                         type: 'post',
+//                         data: {
+//                             arrId_jurusan:arrId_jurusan
+//                         }
+//                     }).done((data) => {
+//                         $('#TblJurusan').DataTable().ajax.reload();
+//                         // console.log(JSON.stringify(data));
+//                     });
+//                     alert()
+//                 }
+//             })
+//         }
+//     })
+// }
+// function add_JURUSAN(){
+//     $('#btnAdd-jurusan').on('click', function() {
+//         var new_jurusan = $('#new-jurusan').val();
+//         var new_jenis = $('#new-jenis').val();
+
+//         $.ajaxSetup({
+//             headers: {
+//                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//             }
+//         });
+//         $.ajax({
+//             _token: '{{ csrf_token() }}',
+//             url: '/hrdats/mt/add/jurusan',
+//             type: 'post',
+//             data: {
+//                 new_jurusan:new_jurusan,
+//                 new_jenis:new_jenis
+//             }
+//           }).done((data) => {
+//             $(".modal-tambah-jurusan").modal('hide');
+//             $('#TblJurusan').DataTable().ajax.reload();
+//             console.log(JSON.stringify(data));
+//             alert()
+//           });
+//     })
+// }
+// function Modal_jurusan(id){
+//     $.ajaxSetup({
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         }
+//     });
+//     $.ajax({
+//         _token: '{{ csrf_token() }}',
+//         url: '/hrdats/mt/modal/jurusan/'+id,
+//         type: 'get'
+//       }).done((data) => {
+//         $('#btnEdit-jurusan').val(id);
+//         $('#edit-jurusan').val(data[0].nama);
+//         $('#edit-jenis').val(data[0].jenis);
+//         console.log(JSON.stringify(data));
+//       });
+// }
+// function checkJurusan(obj){
+//     if (obj.checked==false) {
+//         console.log('nonactive')
+//         var active=0;
+//     } else {
+//         console.log('active')
+//         var active=1;
+//     }
+    
+//     var id_jurusan= obj.value;
+
+//     $.ajaxSetup({
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         }
+//     });
+//     $.ajax({
+//         _token: '{{ csrf_token() }}',
+//         url: '/hrdats/mt/active/jurusan',
+//         type: 'post',
+//         data: {
+//             active:active,
+//             id_jurusan:id_jurusan
+//         }
+//       }).done((data) => {
+//         $('#TblJurusan').DataTable().ajax.reload();
+//         console.log(JSON.stringify(data));
+//     });
+
+// }
+// function Edit_JURUSAN(){
+//     $('#btnEdit-jurusan').on('click', function() {
+//         var Edit_jurusan = $('#edit-jurusan').val();
+//         var Edit_jenis = $('#edit-jenis').val();
+//         var id_jurusan=$('#btnEdit-jurusan').val();
+
+//         $.ajaxSetup({
+//             headers: {
+//                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//             }
+//         });
+//         $.ajax({
+//             _token: '{{ csrf_token() }}',
+//             url: '/hrdats/mt/edit/jurusan',
+//             type: 'post',
+//             data: {
+//                 Edit_jurusan:Edit_jurusan,
+//                 Edit_jenis:Edit_jenis,
+//                 id_jurusan:id_jurusan
+//             }
+//           }).done((data) => {
+//             $(".modal-edit-jurusan").modal('hide');
+//             $('#TblJurusan').DataTable().ajax.reload();
+//             console.log(JSON.stringify(data));
+//             alert()
+//         });
+//     });
+// }
+
+//----PERKAWINAN----
+function loadTbl_PERKAWINAN(){
+    $('#TblPerkawinan').DataTable({
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
+        ajax: {
+        url: "/hrdats/mt/show/perkawinan",
+                data:{},
+                dataSrc:""
+            },
+        "paging":true,
+        "bInfo" : true,
+        "lengthChange": true,
+        language: {
+            paginate: {
+                previous: "<i class='fas fa-angle-left'>",
+                next: "<i class='fas fa-angle-right'>"
+            }
+        },
+        columns: [
+            {
+                render: (data, type, row, meta)=> {
+                    return '<input type="checkbox" class="cek-perkawinan" value="'+row.MaritalStId+'">'
+                }
+            },
+            {
+                data: 'active',
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+  
+                    switch(data){
+                        case'1':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkPerkawinan(this)" checked value="'+row.MaritalStId+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        case'0':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkPerkawinan(this)" value="'+row.MaritalStId+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        default:
+                            return data;
+                            break;
+                    }
+                    
+                }
+            },
+            {
+                data: 'MaritalSt',
+                defaultContent: ''
+            },
+            {
+                data: 'MaritalStId',
+                defaultContent: ''
+            },
+            {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+                    return '<button type="button" class="btn btn-info" onclick="Modal_perkawinan(value)" data-toggle="modal" data-target=".modal-edit-perkawinan" value="'+row.MaritalStId+'">Edit</button>'
                 }
             }
         ] 
@@ -937,8 +1790,9 @@ function delete_PERKAWINAN(){
 function add_PERKAWINAN(){
     $('#btnAdd-perkawinan').on('click', function() {
         var new_perkawinan = $('#new-perkawinan').val();
-        var new_keterangan = $('#new-keterangan').val();
+        var new_idproint = $('#new-idproint').val();
 
+        console.log(new_perkawinan,new_idproint)
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -950,7 +1804,7 @@ function add_PERKAWINAN(){
             type: 'post',
             data: {
                 new_perkawinan:new_perkawinan,
-                new_keterangan:new_keterangan
+                new_idproint:new_idproint
             }
           }).done((data) => {
             $(".modal-tambah-perkawinan").modal('hide');
@@ -972,8 +1826,8 @@ function Modal_perkawinan(id){
         type: 'get'
       }).done((data) => {
         $('#btnEdit-perkawinan').val(id);
-        $('#edit-perkawinan').val(data[0].nama);
-        $('#edit-keterangan').val(data[0].keterangan);
+        $('#edit-perkawinan').val(data[0].MaritalSt);
+        $('#edit-idproint').val(data[0].MaritalStId);
         console.log(JSON.stringify(data));
       });
 }
@@ -1010,7 +1864,7 @@ function checkPerkawinan(obj){
 function Edit_PERKAWINAN(){
     $('#btnEdit-perkawinan').on('click', function() {
         var Edit_perkawinan = $('#edit-perkawinan').val();
-        var Edit_keterangan = $('#edit-keterangan').val();
+        var Edit_idproint = $('#edit-idproint').val();
         var id_perkawinan = $('#btnEdit-perkawinan').val();
 
         $.ajaxSetup({
@@ -1024,7 +1878,7 @@ function Edit_PERKAWINAN(){
             type: 'post',
             data: {
                 Edit_perkawinan:Edit_perkawinan,
-                Edit_keterangan:Edit_keterangan,
+                Edit_idproint:Edit_idproint,
                 id_perkawinan:id_perkawinan
             }
           }).done((data) => {
@@ -1041,15 +1895,19 @@ function loadTbl_SFPTK(){
     $('#TblSfptk').DataTable({
         "scrollY":        "400px",
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/sfptk",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -1254,15 +2112,19 @@ function loadTbl_SMCU(){
     $('#TblSmcu').DataTable({
         "scrollY":        "400px",
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/smcu",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -1464,15 +2326,19 @@ function loadTbl_STEST(){
     $('#TblStest').DataTable({
         "scrollY":        "400px",
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/stest",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -1674,15 +2540,19 @@ function loadTbl_SREK(){
     $('#TblSrek').DataTable({
         "scrollY":        "400px",
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/srek",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -1877,6 +2747,250 @@ function Edit_SREK(){
             $('#TblSrek').DataTable().ajax.reload();
             console.log(JSON.stringify(data));
             alert()
+        });
+    });
+}
+
+// -----FAM------
+function loadTbl_Fam(){
+    $('#TblKeluarga').DataTable({
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
+        processing: true,
+        serverSide: true,
+        ajax: {
+        url: "/hrdats/mt/show/fam",
+                data:{},
+            },
+        "paging":true,
+        "bInfo" : true,
+        "lengthChange": true,
+        language: {
+            paginate: {
+                previous: "<i class='fas fa-angle-left'>",
+                next: "<i class='fas fa-angle-right'>"
+            }
+        },
+        columns: [
+            {
+                render: (data, type, row, meta)=> {
+                    return '<input type="checkbox" class="cek-keluarga" value="'+row.FamRelId+'">'
+                }
+            },
+            {
+                data: 'active',
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+  
+                    switch(data){
+                        case'1':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkfam(this)" checked value="'+row.FamRelId+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        case'0':
+                        return'<label class="custom-toggle">'+
+                                    '<input type="checkbox" onclick="checkfam(this)" value="'+row.FamRelId+'">'+
+                                    '<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>'+
+                                '</label>'
+                        break;
+                        default:
+                            return data;
+                            break;
+                    }
+                    
+                }
+            },
+            
+            {
+                data: 'FamRelName',
+                defaultContent: ''
+            },
+            {
+                data: 'FamRelTypeName',
+                defaultContent: ''
+            },
+            {
+                data: 'FamRelId',
+                defaultContent: ''
+            },
+            {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
+                    return '<button type="button" class="btn btn-info" onclick="Modal_keluarga(value)" data-toggle="modal" data-target=".modal-edit-keluarga" value="'+row.FamRelId+'">Edit</button>'
+                }
+            }
+        ]
+    });
+
+    //buat check
+    $('#cekAll-keluarga').change(function(){
+        $("input.cek-keluarga:checkbox").prop("checked",$(this).prop("checked"));
+    })
+}
+function delete_fam(){
+    $('#btnDel-keluarga').on('click', function() {
+        //ini buat ambil ID-nya
+        var arrId_keluarga=[];
+        var cek = $('.cek-keluarga')
+        for(var i=0; cek[i]; ++i){
+            if(cek[i].checked){
+                arrId_keluarga.push(cek[i].value);
+            }
+        }
+
+        if (arrId_keluarga.length>0) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                    
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        _token: '{{ csrf_token() }}',
+                        url: '/hrdats/mt/del/fam',
+                        type: 'post',
+                        data: {
+                            arrId_keluarga:arrId_keluarga
+                        }
+                    }).done((data) => {
+                        $('#TblKeluarga').DataTable().ajax.reload();
+                        // console.log(JSON.stringify(data));
+                    });
+                    alert()
+                }
+            })
+        }
+    })
+}
+function add_fam(){
+    $('#btnAdd-keluarga').on('click', function() {
+        var keluarga = $('#new-keluarga').val();
+        var idProint = $('#new-keluarga-idproint').val();
+        var type = $('#new-typekeluarga').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/add/fam',
+            type: 'post',
+            data: {
+                keluarga:keluarga,
+                idProint:idProint,
+                type:type
+            }
+          }).done((data) => {
+            $(".modal-tambah-keluarga").modal('hide');
+            $('#TblKeluarga').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+            if (data==1) {
+                alert();
+            } else {
+                alert_error();
+            }
+          });
+    })
+}
+function Modal_keluarga(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/modal/fam/'+id,
+        type: 'get'
+      }).done((data) => {
+        $('#edit-keluarga').val(data[0].FamRelName.trim());
+        $('#edit-keluarga-idproint').val(data[0].FamRelId);
+        $('#edit-typekeluarga').val(data[0].FamRelType);
+        $('#btnEdit-keluarga').val(data[0].FamRelId);
+        
+      });
+}
+function checkfam(obj){
+    if (obj.checked==false) {
+        console.log('nonactive')
+        var active=0;
+    } else {
+        console.log('active')
+        var active=1;
+    }
+    
+    var id_keluarga= obj.value;
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/hrdats/mt/active/fam',
+        type: 'post',
+        data: {
+            active:active,
+            id_keluarga:id_keluarga
+        }
+      }).done((data) => {
+        $('#TblKeluarga').DataTable().ajax.reload();
+        console.log(JSON.stringify(data));
+    });
+
+}
+function Edit_fam(){
+    $('#btnEdit-keluarga').on('click', function() {
+        var Edit_keluarga = $('#edit-keluarga').val();
+        var Edit_idproint = $('#edit-keluarga-idproint').val();
+        var Edit_typekeluarga = $('#edit-typekeluarga').val();
+        var id_keluarga = $('#btnEdit-keluarga').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            _token: '{{ csrf_token() }}',
+            url: '/hrdats/mt/edit/fam',
+            type: 'post',
+            data: {
+                Edit_keluarga:Edit_keluarga,
+                Edit_idproint:Edit_idproint,
+                Edit_typekeluarga:Edit_typekeluarga,
+                id_keluarga:id_keluarga
+            }
+          }).done((data) => {
+            $(".modal-edit-keluarga").modal('hide');
+            $('#TblKeluarga').DataTable().ajax.reload();
+            console.log(JSON.stringify(data));
+            if (data==1) {
+                alert()
+            } else {
+                alert_error()
+            }
         });
     });
 }

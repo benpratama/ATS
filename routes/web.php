@@ -85,13 +85,35 @@ Route::middleware('auth')->group(function(){
         Route::get('/hrdats/mt/modal/domisili/{id}', 'MasterTableController@ModalDomisili')->name('mt.ModalDomisili');
         Route::Post('/hrdats/mt/edit/domisili', 'MasterTableController@EditDomisili')->name('mt.EditDomisili');
         Route::Post('/hrdats/mt/active/domisili', 'MasterTableController@ActiveDomisili')->name('mt.ActiveDomisili');
+        //--Edulvl--
+        Route::get('/hrdats/mt/show/edulvl', 'MasterTableController@ShowEdulvl')->name('mt.ShowEdulvl');
+        Route::Post('/hrdats/mt/del/edulvl', 'MasterTableController@DelEdulvl')->name('mt.DelEdulvl');
+        Route::Post('/hrdats/mt/add/edulvl', 'MasterTableController@AddEdulvl')->name('mt.AddEdulvl');
+        Route::get('/hrdats/mt/modal/edulvl/{id}', 'MasterTableController@ModalEdulvl')->name('mt.ModalEdulvl');
+        Route::Post('/hrdats/mt/edit/edulvl', 'MasterTableController@EditEdulvl')->name('mt.EditEdulvl');
+        Route::Post('/hrdats/mt/active/edulvl', 'MasterTableController@ActiveEdulvl')->name('mt.ActiveEdulvl');
+        //--INST--
+        Route::get('/hrdats/mt/show/inst', 'MasterTableController@ShowInst')->name('mt.ShowInst');
+        Route::Post('/hrdats/mt/del/inst', 'MasterTableController@DelInst')->name('mt.DelInst');
+        Route::Post('/hrdats/mt/add/inst', 'MasterTableController@AddInst')->name('mt.AddInst');
+        Route::get('/hrdats/mt/modal/inst/{id}', 'MasterTableController@ModalInst')->name('mt.ModalInst');
+        Route::Post('/hrdats/mt/edit/inst', 'MasterTableController@EditInst')->name('mt.EditInst');
+        Route::Post('/hrdats/mt/active/inst', 'MasterTableController@ActiveInst')->name('mt.ActiveInst');
+        //--Major--
+        Route::get('/hrdats/mt/show/major', 'MasterTableController@ShowMajor')->name('mt.ShowMajor');
+        Route::Post('/hrdats/mt/del/major', 'MasterTableController@DelMajor')->name('mt.DelMajor');
+        Route::Post('/hrdats/mt/add/major', 'MasterTableController@AddMajor')->name('mt.AddMajor');
+        Route::get('/hrdats/mt/modal/major/{id}', 'MasterTableController@ModalMajor')->name('mt.ModalMajor');
+        Route::Post('/hrdats/mt/edit/major', 'MasterTableController@EditMajor')->name('mt.EditMajor');
+        Route::Post('/hrdats/mt/active/major', 'MasterTableController@ActiveMajor')->name('mt.ActiveMajor');
+
         //--Jurusan--
-        Route::get('/hrdats/mt/show/jurusan', 'MasterTableController@ShowJurusan')->name('mt.ShowJurusan');
-        Route::Post('/hrdats/mt/del/jurusan', 'MasterTableController@DelJurusan')->name('mt.DelJurusan');
-        Route::Post('/hrdats/mt/add/jurusan', 'MasterTableController@AddJurusan')->name('mt.AddJurusan');
-        Route::get('/hrdats/mt/modal/jurusan/{id}', 'MasterTableController@ModalJurusan')->name('mt.ModalJurusan');
-        Route::Post('/hrdats/mt/edit/jurusan', 'MasterTableController@EditJurusan')->name('mt.EditJurusan');
-        Route::Post('/hrdats/mt/active/jurusan', 'MasterTableController@ActiveJurusan')->name('mt.ActiveJurusan');
+        // Route::get('/hrdats/mt/show/jurusan', 'MasterTableController@ShowJurusan')->name('mt.ShowJurusan');
+        // Route::Post('/hrdats/mt/del/jurusan', 'MasterTableController@DelJurusan')->name('mt.DelJurusan');
+        // Route::Post('/hrdats/mt/add/jurusan', 'MasterTableController@AddJurusan')->name('mt.AddJurusan');
+        // Route::get('/hrdats/mt/modal/jurusan/{id}', 'MasterTableController@ModalJurusan')->name('mt.ModalJurusan');
+        // Route::Post('/hrdats/mt/edit/jurusan', 'MasterTableController@EditJurusan')->name('mt.EditJurusan');
+        // Route::Post('/hrdats/mt/active/jurusan', 'MasterTableController@ActiveJurusan')->name('mt.ActiveJurusan');
         //--Perkawinan--
         Route::get('/hrdats/mt/show/perkawinan', 'MasterTableController@ShowPerkawinan')->name('mt.ShowPerkawinan');
         Route::Post('/hrdats/mt/del/perkawinan', 'MasterTableController@DelPerkawinan')->name('mt.DelPerkawinan');
@@ -128,6 +150,12 @@ Route::middleware('auth')->group(function(){
         Route::Post('/hrdats/mt/edit/srek', 'MasterTableController@EditSRek')->name('mt.EditSRek');
         Route::Post('/hrdats/mt/active/srek', 'MasterTableController@ActiveSRek')->name('mt.ActiveSRek');
 
+        Route::get('/hrdats/mt/show/fam', 'MasterTableController@ShowFam')->name('mt.ShowFam');
+        Route::Post('/hrdats/mt/del/fam', 'MasterTableController@DelFam')->name('mt.DelFam');
+        Route::Post('/hrdats/mt/add/fam', 'MasterTableController@AddFam')->name('mt.AddFam');
+        Route::get('/hrdats/mt/modal/fam/{id}', 'MasterTableController@ModalFam')->name('mt.ModalFam');
+        Route::Post('/hrdats/mt/edit/fam', 'MasterTableController@EditFam')->name('mt.EditFam');
+        Route::Post('/hrdats/mt/active/fam', 'MasterTableController@ActiveFam')->name('mt.ActiveFam');
         //Master Table Vendor
         Route::get('/hrdats/mt/vendor', 'MasterTableController@indexVendor')->name('mt.vendor');
         //--Status MCU--

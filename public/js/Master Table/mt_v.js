@@ -225,15 +225,19 @@ function loadTbl_MCU(){
         "scrollY":        "400px",
         "scrollX": true,
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/mcu",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
@@ -526,15 +530,19 @@ function loadTbl_PSIKOTEST(){
         "scrollY":        "400px",
         "scrollX": true,
         "scrollCollapse": true,
-        pageLength : 5,
+        aLengthMenu: [
+            [5,10,25,50,100 , -1],
+            [5,10,25,50,100 , "All"]
+        ],
+        iDisplayLength: 5,
         ajax: {
         url: "/hrdats/mt/show/psikotest",
                 data:{},
                 dataSrc:""
             },
         "paging":true,
-        "bInfo" : false,
-        "lengthChange": false,
+        "bInfo" : true,
+        "lengthChange": true,
         language: {
             paginate: {
                 previous: "<i class='fas fa-angle-left'>",
