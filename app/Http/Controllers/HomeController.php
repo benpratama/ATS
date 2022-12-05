@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables as DataTablesDataTables;
 
 class HomeController extends Controller
 {
@@ -182,7 +183,7 @@ class HomeController extends Controller
                         strval($status),
                         strval($domisili)
                         ));
-        return $detail;
+        return DataTablesDataTables::of($detail)->make(true);
     }
 
     public function GetName(){

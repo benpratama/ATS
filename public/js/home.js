@@ -371,7 +371,13 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
     "scrollY":        "400px",
     "scrollX": true,
     "scrollCollapse": true,
-    pageLength : 5,
+    aLengthMenu: [
+      [5,10,25,50,100 , -1],
+      [5,10,25,50,100 , "All"]
+  ],
+  iDisplayLength: 5,
+  processing: true,
+  serverSide: true,
         ajax: {
           url: "/hrdats/dashboard/hrd/detail",
           type: "POST",
@@ -385,12 +391,11 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
             job:job,
             status:status,
             domisili:domisili
-          },
-          dataSrc:""
+          }
         },
     "paging":true,
-    "bInfo" : false,
-    "lengthChange": false,
+    "bInfo" : true,
+    "lengthChange": true,
     language: {
         paginate: {
             previous: "<i class='fas fa-angle-left'>",
@@ -398,10 +403,11 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
         }
     },
     columns: [
-      {
-                    render: (data, type, row, meta)=> {
+              {
+                defaultContent: '',
+                render: (data, type, row, meta)=> {
                         return '<input type="checkbox" class="cek-kandidat" value="'+row.id+'">'
-                    },
+                    }
                 },
                 {
                   // data: 'jobfair',
@@ -423,15 +429,8 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
                     defaultContent: ''
                 },
                 {
-                    // data: 'gender',
+                    data: 'gender',
                     defaultContent: '',
-                    render: (data, type, row, meta)=> {
-                      if (row.gender==1 ) {
-                        return 'PRIA'
-                      }else{
-                        return 'WANITA'
-                      }
-                    }
                 },
                 {
                     data: 'pendidikan',
