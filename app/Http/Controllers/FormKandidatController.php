@@ -299,7 +299,7 @@ class FormKandidatController extends Controller
                     ->join('M_Job','T_link.id_Tjob','M_Job.id')
                     ->where('T_link.id',$request->urlid)
                     ->get();
-
+            // dd($result1,$result2);
             if ($result1>=1 && $result2>=1) {
                 // kalo usenya pernah daftar dan di organisasi yang sama
                 // update flag jadi 1
@@ -307,10 +307,10 @@ class FormKandidatController extends Controller
                                         ->where('noidentitas',$request->noidentitas)
                                         ->where('id_Organisasi',$id_organisasi[0]->id)
                                         ->pluck('id');
-                $id_kandidat_ = $id_kandidat_raw[0];
+                $idKandidat = $id_kandidat_raw[0];
 
                 DB::table('T_kandidat_N')
-                    ->where('id',$id_kandidat_)
+                    ->where('id',$idKandidat)
                     ->update([
                         'id_Organisasi'=>$id_organisasi[0]->id,
                         'id_Organisasi_Pronit'=>$id_organisasi[0]->id_proint,
@@ -359,14 +359,17 @@ class FormKandidatController extends Controller
                         'updated_at'=>NULL,
                         'jobfair'=>'1'
                     ]);
+
+                DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',$idKandidat)->delete();
+                
                 /// PHONE           
                 DB::table('T_kandidat_phone_N')
-                    ->where('id_Tkandidat',$id_kandidat_)
+                    ->where('id_Tkandidat',$idKandidat)
                     ->delete();
 
                 DB::table('T_kandidat_phone_N')
                     ->insert([
-                        'id_Tkandidat'=>$id_kandidat_,
+                        'id_Tkandidat'=>$idKandidat,
                         'phoneType'=>'M',
                         'areaCode'=>NULL,
                         'phoneNumber'=>$request->nohp,
@@ -375,12 +378,12 @@ class FormKandidatController extends Controller
 
                 /// EMAIL
                 DB::table('T_kandidat_email_N')
-                    ->where('id_Tkandidat',$id_kandidat_)
+                    ->where('id_Tkandidat',$idKandidat)
                     ->delete(); 
 
                 DB::table('T_kandidat_email_N')
                     ->insert([
-                        'id_Tkandidat'=>$id_kandidat_,
+                        'id_Tkandidat'=>$idKandidat,
                         'emailTpye'=>$request->jenis_email,
                         'email'=>$request->email,
                         'emailPrimary'=>'Y'
@@ -388,12 +391,12 @@ class FormKandidatController extends Controller
                 
                 /// CARD
                 DB::table('T_kandidat_card_N')
-                    ->where('id_Tkandidat',$id_kandidat_)
+                    ->where('id_Tkandidat',$idKandidat)
                     ->delete();
 
                 DB::table('T_kandidat_card_N')
                     ->insert([
-                        'id_Tkandidat'=>$id_kandidat_,
+                        'id_Tkandidat'=>$idKandidat,
                         'cardType'=>57,
                         'cardNumber'=>$request->noidentitas,
                         'expiredDate'=>NULL,
@@ -404,7 +407,7 @@ class FormKandidatController extends Controller
                     if ($request->jenis_SIM[$i]!=0) {
                         DB::table('T_kandidat_card_N')
                         ->insert([
-                            'id_Tkandidat'=>$id_kandidat_,
+                            'id_Tkandidat'=>$idKandidat,
                             'cardType'=>$request->jenis_SIM[$i],
                             'cardNumber'=>$request->no_SIM[$i],
                             'expiredDate'=>$request->exp_sim[$i],
@@ -414,13 +417,13 @@ class FormKandidatController extends Controller
                 }
 
                 DB::table('T_kandidat_pendidikan_N')
-                    ->where('id_Tkandidat',$id_kandidat_)
+                    ->where('id_Tkandidat',$idKandidat)
                     ->delete();
                 for ($i=0; $i < count($request->jenis_pendidikan); $i++) {
                     if ($request->jenis_pendidikan[$i]!=0) {
                         DB::table('T_kandidat_pendidikan_N')
                         ->insert([
-                            'id_Tkandidat'=>$id_kandidat_,
+                            'id_Tkandidat'=>$idKandidat,
                             'jenisPendidikan'=>$request->jenis_pendidikan[$i],
                             'id_namaPendidikan'=>null,
                             'namaPendidikanHR'=>null,
@@ -495,6 +498,9 @@ class FormKandidatController extends Controller
                                 'updated_at'=>NULL,
                                 'jobfair'=>'1'
                             ]);
+                
+                DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',$idKandidat)->delete();
+
                 DB::table('T_kandidat_phone_N')
                     ->insert([
                         'id_Tkandidat'=>$idKandidat,
@@ -604,6 +610,9 @@ class FormKandidatController extends Controller
                                 'updated_at'=>NULL,
                                 'jobfair'=>'1'
                             ]);
+
+                DB::table('T_kandidat_pekerjaan')->where('id_Tkandidat',$idKandidat)->delete();
+
                 DB::table('T_kandidat_phone_N')
                     ->insert([
                         'id_Tkandidat'=>$idKandidat,
@@ -661,6 +670,7 @@ class FormKandidatController extends Controller
                         ]);
                     } 
                 }
+                
             }
 
             DB::table('T_LogKandidat')
@@ -678,6 +688,7 @@ class FormKandidatController extends Controller
                     'test'=>NULL,
                     'jenis'=>NULL
                 ]);
+            
             DB::commit();
 
             ///INI UNTUK KIRIM EMAIL
