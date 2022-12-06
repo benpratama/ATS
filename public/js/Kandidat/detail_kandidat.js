@@ -15,6 +15,7 @@ $( document ).ready(function() {
   get_sim()
   adddelete_sim()
   get_Pendidikan()
+  adddelete_pendidikan()
   get_Pekerjaan()
   page()
   numberWithCommas()
@@ -65,6 +66,11 @@ function modal(){
     $('#ccto').val(null).trigger('change');
     $('#konten').val('')
 
+  })
+
+  $('.modal-list-major').on('hide.bs.modal', function() {
+    $('#TblMajor').DataTable().destroy();
+    $("#TblMajor > tbody"). empty();
   })
 }
 
@@ -559,17 +565,22 @@ function get_Pendidikan(){
       url: '/hrdats/detail/getpendidikan/kandidat/'+id_kandidat,
       type: 'get'
     }).done((data) => {
-      // console.log(JSON.stringify(data[0]));
+      console.log(JSON.stringify(data[3]));
       data[0].forEach(element1 => {
         data_pendidikan+=1;
         var html =""
-        html +="<div id='pendidikan' class='border-rw'>"
+        html +="<div id='pendidikan"+data_pendidikan+"' class='border-rw'>"
         html +=  "<div class='row'>"
 
         html +=     "<div class='col-md-3'>"
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='Pendidikan'>Tingkat*</label>"
-        html +=         "<select class='form-control' id='tingkap_p' name='tingkap_p[]' required>"
+        if (data[3]==true) {
+          html +=         "<select class='form-control' id='tingkap_p' name='tingkap_p[]' disabled>"
+        } else {
+          html +=         "<select class='form-control' id='tingkap_p' name='tingkap_p[]' required>"
+        }
+        
         html +=           "<option value='' disabled selected>Tingkat pendidikan</option>"
         data[1].forEach(element2 => {
           if (element1.jenisPendidikan==element2.EduLvlId) {
@@ -586,21 +597,211 @@ function get_Pendidikan(){
         html +=     "<div class='col-md-3'>"
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='Pendidikan'>Jurusan*</label>"
-        html +=         "<input class='form-control' type='text' id='jurusan_p' name='jurusan_p[]' value='"+element1.jurusanPendidikan+"' required>"  
+        if (data[3]==true) {
+          html +=         "<input class='form-control' type='text' id='jurusan_p' name='jurusan_p[]' value='"+element1.jurusanPendidikan.trim()+"' disabled>"  
+        }else{
+          html +=         "<input class='form-control' type='text' id='jurusan_p' name='jurusan_p[]' value='"+element1.jurusanPendidikan.trim()+"' required>"  
+        }
+        
         html +=       "</div>"    
         html +=     "</div>"
 
         html +=     "<div class='col-md-3'>"
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='Pendidikan'>Nama Institusi*</label>"
-        html +=         "<input class='form-control' type='text' id='namaInst_p' name='namaInst_p[]' value='"+element1.namaPendidikan+"' required>"  
+        if (data[3]==true) {
+          html +=         "<input class='form-control' type='text' id='namaInst_p' name='namaInst_p[]' value='"+element1.namaPendidikan.trim()+"' disabled>" 
+        }else{
+          html +=         "<input class='form-control' type='text' id='namaInst_p' name='namaInst_p[]' value='"+element1.namaPendidikan.trim()+"' required>" 
+        }
         html +=       "</div>"    
         html +=     "</div>"
 
         html +=     "<div class='col-md-2'>"
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='pendidikan'>Nilai*</label>"
-        html +=         "<input type='number' step='0.01' class='form-control' id='nilai_pendidikan' name='nilai_pendidikan[]' value='"+element1.nilai+"' min=0 max=100 required>"
+        if (data[3]==true) {
+          html +=         "<input type='number' step='0.01' class='form-control' id='nilai_pendidikan' name='nilai_pendidikan[]' value='"+element1.nilai+"' min=0 max=100 disabled>"
+        }else{
+          html +=         "<input type='number' step='0.01' class='form-control' id='nilai_pendidikan' name='nilai_pendidikan[]' value='"+element1.nilai+"' min=0 max=100 required>"
+        }
+        html +=       "</div>"
+        html +=     "</div>"
+
+        html +=  "</div>"
+        html +=  "<div class='row'>"
+        html +=    "<div class='col-md-3'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='Pendidikan'>kota</label>"
+        if (data[3]==true) {
+          html +=         "<select class='form-control' id='kota_p' name='kota_p[]' disabled>"
+        }else{
+          html +=         "<select class='form-control' id='kota_p' name='kota_p[]'>"
+        }
+        
+        html +=           "<option value=''selected>Kota Pendidikan</option>"
+        data[2].forEach(element3 => {
+          // html +=           "<option value='"+element3.CityId+"'>"+element3.CityName+"</option>"
+          // console.log(element1.kota)
+          if (element1.kota==element3.CityId) {
+            html +=           "<option value='"+element3.CityId+"' selected>"+element3.CityName+"</option>"
+            html +=           "<option value='"+element3.CityId+"'>"+element3.CityName+"</option>"
+            // console.log(element3.CityId,element3.CityName)
+          }else{
+
+            html +=           "<option value='"+element3.CityId+"'>"+element3.CityName+"</option>"
+            // console.log(element3.CityId,element3.CityName)
+          }
+        });
+        html +=         "</select>"
+        html +=       "</div>"
+        html +=    "</div>"
+
+        html +=   "<div class='col-md-2'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='Pendidikan'>Tahun Mulai</label>"
+        if (data[3]==true) {
+          html +=       "<input class='form-control' type='number' id='thnMulai_p' name='thnMulai_p[]' value='"+element1.tahunmulai+"' min=1800 max=2100 disabled>"
+        }else{
+          html +=       "<input class='form-control' type='number' id='thnMulai_p' name='thnMulai_p[]' value='"+element1.tahunmulai+"' min=1800 max=2100>"
+        }
+        
+        html +=     "</div>"
+        html +=   "</div>"
+    
+        html +=   "<div class='col-md-2'>"
+        html +=     "<div class='form-group'>"
+        html +=       "<label class='form-control-label' for='Pendidikan'>Tahun Selesai</label>"
+        if (data[3]==true) {
+          html +=       "<input class='form-control' type='number' id='thnSelesai_p' name='thnSelesai_p[]' value='"+element1.tahunselesai+"' min=1800 max=2100 disabled>"
+        } else {
+          html +=       "<input class='form-control' type='number' id='thnSelesai_p' name='thnSelesai_p[]' value='"+element1.tahunselesai+"' min=1800 max=2100>"
+        }
+        
+        html +=     "</div>"
+        html +=   "</div>"
+
+        if (data[3]!=true) {
+          html+=    '<div class="col-md-2">'
+          html+=      '<div class="form-group">'
+          html+=        '<label class="form-control-label" for="data_pendidikan">Delete</label>'
+          html+=        '<button type="button" class="btn btn-danger form-control btnDel-pendidikan" data-row="pendidikan'+data_pendidikan+'">Delete</button>'
+          html+=      '</div>'
+          html+=    '</div>'
+        }
+        
+
+        html +=  "</div>"
+        html +="<hr class='my-4'>"
+        html +=  "<div class='row'>"
+        html +=     "<div class='col-md-5'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='Pendidikan'>Jurusan*(proint)</label>"
+        if (element1.jurusanPendidikanHR==null) {
+          html +=         "<input class='form-control' type='text' id='major"+data_pendidikan+"' name='jurusan_p_proint[]' readonly>"  
+        } else {
+          html +=         "<input class='form-control' type='text' id='major"+data_pendidikan+"' name='jurusan_p_proint[]' value='"+element1.jurusanPendidikanHR+"|"+element1.id_jurusanPendidikan+"' readonly>"   
+        }
+        html +=       "</div>"    
+        html +=     "</div>"
+
+        if (data[3]!=true) {
+        html+=    '<div class="col-md-1">'
+        html+=      '<div class="form-group">'
+        html+=        '<label class="form-control-label" for="alamat_perusahaan">List</label>'
+        html +=       "<button id='list_jurusan' onclick='Modal_major(this)' value='major"+data_pendidikan+"' type='button' class='btn btn-success d-flex' data-target='.modal-list-major' data-toggle='modal'>"
+        html +=         "<span id='span_pendidikan' class='material-symbols-outlined'>"
+        html +=           "view_list"
+        html +=         "</span>"
+        html +=       "</button>"
+        html+=      '</div>'
+        html+=    '</div>'
+        }
+
+        html +=     "<div class='col-md-5'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='Pendidikan'>Nama Institusi*(proint)</label>"
+        if (element1.namaPendidikanHR==null) {
+          html +=         "<input class='form-control' type='text' id='inst"+data_pendidikan+"' name='namaInst_p_proint[]'  readonly>"   
+        } else {
+          html +=         "<input class='form-control' type='text' id='inst"+data_pendidikan+"' name='namaInst_p_proint[]' value='"+element1.namaPendidikanHR+"|"+element1.id_namaPendidikan+"' readonly>"   
+        }
+        html +=       "</div>"    
+        html +=     "</div>"
+
+        if (data[3]!=true) {
+        html+=    '<div class="col-md-1">'
+        html+=      '<div class="form-group">'
+        html+=        '<label class="form-control-label" for="alamat_perusahaan">List</label>'
+        html +=       "<button id='list_inst' onclick='Modal_inst(this)' value='inst"+data_pendidikan+"' type='button' class='btn btn-success d-flex' data-target='.modal-list-inst' data-toggle='modal'>"
+        html +=         "<span id='span_pendidikan' class='material-symbols-outlined'>"
+        html +=           "view_list"
+        html +=         "</span>"
+        html +=       "</button>"
+        html+=      '</div>'
+        html+=    '</div>'
+        html +=  "</div>"
+        }
+        html +="</div>"
+
+        $('#list_pendidikan').append(html);
+      });
+    })
+}
+
+function adddelete_pendidikan(){
+  $(document).on('click','.btnDel-pendidikan',function(){
+    var hapus = $(this).data('row')
+    $('#'+hapus).remove();
+    
+  })
+
+  $('#btnAddRow-pendidikan').on('click',function(){
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        _token: '{{ csrf_token() }}',
+        url: '/form-kandidat/get/edulvlandcity',
+        type: 'get'
+      }).done((data) => {
+        data_pendidikan+=1;
+        var html =""
+        html +="<div id='pendidikan"+data_pendidikan+"' class='border-rw'>"
+        html +=  "<div class='row'>"
+
+        html +=     "<div class='col-md-3'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='Pendidikan'>Tingkat*</label>"
+        html +=         "<select class='form-control' id='tingkap_p' name='tingkap_p[]' required>"
+        html +=           "<option value='' selected>Tingkat pendidikan</option>"
+        data[0].forEach(element2 => {
+          html +=           "<option value='"+element2.EduLvlId+"'>"+element2.EduLvlName+"</option>"
+        });
+        html +=         "</select>"
+        html +=       "</div>"
+        html +=     "</div>"
+
+        html +=     "<div class='col-md-3'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='Pendidikan'>Jurusan*</label>"
+        html +=         "<input class='form-control' type='text' id='jurusan_p' name='jurusan_p[]' required>"  
+        html +=       "</div>"    
+        html +=     "</div>"
+
+        html +=     "<div class='col-md-3'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='Pendidikan'>Nama Institusi*</label>"
+        html +=         "<input class='form-control' type='text' id='namaInst_p' name='namaInst_p[]' required>"  
+        html +=       "</div>"    
+        html +=     "</div>"
+
+        html +=     "<div class='col-md-2'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='pendidikan'>Nilai*</label>"
+        html +=         "<input type='number' step='0.01' class='form-control' id='nilai_pendidikan' name='nilai_pendidikan[]' min=0 max=100 required>"
         html +=       "</div>"
         html +=     "</div>"
 
@@ -610,17 +811,9 @@ function get_Pendidikan(){
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='Pendidikan'>kota</label>"
         html +=         "<select class='form-control' id='kota_p' name='kota_p[]'>"
-        html +=           "<option value='' disabled selected>Kota Pendidikan</option>"
-        data[2].forEach(element3 => {
-          html +=           "<option value='"+element3.CityId+"'>"+element3.CityName+"</option>"
-          // // console.log(element1.kota)
-          // if (element1.kota==element3.CityId) {
-          //   // html +=           "<option value='"+element3.CityId+"' selected>"+element3.CityName+"</option>"
-          //   // console.log(element3.CityId,element3.CityName)
-          // }else{
-          //   // html +=           "<option value='"+element3.CityId+"'>"+element3.CityName+"</option>"
-          //   // console.log(element3.CityId,element3.CityName)
-          // }
+        html +=           "<option value=''selected>Kota Pendidikan</option>"
+        data[1].forEach(element3 => {
+        html +=           "<option value='"+element3.CityId+"'>"+element3.CityName+"</option>"
         });
         html +=         "</select>"
         html +=       "</div>"
@@ -629,24 +822,70 @@ function get_Pendidikan(){
         html +=   "<div class='col-md-2'>"
         html +=     "<div class='form-group'>"
         html +=       "<label class='form-control-label' for='Pendidikan'>Tahun Mulai</label>"
-        html +=       "<input class='form-control' type='number' id='thnMulai_p' name='thnMulai_p[]' value='"+element1.tahunmulai+"' min=1800 max=2100>"
+        html +=       "<input class='form-control' type='number' id='thnMulai_p' name='thnMulai_p[]' min=1800 max=2100>"
         html +=     "</div>"
         html +=   "</div>"
     
         html +=   "<div class='col-md-2'>"
         html +=     "<div class='form-group'>"
         html +=       "<label class='form-control-label' for='Pendidikan'>Tahun Selesai</label>"
-        html +=       "<input class='form-control' type='number' id='thnSelesai_p' name='thnSelesai_p[]' value='"+element1.tahunselesai+"' min=1800 max=2100>"
+        html +=       "<input class='form-control' type='number' id='thnSelesai_p' name='thnSelesai_p[]' min=1800 max=2100>"
         html +=     "</div>"
         html +=   "</div>"
 
+        html+=    '<div class="col-md-2">'
+        html+=      '<div class="form-group">'
+        html+=        '<label class="form-control-label" for="data_pendidikan">Delete</label>'
+        html+=        '<button type="button" class="btn btn-danger form-control btnDel-pendidikan" data-row="pendidikan'+data_pendidikan+'">Delete</button>'
+        html+=      '</div>'
+        html+=    '</div>'
+
+        html +=  "</div>"
+        html +="<hr class='my-4'>"
+        html +=  "<div class='row'>"
+        html +=     "<div class='col-md-5'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='Pendidikan'>Jurusan*(proint)</label>"
+        html +=         "<input class='form-control' type='text' id='major"+data_pendidikan+"' name='jurusan_p_proint[]' readonly>"  
+        html +=       "</div>"    
+        html +=     "</div>"
+        html+=    '<div class="col-md-1">'
+        html+=      '<div class="form-group">'
+        html+=        '<label class="form-control-label" for="alamat_perusahaan">List</label>'
+        html +=       "<button id='list_jurusan' onclick='Modal_major(this)' value='major"+data_pendidikan+"' type='button' class='btn btn-success d-flex' data-target='.modal-list-major' data-toggle='modal'>"
+        html +=         "<span id='span_pendidikan' class='material-symbols-outlined'>"
+        html +=           "view_list"
+        html +=         "</span>"
+        html +=       "</button>"
+        html+=      '</div>'
+        html+=    '</div>'
+
+
+        html +=     "<div class='col-md-5'>"
+        html +=       "<div class='form-group'>"
+        html +=         "<label class='form-control-label' for='Pendidikan'>Nama Institusi*(proint)</label>"
+        html +=         "<input class='form-control' type='text' id='inst"+data_pendidikan+"' name='namaInst_p_proint[]'  readonly>"   
+        html +=       "</div>"    
+        html +=     "</div>"
+        html+=    '<div class="col-md-1">'
+        html+=      '<div class="form-group">'
+        html+=        '<label class="form-control-label" for="alamat_perusahaan">List</label>'
+        html +=       "<button id='list_inst' onclick='Modal_inst(this)' value='inst"+data_pendidikan+"' type='button' class='btn btn-success d-flex' data-target='.modal-list-inst' data-toggle='modal'>"
+        html +=         "<span id='span_pendidikan' class='material-symbols-outlined'>"
+        html +=           "view_list"
+        html +=         "</span>"
+        html +=       "</button>"
+        html+=      '</div>'
+        html+=    '</div>'
         html +=  "</div>"
 
         html +="</div>"
-
+        
         $('#list_pendidikan').append(html);
-      });
-    })
+      })
+    
+  });
+
 }
 
 var data_pekerjaan = 0;
@@ -775,7 +1014,11 @@ function get_Pekerjaan(){
         
         html +=       "<div class='form-check'>"
         if (data[1]==true) {
-          html +=         "<input class='form-check-input' type='checkbox' id='checknow' data-row='checkrow"+data_pekerjaan+"' disabled>"
+          if (element.endPerushaan==null) {
+            html +=         "<input class='form-check-input' type='checkbox' id='checknow' data-row='checkrow"+data_pekerjaan+"'checked disabled>"  
+          } else {
+            html +=         "<input class='form-check-input' type='checkbox' id='checknow' data-row='checkrow"+data_pekerjaan+"' disabled>"
+          }
         } else {
           if (element.endPerushaan==null) {
             html +=         "<input class='form-check-input' type='checkbox' id='checknow' data-row='checkrow"+data_pekerjaan+"'checked>"  
@@ -1282,7 +1525,6 @@ function get_organisasi(){
       url: '/hrdats/detail/getorganisasi/kandidat/'+id_kandidat,
       type: 'get'
     }).done((data) => {
-      console.log(JSON.stringify(data[0]));
       var html=''
       for (let index = 0; index < data[0].length; index++) {
         var html  = "<tr id='baris_organisasi"+baris_organisasi+"' class='detail_organisasi'>"
@@ -1578,7 +1820,12 @@ function get_keluarga(){
         html +=     "<div class='col-md-3'>"
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='keluarga'>Hubungan*</label>"
-        html +=         "<select class='form-control' id='hubungan_kel' name='hubungan_kel[]'>"
+        if (data[2]==true) {
+          html +=         "<select class='form-control' id='hubungan_kel' name='hubungan_kel[]' disabled>"
+        } else {
+          html +=         "<select class='form-control' id='hubungan_kel' name='hubungan_kel[]'>"
+        }
+        
         html +=           "<option value='' disabled selected>Hubungan</option>"
         data[1].forEach(element => {
           if (element1.hubungan==element.FamRelId) {
@@ -1595,14 +1842,24 @@ function get_keluarga(){
         html +=     "<div class='col-md-3'>"
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='keluarga'>Nama*</label>"
-        html +=         "<input type='text' class='form-control' id='nama_kel' name='nama_kel[]' value='"+element1.nama+"' maxlength='2000'>"
+        if (data[2]==true) {
+          html +=         "<input type='text' class='form-control' id='nama_kel' name='nama_kel[]' value='"+element1.nama+"' maxlength='2000' disabled>"
+        }else{
+          html +=         "<input type='text' class='form-control' id='nama_kel' name='nama_kel[]' value='"+element1.nama+"' maxlength='2000'>"
+        }
+        
         html +=       "</div>"
         html +=     "</div>"
 
         html +=     "<div class='col-md-2'>"
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='keluarga'>Gender</label>"
-        html +=         "<select class='form-control' id='gender_kel' name='gender_kel[]'>"
+        if (data[2]==true) {
+          html +=         "<select class='form-control' id='gender_kel' name='gender_kel[]' disabled>"
+        }else{
+          html +=         "<select class='form-control' id='gender_kel' name='gender_kel[]'>"
+        }
+        
         if (element1.gender==1) {
           html +=           "<option value='1' selected>Pria</option>"
           html +=           "<option value='2'>Wanita</option>"
@@ -1618,7 +1875,12 @@ function get_keluarga(){
         html +=     "<div class='col-md-2'>"
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='keluarga'>Tanggal Lahir*</label>"
-        html +=         "<input type='date' class='form-control' id='tgl_kel' name='tgl_kel[]' value='"+element1.tgl_lahir.replace(" 00:00:00.000", "")+"' required>"
+        if (data[2]==true) {
+          html +=         "<input type='date' class='form-control' id='tgl_kel' name='tgl_kel[]' value='"+element1.tgl_lahir.replace(" 00:00:00.000", "")+"' disabled>"
+        }else{
+          html +=         "<input type='date' class='form-control' id='tgl_kel' name='tgl_kel[]' value='"+element1.tgl_lahir.replace(" 00:00:00.000", "")+"' required>"
+        }
+        
         html +=       "</div>"
         html +=     "</div>"
         html +=   "</div>"
@@ -1627,16 +1889,24 @@ function get_keluarga(){
         html +=     "<div class='col-md-6'>"
         html +=       "<div class='form-group'>"
         html +=         "<label class='form-control-label' for='keluarga'>Alamat</label>"
-        html +=         "<input type='text' class='form-control' id='alamat_kel' value='"+element1.alamat+"' name='alamat_kel[]'>"
+        if (data[2]==true) {
+          html +=         "<input type='text' class='form-control' id='alamat_kel' value='"+element1.alamat+"' name='alamat_kel[]' disabled>"
+        }else{
+          html +=         "<input type='text' class='form-control' id='alamat_kel' value='"+element1.alamat+"' name='alamat_kel[]'>"
+        }
+        
         html +=       "</div>"
         html +=     "</div>"
-        html +=     "<div class='col-md-1'>"
-        html +=       "<div class='form-group'>"
-        html +=         "<button id='btnDel-keluarga' type='button' class='btn btn-danger d-flex' style='margin-top: 2.3em;' data-row='keluarga"+baris_keluarga+"'>"
-        html +=           "<span class='material-symbols-outlined'>delete</span>"
-        html +=         "</button>"
-        html +=       "</div>"
-        html +=     "</div>"
+        if (data[2]!=true) {
+          html +=     "<div class='col-md-1'>"
+          html +=       "<div class='form-group'>"
+          html +=         "<button id='btnDel-keluarga' type='button' class='btn btn-danger d-flex' style='margin-top: 2.3em;' data-row='keluarga"+baris_keluarga+"'>"
+          html +=           "<span class='material-symbols-outlined'>delete</span>"
+          html +=         "</button>"
+          html +=       "</div>"
+          html +=     "</div>"
+        }
+       
         html +=   "</div>"
 
         html +="</div>"
@@ -2787,7 +3057,13 @@ function getKontak(){
       var html=''
       html +="<tr id='tlp"+baris_tlp+"'>"
       html +=   "<td>"
-      html +=     "<select name='tipe_Tlp[]' class='form-control tipeTlp' data-row='Area_Tlp"+baris_tlp+"'>"
+     
+      if (data[2]==true) {
+        html +=     "<select name='tipe_Tlp[]' class='form-control tipeTlp' data-row='Area_Tlp"+baris_tlp+"' disabled>"
+      } else {
+        html +=     "<select name='tipe_Tlp[]' class='form-control tipeTlp' data-row='Area_Tlp"+baris_tlp+"'>"
+      }
+
       if (element.phoneType=='M ') {
         html +=         "<option value='M' selected>Seluler</option>"
         html +=         "<option value='H'>Rumah</option>"
@@ -2802,19 +3078,29 @@ function getKontak(){
       if (element.phoneType=='M ') {
       html +=     "<input type='text' class='form-control' id='Area_Tlp"+baris_tlp+"' name='Area_Tlp[]' maxlength='45'  readonly>"
       } else {
-      html +=     "<input type='text' class='form-control' id='Area_Tlp"+baris_tlp+"' name='Area_Tlp[]' value='"+element.areaCode+"'  maxlength='45' required>"
+        if (data[2]==true) {
+          html +=     "<input type='text' class='form-control' id='Area_Tlp"+baris_tlp+"' name='Area_Tlp[]' value='"+element.areaCode.trim()+"'  maxlength='45' readonly>"
+        }else{
+          html +=     "<input type='text' class='form-control' id='Area_Tlp"+baris_tlp+"' name='Area_Tlp[]' value='"+element.areaCode.trim()+"'  maxlength='45' required>"
+        }
       }
       html +=   "</td>"
 
       html +=   "<td>"
-      html +=    "<input type='text' class='form-control' id='no_Tlp' name='no_Tlp[]' value='"+element.phoneNumber+"' maxlength='45' required>"
+      if (data[2]==true) {
+        html +=    "<input type='text' class='form-control' id='no_Tlp' name='no_Tlp[]' value='"+element.phoneNumber.trim()+"' maxlength='45' readonly>"
+      }else{
+        html +=    "<input type='text' class='form-control' id='no_Tlp' name='no_Tlp[]' value='"+element.phoneNumber.trim()+"' maxlength='45' required>"
+      }
+      
       html +=   "</td>"
-
+      if (data[2]!=true) {
       html+=  '<td>'
       html +=    "<button type='button' class='btn btn-danger d-flex btnDel-tlp' data-row='tlp"+baris_tlp+"'>"
       html +=       "<span class='material-symbols-outlined'>delete</span>"
       html +=    "</button>"
       html+=  '</td>'
+      }
       html +="</tr>"
 
       $('#tbody_tlp').append(html)
@@ -2827,7 +3113,11 @@ function getKontak(){
 
       html2 +="<tr id='email"+baris_email+"'>"
       html2 +=  "<td>"
-      html2 +=       "<select class='form-control' id='tipe_Tlp' name='tipe_Email[]'  required>"
+      if (data[2]==true) {
+        html2 +=       "<select class='form-control' id='tipe_Tlp' name='tipe_Email[]'  disabled>"
+      }else{
+        html2 +=       "<select class='form-control' id='tipe_Tlp' name='tipe_Email[]'  required>"
+      }
       if (element.emailTpye=="H ") {
       html2 +=         "<option value='B'>Bisnis</option>"
       html2 +=         "<option value='H' selected>Pribadi</option>"
@@ -2838,13 +3128,20 @@ function getKontak(){
       html2 +=       "</select>"
       html2 +=  "</td>"
       html2 +=  "<td>"
-      html2 +=       "<input type='email' class='form-control' id='email' name='email[]' value='"+element.email+"'maxlength='45' required>"
+      if (data[2]==true) {
+      html2 +=       "<input type='email' class='form-control' id='email' name='email[]' value='"+element.email.trim()+"'maxlength='45' disabled>"
+      }else{
+      html2 +=       "<input type='email' class='form-control' id='email' name='email[]' value='"+element.email.trim()+"'maxlength='45' required>"
+      }
       html2 +=  "</td>"
+      if (data[2]!=true) {
       html2 +=  '<td>'
       html2 +=    "<button type='button' class='btn btn-danger d-flex btnDel-tlp' data-row='email"+baris_email+"'>"
       html2 +=       "<span class='material-symbols-outlined'>delete</span>"
       html2 +=    "</button>"
       html2 +=  '</td>'
+      }
+      
       html2 +="</tr>" 
       $('#tbody_email').append(html2)
     })
@@ -2933,4 +3230,169 @@ function AddDell_kontak(){
 
       $('#tbody_email').append(html2)
   })
+}
+
+function Modal_major(obj){
+  // $.ajaxSetup({
+  //   headers: {
+  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //   }
+  // });
+  // $.ajax({
+  //     _token: '{{ csrf_token() }}',
+  //     url: '/hrdats/detail/show/major',
+  //     type: 'get',
+  //     data: {
+  //     }
+  //   }).done((data) => {
+  //     console.log(JSON.stringify(data));
+  // });
+  // $('#TblMajor').DataTable().destroy();
+  $('#TblMajor').DataTable({
+    "scrollY":        "400px",
+    "scrollCollapse": true,
+    aLengthMenu: [
+        [5,10,25,50,100 , -1],
+        [5,10,25,50,100 , "All"]
+    ],
+    iDisplayLength: 5,
+    processing: true,
+    serverSide: true,
+    scroller:true,
+    "paging": true,
+    ajax: {
+        
+        url: "/hrdats/detail/show/major",
+        data:{},
+      },
+    "paging":true,
+    "bInfo" : true,
+    "lengthChange": true,
+    language: {
+        paginate: {
+            previous: "<i class='fas fa-angle-left'>",
+            next: "<i class='fas fa-angle-right'>"
+        }
+    },
+    columns: [
+        {
+            data: 'EduMjrName',
+            defaultContent: ''
+        },
+        {
+            data: 'EduMjrId',
+            defaultContent: ''
+        },
+        {
+            defaultContent: '',
+            render: (data, type, row, meta)=> {
+                return '<button type="button" class="btn btn-info" onclick="select_major(this)" value="'+row.EduMjrName.trim()+'|'+row.EduMjrId+'" data-baris="'+obj.value+'" >Select</button>'
+            }
+        }
+    ] 
+  });
+}
+
+
+function Modal_inst(obj){
+  // $.ajaxSetup({
+  //   headers: {
+  //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  //   }
+  // });
+  // $.ajax({
+  //     _token: '{{ csrf_token() }}',
+  //     url: '/hrdats/detail/show/major',
+  //     type: 'get',
+  //     data: {
+  //     }
+  //   }).done((data) => {
+  //     console.log(JSON.stringify(data));
+  // });
+  // $('#TblMajor').DataTable().destroy();
+
+  
+  //on keyup, start the countdown
+
+  var typingTimer;
+  var doneTypingInterval = 1500;  
+  var $input = $('#search_inst');
+  $input.on('keyup', function () {
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+  });
+
+  //on keydown, clear the countdown 
+  $input.on('keydown', function () {
+    clearTimeout(typingTimer);
+  });
+
+  //user is "finished typing," do something
+  function doneTyping () {
+    var search = $('#search_inst').val()
+    if (search.length>=5) {
+      showdata_inst(obj,search)
+    }
+  }
+}
+function showdata_inst(obj,search){
+  $('#TblInst').DataTable().destroy();
+  $('#TblInst').DataTable({
+    "scrollY":        "400px",
+    "scrollCollapse": true,
+    aLengthMenu: [
+        [5,10,25,50,100 , -1],
+        [5,10,25,50,100 , "All"]
+    ],
+    iDisplayLength: 5,
+    scroller:true,
+    "paging": true,
+    ajax: {
+        
+        url: "/hrdats/detail/show/inst",
+        data:{
+          search:search
+        },
+        dataSrc:""
+      },
+    "paging":true,
+    "bInfo" : true,
+    "lengthChange": true,
+    language: {
+        paginate: {
+            previous: "<i class='fas fa-angle-left'>",
+            next: "<i class='fas fa-angle-right'>"
+        }
+    },
+    columns: [
+        {
+            data: 'EduInsName',
+            defaultContent: ''
+        },
+        {
+            data: 'EduInsId',
+            defaultContent: ''
+        },
+        {
+            defaultContent: '',
+            render: (data, type, row, meta)=> {
+                return '<button type="button" class="btn btn-info" onclick="select_inst(this)" value="'+row.EduInsName.trim()+'|'+row.EduInsId+'" data-baris="'+obj.value+'" >Select</button>'
+            }
+        }
+    ] 
+  });
+}
+
+function select_major(obj){
+  $('.modal-list-major').modal('hide');
+  var value = obj.value;
+  var data_baris = $(obj).attr("data-baris")
+  $('#'+data_baris).attr('value',value);
+}
+
+function select_inst(obj){
+  $('.modal-list-inst').modal('hide');
+  var value = obj.value;
+  var data_baris = $(obj).attr("data-baris")
+  $('#'+data_baris).attr('value',value);
 }

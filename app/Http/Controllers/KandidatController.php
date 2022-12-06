@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables as DataTablesDataTables;
 
 class KandidatController extends Controller
 {
@@ -20,13 +21,13 @@ class KandidatController extends Controller
                     ->where('id',$id)
                     ->where('noidentitas',$noidentitas)
                     ->first();
-                    
+   
             $applyAs =DB::table('T_link')
                     ->select('M_Job.nama')
                     ->join('M_Job','T_link.id_Tjob','M_job.id')
                     ->where('T_link.id',$info_kandidat->id_Tlink)
                     ->get();
-            // dd($applyAs);
+            
 
           // Start UMUR, last Pendidikan, FreshorNot, Status Perkawinan
           $age = Carbon::parse($info_kandidat->tglLahir)->diff(Carbon::now())->y;
@@ -296,12 +297,12 @@ class KandidatController extends Controller
         //                       ->where('active',1)
         //                       ->where('deleted',0)
         //                       ->get();
-            if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
-            $disabled=true;
-            }else{
-                $disabled=false;
-            }
-          return [$pendidikan,$edulvl,$city,$disabled];
+        if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+        $disabled=true;
+        }else{
+            $disabled=false;
+        }
+        return [$pendidikan,$edulvl,$city,$disabled];
     }
 
     public function GetPekerjaan($id){
@@ -471,7 +472,7 @@ class KandidatController extends Controller
     }
      //untuk yang bawah
     public function UpdateForm1_1(Request $request){
-        //  dd($request);
+        // dd($request);
      DB::beginTransaction();
      try {
             DB::table('T_kandidat_N')
@@ -550,15 +551,31 @@ class KandidatController extends Controller
             if(!empty($request->tingkap_p)){
                 for ($i=0; $i < count($request->tingkap_p); $i++) {
                     if ($request->tingkap_p[$i]!=0) {
+                        if ($request->namaInst_p_proint[$i]!=null) {
+                            $id_namaPendidikan =explode('|',$request->namaInst_p_proint[$i])[1];
+                            $namaPendidikan =explode('|',$request->namaInst_p_proint[$i])[0];
+                        }else{
+                            $id_namaPendidikan=null;
+                            $namaPendidikan=null;
+                        }
+                        if ($request->jurusan_p_proint[$i] !=null) {
+                            $id_jurusanPendidikan =explode('|',$request->jurusan_p_proint[$i])[1];
+                            $jurusanPendidikan =explode('|',$request->jurusan_p_proint[$i])[0];
+                        }else{
+                            $id_jurusanPendidikan=null;
+                            $jurusanPendidikan=null;
+                        }
+                        
+
                         DB::table('T_kandidat_pendidikan_N')
                         ->insert([
                             'id_Tkandidat'=>$request->id_kandidat2,
                             'jenisPendidikan'=>$request->tingkap_p[$i],
-                            'id_namaPendidikan'=>null,
-                            'namaPendidikanHR'=>null,
+                            'id_namaPendidikan'=>$id_namaPendidikan,
+                            'namaPendidikanHR'=>$namaPendidikan,
                             'namaPendidikan'=>$request->namaInst_p[$i],
-                            'id_jurusanPendidikan'=>null,
-                            'jurusanPendidikanHR'=>null,
+                            'id_jurusanPendidikan'=>$id_jurusanPendidikan,
+                            'jurusanPendidikanHR'=>$jurusanPendidikan,
                             'jurusanPendidikan'=>$request->jurusan_p[$i],
                             'nilai'=>$request->nilai_pendidikan[$i],
                             'kota'=>$request->kota_p[$i],
@@ -1121,6 +1138,32 @@ class KandidatController extends Controller
         $email = DB::table('T_kandidat_email_N')
                 ->where('id_TKandidat',$id)
                 ->get();
-        return [$phone,$email];
+
+        if (!in_array(session()->get('user')['dept'], $this->idDeptHR)) {
+            $disabled=true;
+        }else{
+            $disabled=false;
+        }
+        return [$phone,$email,$disabled];
+    }
+
+    public function ShowMajor(){
+        $major = DB::table('PMEduMajor_N')
+                    ->where('deleted',0)
+                    ->where('active',1)
+                    ->get();
+
+        return DataTablesDataTables::of($major)->make(true);
+    }
+
+    public function ShowInst(Request $request){
+        $search ='%'.$request->search.'%';
+        $inst = DB::table('PMEduInstitution_N')
+                    ->where('deleted',0)
+                    ->where('active',1)
+                    ->where('EduInsName','like',$search)
+                    ->get();
+
+        return $inst;
     }
 }

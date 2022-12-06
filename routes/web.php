@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function(){
         Route::Post('/hrdats/send/groupemail','KandidatController@SendGEmail')->name('dk.SendGEmail');
         Route::get('/hrdats/detail/email/{id}','KandidatController@ShowDetailEmail')->name('dk.ShowDetailEmail');
         Route::get('/hrdats/detail/schedule/{id}','KandidatController@ShowDetailSchedule')->name('dk.ShowDetailSchedule');
+        Route::get('/hrdats/detail/show/major', 'KandidatController@ShowMajor')->name('dk.ShowMajor');
+        Route::get('/hrdats/detail/show/inst', 'KandidatController@ShowInst')->name('dk.ShowInst');
         Route::Post('/hrdats/edit/schedule','KandidatController@EditSchedule')->name('dk.EditSchedule');
 
         //Master Table Internal

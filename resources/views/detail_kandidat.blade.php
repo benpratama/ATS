@@ -2,6 +2,7 @@
 
 @section('styles')
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
   .material-symbols-outlined {
     font-variation-settings:
@@ -109,29 +110,32 @@
                 @endif
               </div>
             </div>
-            {{-- START URL PHASE 1 --}}
-            @if ($info_kandidat->jobfair !=0)
-            <div class="row pt-3">
-              <div class="col-md-8">
-                  <textarea  rows="3" cols="20" wrap="hard" type="text" class="form-control" id="urlphase1" name="urlphase1" readonly>{{ $url_phase1 }}</textarea>
+            @if ($disabled!="true")
+              {{-- START URL PHASE 1 --}}
+              @if ($info_kandidat->jobfair !=0)
+              <div class="row pt-3">
+                <div class="col-md-8">
+                    <textarea  rows="3" cols="20" wrap="hard" type="text" class="form-control" id="urlphase1" name="urlphase1" readonly>{{ $url_phase1 }}</textarea>
+                </div>
+                <div class="col-md-3">
+                  <button id="btnGen-url1" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
+                </div>
               </div>
-              <div class="col-md-3">
-                <button id="btnGen-url1" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
-              </div>
-            </div>
-            @endif
-            {{-- END URL PHASE 1 --}}
+              @endif
+              {{-- END URL PHASE 1 --}}
 
-            {{-- START URL PAHSE 2 --}}
-            <div class="row pt-3">
-              <div class="col-md-8">
-                  <textarea  rows="3" cols="20" wrap="hard" type="text" class="form-control" id="urlphase2" name="urlphase2" readonly>{{ $url_phase2 }}</textarea>
+              {{-- START URL PAHSE 2 --}}
+              <div class="row pt-3">
+                <div class="col-md-8">
+                    <textarea  rows="3" cols="20" wrap="hard" type="text" class="form-control" id="urlphase2" name="urlphase2" readonly>{{ $url_phase2 }}</textarea>
+                </div>
+                <div class="col-md-3">
+                  <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
+                </div>
               </div>
-              <div class="col-md-3">
-                <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
-              </div>
-            </div>
-            {{-- END URL PAHSE 2 --}}
+              {{-- END URL PAHSE 2 --}}
+            @endif
+            
             {{-- <div class="row">
               <div class="col-md-3">
                 <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
@@ -284,7 +288,7 @@
                     <div class="form-group">
                       <label class="form-control-label" for="tgllahir">Tanggal Lahir</label>
                       {{-- {{ dd($info_kandidat->tglLahir) }} --}}
-                      <input class="form-control" type="date" id="tgllahir" name="tgllahir" value="{{ str_replace(" 00:00:00.000","",$info_kandidat->tglLahir)}}" requiredd>
+                      <input class="form-control" type="date" id="tgllahir" name="tgllahir" value="{{ str_replace(" 00:00:00.000","",$info_kandidat->tglLahir)}}" {{ $disabled == "true" ? 'disabled' : ''}} requiredd>
                     </div>
                   </div>
                 </div>
@@ -346,12 +350,14 @@
                   <h6 class="text-uppercase text-muted ls-1 mb-1">info kandidat</h6>
                   <h5 class="h3 mb-0">SCHEDULE</h5>
                 </div>
+                @if ($disabled!=true)
                 <div class="d-flex col-8">
                   <button type="button" class="btn btn-success d-flex" data-toggle="modal" data-target=".modal-tambah-schedule">
                     <span class="material-symbols-outlined">add</span>
                     <span class="gap-logo">Tambah</span>
                   </button>
                 </div>
+                @endif
               </div>
             </div>
             <div class="card-body" id="body_schedule">
@@ -911,13 +917,13 @@
                   <div class="col-md-1">
                     <div class="form-group">
                       <label class="form-control-label" for="KTP">RT (KTP)</label>
-                      <input type="text" class="form-control" id="RT_KTP" name="RT_KTP" value="{{ $info_kandidat->RT_ktp}}" maxlength="10">
+                      <input type="text" class="form-control" id="RT_KTP" name="RT_KTP" value="{{ $info_kandidat->RT_ktp}}" maxlength="10"{{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                   <div class="col-md-1">
                     <div class="form-group">
                       <label class="form-control-label" for="KTP">RW (KTP)</label>
-                      <input type="text" class="form-control" id="RW_KTP" name="RW_KTP" value="{{ $info_kandidat->RW_ktp}}" maxlength="10">
+                      <input type="text" class="form-control" id="RW_KTP" name="RW_KTP" value="{{ $info_kandidat->RW_ktp}}" maxlength="10"{{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                 </div>
@@ -951,7 +957,7 @@
                     <div class="form-group">
 
                       <label class="form-control-label" for="kodepos">kode pos</label>
-                      <input type="number" class="form-control" id="kodepos" name="kodepos" value="{{ $info_kandidat->kodepos }}" min="1" required>
+                      <input type="number" class="form-control" id="kodepos" name="kodepos" value="{{ $info_kandidat->kodepos }}" min="1" required {{ $disabled == "true" ? 'disabled' : ''}}>
                       {{-- <select class="js-example-basic-single form-control" name="kodepos" id="kodepos" required {{ $disabled == "true" ? 'disabled' : ''}}>
                         <option value="{{ $info_kandidat->kodepos }}" selected>{{ $info_kandidat->kodepos }}</option>
                       </select> --}}
@@ -969,13 +975,13 @@
                   <div class="col-md-1">
                     <div class="form-group">
                       <label class="form-control-label" for="koresponden">RT</label>
-                      <input type="text" class="form-control" id="RT_koresponden" name="RT_koresponden" value="{{ $info_kandidat->RT_koresponden }}" maxlength="10">
+                      <input type="text" class="form-control" id="RT_koresponden" name="RT_koresponden" value="{{ $info_kandidat->RT_koresponden }}" maxlength="10" {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                   <div class="col-md-1">
                     <div class="form-group">
                       <label class="form-control-label" for="koresponden">RW</label>
-                      <input type="text" class="form-control" id="RW_koresponden" name="RW_koresponden" value="{{ $info_kandidat->RW_koresponden }}" maxlength="10">
+                      <input type="text" class="form-control" id="RW_koresponden" name="RW_koresponden" value="{{ $info_kandidat->RW_koresponden }}" maxlength="10" {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                 </div>
@@ -1007,7 +1013,7 @@
                       {{-- <select class="js-example-basic-single form-control" name="kodepos_koresponden" id="kodepos_koresponden" required {{ $disabled == "true" ? 'disabled' : ''}}>
                         <option value="{{ $info_kandidat->kodepos_koresponden }}" selected>{{ $info_kandidat->kodepos_koresponden }}</option>
                       </select> --}}
-                      <input type="number" class="form-control" id="kodepos_koresponden" name="kodepos_koresponden" value="{{ $info_kandidat->kodepos_koresponden }}" min="1" required>
+                      <input type="number" class="form-control" id="kodepos_koresponden" name="kodepos_koresponden" value="{{ $info_kandidat->kodepos_koresponden }}" min="1" required {{ $disabled == "true" ? 'disabled' : ''}}>
                     </div>
                   </div>
                 </div>
@@ -1080,7 +1086,7 @@
                   <button id="btnhide_pendidikan" type="button" class="btn btn-success d-flex btnhide" data-value="1">
                     <span id="span_pendidikan" class="material-symbols-outlined">
                       open_in_full
-                    </span>
+                    </span> 
                   </button>
                 </div>
               </div>
@@ -1093,10 +1099,68 @@
                 
               </div>
               {{-- @endif --}}
-              
+              <button type="button" class="btn btn-primary" id="btnAddRow-pendidikan" {{ $disabled == "true" ? 'hidden' : ''}}>Tambah</button>
             </div>
           </div>
         </div>
+        {{-- START modal-list-major --}}
+        <div class="modal fade bd-example-modal-lg modal-list-major" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">List Major</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="table-responsive">
+                  <table class="table" id="TblMajor">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Name</th>
+                        <th>ID proint</th>
+                        <th>Select</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{-- END modal-list-major --}}
+
+        {{-- START modal-list-inst --}}
+        <div class="modal fade bd-example-modal-lg modal-list-inst" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">List Inst</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row mb-2 col-5">
+                  <input class="form-control" type="text" id="search_inst" name="search_inst" placeholder="type >=5 char">
+                </div>
+                <div class="table-responsive">
+                  <table class="table" id="TblInst">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Name</th>
+                        <th>ID proint</th>
+                        <th>Select</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{-- END modal-list-inst --}}
       </div>
       {{-- END PENDIDIKAN --}}
 
@@ -1127,7 +1191,7 @@
                 {{-- isinya disni --}}
               </div>
               <div class="d-flex">
-                <h5 class="h5 mb-0 mr-3">RIWAYAT PEKERJAAN</h5>
+                {{-- <h5 class="h5 mb-0 mr-3">RIWAYAT PEKERJAAN</h5> --}}
                 <button type="button" class="btn btn-primary" id="btnAddRow-pekerjaan" {{ $disabled == "true" ? 'hidden' : ''}}>Tambah</button>
               </div>
               <hr class="my-4">
@@ -1482,7 +1546,7 @@
                 <div id="list_keluarga">
 
                 </div>
-                <div class="form-group">
+                <div class="form-group" {{ $disabled == "true" ? 'hidden' : ''}}>
                   <button type="button" class="btn btn-success d-flex" id="btnAdd-keluarga">
                     <span class="material-symbols-outlined">add</span>
                     <span class="gap-logo">Keluarga</span>
