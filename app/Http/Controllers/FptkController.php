@@ -561,7 +561,7 @@ class FptkController extends Controller
     }
 
     public function ShowKandidat(){
-        $data_kandidat = DB::table('T_kandidat')
+        $data_kandidat = DB::table('T_kandidat_N')
                         ->select('id','noidentitas','namalengkap')
                         ->where('id_Organisasi',Auth::user()->id_Organisasi)
                         ->get();
