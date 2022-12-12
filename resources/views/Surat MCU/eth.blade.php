@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
         #listkandidat, #listkandidat td, #listkandidat th {
             border: 1px solid black;
@@ -19,7 +20,7 @@
         <center>
             <table width="100%" id="kopsurat">
                 <tr>
-                    <td style="width: 10%"><img src="{{ asset('storage/logo/ETH.png') }}" width="150" height="75"></td>
+                    <td style="width: 10%"><img src="{{ public_path('storage/logo/ETH.png') }}" width="150" height="75"></td>
                     <td>
                         <center>
                             <b><font>PT. KALBE FARMA TBK (BISNIS UNIT ETHICAL)</font></b>
@@ -31,18 +32,22 @@
                 
             </table>
         </center>
-            <p>
-                NO &emsp;&emsp;&emsp;&emsp;:<br>
-                KEPADA &emsp;&ensp;: LAB.<br>
+            {{-- <p>
+                NO &emsp;&emsp;&emsp;&emsp;:{{ $NO_SURAT }}<br>
+                KEPADA &emsp;&ensp;: LAB.{{ $INFO_LAB[0]->NamaLab }}<br>
                 DARI &emsp;&emsp;&emsp;: Monalisa Henriette- Divisi Rekrutment<br>
-            </p>
+            </p> --}}
+            <div style="margin-top: 1em">
+                <span style="width: 15%; display: inline-block;">NO</span><span style="width: 80%; display: inline-block;">: {{ $NO_SURAT }}</span><br>
+                <span style="width: 15%; display: inline-block;">KEPADA</span><span style="width: 80%; display: inline-block;">: LAB.{{ $INFO_LAB[0]->NamaLab }}</span><br>
+                <span style="width: 15%; display: inline-block;">DARI</span><span style="width: 80%; display: inline-block;">: Monalisa Henriette- Divisi Rekrutment</span><br>
+            </div>
             <hr>
             <p>
                 Bersama ini, kami mohon bantuan dari Bapak/ Ibu untuk dapat melaksanakan proses TES KESEHATAN yang dijadwalkan pada:<br>
                 Terhadap kandidat kami, dengan detail sebagai berikut:
             </p>
-            <center>
-                <table width="70%" id="listkandidat">
+                <table width="70%" id="listkandidat" style="margin-left:15%">
                     <thead>
                         <tr>
                             <th width=10%>NO</th>
@@ -51,14 +56,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>nama test</td>
-                            <td>0922991919</td>
-                        </tr>
+                        @for ($i=0;$i<count($INFO_KANDIDAT);$i++)
+                            <tr align="center">
+                                <td>{{ $i+1 }}</td>
+                                <td>{{ trim($INFO_KANDIDAT[$i]->namalengkap) }}</td>
+                                @foreach ($INFO_TLP as $tlp )
+                                    @if ($tlp->id_Tkandidat==$INFO_KANDIDAT[$i]->id)
+                                        <td>{{ trim($tlp->phoneNumber) }}</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                        @endfor
                     </tbody>
                 </table>
-            </center>
             <br>
             <p>Adapun tes kesehatan yang dilakukan meliputi:</p>
             <ol>
@@ -82,7 +94,7 @@
                 <br>
                 <br>
                 Hormat kami,<br>
-                <img src="{{ asset('storage/logo/ttd_eth.png') }}" width="120" height="120"><br>
+                <img src="{{ public_path('storage/logo/ttd_eth.png') }}" width="120" height="120"><br>
                 Monalisa Henriette
             </p>
     </div>
@@ -93,7 +105,7 @@
         <center>
             <table width="100%" id="kopsurat">
                 <tr>
-                    <td style="width: 10%"><img src="{{ asset('storage/logo/ETH.png') }}" width="150" height="75"></td>
+                    <td style="width: 10%"><img src="{{ public_path('storage/logo/ETH.png') }}" width="150" height="75"></td>
                     <td>
                         <center>
                             <b><font>PT. KALBE FARMA TBK (BISNIS UNIT ETHICAL)</font></b>
@@ -344,7 +356,7 @@
         <center>
             <table width="100%" id="kopsurat">
                 <tr>
-                    <td style="width: 10%"><img src="{{ asset('storage/logo/ETH.png') }}" width="150" height="75"></td>
+                    <td style="width: 10%"><img src="{{ public_path('storage/logo/ETH.png') }}" width="150" height="75"></td>
                     <td>
                         <center>
                             <b><font>PT. KALBE FARMA TBK (BISNIS UNIT ETHICAL)</font></b>

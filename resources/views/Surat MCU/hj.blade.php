@@ -19,7 +19,7 @@
         <center>
             <table width="100%" id="kopsurat">
                 <tr>
-                    <td style="width: 10%"><img src="{{ asset('storage/logo/hj.png') }}" width="150" height="75"></td>
+                    <td style="width: 10%"><img src="{{ public_path('storage/logo/hj.png') }}" width="150" height="75"></td>
                     <td>
                         <center>
                             <b><font>PT.Hexpharm Jaya Laboratories</font></b><br>

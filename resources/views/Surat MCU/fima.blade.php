@@ -19,7 +19,7 @@
         <center>
             <table width="100%" id="kopsurat">
                 <tr>
-                    <td style="width: 10%"><img src="{{ asset('storage/logo/fima.png') }}" width="150" height="75"></td>
+                    <td style="width: 10%"><img src="{{ public_path('storage/logo/fima.png') }}" width="150" height="75"></td>
                     <td>
                         <center>
                             <b><font>PT. FINUSOLPRIMA (a Kalbe Company)</font></b>
@@ -31,11 +31,16 @@
                 
             </table>
         </center>
-            <p>
+            {{-- <p>
                 NO &emsp;&emsp;&emsp;&emsp;:<br>
                 KEPADA &emsp;&ensp;: LAB.<br>
                 DARI &emsp;&emsp;&emsp;: Irene - Divisi HRD<br>
-            </p>
+            </p> --}}
+            <div style="margin-top: 1em">
+                <span style="width: 15%; display: inline-block;">NO</span><span style="width: 80%; display: inline-block;">: {{ $NO_SURAT }}</span><br>
+                <span style="width: 15%; display: inline-block;">KEPADA</span><span style="width: 80%; display: inline-block;">: LAB.{{ $INFO_LAB[0]->NamaLab }}</span><br>
+                <span style="width: 15%; display: inline-block;">DARI</span><span style="width: 80%; display: inline-block;">: Irene - Divisi HRD</span><br>
+            </div>
             <hr>
             <p>
                 Bersama ini, kami mohon bantuan dari Bapak/ Ibu untuk dapat melaksanakan proses TES KESEHATAN yang dijadwalkan pada:<br>
@@ -51,11 +56,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>nama test</td>
-                            <td>0922991919</td>
-                        </tr>
+                        @for ($i=0;$i<count($INFO_KANDIDAT);$i++)
+                            <tr align="center">
+                                <td>{{ $i+1 }}</td>
+                                <td>{{ trim($INFO_KANDIDAT[$i]->namalengkap) }}</td>
+                                @foreach ($INFO_TLP as $tlp )
+                                    @if ($tlp->id_Tkandidat==$INFO_KANDIDAT[$i]->id)
+                                        <td>{{ trim($tlp->phoneNumber) }}</td>
+                                    @else
+                                        <td></td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                        @endfor
                     </tbody>
                 </table>
             </center>
@@ -95,7 +108,7 @@
         <center>
             <table width="100%" id="kopsurat">
                 <tr>
-                    <td style="width: 10%"><img src="{{ asset('storage/logo/fima.png') }}" width="150" height="75"></td>
+                    <td style="width: 10%"><img src="{{ public_path('storage/logo/fima.png') }}" width="150" height="75"></td>
                     <td>
                         <center>
                             <b><font>PT. KALBE FARMA TBK (BISNIS UNIT ETHICAL)</font></b>
@@ -346,7 +359,7 @@
         <center>
             <table width="100%" id="kopsurat">
                 <tr>
-                    <td style="width: 10%"><img src="{{ asset('storage/logo/fima.png') }}" width="150" height="75"></td>
+                    <td style="width: 10%"><img src="{{ public_path('storage/logo/fima.png') }}" width="150" height="75"></td>
                     <td>
                         <center>
                             <b><font>PT. KALBE FARMA TBK (BISNIS UNIT ETHICAL)</font></b>
