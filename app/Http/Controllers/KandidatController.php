@@ -16,6 +16,7 @@ class KandidatController extends Controller
 {
     public $idDeptHR=[3,4,5];
     public function index($id,$noidentitas){
+        // dd(session()->get('user'));
           // dd($server);
           $info_kandidat = DB::table('T_kandidat_N')
                     ->where('id',$id)
@@ -442,6 +443,7 @@ class KandidatController extends Controller
                     ->where('online',$request->online)
                     ->where('id_Organisasi',$request->organisasi)
                     ->where('konfirmasi',$request->konfirmasi)
+                    ->where('indo',$request->bahasa)
                     ->where('to','kandidat')
                     ->get();
         return $isi_konten;
@@ -506,27 +508,36 @@ class KandidatController extends Controller
             DB::table('T_kandidat_phone_N')->where('id_Tkandidat',$request->id_kandidat2)->delete();
             if(!empty($request->tipe_Tlp)){
                 for ($j=0; $j <count($request->tipe_Tlp) ; $j++) {
+                    if ($j==0) {
+                        $primary='Y';
+                     } else {
+                        $primary=NULL;
+                     }
                     DB::table('T_kandidat_phone_N')
                         ->insert([
                             'id_Tkandidat'=>$request->id_kandidat2,
                             'phoneType'=>$request->tipe_Tlp[$j],
                             'areaCode'=>$request->Area_Tlp[$j],
                             'phoneNumber'=>$request->no_Tlp[$j],
-                            'phonePrimary'=>NULL
+                            'phonePrimary'=>$primary
                         ]);
-
                 }
             }
 
             DB::table('T_kandidat_email_N')->where('id_Tkandidat',$request->id_kandidat2)->delete();
             if(!empty($request->tipe_Email)){
                 for ($j=0; $j <count($request->tipe_Email) ; $j++) {
+                    if ($j==0) {
+                        $primary='Y';
+                     } else {
+                        $primary=NULL;
+                     }
                     DB::table('T_kandidat_email_N')
                         ->insert([
                             'id_Tkandidat'=>$request->id_kandidat2,
                             'emailTpye'=>$request->tipe_Email[$j],
                             'email'=>$request->email[$j],
-                            'emailPrimary'=>NULL
+                            'emailPrimary'=>$primary
                         ]);
                 }
             }
@@ -840,6 +851,31 @@ class KandidatController extends Controller
         return $list_schedule;
     }
 
+    public function GetGSchedule(){
+        $group = DB::table('T_logkandidat_group')
+                ->select('namaGroup','created_by','id_Rekrutmen','created_at')
+                ->distinct()
+                ->where('id_Organisasi',Auth::user()->id_Organisasi)
+                ->get();
+        return $group;
+    }
+
+    public function ShowDetailGEmail(Request $request){
+        $nama_group = $request->value;
+        $proses = $request->proses;
+
+        $info = DB::table('T_logkandidat_group as A')
+                ->select('B.*','A.*')
+                ->join('T_logkandidat as B','A.id_Tlogkandidat','B.id')
+                ->where('namaGroup',$nama_group)
+                ->where('A.id_Rekrutmen',$proses)
+                ->take(1)
+                ->get();
+        
+        return $info;
+    }
+
+
     public function SetSchedule(Request $request){
         
         if ($request->ccTo>0) {
@@ -908,8 +944,11 @@ class KandidatController extends Controller
             DB::table('T_logkandidat_group')
                 ->insert([
                     'id_Tlogkandidat'=>$id_Tlog,
+                    'id_Rekrutmen'=>$request->schedule,
+                    'id_Organisasi'=>session()->get('user')['organisasi'],
                     'namaGroup'=>$request->namagroup,
-                    'created_at'=>Carbon::now()->format('Y-m-d H:i:s'),
+                    'created_by'=>session()->get('user')['nama'],
+                    'created_at'=>Carbon::now()->format('Y-m-d H:i'),
                 ]);
         }
         return $request->namagroup;
@@ -918,11 +957,12 @@ class KandidatController extends Controller
     public function SendEmail (Request $request){
         // return $request;
         $schedule=$request->schedule;
-        $email_raw = DB::table('T_kandidat')
+
+        $email = DB::table('T_kandidat_email_N')
                 ->select('email')
-                ->where('id',$request->id_kandidat)
+                ->where('id_Tkandidat',$request->id_kandidat)
+                ->where('emailPrimary','Y')
                 ->get();
-        $email = $email_raw[0]->email; 
         if ($schedule==2) {
             $subject = 'MCU';
             if ($request->id_lab!="") {
@@ -952,6 +992,9 @@ class KandidatController extends Controller
         }else if($schedule==9){
             $konten = $request->konten;
             $subject = 'offer';
+        }else if($schedule==21){
+            $konten = $request->konten;
+            $subject = 'Kelengkapan Dokumen';
         }
         
         
@@ -959,7 +1002,7 @@ class KandidatController extends Controller
             
             $message
             ->from('mantap@domain.com') //ini buat pengirim
-            ->to($email)
+            ->to($email[0]->email)
             ->cc('kwjwkwkwk@gmail.com')
             ->subject($subject);
         });
@@ -971,19 +1014,22 @@ class KandidatController extends Controller
             ]);
         $send = 'Yes';
 
-        return $send;
+        return $email;
     }
 
     public function SendGEmail(Request $request){
         // return $request->id_group;
         $schedule=$request->schedule;
         $namagroup = $request->id_group;
-        $info_kandiat = DB::table('T_kandidat as A')
-                        ->select('namalengkap','email','C.nama')
+        $info_kandiat = DB::table('T_kandidat_N as A')
+                        ->select('namalengkap','D.email','C.nama')
                         ->join('T_link as B','B.id','A.id_Tlink')
                         ->join('M_Job as C','C.id','B.id_Tjob')
+                        ->join('T_kandidat_email_N as D','A.id','D.id_Tkandidat')
                         ->whereIn('A.id',$request->arrId_kandidat)
+                        ->where('D.emailPrimary','Y')
                         ->get();
+        // dd($info_kandiat);
         $array1=[];
         $array2=array();
         if ($schedule==2) {

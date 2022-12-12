@@ -108,8 +108,151 @@
                     <span class="gap-logo">CV</span>
                   </a>
                 @endif
+                {{-- <a type="button" class="btn btn-sm btn-primary d-flex" href="/hrdats/hrd/Dokumen/fkpk/{{ $info_kandidat->id }}" target="_blank"> --}}
+                <a type="button" class="btn btn-sm btn-primary d-flex" data-toggle="modal" data-target=".modal-fkpk" >
+                  <span class="material-symbols-outlined" style="color: white">description</span>
+                  <span class="gap-logo" style="color: white">FKPK</span>
+                </a>
               </div>
             </div>
+            {{--!!START MODAL TAMBAH!!--}}
+            <div class="modal fade bd-example-modal-lg modal-fkpk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">FKPK</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form method="POST" action="{{ route('doc.fkpk') }}" id='formfkpk'>
+                    @csrf
+                    <div class="modal-body">
+                      <input id="id_kandidat" name="id_kandidat" value="{{ $info_kandidat->id }}" hidden>
+                      <div class="row">
+                        <div class="col-md-10">
+                          <div class="form-group">
+                            <label class="form-control-label" for="schedule">Waktu Kerja</label>
+                            <div class="d-flex">
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="wk_wdays">
+                                <label class='form-check-label' for='Rpekerjaan'> Senin - Jum'at</label>
+                              </div>
+                              <div class='form-check'>
+                                <input class='form-check-input' type='checkbox' name="wk_wend">
+                                <label class='form-check-label' for='Rpekerjaan'> Sabtu </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label class="form-control-label" for="schedule">Fasilitas</label>
+                            <div class="d-flex">
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="F_kesehatan">
+                                <label class='form-check-label' for='Rpekerjaan'> Kesehatan</label>
+                              </div>
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="F_kost">
+                                <label class='form-check-label' for='Rpekerjaan'> Tunjangan kost </label>
+                              </div>
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="F_penempatan">
+                                <label class='form-check-label' for='Rpekerjaan'> Tunjangan penempatan</label>
+                              </div>
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="F_kemahalan">
+                                <label class='form-check-label' for='Rpekerjaan'> Tunjangan kemahalan </label>
+                              </div>
+                            </div>
+                            <div class="d-flex">
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="F_sewaMotor">
+                                <label class='form-check-label' for='Rpekerjaan'> Tunjangan sewa motor</label>
+                              </div>
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="F_uangMakan">
+                                <label class='form-check-label' for='Rpekerjaan'> Uang makan </label>
+                              </div>
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="F_transport">
+                                <label class='form-check-label' for='Rpekerjaan'> Tunjangan transport</label>
+                              </div>
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="F_makan">
+                                <label class='form-check-label' for='Rpekerjaan'> Tunjangan makan </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-10">
+                          <div class="form-group">
+                            <label class="form-control-label" for="schedule">Kondisi lain</label>
+                            <div class="d-flex">
+                              <div class='form-check mr-3'>
+                                <input class='form-check-input' type='checkbox' name="percobaan">
+                                <label class='form-check-label' for='Rpekerjaan'>Masa percobaan</label>
+                              </div>
+                              <div class='form-check'>
+                                <input class='form-check-input' type='checkbox' name="ikatandinas">
+                                <label class='form-check-label' for='Rpekerjaan'> Ikatan dinas </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="namalengkap">Negosiator</label>
+                            <input type="text" id="negosiator" name="negosiator" class="form-control" placeholder="Nama negosiator">
+                            
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="namalengkap">HRD Direktur</label>
+                            <input type="text" id="hrd_direktur" name="hrd_direktur" class="form-control" placeholder="Nama HRD Direktur">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label class="form-control-label" for="namalengkap">Manager</label>
+                            <input type="text" id="manager" name="manager" class="form-control" placeholder="Nama Manager">
+                            
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label class="form-control-label" for="namalengkap">Direktur</label>
+                            <input type="text" id="direktur" name="direktur" class="form-control" placeholder="Nama Direktur">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label class="form-control-label" for="namalengkap">HRD Manager</label>
+                            <input type="text" id="hrd_manager" name="hrd_manager" class="form-control" placeholder="HRD Manager">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="row">
+                        <button type="submit" id="btnGen_FKPK" class="btn btn-primary">Generate</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {{--!!END MODAL TAMBAH!!--}}
             @if ($disabled!="true")
               {{-- START URL PHASE 1 --}}
               @if ($info_kandidat->jobfair !=0)
@@ -366,6 +509,8 @@
                   <thead class="thead-light">
                     <tr>
                       <th>Status</th>
+                      <th>Perushaan</th>
+                      <th>job</th>
                       <th>Tanggal Buat</th>
                       <th>Tanggal Proses</th>
                       <th>Email terkirim</th>
@@ -434,6 +579,17 @@
                       </select>
                     </div>
                   </div>
+                  @if (Auth::user()->id_Organisasi==3)
+                  <div class="col-md-2" id='bahasa_'>
+                    <div class="form-group">
+                      <label class="form-control-label" for="bahasa">Bahasa</label>
+                      <select class="form-control" id="bahasa" name="bahasa" required>
+                        <option value="1">Indonesia</option>
+                        <option value="0" selected>Inggris</option>
+                      </select>
+                    </div>
+                  </div>
+                  @endif
                   @if (Auth::user()->id_Organisasi==2)
                   <div class="col-md-4" id='konfirmasi_'>
                     <div class="form-group">
@@ -544,7 +700,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row" id="interviewHR_1">
+                    <div class="row interviewHR_1">
                       <div class="col-md-3">
                         <div class="form-group">
                           <label class="form-control-label" for="interviewHR_1_Link">LINK</label>
@@ -570,7 +726,21 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row" id="interviewuser_1">
+                    <div class="row interviewHR_1">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="form-control-label" for="interviewHR_1_Durasi">Durasi</label>
+                          <input type="number" class="form-control" id="interviewHR_1_Durasi" name="interviewHR_1_Durasi" value="">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="form-control-label" for="interviewHR_1_User">USER/INTERVIEWER</label>
+                          <input type="text" class="form-control" id="interviewHR_1_User" name="interviewHR_1_User" value="">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row interviewuser_1">
                       <div class="col-md-3">
                         <div class="form-group">
                           <label class="form-control-label" for="interviewuser_1_Link">LINK</label>
@@ -593,6 +763,20 @@
                         <div class="form-group">
                           <label class="form-control-label" for="interviewuser_1_BR">Breakout Room</label>
                           <input type="text" class="form-control" id="interviewuser_1_BR" name="interviewuser_1_BR" value="">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row interviewuser_1">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="form-control-label" for="interviewuser_1_Durasi">Durasi</label>
+                          <input type="number" class="form-control" id="interviewuser_1_Durasi" name="interviewuser_1_Durasi" value="">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="form-control-label" for="interviewuser_1_User">USER/INTERVIEWER</label>
+                          <input type="text" class="form-control" id="interviewuser_1_User" name="interviewuser_1_User" value="">
                         </div>
                       </div>
                     </div>
@@ -664,30 +848,14 @@
                     </div>
                   </div>
                 @else
-                  <div id="information2">
-                    <div class="row" id="interviewHR_1">
-                      <div class="col-md-8">
-                        <div class="form-group">
-                          <label class="form-control-label" for="interviewHR_1_Link">Link Interview</label>
-                          <input type="text" class="form-control" id="interviewHR_1_Link" name="interviewHR_1_Link" value="">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" id="interviewuser_1">
-                      <div class="col-md-8">
-                        <div class="form-group">
-                          <label class="form-control-label" for="interviewuser_1_Link">Link Interview</label>
-                          <input type="text" class="form-control" id="interviewuser_1_Link" name="interviewuser_1_Link" value="">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row" id="MCU">
-                      {{-- <div class="col-md-4">
+                  <div id="informasi2">
+                    <div class="row" id="MCU_nk">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label class="form-control-label" for="mcu_nosurat">No Surat</label>
                           <input type="text" class="form-control" id="mcu_nosurat" name="mcu_nosurat" value="">
                         </div>
-                      </div> --}}
+                      </div>
                       {{-- <div class="col-md-4">
                         <div class="form-group">
                           <label class="form-control-label" for="mcu_Durasi">Durasi (dalam jam)</label>
@@ -706,9 +874,37 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row" id="interviewHR_1_nk">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-control-label" for="interviewHR_1_nk_PIC">PIC Name</label>
+                          <input type="text" class="form-control" id="interviewHR_1_nk_PIC" name="interviewHR_1_nk_PIC" value="">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-control-label" for="interviewHR_1_nk_LINK">LINK</label>
+                          <input type="text" class="form-control" id="interviewHR_1_nk_LINK" name="interviewHR_1_nk_LINK" value="">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" id="interviewUser_1_nk">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-control-label" for="interviewUser_1_nk_PIC">PIC Name</label>
+                          <input type="text" class="form-control" id="interviewUser_1_nk_PIC" name="interviewUser_1_nk_PIC" value="">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-control-label" for="interviewUser_1_nk_LINK">LINK</label>
+                          <input type="text" class="form-control" id="interviewUser_1_nk_LINK" name="interviewUser_1_nk_LINK" value="">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 @endif
-                <div class="row">
+                <div class="row tglandcc">
                   <div class="col-md-4">
                     <div class="form-group">
                       <label class="form-control-label" for="alamatlengkap">Tanggal dan waktu</label>
@@ -738,6 +934,18 @@
               </div>
               <div class="modal-footer">
                 <div class="row">
+                  @if (Auth::user()->id_Organisasi==1)
+                    <form method="POST" action="{{ route('doc.ETHsurat') }}" style="margin-right: 0.5rem" >
+                  @elseif(Auth::user()->id_Organisasi==2)
+                    <form method="POST" action="{{ route('doc.Fimasurat') }}">
+                  @else
+                    <form method="POST" action="{{ route('doc.HJsurat') }}">
+                  @endif
+                    @csrf
+                    <input id="id_log" name="id_log" value="" hidden>
+                    <input id="jenis" name="jenis" value="single" hidden>
+                    <button id="gen-doc" type="submit" class="btn btn-primary" hidden>Generate surat</button>
+                  </form>
                   <button id="btnAdd-schedule" type="button" class="btn btn-primary">Save changes</button>
                   <button id="btnUpdate-schedule" type="button" class="btn btn-primary" hidden>Update</button>
                   <button id="btnEmail" type="button" class="btn btn-primary">Email</button>
@@ -754,7 +962,7 @@
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="titleNotes"></h5>
+              <h5 class="modal-title" id="titleNotes">NOTE PROSES</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -762,7 +970,7 @@
             {{-- <form method="POST" action="{{ route('dk.SetSchedule') }}" >
               @csrf --}}
             <div class="modal-body">
-                <input id="id_schedule" name="id_schedule" hidden>
+                <input id="id_schedule" name="id_schedule">
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
