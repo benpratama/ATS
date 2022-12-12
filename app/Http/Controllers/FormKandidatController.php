@@ -925,13 +925,18 @@ class FormKandidatController extends Controller
                     DB::table('T_kandidat_phone_N')->where('id_Tkandidat',$id_kandidat)->delete();
                     if(!empty($request->tipe_Tlp)){
                         for ($j=0; $j <count($request->tipe_Tlp) ; $j++) {
+                            if ($j==0) {
+                                $primary='Y';
+                            } else {
+                                $primary=NULL;
+                            }
                             DB::table('T_kandidat_phone_N')
                                 ->insert([
                                     'id_Tkandidat'=>$id_kandidat,
                                     'phoneType'=>$request->tipe_Tlp[$j],
                                     'areaCode'=>$request->Area_Tlp[$j],
                                     'phoneNumber'=>$request->no_Tlp[$j],
-                                    'phonePrimary'=>NULL
+                                    'phonePrimary'=>$primary
                                 ]);
                         }
                     }
@@ -939,12 +944,17 @@ class FormKandidatController extends Controller
                     DB::table('T_kandidat_email_N')->where('id_Tkandidat',$id_kandidat)->delete();
                     if(!empty($request->tipe_Email)){
                         for ($j=0; $j <count($request->tipe_Email) ; $j++) {
+                            if ($j==0) {
+                                $primary='Y';
+                            } else {
+                                $primary=NULL;
+                            }
                             DB::table('T_kandidat_email_N')
                                 ->insert([
                                     'id_Tkandidat'=>$id_kandidat,
                                     'emailTpye'=>$request->tipe_Email[$j],
                                     'email'=>$request->email[$j],
-                                    'emailPrimary'=>NULL
+                                    'emailPrimary'=>$primary
                                 ]);
                         }
                     }
@@ -1189,25 +1199,35 @@ class FormKandidatController extends Controller
     
                     if(!empty($request->tipe_Tlp)){
                         for ($j=0; $j <count($request->tipe_Tlp) ; $j++) {
+                            if ($j==0) {
+                                $primary='Y';
+                            } else {
+                                $primary=NULL;
+                            }
                             DB::table('T_kandidat_phone_N')
                                 ->insert([
                                     'id_Tkandidat'=>$id_kandidat,
                                     'phoneType'=>$request->tipe_Tlp[$j],
                                     'areaCode'=>$request->Area_Tlp[$j],
                                     'phoneNumber'=>$request->no_Tlp[$j],
-                                    'phonePrimary'=>NULL
+                                    'phonePrimary'=>$primary
                                 ]);
                         }
                     }
     
                     if(!empty($request->tipe_Email)){
                         for ($j=0; $j <count($request->tipe_Email) ; $j++) {
+                            if ($j==0) {
+                                $primary='Y';
+                            } else {
+                                $primary=NULL;
+                            }
                             DB::table('T_kandidat_email_N')
                                 ->insert([
                                     'id_Tkandidat'=>$id_kandidat,
                                     'emailTpye'=>$request->tipe_Email[$j],
                                     'email'=>$request->email[$j],
-                                    'emailPrimary'=>NULL
+                                    'emailPrimary'=>$primary
                                 ]);
                         }
                     }
@@ -1464,25 +1484,35 @@ class FormKandidatController extends Controller
     
                     if(!empty($request->tipe_Tlp)){
                         for ($j=0; $j <count($request->tipe_Tlp) ; $j++) {
+                            if ($j==0) {
+                                $primary='Y';
+                            } else {
+                                $primary=NULL;
+                            }
                             DB::table('T_kandidat_phone_N')
                                 ->insert([
                                     'id_Tkandidat'=>$id_kandidat,
                                     'phoneType'=>$request->tipe_Tlp[$j],
                                     'areaCode'=>$request->Area_Tlp[$j],
                                     'phoneNumber'=>$request->no_Tlp[$j],
-                                    'phonePrimary'=>NULL
+                                    'phonePrimary'=>$primary
                                 ]);
                         }
                     }
     
                     if(!empty($request->tipe_Email)){
                         for ($j=0; $j <count($request->tipe_Email) ; $j++) {
+                            if ($j==0) {
+                                $primary='Y';
+                            } else {
+                                $primary=NULL;
+                            }
                             DB::table('T_kandidat_email_N')
                                 ->insert([
                                     'id_Tkandidat'=>$id_kandidat,
                                     'emailTpye'=>$request->tipe_Email[$j],
                                     'email'=>$request->email[$j],
-                                    'emailPrimary'=>NULL
+                                    'emailPrimary'=>$primary
                                 ]);
                         }
                     }
@@ -1721,13 +1751,19 @@ class FormKandidatController extends Controller
                 DB::table('T_kandidat_phone_N')->where('id_Tkandidat',$id_kandidat)->delete();
                 if(!empty($request->tipe_Tlp)){
                     for ($j=0; $j <count($request->tipe_Tlp) ; $j++) {
+                        if ($j==0) {
+                            $primary='Y';
+                        } else {
+                            $primary=NULL;
+                        }
+                        
                         DB::table('T_kandidat_phone_N')
                             ->insert([
                                 'id_Tkandidat'=>$id_kandidat,
                                 'phoneType'=>$request->tipe_Tlp[$j],
                                 'areaCode'=>$request->Area_Tlp[$j],
                                 'phoneNumber'=>$request->no_Tlp[$j],
-                                'phonePrimary'=>NULL
+                                'phonePrimary'=>$primary
                             ]);
 
                     }
@@ -1736,12 +1772,17 @@ class FormKandidatController extends Controller
                 DB::table('T_kandidat_email_N')->where('id_Tkandidat',$id_kandidat)->delete();
                 if(!empty($request->tipe_Email)){
                     for ($j=0; $j <count($request->tipe_Email) ; $j++) {
+                        if ($j==0) {
+                            $primary='Y';
+                        } else {
+                            $primary=NULL;
+                        }
                         DB::table('T_kandidat_email_N')
                             ->insert([
                                 'id_Tkandidat'=>$id_kandidat,
                                 'emailTpye'=>$request->tipe_Email[$j],
                                 'email'=>$request->email[$j],
-                                'emailPrimary'=>NULL
+                                'emailPrimary'=>$primary
                             ]);
                     }
                 }

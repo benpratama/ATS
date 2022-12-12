@@ -70,8 +70,8 @@
                     <label class="form-control-label" for="gender">Gender*</label>
                     <select class="form-control" id="gender" name="gender" required>
                       <option value="" disabled selected>Gender</option>
-                      <option value="1">Pria</option>
-                      <option value="2">Wanita</option>
+                      <option value="Pria">Pria</option>
+                      <option value="Wanita">Wanita</option>
                     </select>
                   </div>
                 </div>
