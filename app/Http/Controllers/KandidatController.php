@@ -140,6 +140,12 @@ class KandidatController extends Controller
                         ->select('CityId','CityName')
                         ->where('CityCountryId',115)
                         ->get();
+            $listPsikotes = DB::table('M_vendor')
+                            ->select('id','namaVendor')
+                            ->where('jenis','PSIKOTEST')
+                            ->where('active',1)
+                            ->where('deleted',0)
+                            ->get();
         // ==========================================
           if($info_kandidat){
                return view('detail_kandidat',
@@ -167,7 +173,8 @@ class KandidatController extends Controller
                          'disabled'=>$disabled,
 
                          'StatusRumah'=>$statusRumah,
-                         'kotas'=>$city
+                         'kotas'=>$city,
+                         'ListPsikotest'=>$listPsikotes
                     ]);
           }else{
                return redirect()->route('home');
@@ -852,27 +859,26 @@ class KandidatController extends Controller
     }
 
     public function GetGSchedule(){
-        $group = DB::table('T_logkandidat_group')
-                ->select('namaGroup','created_by','id_Rekrutmen','created_at')
+        $group = DB::table('T_logkandidat_group as A')
+                ->select('A.namaGroup','A.created_by','B.proses','A.id_Rekrutmen','A.created_at')
                 ->distinct()
+                ->join('M_Rekrutmen as B','B.id','A.id_Rekrutmen')
                 ->where('id_Organisasi',Auth::user()->id_Organisasi)
                 ->get();
         return $group;
     }
 
-    public function ShowDetailGEmail(Request $request){
-        $nama_group = $request->value;
-        $proses = $request->proses;
-
+    public function ShowDetailGEmail($nama,$proese){
+        $tgl = Carbon::now()->format('Y-m-d');
         $info = DB::table('T_logkandidat_group as A')
                 ->select('B.*','A.*')
                 ->join('T_logkandidat as B','A.id_Tlogkandidat','B.id')
-                ->where('namaGroup',$nama_group)
-                ->where('A.id_Rekrutmen',$proses)
+                ->where('namaGroup',$nama)
+                ->where('A.id_Rekrutmen',$proese)
                 ->take(1)
                 ->get();
         
-        return $info;
+        return [$info[0],$tgl];
     }
 
 
@@ -914,6 +920,7 @@ class KandidatController extends Controller
     }
 
     public function SetGSchedule(Request $request){
+        // return $request->arrId_kandidat;
         if ($request->ccTo>0) {
             // $email_raw=implode('","',$request->ccTo);
             // $email = '"'.$email_raw.'"';
@@ -1018,15 +1025,32 @@ class KandidatController extends Controller
     }
 
     public function SendGEmail(Request $request){
-        // return $request->id_group;
+        // return $request;
+        // return $request->arrId_kandidat;
         $schedule=$request->schedule;
         $namagroup = $request->id_group;
+
+        if ($request->arrId_kandidat=='') {
+            $arrId_kandidat=[];
+            $result = DB::table('T_logkandidat_group as A')
+                    ->select('B.id_Tkandidat')
+                    ->join('T_logkandidat as B','A.id_Tlogkandidat','B.id')
+                    ->where('A.namaGroup',$namagroup)
+                    ->where('A.id_Rekrutmen',$schedule)
+                    ->get();
+            foreach ($result as $key => $value) {
+                array_push($arrId_kandidat,$value->id_Tkandidat);
+            }
+        }else{
+            $arrId_kandidat=$request->arrId_kandidat;
+        }
+
         $info_kandiat = DB::table('T_kandidat_N as A')
                         ->select('namalengkap','D.email','C.nama')
                         ->join('T_link as B','B.id','A.id_Tlink')
                         ->join('M_Job as C','C.id','B.id_Tjob')
                         ->join('T_kandidat_email_N as D','A.id','D.id_Tkandidat')
-                        ->whereIn('A.id',$request->arrId_kandidat)
+                        ->whereIn('A.id',$arrId_kandidat)
                         ->where('D.emailPrimary','Y')
                         ->get();
         // dd($info_kandiat);
@@ -1034,21 +1058,43 @@ class KandidatController extends Controller
         $array2=array();
         if ($schedule==2) {
             $subject = 'MCU';
-            $lab = DB::table('M_vendor')
+            if ($request->id_lab!="") {
+                $lab = DB::table('M_vendor')
                     ->select('NamaLab','alamat')
                     ->where('id',$request->id_lab)
                     ->where('jenis','MCU')
                     ->get();
-            
-            
-            foreach ($info_kandiat as $key => $value) {
-                $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]","[CANDIDAT NAME]","[POSITION]"],[$lab[0]->NamaLab,$lab[0]->alamat,$value->namalengkap,$value->nama],$request->konten);
-                $array2["email"]=$value->email;
-                $array2["konten"]=$konten;
-                array_push($array1,$array2);
+
+                foreach ($info_kandiat as $key => $value) {
+                    $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]","[CANDIDAT NAME]","[POSITION]"],[$lab[0]->NamaLab,$lab[0]->alamat,$value->namalengkap,$value->nama],$request->konten);
+                    $array2["email"]=$value->email;
+                    $array2["konten"]=$konten;
+                    array_push($array1,$array2);
+                }
+            }else{
+                foreach ($info_kandiat as $key => $value) {
+                    
+                    $konten= str_replace(["[CANDIDAT NAME]","[POSITION]"],[$value->namalengkap,$value->nama],$request->konten);
+                    $array2["email"]=$value->email;
+                    $array2["konten"]=$konten;
+                    array_push($array1,$array2);
+                }
+                // dd($array1);
             }
-        }
-         else if($schedule==3) {
+            // $lab = DB::table('M_vendor')
+            //         ->select('NamaLab','alamat')
+            //         ->where('id',$request->id_lab)
+            //         ->where('jenis','MCU')
+            //         ->get();
+            
+            
+            // foreach ($info_kandiat as $key => $value) {
+            //     $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]","[CANDIDAT NAME]","[POSITION]"],[$lab[0]->NamaLab,$lab[0]->alamat,$value->namalengkap,$value->nama],$request->konten);
+            //     $array2["email"]=$value->email;
+            //     $array2["konten"]=$konten;
+            //     array_push($array1,$array2);
+            // }
+        }else if($schedule==3) {
             $subject = 'Psikotest';
 
             foreach ($info_kandiat as $key => $value) {
@@ -1057,8 +1103,7 @@ class KandidatController extends Controller
                 $array2["konten"]=$konten;
                 array_push($array1,$array2);
             }
-        } 
-        else if($schedule==4){
+        }else if($schedule==4){
             $subject = 'tech test';
             foreach ($info_kandiat as $key => $value) {
                 $konten= str_replace(["[CANDIDAT NAME]","[POSITION]"],[$value->namalengkap,$value->nama],$request->konten);
@@ -1066,8 +1111,7 @@ class KandidatController extends Controller
                 $array2["konten"]=$konten;
                 array_push($array1,$array2);
             }
-        }
-        else if($schedule==5){
+        }else if($schedule==5){
             $subject = 'interview HR';
             foreach ($info_kandiat as $key => $value) {
                 $konten= str_replace(["[CANDIDAT NAME]","[POSITION]"],[$value->namalengkap,$value->nama],$request->konten);
@@ -1100,7 +1144,7 @@ class KandidatController extends Controller
         //                 ->select('id_Tkandidat','id_Rekrutmen','id_Organisasi','jenis')
         //                 ->whereIn('id', $id_Tlog)
         //                 ->get();
-
+        // dd($array1);
         foreach ($array1 as $key => $value) {
             // return $value["email"];
             $email = $value["email"];
@@ -1149,6 +1193,10 @@ class KandidatController extends Controller
         }
         $waktu = str_replace("T"," ",$request->tglWaktu);
         $date = Carbon::createFromFormat('Y-m-d H:i', $waktu)->format('Y-m-d H:i');
+
+        DB::table('T_logkandidat_group')
+            ->where('id_Tlogkandidat',$id)
+            ->delete();
 
         DB::table('T_LogKandidat')
             ->where('id',$id)

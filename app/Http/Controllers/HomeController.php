@@ -200,15 +200,19 @@ class HomeController extends Controller
                     ->join('T_FPTK','T_DFPTK.id_TFPTK','T_FPTK.id')
                     ->where('id_TKandidat',$value)
                     ->pluck('nofptk');
-            $info_kandidat = DB::table('T_kandidat')
+            $info_kandidat = DB::table('T_kandidat_N')
                             ->where('id', $value)
                             ->pluck('namalengkap');
+            $idorganisasiProint = DB::table('M_Organisasi')
+                                    ->where('id',$request->id_Organisasi)
+                                    ->get();
             // return count($cek);
             if (count($cek)<1) {
-                DB::table('T_kandidat')
+                DB::table('T_kandidat_N')
                 ->where('id',$value)
                 ->update([
-                    'id_Organisasi'=>$request->id_Organisasi
+                    'id_Organisasi'=>$request->id_Organisasi,
+                    'id_Organisasi_Pronit'=>$idorganisasiProint[0]->id_proint
                 ]);
             }else{
                 
@@ -221,5 +225,26 @@ class HomeController extends Controller
             }
         }
         return $array1;
+    }
+
+    public function ShowSchGkandidat(Request $request){
+        $id_Tlogkandidat =[];
+        $data_group = DB::table('T_logkandidat_group as A')
+                    ->select('B.id_Tkandidat')
+                    ->join('T_logkandidat as B','A.id_Tlogkandidat','B.id')
+                    ->where('A.namaGroup',$request->value)
+                    ->where('A.id_Rekrutmen',$request->proses)
+                    ->get();
+        foreach ($data_group as $key => $value) {
+            array_push($id_Tlogkandidat,$value->id_Tkandidat);
+        }
+
+        $data_user = DB::table('T_kandidat_N as A')
+                    ->select('A.namalengkap','B.email')
+                    ->join('T_kandidat_email_N as B','A.id','B.id_Tkandidat')
+                    ->whereIn('id',$id_Tlogkandidat)
+                    ->where('emailPrimary','Y')
+                    ->get();
+        return $data_user;
     }
 }

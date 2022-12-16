@@ -579,6 +579,17 @@
                       </select>
                     </div>
                   </div>
+                  <div class="col-md-4" id='Pisikotest_list' hidden>
+                    <div class="form-group">
+                      <label class="form-control-label" for="proses">Vendor Psikotes</label>
+                      <select class="form-control" id="vendorPsikotest" name="vendorPsikotest" required>
+                        <option value="" selected disabled>Vendor Psikotes</option>
+                        @foreach ($ListPsikotest as $psikotest)
+                        <option value="{{ $psikotest->id }}">{{ $psikotest->namaVendor }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
                   @if (Auth::user()->id_Organisasi==3)
                   <div class="col-md-2" id='bahasa_'>
                     <div class="form-group">
@@ -937,14 +948,22 @@
                   @if (Auth::user()->id_Organisasi==1)
                     <form method="POST" action="{{ route('doc.ETHsurat') }}" style="margin-right: 0.5rem" >
                   @elseif(Auth::user()->id_Organisasi==2)
-                    <form method="POST" action="{{ route('doc.Fimasurat') }}">
+                    <form method="POST" action="{{ route('doc.Fimasurat') }}" style="margin-right: 0.5rem">
                   @else
-                    <form method="POST" action="{{ route('doc.HJsurat') }}">
+                    <form method="POST" action="{{ route('doc.HJsurat') }}" style="margin-right: 0.5rem">
                   @endif
                     @csrf
                     <input id="id_log" name="id_log" value="" hidden>
                     <input id="jenis" name="jenis" value="single" hidden>
                     <button id="gen-doc" type="submit" class="btn btn-primary" hidden>Generate surat</button>
+                  </form>
+                  <form method="POST" action="{{ route('doc.solutiva') }}" style="margin-right: 0.5rem" id="f_solutiva" hidden>
+                    @csrf
+                    <input id="id_log_p" name="id_log_p" value="" hidden>
+                    <input id="jenis_p" name="jenis_p" value="single" hidden>
+                    <input id="nama_PicGen" name="nama_PicGen" value="{{ Auth::user()->nama }}" hidden>
+                    <input id="org_PicGen" name="org_PicGen" value="{{ Auth::user()->id_Organisasi }}" hidden>
+                    <button id="gen-doc-p" type="submit" class="btn btn-primary">Generate surat</button>
                   </form>
                   <button id="btnAdd-schedule" type="button" class="btn btn-primary">Save changes</button>
                   <button id="btnUpdate-schedule" type="button" class="btn btn-primary" hidden>Update</button>

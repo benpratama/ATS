@@ -2233,6 +2233,7 @@ function show_detail(id){
       // console.log(JSON.stringify(data));
       var id_organisasi = $('#id_Organisasi').val();
       console.log(id_organisasi)
+      $('#gen-doc').attr('hidden',true)
       $('.modal-tambah-schedule').modal('show');
       $('#informasi1 :input').attr('disabled',true)
       $('#informasi2 :input').attr('disabled',true)
@@ -2261,6 +2262,7 @@ function show_detail(id){
   
           $('#MCU').show();
           $('#onlineonsite').attr('hidden',true)
+          $('#gen-doc').attr('hidden',false)
           $('#mcu_Durasi').val(durasi)
           $('#mcu_lab').val(detail.id_lab)
           $('#mcu_nosurat').val(detail.nosurat)
@@ -2344,6 +2346,7 @@ function show_detail(id){
 
           $('#MCU_nk').show();
           $('#mcu_lab').val(detail.id_lab)
+          $('#gen-doc').attr('hidden',false)
           $('#onlineonsite').attr('hidden',true)
           $('#mcu_nosurat').val(detail.nosurat)
         }else if(schedule==5){
@@ -2363,6 +2366,7 @@ function show_detail(id){
       }
       
       $('#btnEmail').attr('value',id)
+      $('#id_log').attr('value',id)
       $('#tglWaktu').val(data[0].jadwal)
       if (data[0].ccEmail!=null) {
         emails=data[0].ccEmail
@@ -2387,12 +2391,13 @@ function edit_schedule(id){
       }
     }).done((data) => {
       // console.log(JSON.stringify(data));
-
+      $('#Pisikotest_list').attr('hidden',true)
       $('.modal-tambah-schedule').modal('show');
       $('#btnAdd-schedule').attr('hidden',true);
       $('#btnUpdate-schedule').attr('hidden',false);
       $('#schedule').attr('disabled',true);
       $('#proses').attr('disabled',true);
+      $('#f_solutiva').attr('hidden',true)
       $('#konfirmasi').val(0);
       $('#konfirmasi').attr('disabled',true)
       $('#btnUpdate-schedule').attr('value',id);
@@ -2420,20 +2425,27 @@ function edit_schedule(id){
           detail = JSON.parse(data[0].test)
           durasi_raw = detail.psikotest_1_Durasi
           durasi = durasi_raw.replace(" jam","")
+          vendor = detail.idVendor
           
           $('#psikotest_1').show()
+          $('#Pisikotest_list').attr('hidden',false)
           $('#psikotest_1_Durasi').val(durasi)
           
           $('#psikotest_1_Link').val(detail.psikotest_1_Link)
           $('#psikotest_1_PIC').val(detail.psikotest_1_PIC)
+          $('#vendorPsikotest').val(vendor)
+          $('#f_solutiva').attr('hidden',false)
         }else if(schedule==3 && online==0){
           detail = JSON.parse(data[0].test)
+          vendor = detail.idVendor
           
           $('#psikotest_0').show()
+          $('#Pisikotest_list').attr('hidden',false)
           $('#psikotest_0_Address').val(detail.psikotest_0_Address)
           $('#psikotest_0_Room').val(detail.psikotest_0_Room)
           $('#psikotest_0_PIC').val(detail.psikotest_0_PIC)
-    
+          $('#vendorPsikotest').val(vendor)
+          $('#f_solutiva').attr('hidden',false)
           
         }else if(schedule==4 && online==1){
           detail = JSON.parse(data[0].test)
@@ -2514,6 +2526,7 @@ function edit_schedule(id){
       }
       
       $('#btnEmail').attr('value',id)
+      $('#id_log_p').attr('value',id)
       $('#id_log').val(id);
       $('#tglWaktu').val(data[0].jadwal)
       if (data[0].ccEmail!=null) {
@@ -2525,6 +2538,7 @@ function edit_schedule(id){
   });
 
   $('#btnUpdate-schedule').on('click',function(){
+    $('#Pisikotest_list').attr('hidden',true)
     var id=$('#btnUpdate-schedule').val()
     schedule = $('#schedule').val();
     konfirmasi = $('#konfirmasi').val()
@@ -2662,14 +2676,16 @@ function create_schedule(){
           psikotest_1_Durasi = $('#psikotest_1_Durasi').val()
           psikotest_1_Link = $('#psikotest_1_Link').val()
           psikotest_1_PIC = $('#psikotest_1_PIC').val()
+          idVendor = $('#vendorPsikotest').val()
     
-          detail={psikotest_1_Durasi:psikotest_1_Durasi,psikotest_1_Link:psikotest_1_Link,psikotest_1_PIC:psikotest_1_PIC}
+          detail={psikotest_1_Durasi:psikotest_1_Durasi,psikotest_1_Link:psikotest_1_Link,psikotest_1_PIC:psikotest_1_PIC,idVendor:idVendor}
         }else if(schedule==3 && online==0){
           psikotest_0_Address = $('#psikotest_0_Address').val()
           psikotest_0_Room = $('#psikotest_0_Room').val()
           psikotest_0_PIC = $('#psikotest_0_PIC').val()
+          idVendor = $('#vendorPsikotest').val()
     
-          detail={psikotest_0_Address:psikotest_0_Address,psikotest_0_Room:psikotest_0_Room,psikotest_0_PIC:psikotest_0_PIC}
+          detail={psikotest_0_Address:psikotest_0_Address,psikotest_0_Room:psikotest_0_Room,psikotest_0_PIC:psikotest_0_PIC,idVendor:idVendor}
         }else if(schedule==4 && online==1){
           test_1_Durasi = $('#test_1_Durasi').val()
           test_1_Link = $('#test_1_Link').val()
@@ -2764,6 +2780,7 @@ function create_schedule(){
           console.log(JSON.stringify(data));
           $('#btnEmail').attr('value',data)
           $('#id_log').attr('value',data)
+          $('#id_log_p').attr('value',data)
           $('#tblSchedule').DataTable().ajax.reload();
       });
     });
@@ -2795,6 +2812,15 @@ function hidde(){
   $('#schedule').attr('disabled',false);
   $('#proses').attr('disabled',false);
   $('#konfirmasi').attr('disabled',false);
+  $('#Pisikotest_list').attr('hidden',true)
+  $('#f_solutiva').attr('hidden',true)
+  $('#vendorPsikotest').val('')
+
+  $('#id_log').val('')
+  $('#gen-doc').removeAttr('value')
+  $('#id_log_p').removeAttr('value')
+  $('#gen-doc-p').removeAttr('value')
+  $('#btnEmail').removeAttr('value')
 }
 
 //pengaturan form MODAL TAMBAH
@@ -2836,6 +2862,8 @@ function modalInformasi(){
   schedule = $('#schedule').val();
   online = $('#proses').val();
   konfirmasi = $('#konfirmasi').val()
+  $('#Pisikotest_list').attr('hidden',true)
+  $('#f_solutiva').attr('hidden',true)
   var list_onsite=['2']
   if (list_onsite.includes(schedule)==true) {
     online= 0
@@ -2848,8 +2876,12 @@ function modalInformasi(){
     $('#gen-doc').attr('hidden',false)
   } else if(schedule==3 && online==1) {
     $('#psikotest_1').show();
+    $('#Pisikotest_list').attr('hidden',false)
+    $('#f_solutiva').attr('hidden',false)
   }else if(schedule==3 && online==0) {
     $('#psikotest_0').show();
+    $('#Pisikotest_list').attr('hidden',false)
+    $('#f_solutiva').attr('hidden',false)
   }else if(schedule==4 && online==1){
     $('#test_1').show();
   }else if(schedule==4 && online==0){
@@ -3110,11 +3142,11 @@ function kirimEmail(){
       var konfirmasi = $('#konfirmasi').val();
       if (schedule==5 && online==1 && konfirmasi==0) {
         interviewHR_1_nk_LINK = $('#interviewHR_1_nk_LINK').val()
-
+        interviewHR_1_nk_PIC = $('#interviewHR_1_nk_PIC').val()
         var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
         var konten = konten.replace('[POSITION]',posisi)
         var konten = konten.replace('[DATE&TIME]',tglWaktu)
-        var konten = konten.replace('[PIC NAME]',pic_name)
+        var konten = konten.replace('[PIC NAME]',interviewHR_1_nk_PIC)
 
         var konten = konten.replace('[LINK]',interviewHR_1_nk_LINK)
         data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}

@@ -186,9 +186,9 @@
     {{-- {{dd(session()->get('user')['organisasi']) }} --}}
     {{-- TABLE KANDIDAT --}}
     <div class="row">
-    <div class="col-xl-12">
-      <div class="card">
-        <div class="card-header bg-transparent">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header bg-transparent">
             <div class="row align-items-center">
               <div class="col-3">
                 <h6 class="text-uppercase text-muted ls-1 mb-1">Overview</h6>
@@ -206,39 +206,71 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="table-responsive">
-              <table class="table" id="TblKandidat" style="width: 100%">
-                <thead class="thead-light">
-                  <tr>
-                    <th  class="thseacrh"><input type="checkbox" id="cekAll-kandidat"></th>
-                    <th> Jobfair </th>
-                    <th>Usia</th>
-                    <th >Domisili</th>
-                    <th >Gender</th>
-                    <th >Pendidikan</th>
-                    <th >Jurusan</th>
-                    <th >Pengalaman</th>
-                    <th >Bidang lini</th>
-                    <th >Lama Kerja</th>
-                    <th >Penempatan luar indo</th>
-                    {{-- @if (session()->get('user')['organisasi']!='3') --}}
-                    <th >ditempatkan luar indo</th>
-                    {{-- @endif --}}
-                    <th >SIM</th>
-                    <th >Apply</th>
-                    <th >Status</th>
-                    <th >Detail</th>
-                  </tr>
-                </thead>
-              </table>
+              <div class="table-responsive">
+                <table class="table" id="TblKandidat" style="width: 100%">
+                  <thead class="thead-light">
+                    <tr>
+                      <th  class="thseacrh"><input type="checkbox" id="cekAll-kandidat"></th>
+                      <th> Jobfair </th>
+                      <th>Usia</th>
+                      <th >Domisili</th>
+                      <th >Gender</th>
+                      <th >Pendidikan</th>
+                      <th >Jurusan</th>
+                      <th >Pengalaman</th>
+                      <th >Bidang lini</th>
+                      <th >Lama Kerja</th>
+                      <th >Penempatan luar indo</th>
+                      {{-- @if (session()->get('user')['organisasi']!='3') --}}
+                      <th >ditempatkan luar indo</th>
+                      {{-- @endif --}}
+                      <th >SIM</th>
+                      <th >Apply</th>
+                      <th >Status</th>
+                      <th >Detail</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  {{--!!START MODAL TAMBAH!!--}}
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col-3">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">Overview</h6>
+                <h5 class="h3 mb-0">Group Schedule</h5>
+              </div>
+              
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table" id="TblGroupschedule" style="width: 100%">
+                  <thead class="thead-light">
+                    <tr>
+                      <th> Nama </th>
+                      <th> Proses</th>
+                      <th >PIC</th>
+                      <th >Created_at</th>
+                      {{-- <th >Detail</th> --}}
+                      <th >Email</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {{--!!START MODAL SCHEDULE!!--}}
   <div class="modal fade bd-example-modal-xl modal-tambah-groupschedule" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
@@ -251,21 +283,15 @@
         <div class="modal-body">
           {{-- <form method="POST" action="{{ route('dk.SetSchedule') }}" >
             @csrf --}}
-
-            {{-- INI INFORMASI KANDIDAT --}}
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label class="form-control-label" for="namagroup">Nama Group</label>
-                  <input type="text" class="form-control" id="namagroup" name="namagroup">
-                </div>
-              </div>
-              {{-- <div class="col-md-4">
-                <div class="form-group">
-                  <label class="form-control-label" for="posisi">Posisi</label>
-                  <input type="text" class="form-control" id="posisi" name="posisi" value="{{ $applyas[0]->nama }}" readonly>
-                </div>
-              </div> --}}
+            <div class="table-responsive">
+              <table class="table" id="Tblsend" hidden>
+                <thead class="thead-light">
+                  <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+              </table>
             </div>
 
             {{-- INI DITANYA PROESES SAMA JENISNYA --}}
@@ -292,10 +318,49 @@
                   </select>
                 </div>
               </div>
+              @if (Auth::user()->id_Organisasi==3)
+              <div class="col-md-2" id='bahasa_'>
+                <div class="form-group">
+                  <label class="form-control-label" for="bahasa">Bahasa</label>
+                  <select class="form-control" id="bahasa" name="bahasa" required>
+                    <option value="1">Indonesia</option>
+                    <option value="0" selected>Inggris</option>
+                  </select>
+                </div>
+              </div>
+              @endif
+              @if (Auth::user()->id_Organisasi==2)
+              <div class="col-md-4" id='konfirmasi_'>
+                <div class="form-group">
+                  <label class="form-control-label" for="konfirmasi">jenis Pesan</label>
+                  <select class="form-control" id="konfirmasi" name="konfirmasi" required>
+                    <option value="" selected disabled>Jenis Pesan</option>
+                    <option value="1">Konfirmasi</option>
+                    <option value="0">Bukan Konfirmasi</option>
+                  </select>
+                </div>
+              </div>
+              @endif
+            </div>
+            
+            {{-- INI INFORMASI KANDIDAT --}}
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="namagroup">Nama Group</label>
+                  <input type="text" class="form-control" id="namagroup" name="namagroup">
+                </div>
+              </div>
+              {{-- <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="posisi">Posisi</label>
+                  <input type="text" class="form-control" id="posisi" name="posisi" value="{{ $applyas[0]->nama }}" readonly>
+                </div>
+              </div> --}}
             </div>
 
-            <label id="id_Organisasi">{{ Auth::user()->id_Organisasi }}</label>
-            <label id="PICname">{{ Auth::user()->nama }}</label>
+            <input id="id_Organisasi" value="{{ Auth::user()->id_Organisasi }}">
+            <input id="PICname" value="{{ Auth::user()->nama }}">
             @if (in_array(Auth::user()->id_Organisasi, [1,3]))
               <div id="informasi1">
                 <div class="row" id="MCU">
@@ -391,7 +456,33 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" id="interviewHR_1">
+                {{-- <div class="row" id="interviewHR_1">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewHR_1_Link">LINK</label>
+                      <input type="text" class="form-control" id="interviewHR_1_Link" name="interviewHR_1_Link" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewHR_1_MeetingID">Meeting ID</label>
+                      <input type="text" class="form-control" id="interviewHR_1_MeetingID" name="interviewHR_1_MeetingID" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewHR_1_Passcode">Passcode</label>
+                      <input type="text" class="form-control" id="interviewHR_1_Passcode" name="interviewHR_1_Passcode" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewHR_1_BR">Breakout Room</label>
+                      <input type="text" class="form-control" id="interviewHR_1_BR" name="interviewHR_1_BR" value="">
+                    </div>
+                  </div>
+                </div> --}}
+                <div class="row interviewHR_1">
                   <div class="col-md-3">
                     <div class="form-group">
                       <label class="form-control-label" for="interviewHR_1_Link">LINK</label>
@@ -417,7 +508,21 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" id="interviewuser_1">
+                <div class="row interviewHR_1">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewHR_1_Durasi">Durasi</label>
+                      <input type="number" class="form-control" id="interviewHR_1_Durasi" name="interviewHR_1_Durasi" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewHR_1_User">USER/INTERVIEWER</label>
+                      <input type="text" class="form-control" id="interviewHR_1_User" name="interviewHR_1_User" value="">
+                    </div>
+                  </div>
+                </div>
+                {{-- <div class="row" id="interviewuser_1">
                   <div class="col-md-3">
                     <div class="form-group">
                       <label class="form-control-label" for="interviewuser_1_Link">LINK</label>
@@ -440,6 +545,46 @@
                     <div class="form-group">
                       <label class="form-control-label" for="interviewuser_1_BR">Breakout Room</label>
                       <input type="text" class="form-control" id="interviewuser_1_BR" name="interviewuser_1_BR" value="">
+                    </div>
+                  </div>
+                </div> --}}
+                <div class="row interviewuser_1">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewuser_1_Link">LINK</label>
+                      <input type="text" class="form-control" id="interviewuser_1_Link" name="interviewuser_1_Link" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewuser_1_MeetingID">Meeting ID</label>
+                      <input type="text" class="form-control" id="interviewuser_1_MeetingID" name="interviewuser_1_MeetingID" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewuser_1_Passcode">Passcode</label>
+                      <input type="text" class="form-control" id="interviewuser_1_Passcode" name="interviewuser_1_Passcode" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewuser_1_BR">Breakout Room</label>
+                      <input type="text" class="form-control" id="interviewuser_1_BR" name="interviewuser_1_BR" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="row interviewuser_1">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewuser_1_Durasi">Durasi</label>
+                      <input type="number" class="form-control" id="interviewuser_1_Durasi" name="interviewuser_1_Durasi" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewuser_1_User">USER/INTERVIEWER</label>
+                      <input type="text" class="form-control" id="interviewuser_1_User" name="interviewuser_1_User" value="">
                     </div>
                   </div>
                 </div>
@@ -511,6 +656,61 @@
                 </div>
               </div>
             @else
+              <div id="informasi2">
+                <div class="row" id="MCU_nk">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="mcu_nosurat">No Surat</label>
+                      <input type="text" class="form-control" id="mcu_nosurat" name="mcu_nosurat" value="">
+                    </div>
+                  </div>
+                  {{-- <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="mcu_Durasi">Durasi (dalam jam)</label>
+                      <input type="number" class="form-control" id="mcu_Durasi" name="Durasi" min=0 max=100>
+                    </div>
+                  </div> --}}
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="alamatlengkap">Lab</label>
+                      <select id="mcu_lab" class="form-control" name="mcu_lab">
+                        <option value="" selected disabled>NAMA LAB</option>
+                        @foreach ($list_mcu as $mcu )
+                        <option value="{{ $mcu->id }}">{{ $mcu->namaLab }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" id="interviewHR_1_nk">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewHR_1_nk_PIC">PIC Name</label>
+                      <input type="text" class="form-control" id="interviewHR_1_nk_PIC" name="interviewHR_1_nk_PIC" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewHR_1_nk_LINK">LINK</label>
+                      <input type="text" class="form-control" id="interviewHR_1_nk_LINK" name="interviewHR_1_nk_LINK" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="row" id="interviewUser_1_nk">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewUser_1_nk_PIC">PIC Name</label>
+                      <input type="text" class="form-control" id="interviewUser_1_nk_PIC" name="interviewUser_1_nk_PIC" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="interviewUser_1_nk_LINK">LINK</label>
+                      <input type="text" class="form-control" id="interviewUser_1_nk_LINK" name="interviewUser_1_nk_LINK" value="">
+                    </div>
+                  </div>
+                </div>
+              </div>
             @endif
             
 
@@ -544,6 +744,18 @@
           </div>
           <div class="modal-footer">
             <div class="row">
+                @if (Auth::user()->id_Organisasi==1)
+                  <form method="POST" action="{{ route('doc.ETHsurat') }}" style="margin-right: 0.5rem" >
+                @elseif(Auth::user()->id_Organisasi==2)
+                  <form method="POST" action="{{ route('doc.Fimasurat') }}" style="margin-right: 0.5rem">
+                @else
+                  <form method="POST" action="{{ route('doc.HJsurat') }}" style="margin-right: 0.5rem">
+                @endif
+                  @csrf
+                  <input id="id_log" name="id_log" value="" hidden>
+                  <input id="jenis" name="jenis" value="group" hidden>
+                  <button id="gen-doc" type="submit" class="btn btn-primary" hidden>Generate surat</button>
+                </form>
               <button id="btnAdd-schedule" type="button" class="btn btn-primary">Save changes</button>
               <button id="btnUpdate-schedule" type="button" class="btn btn-primary" hidden>Update</button>
               <button id="btnEmail" type="button" class="btn btn-primary">Email</button>
@@ -553,8 +765,9 @@
       </div>
     </div>
   </div>
-  {{--!!END MODAL TAMBAH!!--}}
-  
+  {{--!!END MODAL SCHEDULE!!--}}
+
+
   {{--!!START MODAL TRANSFER!!--}}
   <div class="modal fade modal-transfer"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
