@@ -34,20 +34,27 @@
             </table>
         </center>
             <p>
-                Jakarta,<br>
+                Jakarta, {{ $TGL }}<br>
                 Kepada Yth.<br>
-                (NAMA Cabang)<br>
-                (Alamat Cabang)<br><br>
+                @if (count($INFO_LAB)>0)
+                {{ $INFO_LAB[0]->NamaLab }}<br>
+                {{ $INFO_LAB[0]->alamat }}<br><br>
+                @endif
+                
 
                 <b>Up:  MCU</b><br>
-                <b>Telp/e-mail:</b><br>
+                <b>Telp/e-mail:</b>
+                @if (count($INFO_LAB)>0)
+                {{ $INFO_LAB[0]->noTlp }}/{{ $INFO_LAB[0]->email }}
+                @endif
+                <br>
                 Hal	:<b>Permohonan Pemeriksaan Kesehatan</b>
                 <br><br>
                 Dengan hormat, <br><br>
-                Dengan ini kami mohon bantuan dokter untuk mengadakan pemeriksaan kesehatan terhadap calon karyawan  PT. Hexpharm Jaya Laboratories pada <b>(Hari, Tanggl) pukul 08.00</b>. Adapun data ybs adalah sebagai berikut :
+                Dengan ini kami mohon bantuan dokter untuk mengadakan pemeriksaan kesehatan terhadap calon karyawan  PT. Hexpharm Jaya Laboratories pada <b>{{ str_replace(':00.000','',$Data[0]->jadwal) }}</b>. Adapun data ybs adalah sebagai berikut :
             </p>
             <center>
-                <table width="70%" id="listkandidat">
+                <table width="70%" id="listkandidat" style="margin-left:15%">
                     <thead>
                         <tr>
                             <th width=10%>No</th>
@@ -59,14 +66,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>nama test</td>
-                            <td>12</td>
-                            <td>menikah</td>
-                            <td>MR</td>
-                            <td>lab</td>
-                        </tr>
+                        {{ $i=1 }}
+                        @foreach ($INFO_KANDIDAT as $kandidat )
+                            <tr>
+                                <td>{{ $i }}
+                                <td>{{ $kandidat->namalengkap }}</td>
+                                <td>{{ $kandidat->umur }}</td>
+                                <td>{{ $kandidat->MaritalSt }}</td>
+                                <td>{{ $kandidat->nama }}</td>
+                                <td></td>
+                            </tr>
+                            {{ $i+=1 }}
+                        @endforeach
                     </tbody>
                 </table>
             </center>
@@ -89,6 +100,5 @@
         </p>
             
     </div>
-    <p style="page-break-after: always"></p>
 </body>
 </html>

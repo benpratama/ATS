@@ -60,13 +60,24 @@
                             <tr align="center">
                                 <td>{{ $i+1 }}</td>
                                 <td>{{ trim($INFO_KANDIDAT[$i]->namalengkap) }}</td>
-                                @foreach ($INFO_TLP as $tlp )
-                                    @if ($tlp->id_Tkandidat==$INFO_KANDIDAT[$i]->id)
-                                        <td>{{ trim($tlp->phoneNumber) }}</td>
+                                @if (in_array($INFO_KANDIDAT[$i]->id,$List_id_P))
+                                    @foreach ($INFO_TLP as $tlp )
+                                        @if ($tlp->id_Tkandidat==$INFO_KANDIDAT[$i]->id)
+                                            <td>{{ trim($tlp->phoneNumber) }}</td>  
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <td></td>
+                                @endif
+                                {{-- @foreach ($INFO_TLP as $tlp )
+                                    @if (in_array($tlp->id_Tkandidat, $List_id))
+                                        @if ($tlp->id_Tkandidat==$INFO_KANDIDAT[$i]->id)
+                                            <td>{{ trim($tlp->phoneNumber) }}</td>  
+                                        @endif
                                     @else
                                         <td></td>
                                     @endif
-                                @endforeach
+                                @endforeach --}}
                             </tr>
                         @endfor
                     </tbody>
