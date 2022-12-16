@@ -82,7 +82,8 @@
                 <li>
                     <div class="d-flex">
                         <span style="width: 20%; display: inline-block;">Tempat/tgl.lahir</span>
-                        <span>:&emsp;{{ $City->CityName }}/</span>
+                        {{-- {{ dd($State) }} --}}
+                        <span>:&emsp;{{ $State[0]->StateName }}/</span>
                         <span>{{ str_replace(" 00:00:00.000","",$Data->tglLahir)}}</span>
                     </div>
                     {{-- Tempat/tgl.lahir&emsp;&emsp;&ensp;&ensp;&nbsp;:&emsp;{{ $City->CityName }}/{{ str_replace(" 00:00:00.000","",$Data->tglLahir) }} --}}
