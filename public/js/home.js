@@ -23,6 +23,7 @@ $( document ).ready(function() {
   kirimEmail()
   $('#schedule, #proses, #konfirmasi, #bahasa').on('change',function(){tampilin_email()})
   $('#schedule, #proses, #konfirmasi').on('change',function(){modalInformasi()})
+  $('#vendorPsikotest').on('change',function(){GenDock()})
 });
 
 // function ShowSummary(){
@@ -377,8 +378,8 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
       [5,10,25,50,100 , "All"]
   ],
   iDisplayLength: 5,
-  processing: true,
-  serverSide: true,
+  // processing: true,
+  // serverSide: true,
         ajax: {
           url: "/hrdats/dashboard/hrd/detail",
           type: "POST",
@@ -567,14 +568,16 @@ function create_schedule(){
         psikotest_1_Durasi = $('#psikotest_1_Durasi').val()
         psikotest_1_Link = $('#psikotest_1_Link').val()
         psikotest_1_PIC = $('#psikotest_1_PIC').val()
+        idVendor = $('#vendorPsikotest').val()
 
-        detail={psikotest_1_Durasi:psikotest_1_Durasi,psikotest_1_Link:psikotest_1_Link,psikotest_1_PIC:psikotest_1_PIC}
+        detail={psikotest_1_Durasi:psikotest_1_Durasi,psikotest_1_Link:psikotest_1_Link,psikotest_1_PIC:psikotest_1_PIC,idVendor:idVendor}
       }else if(schedule==3 && online==0){
         psikotest_0_Address = $('#psikotest_0_Address').val()
         psikotest_0_Room = $('#psikotest_0_Room').val()
         psikotest_0_PIC = $('#psikotest_0_PIC').val()
+        idVendor = $('#vendorPsikotest').val()
 
-        detail={psikotest_0_Address:psikotest_0_Address,psikotest_0_Room:psikotest_0_Room,psikotest_0_PIC:psikotest_0_PIC}
+        detail={psikotest_0_Address:psikotest_0_Address,psikotest_0_Room:psikotest_0_Room,psikotest_0_PIC:psikotest_0_PIC,idVendor:idVendor}
       }else if(schedule==4 && online==1){
         test_1_Durasi = $('#test_1_Durasi').val()
         test_1_Link = $('#test_1_Link').val()
@@ -668,6 +671,7 @@ function create_schedule(){
         console.log(JSON.stringify(data));
         $('#btnEmail').attr('value',data)
         $('#id_log').attr('value',data)
+        $("input[name='id_log_p']").val(data)
         $('#TblGroupschedule').DataTable().ajax.reload();
         $('#TblKandidat').DataTable().ajax.reload();
         // $('#tblSchedule').DataTable().ajax.reload();
@@ -700,9 +704,14 @@ $('#tglWaktu').attr('readonly',false)
 $('#btnUpdate-schedule').attr('hidden',true);
 $('#schedule').attr('disabled',false);
 $('#proses').attr('disabled',false);
+$('#Pisikotest_list').attr('hidden',true)
+$('#f_solutiva').attr('hidden',true)
+$('#f_firstasia').attr('hidden',true)
+$('#vendorPsikotest').val('')
 $('#tglWaktu').val('')
 $('#btnEmail').attr('disabled',false)
 $('#konfirmasi').attr('disabled',false);
+$('#vendorPsikotest').attr('disabled',false);
 }
 
 function modalInformasi(){
@@ -714,6 +723,8 @@ function modalInformasi(){
   $('#namagroup').val('')
   $('#btnAdd-schedule').attr('hidden',false)
   $('.tglandcc').attr('hidden',false)
+  $('#f_solutiva').attr('hidden',true)
+  $('#f_firstasia').attr('hidden',true)
   var list_onsite=['2']
   if (list_onsite.includes(schedule)==true) {
     online= 0
@@ -724,8 +735,10 @@ function modalInformasi(){
     $('#gen-doc').attr('hidden',false)
   } else if(schedule==3 && online==1) {
     $('#psikotest_1').show();
+    $('#Pisikotest_list').attr('hidden',false)
   }else if(schedule==3 && online==0) {
     $('#psikotest_0').show();
+    $('#Pisikotest_list').attr('hidden',false)
   }else if(schedule==4 && online==1){
     $('#test_1').show();
   }else if(schedule==4 && online==0){
@@ -759,6 +772,18 @@ function modalInformasi(){
   }
 
   
+}
+
+function GenDock(){
+  $('#f_solutiva').attr('hidden',true)
+  $('#f_firstasia').attr('hidden',true)
+  var vendorPsikotest = $('#vendorPsikotest').val()
+  if(vendorPsikotest==30){
+    $('#f_solutiva').attr('hidden',false)
+  }else if(vendorPsikotest==31){
+    $('#f_firstasia').attr('hidden',false)
+  }
+  console.log(vendorPsikotest);
 }
 
 function onlineORonsite(){
@@ -1121,6 +1146,7 @@ function transferKandidat(){
         }
         $('#TblKandidat').DataTable().ajax.reload();
         $('.modal-transfer').modal('toggle');
+        $('#TblGroupschedule').DataTable().ajax.reload();
         modal()
     });
   })
@@ -1256,6 +1282,7 @@ function show_detail(obj){
       $('#tglWaktu').attr('readonly',true)
       $('#schedule').attr('disabled',true);
       $('#proses').attr('disabled',true);
+      $('#vendorPsikotest').attr('disabled',true);
       $('#konfirmasi').val(0);
       $('#konfirmasi').attr('disabled',true)
       var schedule=data[0].id_Rekrutmen;
@@ -1293,20 +1320,37 @@ function show_detail(obj){
           detail = JSON.parse(data[0].test)
           durasi_raw = detail.psikotest_1_Durasi
           durasi = durasi_raw.replace(" jam","")
+          vendor = detail.idVendor
           
           $('#psikotest_1').show()
           $('#psikotest_1_Durasi').val(durasi)
-          
+
+          $('#Pisikotest_list').attr('hidden',false)
           $('#psikotest_1_Link').val(detail.psikotest_1_Link)
           $('#psikotest_1_PIC').val(detail.psikotest_1_PIC)
+          $('#vendorPsikotest').val(vendor)
+
+          if (vendor==30) {
+            $('#f_solutiva').attr('hidden',false)
+          } else if(vendor==31) {
+            $('#f_firstasia').attr('hidden',false)
+          }
         }else if(schedule==3 && online==0){
           detail = JSON.parse(data[0].test)
-          
+          vendor = detail.idVendor
+
           $('#psikotest_0').show()
+          $('#Pisikotest_list').attr('hidden',false)
           $('#psikotest_0_Address').val(detail.psikotest_0_Address)
           $('#psikotest_0_Room').val(detail.psikotest_0_Room)
           $('#psikotest_0_PIC').val(detail.psikotest_0_PIC)
-    
+          $('#vendorPsikotest').val(vendor)
+
+          if (vendor==30) {
+            $('#f_solutiva').attr('hidden',false)
+          } else if(vendor==31) {
+            $('#f_firstasia').attr('hidden',false)
+          }
           
         }else if(schedule==4 && online==1){
           detail = JSON.parse(data[0].test)
@@ -1392,6 +1436,7 @@ function show_detail(obj){
       }
       
       $('#btnEmail').attr('value',data[0].namaGroup)
+      $("input[name='id_log_p']").attr('value',data[0].namaGroup)
       $('#tglWaktu').val(data[0].jadwal)
 
       if (data[0].ccEmail!=null) {

@@ -52,6 +52,7 @@ class FormKandidatController extends Controller
     }
 
     public function ShowForm1($url){
+        
         $date = Carbon::now()->format('Y-m-d H:i');
         $result = DB::table('T_link')
                 ->where('url',$url)
@@ -66,7 +67,6 @@ class FormKandidatController extends Controller
                 ->where('active','1')
                 ->where('deleted',0)
                 ->first();
-
         if (!$result and !$cekphase1){
             return abort(404);
         }elseif($result !=null and !$cekphase1){
@@ -959,8 +959,8 @@ class FormKandidatController extends Controller
                         }
                     }
 
-                    DB::table('T_kandidat_pendidikan_N')->where('id_Tkandidat',$id_kandidat)->delete();  
-                    if(!empty($request->nama_Rpekerjaan)){
+                    DB::table('T_kandidat_pendidikan_N')->where('id_Tkandidat',$id_kandidat)->delete();
+                    if(!empty($request->tingkap_p)){
                         for ($i=0; $i < count($request->tingkap_p); $i++) {
                             if ($request->tingkap_p[$i]!=0) {
                                 DB::table('T_kandidat_pendidikan_N')
@@ -1232,27 +1232,28 @@ class FormKandidatController extends Controller
                         }
                     }
                     
-                    //BLM BENER
-                    // $pendidikan_ = ['SD','SLTP','SMA','Akademi','S1','S2'];
-                    // for ($j=0; $j <count($request->namasekolah) ; $j++) {
-                    //     $namasekolah = trim($request->namasekolah[$j],''); 
-                    //     $jurusan = trim($request->jurusan[$j],''); 
-                    //     $kota = trim($request->kota[$j],''); 
-                    //     $tahun = trim($request->tahun[$j],''); 
-    
-                    //     if (!empty($namasekolah)||!empty($jurusan)||!empty($kota)||!empty($tahun)) {
-                    //         DB::table('T_kandidat_edukasi')
-                    //             ->insert([
-                    //                 'id_Tkandidat'=>$id_kandidat,
-                    //                 'urutan'=>$j+1,
-                    //                 'pendidikan'=>$pendidikan_[$j],
-                    //                 'namaSekolah'=>$namasekolah,
-                    //                 'jurusan'=>$jurusan,
-                    //                 'kota'=>$kota,
-                    //                 'tahun'=>$tahun,
-                    //             ]);
-                    //     }
-                    // }
+                    DB::table('T_kandidat_pendidikan_N')->where('id_Tkandidat',$id_kandidat)->delete();
+                    if(!empty($request->tingkap_p)){
+                        for ($i=0; $i < count($request->tingkap_p); $i++) {
+                            if ($request->tingkap_p[$i]!=0) {
+                                DB::table('T_kandidat_pendidikan_N')
+                                ->insert([
+                                    'id_Tkandidat'=>$id_kandidat,
+                                    'jenisPendidikan'=>$request->tingkap_p[$i],
+                                    'id_namaPendidikan'=>null,
+                                    'namaPendidikanHR'=>null,
+                                    'namaPendidikan'=>$request->namaInst_p[$i],
+                                    'id_jurusanPendidikan'=>null,
+                                    'jurusanPendidikanHR'=>null,
+                                    'jurusanPendidikan'=>$request->jurusan_p[$i],
+                                    'nilai'=>$request->nilai_pendidikan[$i],
+                                    'kota'=>$request->kota_p[$i],
+                                    'tahunmulai'=>$request->thnMulai_p[$i],
+                                    'tahunselesai'=>$request->thnSelesai_p[$i],
+                                ]);
+                            } 
+                        }
+                    }
     
                     if(!empty($request->nama_Rpekerjaan)){
                         for ($k=0; $k <count($request->nama_Rpekerjaan) ; $k++) { 
@@ -1517,27 +1518,28 @@ class FormKandidatController extends Controller
                         }
                     }
     
-                    //BELOM BENER
-                    // $pendidikan_ = ['SD','SLTP','SMA','Akademi','S1','S2'];
-                    // for ($j=0; $j <count($request->namasekolah) ; $j++) {
-                    //     $namasekolah = trim($request->namasekolah[$j],''); 
-                    //     $jurusan = trim($request->jurusan[$j],''); 
-                    //     $kota = trim($request->kota[$j],''); 
-                    //     $tahun = trim($request->tahun[$j],''); 
-    
-                    //     if (!empty($namasekolah)||!empty($jurusan)||!empty($kota)||!empty($tahun)) {
-                    //         DB::table('T_kandidat_edukasi')
-                    //             ->insert([
-                    //                 'id_Tkandidat'=>$id_kandidat,
-                    //                 'urutan'=>$j+1,
-                    //                 'pendidikan'=>$pendidikan_[$j],
-                    //                 'namaSekolah'=>$namasekolah,
-                    //                 'jurusan'=>$jurusan,
-                    //                 'kota'=>$kota,
-                    //                 'tahun'=>$tahun,
-                    //             ]);
-                    //     }
-                    // }
+                    DB::table('T_kandidat_pendidikan_N')->where('id_Tkandidat',$id_kandidat)->delete();
+                    if(!empty($request->tingkap_p)){
+                        for ($i=0; $i < count($request->tingkap_p); $i++) {
+                            if ($request->tingkap_p[$i]!=0) {
+                                DB::table('T_kandidat_pendidikan_N')
+                                ->insert([
+                                    'id_Tkandidat'=>$id_kandidat,
+                                    'jenisPendidikan'=>$request->tingkap_p[$i],
+                                    'id_namaPendidikan'=>null,
+                                    'namaPendidikanHR'=>null,
+                                    'namaPendidikan'=>$request->namaInst_p[$i],
+                                    'id_jurusanPendidikan'=>null,
+                                    'jurusanPendidikanHR'=>null,
+                                    'jurusanPendidikan'=>$request->jurusan_p[$i],
+                                    'nilai'=>$request->nilai_pendidikan[$i],
+                                    'kota'=>$request->kota_p[$i],
+                                    'tahunmulai'=>$request->thnMulai_p[$i],
+                                    'tahunselesai'=>$request->thnSelesai_p[$i],
+                                ]);
+                            } 
+                        }
+                    }
                     
                     if(!empty($request->nama_Rpekerjaan)){
                         for ($k=0; $k <count($request->nama_Rpekerjaan) ; $k++) { 
@@ -1694,7 +1696,7 @@ class FormKandidatController extends Controller
                     ->update([
                         'namalengkap'=>$request->namalengkap,
                         'status_perkawinan'=>$request->status_perkawinan,
-                        'tempatlahir'=>$request->tempatlahir,
+                        // 'tempatlahir'=>$request->tempatlahir,
                         'Citizenship'=>115,
                         'tglLahir'=>$request->tgllahir,
                         'alamatlengkap'=>$request->alamat_KTP,
@@ -2180,7 +2182,9 @@ class FormKandidatController extends Controller
         $edu = DB::table('PMEduLevel')
                 ->select('EduLvlId','EduLvlName')
                 ->where('EduLvlStatus','F')
-                ->where('EduLvlId','<>',100)
+                ->where('active',1)
+                ->where('deleted',0)
+                // ->whereNotIn('EduLvlId',[100,98,99,107])
                 ->get();
 
         $city = DB::table('PMCity')

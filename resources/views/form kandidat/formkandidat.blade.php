@@ -83,14 +83,14 @@
                     <label class="form-control-label" for="gender">Gender*</label>
                     @if ($jobfair==true)
                     <select class="form-control" id="gender" name="gender" required disabled>
-                      <option value="1" {{ $info_kandidat_->gender==1 ?"selected":"" }}>Pria</option>
-                      <option value="2" {{ $info_kandidat_->gender==2 ?"selected":"" }}>Wanita</option>
+                      <option value="Pria" {{ $info_kandidat_->gender=="Pria" ?"selected":"" }}>Pria</option>
+                      <option value="Wanita" {{ $info_kandidat_->gender=="Wanita" ?"selected":"" }}>Wanita</option>
                     </select>
                     @else
                     <select class="form-control" id="gender" name="gender" required>
                       <option value="" disabled selected>Gender</option>
-                      <option value="1">Pria</option>
-                      <option value="2">Wanita</option>
+                      <option value="Pria">Pria</option>
+                      <option value="Wanita">Wanita</option>
                     </select>
                     @endif
                   </div>
@@ -118,6 +118,11 @@
                       <option value="{{ $tempatlahir->StateId }}"{{ $info_kandidat_->tempatlahir == $tempatlahir->StateId? "selected":"" }}>{{ $tempatlahir->StateName }}</option>
                       @endforeach
                     </select>
+                    {{-- @foreach ($TempatLahir as $tempatlahir )
+                        @if ($info_kandidat_->tempatlahir == $tempatlahir->StateId)
+                          <input type="text" name="tempatlahir" id="tempatlahir" value="{{ $tempatlahir->StateId }}" hidden>
+                        @endif
+                    @endforeach --}}
                     @else
                     <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required>
                       <option value="" disabled selected>Tempat lahir</option>

@@ -32,6 +32,10 @@ Route::middleware('auth')->group(function(){
         Route::get('/hrdats/dashboard/hrd/name','HomeController@GetName')->name('hm.GetName');
         Route::post('/hrdats/dashboard/hrd/detail','HomeController@ShowDetail')->name('hm.Detail');
         Route::post('/hrdats/dashboard/hrd/transfer','HomeController@TransferKandidat')->name('hm.TransferKandidat');
+        Route::get('/hrdats/dashboard/getschedule','KandidatController@GetGSchedule')->name('dk.GetGSchedule');
+        Route::get('/hrdats/dashboard/email/{nama}/{proses}','KandidatController@ShowDetailGEmail')->name('dk.ShowDetailGEmail');
+        Route::post('/hrdats/dashboard/hrd/schedule/getkandiat','HomeController@ShowSchGkandidat')->name('hm.ShowSchGkandidat');
+
 
         // //Detail Kandidat
         Route::post('/hrdats/detail/kandidat/genurl','KandidatController@GenUrl')->name('dk.GenUrl');
@@ -211,10 +215,12 @@ Route::middleware('auth')->group(function(){
         Route::Post('/hrdats/hrd/del/link', 'UrlController@DelUrl')->name('hr_url.DelUrl');
 
         //DOKUMEN
-        Route::get('/hrdats/hrd/Dokumen/eth/mcu', 'DokumenController@ETHsurat')->name('doc.ETHsurat');
-        Route::get('/hrdats/hrd/Dokumen/fima/mcu', 'DokumenController@Fimasurat')->name('doc.Fimasurat');
-        Route::get('/hrdats/hrd/Dokumen/hj/mcu', 'DokumenController@HJsurat')->name('doc.HJsurat');
-        Route::get('/hrdats/hrd/Dokumen/fpkp', 'DokumenController@fkpk')->name('doc.fkpk');
+        Route::post('/hrdats/hrd/Dokumen/eth/mcu', 'DokumenController@ETHsurat')->name('doc.ETHsurat');
+        Route::post('/hrdats/hrd/Dokumen/fima/mcu', 'DokumenController@Fimasurat')->name('doc.Fimasurat');
+        Route::post('/hrdats/hrd/Dokumen/hj/mcu', 'DokumenController@HJsurat')->name('doc.HJsurat');
+        Route::post('/hrdats/hrd/Dokumen/fkpk', 'DokumenController@fkpk')->name('doc.fkpk');
+        Route::post('/hrdats/hrd/Dokumen/psikotes/solutiva','DokumenController@solutiva')->name('doc.solutiva');
+        Route::post('/hrdats/hrd/Dokumen/psikotes/firstasia','DokumenController@firstasia')->name('doc.firstasia');
 
         //EMAIL
         Route::get('/mailsourcing','EmailController@ESourcing')->name('em.ESourcing');

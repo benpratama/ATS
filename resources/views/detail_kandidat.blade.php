@@ -113,9 +113,16 @@
                   <span class="material-symbols-outlined" style="color: white">description</span>
                   <span class="gap-logo" style="color: white">FKPK</span>
                 </a>
+                @if ($LHW !=null)
+                  <a type="button" class="btn btn-sm btn-primary d-flex" href="{{ asset('storage/LHW/'.$LHW)}}">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="gap-logo">LHW</span>
+                  </a>
+                @endif
               </div>
             </div>
-            {{--!!START MODAL TAMBAH!!--}}
+
+            {{--!!START MODAL FKPK!!--}}
             <div class="modal fade bd-example-modal-lg modal-fkpk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -252,7 +259,8 @@
                 </div>
               </div>
             </div>
-            {{--!!END MODAL TAMBAH!!--}}
+            {{--!!END MODAL FKPK!!--}}
+
             @if ($disabled!="true")
               {{-- START URL PHASE 1 --}}
               @if ($info_kandidat->jobfair !=0)
@@ -261,7 +269,7 @@
                     <textarea  rows="3" cols="20" wrap="hard" type="text" class="form-control" id="urlphase1" name="urlphase1" readonly>{{ $url_phase1 }}</textarea>
                 </div>
                 <div class="col-md-3">
-                  <button id="btnGen-url1" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
+                  <button id="btnGen-url1" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate Phase1</button>
                 </div>
               </div>
               @endif
@@ -273,17 +281,11 @@
                     <textarea  rows="3" cols="20" wrap="hard" type="text" class="form-control" id="urlphase2" name="urlphase2" readonly>{{ $url_phase2 }}</textarea>
                 </div>
                 <div class="col-md-3">
-                  <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
+                  <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate Phase2</button>
                 </div>
               </div>
               {{-- END URL PAHSE 2 --}}
             @endif
-            
-            {{-- <div class="row">
-              <div class="col-md-3">
-                <button id="btnGen-url" type="button" class="btn btn-primary btnsbmt" value={{ $info_kandidat->id }} data-noidentitas={{ $info_kandidat->noidentitas }} {{ $disabled == "true" ? 'hidden' : ''}}>Generate</button>
-              </div>
-            </div> --}}
           </div>
         </div>
       </div>
@@ -421,8 +423,8 @@
                     <div class="form-group">
                       <label class="form-control-label" for="tempatlahir">Tempat lahir</label>
                       <select class="js-example-basic-single form-control" name="tempatlahir" id="tempatlahir" required {{ $disabled == "true" ? 'disabled' : ''}}>
-                        @foreach ($kotas as $kota )
-                        <option value="{{ $kota->CityId }}" {{ $kota->CityId == $info_kandidat->tempatlahir ? 'selected' : ''}}>{{ $kota->CityName }}</option>
+                        @foreach ($states as $state )
+                        <option value="{{ $state->StateId }}" {{ $state->StateId == $info_kandidat->tempatlahir ? 'selected' : ''}}>{{ $state->StateName }}</option>
                         @endforeach
                       </select>
                     </div>
@@ -482,7 +484,7 @@
         </div>
       </div>
     </div>
-
+      <input id="info_disabled" value="{{ $disabled }}" hidden>
       {{-- START SCHEDULE --}}
       <div class="row">
         <div class="col-xl-12">
@@ -507,18 +509,31 @@
               <div class="table-responsive">
                 <table class="table" id="tblSchedule">
                   <thead class="thead-light">
-                    <tr>
-                      <th>Status</th>
-                      <th>Perushaan</th>
-                      <th>job</th>
-                      <th>Tanggal Buat</th>
-                      <th>Tanggal Proses</th>
-                      <th>Email terkirim</th>
-                      <th>Summary</th>
-                      <th>Notes</th>
-                      <th>Update</th>
-                      <th>send email</th>
-                    </tr>
+                    @if ($disabled!=true)
+                      <tr>
+                        <th>Status</th>
+                        <th>Perushaan</th>
+                        <th>job</th>
+                        <th>Tanggal Buat</th>
+                        <th>Tanggal Proses</th>
+                        <th>Email terkirim</th>
+                        <th>Summary</th>
+                        <th>Notes</th>
+                        <th>Update</th>
+                        <th>send email</th>
+                      </tr>
+                    @else
+                      <tr>
+                        <th>Status</th>
+                        <th>Perushaan</th>
+                        <th>job</th>
+                        <th>Tanggal Buat</th>
+                        <th>Tanggal Proses</th>
+                        <th>Email terkirim</th>
+                        <th>Summary</th>
+                        <th>Notes</th>
+                      </tr>
+                    @endif
                   </thead>
                 </table>
               </div>
@@ -614,8 +629,8 @@
                   </div>
                   @endif
                 </div>
-                <label id="id_Organisasi">{{ Auth::user()->id_Organisasi }}</label>
-                <label id="PICname">{{ Auth::user()->nama }}</label>
+                <label id="id_Organisasi" hidden>{{ Auth::user()->id_Organisasi }}</label>
+                <label id="PICname" hidden>{{ Auth::user()->nama }}</label>
                 @if (in_array(Auth::user()->id_Organisasi, [1,3]))
                   <div id="informasi1">
                     <div class="row" id="MCU">
@@ -857,6 +872,20 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row accepted">
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label class="form-control-label" for="time">Durasi</label>
+                          <input type="time" class="form-control" id="time" name="time">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label class="form-control-label" for="time">Dress Code</label>
+                          <input type="Text" class="form-control" id="dress" name="dress">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 @else
                   <div id="informasi2">
@@ -965,6 +994,14 @@
                     <input id="org_PicGen" name="org_PicGen" value="{{ Auth::user()->id_Organisasi }}" hidden>
                     <button id="gen-doc-p" type="submit" class="btn btn-primary">Generate surat</button>
                   </form>
+                  <form method="POST" action="{{ route('doc.firstasia') }}" style="margin-right: 0.5rem" id="f_firstasia" hidden>
+                    @csrf
+                    <input id="id_log_p" name="id_log_p" value="" hidden>
+                    <input id="jenis_p" name="jenis_p" value="single" hidden>
+                    <input id="nama_PicGen" name="nama_PicGen" value="{{ Auth::user()->nama }}" hidden>
+                    <input id="org_PicGen" name="org_PicGen" value="{{ Auth::user()->id_Organisasi }}" hidden>
+                    <button id="gen-doc-p" type="submit" class="btn btn-primary">Generate surat</button>
+                  </form>
                   <button id="btnAdd-schedule" type="button" class="btn btn-primary">Save changes</button>
                   <button id="btnUpdate-schedule" type="button" class="btn btn-primary" hidden>Update</button>
                   <button id="btnEmail" type="button" class="btn btn-primary">Email</button>
@@ -989,7 +1026,6 @@
             {{-- <form method="POST" action="{{ route('dk.SetSchedule') }}" >
               @csrf --}}
             <div class="modal-body">
-                <input id="id_schedule" name="id_schedule">
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
@@ -1579,7 +1615,7 @@
               </div>
             </div>
             <div class="card-body" id="body_pelatihan" hidden>
-              @if ($info_kandidat->jobfair==1)
+              @if ($info_kandidat->jobfair==1 && $info_kandidat->updated_at==null)
                 <h3>data blm ada</h3>
               @else
               <div class="table-responsive">
@@ -1628,7 +1664,7 @@
               </div>
             </div>
             <div class="card-body" id="body_pendidikan2" hidden>
-              @if ($info_kandidat->jobfair==1)
+              @if ($info_kandidat->jobfair==1 && $info_kandidat->updated_at==null)
                 <h3>data blm ada</h3>
               @else
               <div class="row">
@@ -1694,7 +1730,7 @@
               </div>
             </div>
             <div class="card-body" id="body_aktivitas" hidden>
-              @if ($info_kandidat->jobfair==1)
+              @if ($info_kandidat->jobfair==1 && $info_kandidat->updated_at==null)
                 <h3>data blm ada</h3>
               @else
               <label class="form-control-label" for="organisasi">Keanggotaan dalam organisasi / lembaga :</label>
@@ -1767,7 +1803,7 @@
               </div>
             </div>
             <div class="card-body" id="body_keluarga" hidden>
-              @if ($info_kandidat->jobfair==1)
+              @if ($info_kandidat->jobfair==1 && $info_kandidat->updated_at==null)
                 <h3>data blm ada</h3>
               @else
                 <div id="list_keluarga">
@@ -1806,7 +1842,7 @@
               </div>
             </div>
             <div class="card-body" id="body_lain2" hidden>
-              @if ($info_kandidat->jobfair==1)
+              @if ($info_kandidat->jobfair==1 && $info_kandidat->updated_at==null)
                 <h3>data blm ada</h3>
               @else
               <div class="row" >

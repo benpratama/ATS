@@ -21,7 +21,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
 
 class FptkController extends Controller
 {
-    public $date=365;
+    public $date=60;
     public function index(){
         // $start = Carbon::now()->startOfMonth()->toDateString();
         // $end = Carbon::now()->endOfMonth()->toDateString();

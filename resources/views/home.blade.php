@@ -342,6 +342,17 @@
               </div>
               @endif
             </div>
+            <div class=" row col-md-4" id='Pisikotest_list' hidden>
+              <div class="form-group">
+                <label class="form-control-label" for="proses">Vendor Psikotes</label>
+                <select class="form-control" id="vendorPsikotest" name="vendorPsikotest" required>
+                  <option value="" selected disabled>Vendor Psikotes</option>
+                  @foreach ($ListPsikotest as $psikotest)
+                  <option value="{{ $psikotest->id }}">{{ $psikotest->namaVendor }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
             
             {{-- INI INFORMASI KANDIDAT --}}
             <div class="row">
@@ -359,8 +370,9 @@
               </div> --}}
             </div>
 
-            <input id="id_Organisasi" value="{{ Auth::user()->id_Organisasi }}">
-            <input id="PICname" value="{{ Auth::user()->nama }}">
+            <input id="id_Organisasi" value="{{ Auth::user()->id_Organisasi }}" hidden>
+            <input id="PICname" value="{{ Auth::user()->nama }}" hidden>
+            
             @if (in_array(Auth::user()->id_Organisasi, [1,3]))
               <div id="informasi1">
                 <div class="row" id="MCU">
@@ -755,6 +767,22 @@
                   <input id="id_log" name="id_log" value="" hidden>
                   <input id="jenis" name="jenis" value="group" hidden>
                   <button id="gen-doc" type="submit" class="btn btn-primary" hidden>Generate surat</button>
+                </form>
+                <form method="POST" action="{{ route('doc.solutiva') }}" style="margin-right: 0.5rem" id="f_solutiva" hidden>
+                  @csrf
+                  <input id="id_log_p" name="id_log_p" value="" hidden>
+                  <input id="jenis_p" name="jenis_p" value="group" hidden>
+                  <input id="nama_PicGen" name="nama_PicGen" value="{{ Auth::user()->nama }}" hidden>
+                  <input id="org_PicGen" name="org_PicGen" value="{{ Auth::user()->id_Organisasi }}" hidden>
+                  <button id="gen-doc-p" type="submit" class="btn btn-primary">Generate surat</button>
+                </form>
+                <form method="POST" action="{{ route('doc.firstasia') }}" style="margin-right: 0.5rem" id="f_firstasia" hidden>
+                  @csrf
+                  <input id="id_log_p" name="id_log_p" value="" hidden>
+                  <input id="jenis_p" name="jenis_p" value="group" hidden>
+                  <input id="nama_PicGen" name="nama_PicGen" value="{{ Auth::user()->nama }}" hidden>
+                  <input id="org_PicGen" name="org_PicGen" value="{{ Auth::user()->id_Organisasi }}" hidden>
+                  <button id="gen-doc-p" type="submit" class="btn btn-primary">Generate surat</button>
                 </form>
               <button id="btnAdd-schedule" type="button" class="btn btn-primary">Save changes</button>
               <button id="btnUpdate-schedule" type="button" class="btn btn-primary" hidden>Update</button>

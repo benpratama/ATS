@@ -10,7 +10,7 @@ use Yajra\DataTables\DataTables as DataTablesDataTables;
 
 class HomeController extends Controller
 {
-    public $date=365;
+    public $date=60;
     /**
      * Create a new controller instance.
      *
@@ -75,8 +75,15 @@ class HomeController extends Controller
         $list_organisasi = DB::table('M_Organisasi')
                             ->where('id','<>',Auth::user()->id_Organisasi)
                             ->get();
+
+        $listPsikotes = DB::table('M_vendor')
+                        ->select('id','namaVendor')
+                        ->where('jenis','PSIKOTEST')
+                        ->where('active',1)
+                        ->where('deleted',0)
+                        ->get();
         return view('home',['ListPendidikan'=>$list_pendidikan,'ListJurusan'=>$list_jurusan,'ListJob'=>$list_job,'ListStatus'=>$list_status,'Domisili'=>$Domisili,'list_proses'=>$list_proses,
-        'list_cc'=>$list_cc,'list_mcu'=>$list_mcu,'list_organisasi'=>$list_organisasi]);
+        'list_cc'=>$list_cc,'list_mcu'=>$list_mcu,'ListPsikotest'=>$listPsikotes,'list_organisasi'=>$list_organisasi]);
     }
 
     public function ShowSummary(Request $request){
@@ -208,12 +215,18 @@ class HomeController extends Controller
                                     ->get();
             // return count($cek);
             if (count($cek)<1) {
+
                 DB::table('T_kandidat_N')
                 ->where('id',$value)
                 ->update([
                     'id_Organisasi'=>$request->id_Organisasi,
                     'id_Organisasi_Pronit'=>$idorganisasiProint[0]->id_proint
                 ]);
+
+                $as = DB::table('T_logkandidat_group as A')
+                        ->leftjoin('T_logkandidat as B','A.id_Tlogkandidat','B.id')
+                        ->where('B.id_Tkandidat',$value)
+                        ->delete();
             }else{
                 
                 foreach ($cek as $key => $value) {

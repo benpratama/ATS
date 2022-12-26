@@ -44,17 +44,16 @@ $( document ).ready(function() {
   create_schedule()
   $('#ccto').select2();
   $('#labMCU').select2();
+  $('#tempatlahir').select2();
   hidde();
 
   gen_url1();
   $('#schedule, #proses, #konfirmasi, #bahasa').on('change',function(){tampilin_email()})
   $('#schedule, #proses, #konfirmasi').on('change',function(){modalInformasi()})
+  $('#vendorPsikotest').on('change',function(){GenDock()})
 
   getKontak()
   AddDell_kontak()
-  gen_FKPK()
-
-  // genDoc()
 });
 
 
@@ -82,6 +81,14 @@ function modal(){
     $('#summary').val('')
     $('#notes').val('')
     $('#btn-notes').removeAttr( "value" )
+  })
+
+  $('.modal-fkpk').on('hide.bs.modal', function() {
+    $(':input','#formfkpk')
+      .not(':button, :submit, :reset, :hidden')
+      .val('')
+      .prop('checked', false)
+      .prop('selected', false);
   })
 }
 
@@ -2038,6 +2045,7 @@ function numberWithCommas() {
 //BAGIAN SCHEDULE
 function getSchedule(){
   id = $('#id_kandidat').val();
+  info_disabled = $('#info_disabled').val()
   today = new Date();
   // console.log(id);
   // $.ajaxSetup({
@@ -2071,108 +2079,181 @@ function getSchedule(){
   // }).done((data) => {
   //   // console.log(JSON.stringify(data));
   // })
-  $('#tblSchedule').DataTable({
+  if (info_disabled=='') {
+    $('#tblSchedule').DataTable({
     
-    "scrollY":        "400px",
-    "scrollCollapse": true,
-    pageLength : 5,
-    ajax: {
-    url: '/hrdats/detail/getschedule/kandidat/'+id,
-            data:{},
-            dataSrc:""
-        },
-    "paging":true,
-    "bInfo" : false,
-    "lengthChange": false,
-    language: {
-        paginate: {
-            previous: "<i class='fas fa-angle-left'>",
-            next: "<i class='fas fa-angle-right'>"
-        }
-    },
-    columns: [
-        {
-            data: 'proses',
+      "scrollY":        "400px",
+      "scrollCollapse": true,
+      pageLength : 5,
+      ajax: {
+      url: '/hrdats/detail/getschedule/kandidat/'+id,
+              data:{},
+              dataSrc:""
+          },
+      "paging":true,
+      "bInfo" : false,
+      "lengthChange": false,
+      language: {
+          paginate: {
+              previous: "<i class='fas fa-angle-left'>",
+              next: "<i class='fas fa-angle-right'>"
+          }
+      },
+      columns: [
+          {
+              data: 'proses',
+              defaultContent: ''
+          },
+          {
+            data: 'nama',
             defaultContent: ''
-        },
-        {
-          data: 'nama',
-          defaultContent: ''
-        },
-        {
-          data: 'job',
-          defaultContent: ''
-        },
-        { 
-          data: 'created_at',
-          defaultContent: 'NULL'
-        },
-        {
-          data: 'jadwal',
-          defaultContent: 'NULL'
-        },
-        {
-          defaultContent: '',
-            render: (data, type, row, meta)=> {
-              if (row.sendEmail==1) {
-                return 'sdh terkirim'
-              } else {
-                return 'blm terkirim'
+          },
+          {
+            data: 'job',
+            defaultContent: ''
+          },
+          { 
+            data: 'created_at',
+            defaultContent: 'NULL'
+          },
+          {
+            data: 'jadwal',
+            defaultContent: 'NULL'
+          },
+          {
+            defaultContent: '',
+              render: (data, type, row, meta)=> {
+                if (row.sendEmail==1) {
+                  return 'sdh terkirim'
+                } else {
+                  return 'blm terkirim'
+                }
+                  
               }
-                
-            }
-        },
-        {
-          data: 'Summary',
-          defaultContent: 'NULL'
-        },
-        {
+          },
+          {
+            data: 'Summary',
+            defaultContent: 'NULL'
+          },
+          {
+              defaultContent: '',
+              render: (data, type, row, meta)=> {
+                if (row.proses=='Apply') {
+                  return'NULL'
+                } else {
+                  return '<button type="button" class="btn btn-info" onclick="Modal_notes(value)" data-toggle="modal" data-target=".modal-notes" value="'+row.id+'" data-statusp="'+row.proses+'">Note</button>'
+                }
+                  
+              }
+          },
+          {
             defaultContent: '',
             render: (data, type, row, meta)=> {
-              if (row.proses=='Apply') {
-                return'NULL'
-              } else {
-                return '<button type="button" class="btn btn-info" onclick="Modal_notes(value)" data-toggle="modal" data-target=".modal-notes" value="'+row.id+'" data-statusp="'+row.proses+'">Note</button>'
-              }
-                
+                if (row.proses=='Apply') {
+                  return 'NULL'
+                } else {
+                  if (new Date(row.jadwal)>today) {
+                    return '<button type="button" class="btn btn-info" onclick="edit_schedule(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'">Edit</button>'
+                  } else {
+                    return '<button type="button" class="btn btn-info" onclick="edit_schedule(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'" disabled>Edit</button>'
+                  }
+                  
+                }
             }
-        },
-        {
-          defaultContent: '',
-          render: (data, type, row, meta)=> {
-              if (row.proses=='Apply') {
-                return 'NULL'
-              } else {
-                if (new Date(row.jadwal)>today) {
-                  return '<button type="button" class="btn btn-info" onclick="edit_schedule(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'">Edit</button>'
+          },
+          {
+            defaultContent: '',
+            render: (data, type, row, meta)=> {
+                if (row.proses=='Apply') {
+                  return 'NULL'
                 } else {
-                  return '<button type="button" class="btn btn-info" onclick="edit_schedule(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'" disabled>Edit</button>'
+                  if (new Date(row.jadwal)>today) {
+                    return '<button type="button" class="btn btn-info" onclick="show_detail(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'">Send Email</button>'
+                  } else {
+                    return '<button type="button" class="btn btn-info" onclick="show_detail(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'" disabled>Send Email</button>'
+                  }
                 }
-                
+            }
+          }
+      ],
+      order: [[3, 'desc']]
+    }); 
+  } else {
+    $('#tblSchedule').DataTable({
+    
+      "scrollY":        "400px",
+      "scrollCollapse": true,
+      pageLength : 5,
+      ajax: {
+      url: '/hrdats/detail/getschedule/kandidat/'+id,
+              data:{},
+              dataSrc:""
+          },
+      "paging":true,
+      "bInfo" : false,
+      "lengthChange": false,
+      language: {
+          paginate: {
+              previous: "<i class='fas fa-angle-left'>",
+              next: "<i class='fas fa-angle-right'>"
+          }
+      },
+      columns: [
+          {
+              data: 'proses',
+              defaultContent: ''
+          },
+          {
+            data: 'nama',
+            defaultContent: ''
+          },
+          {
+            data: 'job',
+            defaultContent: ''
+          },
+          { 
+            data: 'created_at',
+            defaultContent: 'NULL'
+          },
+          {
+            data: 'jadwal',
+            defaultContent: 'NULL'
+          },
+          {
+            defaultContent: '',
+              render: (data, type, row, meta)=> {
+                if (row.sendEmail==1) {
+                  return 'sdh terkirim'
+                } else {
+                  return 'blm terkirim'
+                }
+                  
+              }
+          },
+          {
+            data: 'Summary',
+            defaultContent: 'NULL'
+          },
+          {
+              defaultContent: '',
+              render: (data, type, row, meta)=> {
+                if (row.proses=='Apply') {
+                  return'NULL'
+                } else {
+                  return '<button type="button" class="btn btn-info" onclick="Modal_notes(value)" data-toggle="modal" data-target=".modal-notes" value="'+row.id+'" data-statusp="'+row.proses+'">Note</button>'
+                }
+                  
               }
           }
-        },
-        {
-          defaultContent: '',
-          render: (data, type, row, meta)=> {
-              if (row.proses=='Apply') {
-                return 'NULL'
-              } else {
-                if (new Date(row.jadwal)>today) {
-                  return '<button type="button" class="btn btn-info" onclick="show_detail(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'">Send Email</button>'
-                } else {
-                  return '<button type="button" class="btn btn-info" onclick="show_detail(value)" data-toggle="modal" data-target=".modal-edit-sim" value="'+row.id+'" disabled>Send Email</button>'
-                }
-              }
-          }
-        }
-    ],
-    order: [[3, 'desc']]
-  }); 
+      ],
+      order: [[3, 'desc']]
+    }); 
+  }
+  
 }
 
 function Modal_notes(id){
-  
+  console.log(id);
   $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2184,11 +2265,11 @@ function Modal_notes(id){
       type: 'get'
   }).done((data) => {
     // console.log(JSON.stringify(data));
-    if (data[0].Summary!=null && data[0].notes!=null ) {
+    // if (data[0].Summary!=null && data[0].notes!=null ) {
       $('#notes').val(data[0].notes);
       $("#summary").val(data[0].Summary);
       $('#btn-notes').attr('value',id)
-    }
+    // }
   })
 
   $('#btn-notes').on('click',function(){
@@ -2212,6 +2293,7 @@ function Modal_notes(id){
         }
       }).done((data) => {
         console.log(JSON.stringify(data));
+        $('.modal-notes').modal('hide');
         $('#tblSchedule').DataTable().ajax.reload();
     });
   })
@@ -2339,6 +2421,15 @@ function show_detail(id){
           offer_2_Durasi = $('#offer_2_Durasi').val(detail.offer_2_Durasi)
           offer_2_Deadline = $('#offer_2_Deadline').val(detail.offer_2_Deadline)
           offer_2_URLPhase2 = $('#offer_2_URLPhase2').val(detail.offer_2_URLPhase2)
+        }else if(schedule==7){
+          detail = JSON.parse(data[0].test)
+          time = detail.time
+          dress = detail.dress
+          online=0
+
+          $('.accepted').show();
+          $('#time').val(time)
+          $('#dress').val(dress)
         }
       } else {
         if(schedule==2){
@@ -2395,6 +2486,8 @@ function edit_schedule(id){
       $('.modal-tambah-schedule').modal('show');
       $('#btnAdd-schedule').attr('hidden',true);
       $('#btnUpdate-schedule').attr('hidden',false);
+      $('#f_solutiva').attr('hidden',true)
+      $('#f_firstasia').attr('hidden',true)
       $('#schedule').attr('disabled',true);
       $('#proses').attr('disabled',true);
       $('#f_solutiva').attr('hidden',true)
@@ -2434,7 +2527,13 @@ function edit_schedule(id){
           $('#psikotest_1_Link').val(detail.psikotest_1_Link)
           $('#psikotest_1_PIC').val(detail.psikotest_1_PIC)
           $('#vendorPsikotest').val(vendor)
-          $('#f_solutiva').attr('hidden',false)
+
+          if (vendor==30) {
+            $('#f_solutiva').attr('hidden',false)
+          } else if(vendor==31) {
+            $('#f_firstasia').attr('hidden',false)
+          }
+          
         }else if(schedule==3 && online==0){
           detail = JSON.parse(data[0].test)
           vendor = detail.idVendor
@@ -2445,7 +2544,12 @@ function edit_schedule(id){
           $('#psikotest_0_Room').val(detail.psikotest_0_Room)
           $('#psikotest_0_PIC').val(detail.psikotest_0_PIC)
           $('#vendorPsikotest').val(vendor)
-          $('#f_solutiva').attr('hidden',false)
+
+          if (vendor==30) {
+            $('#f_solutiva').attr('hidden',false)
+          } else if(vendor==31) {
+            $('#f_firstasia').attr('hidden',false)
+          }
           
         }else if(schedule==4 && online==1){
           detail = JSON.parse(data[0].test)
@@ -2501,6 +2605,15 @@ function edit_schedule(id){
           offer_2_Durasi = $('#offer_2_Durasi').val(detail.offer_2_Durasi)
           offer_2_Deadline = $('#offer_2_Deadline').val(detail.offer_2_Deadline)
           offer_2_URLPhase2 = $('#offer_2_URLPhase2').val(detail.offer_2_URLPhase2)
+        }else if(schedule==7){
+          detail = JSON.parse(data[0].test)
+          time = detail.time
+          dress = detail.dress
+          online=0
+
+          $('.accepted').show();
+          $('#time').val(time)
+          $('#dress').val(dress)
         }
       }else{
         if(schedule==2){
@@ -2526,7 +2639,8 @@ function edit_schedule(id){
       }
       
       $('#btnEmail').attr('value',id)
-      $('#id_log_p').attr('value',id)
+      // $('#id_log_p').attr('value',id)
+      $("input[name='id_log_p']").attr('value',id)
       $('#id_log').val(id);
       $('#tglWaktu').val(data[0].jadwal)
       if (data[0].ccEmail!=null) {
@@ -2736,6 +2850,14 @@ function create_schedule(){
           offer_2_URLPhase2 = $('#offer_2_URLPhase2').val()
     
           detail={offer_2_Durasi:offer_2_Durasi,offer_2_Deadline:offer_2_Deadline,offer_2_URLPhase2:offer_2_URLPhase2}
+        }else if(schedule==7){
+          time = $('#time').val();
+          dress = $('#dress').val();
+          online=0;
+
+          detail={time:time,dress:dress}  
+        }else if(schedule==8){
+          detail={}
         }
       } else {
         if(schedule==2){
@@ -2756,9 +2878,6 @@ function create_schedule(){
           detail={interviewUser_1_nk_PIC:interviewUser_1_nk_PIC,interviewUser_1_nk_LINK:interviewUser_1_nk_LINK}
         }
       }
-      
-
-     
       $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2779,8 +2898,9 @@ function create_schedule(){
         }).done((data) => {
           console.log(JSON.stringify(data));
           $('#btnEmail').attr('value',data)
-          $('#id_log').attr('value',data)
-          $('#id_log_p').attr('value',data)
+          $('#id_log').val(data)
+          // $('#id_log_p').val(data)
+          $("input[name='id_log_p']").val(data)
           $('#tblSchedule').DataTable().ajax.reload();
       });
     });
@@ -2796,6 +2916,7 @@ function hidde(){
   $('.interviewuser_1').hide()
   $('.offer_1').hide()
   $('.offer_2').hide()
+  $('.accepted').hide()
 
   $('#MCU_nk').hide()
   $('#interviewHR_1_nk').hide()
@@ -2814,6 +2935,7 @@ function hidde(){
   $('#konfirmasi').attr('disabled',false);
   $('#Pisikotest_list').attr('hidden',true)
   $('#f_solutiva').attr('hidden',true)
+  $('#f_firstasia').attr('hidden',true)
   $('#vendorPsikotest').val('')
 
   $('#id_log').val('')
@@ -2847,7 +2969,12 @@ function filterProses(){
       $('#form_mcu').attr('hidden',false)
       $('#onlineonsite').attr('hidden',true)
       $('#proses').attr('required',false)
-    }else{
+    }else if( schedule==7){
+      $('#onlineonsite').attr('hidden',true)
+    }else if(schedule==8){
+      $('#onlineonsite').attr('hidden',true)
+    }
+    else{
       $('#form_mcu').attr('hidden',true)
       $('#onlineonsite').attr('hidden',false)
       $('#proses').attr('required',true)
@@ -2864,10 +2991,12 @@ function modalInformasi(){
   konfirmasi = $('#konfirmasi').val()
   $('#Pisikotest_list').attr('hidden',true)
   $('#f_solutiva').attr('hidden',true)
-  var list_onsite=['2']
+  $('#f_firstasia').attr('hidden',true)
+  var list_onsite=['2','7','8']
   if (list_onsite.includes(schedule)==true) {
     online= 0
   }
+  
   $('#gen-doc').attr('hidden',true)
   $('#btnAdd-schedule').attr('hidden',false)
   $('.tglandcc').attr('hidden',false)
@@ -2877,11 +3006,11 @@ function modalInformasi(){
   } else if(schedule==3 && online==1) {
     $('#psikotest_1').show();
     $('#Pisikotest_list').attr('hidden',false)
-    $('#f_solutiva').attr('hidden',false)
+    // $('#f_solutiva').attr('hidden',false)
   }else if(schedule==3 && online==0) {
     $('#psikotest_0').show();
     $('#Pisikotest_list').attr('hidden',false)
-    $('#f_solutiva').attr('hidden',false)
+    // $('#f_solutiva').attr('hidden',false)
   }else if(schedule==4 && online==1){
     $('#test_1').show();
   }else if(schedule==4 && online==0){
@@ -2898,6 +3027,8 @@ function modalInformasi(){
     $('#btnAdd-schedule').attr('hidden',true)
     $('.tglandcc').attr('hidden',true)
     console.log('aditional')
+  }else if(schedule==7 && online==0){
+    $('.accepted').show();
   }
 
   if(konfirmasi== 0){
@@ -2913,6 +3044,18 @@ function modalInformasi(){
     $('#btnAdd-schedule').attr('hidden',true)
   }
 
+}
+
+function GenDock(){
+  $('#f_solutiva').attr('hidden',true)
+  $('#f_firstasia').attr('hidden',true)
+  var vendorPsikotest = $('#vendorPsikotest').val()
+  if(vendorPsikotest==30){
+    $('#f_solutiva').attr('hidden',false)
+  }else if(vendorPsikotest==31){
+    $('#f_firstasia').attr('hidden',false)
+  }
+  console.log(vendorPsikotest);
 }
 
 function tampilin_email(_schedule=null,_online=null){
@@ -2933,7 +3076,7 @@ function tampilin_email(_schedule=null,_online=null){
   if(organisasi==1 || organisasi==2){
     bahasa=0
   }
-  var list_onsite=['2']
+  var list_onsite=['2','7','8']
   var list_organisasi=['1','3']
   // console.log(konfirmasi);
   if (list_onsite.includes(schedule)==true) {
@@ -3136,6 +3279,17 @@ function kirimEmail(){
         data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
       }else if(schedule==21){
         data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:null}
+      }else if(schedule==7){
+        time = $('#time').val();
+        dress = $('#dress').val();
+
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[TIME]',time)
+        var konten = konten.replace('[DRESS CODE]',dress)
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==8){
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
       }
     } else {
       // console.log('2')
@@ -3179,7 +3333,11 @@ function kirimEmail(){
         id_lab = $('#mcu_lab').val(); 
 
         data={konten:konten,id_kandidat:id_kandidat,id_lab:id_lab,schedule:schedule,id_email:id_email}
-      }else if(schedule==21){
+      }else if(schedule==8 && konfirmasi==0){
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }
+      else if(schedule==21){
         data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:null}
       }
     }
@@ -3634,13 +3792,25 @@ function select_inst(obj){
   $('#'+data_baris).attr('value',value);
 }
 
-function gen_FKPK(){
-  $('#btnGen_FKPK').on('click',function(){
-    $(':input','#formfkpk')
-      .not(':button, :submit, :reset, :hidden')
-      .val('')
-      .prop('checked', false)
-      .prop('selected', false);
-    $('.modal-fkpk').modal('hide');
-  });
+// function gen_FKPK(){
+//   $('#btnGen_FKPK').on('click',function(){
+//     setTimeout(hidefkpk(), 5000);
+//   });
+// }
+
+function final(obj){
+  // console.log(obj);
+  var value = obj.value;
+  var schedule = $(obj).attr("data-schedule")
+  if (schedule==7) {
+    proses = 'Accepted'
+  } else {
+    proses = 'Rejected'
+  }
+  $('#schedule').val(proses)
+  $('#schedule').attr('data-schedule_',schedule)
 }
+
+// function hidefkpk(){
+//   $('.modal-fkpk').modal('hide');
+// }

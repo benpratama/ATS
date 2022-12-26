@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class RequestorController extends Controller
 {
+    public $date=60;
     //FPTK
     public function index(){
         
@@ -26,7 +27,7 @@ class RequestorController extends Controller
     }
 
     public function R_SummaryFptk(Request $request){
-        $startdate =Carbon::now()->subDays(100)->toDateString();
+        $startdate =Carbon::now()->subDays($this->date)->toDateString();
         $enddate = Carbon::now()->endOfMonth()->toDateString();
         $id_User = $request->id_User;
 
@@ -64,7 +65,7 @@ class RequestorController extends Controller
     }
 
     public function indexFilter(Request $request){
-        $startdate =Carbon::now()->subDays(100)->toDateString();
+        $startdate =Carbon::now()->subDays($this->date)->toDateString();
         $enddate = Carbon::now()->endOfMonth()->toDateString();
         $id_User = $request->id_User;
         $id_dept = $request->id_dept;
@@ -152,7 +153,7 @@ class RequestorController extends Controller
     }
 
     public function R_ListFptk(Request $request){
-        $startdate =Carbon::now()->subDays(100)->toDateString();
+        $startdate =Carbon::now()->subDays($this->date)->toDateString();
         $enddate = Carbon::now()->endOfMonth()->toDateString();
         $nofptk='null';
         $lokasi='null';

@@ -39,8 +39,13 @@ class KandidatController extends Controller
                          ->where('id_Tkandidat',$id)
                          ->first();
           if (empty($FreshorNot)) {
-               $FreshorNot='FRESH';
-               $last_pekerjaan ="";
+                if($info_kandidat->jobfair==1 && $info_kandidat->updated_at==null ){
+                    $FreshorNot='';
+                    $last_pekerjaan ="";
+                }else{
+                    $FreshorNot='FRESH';
+                    $last_pekerjaan ="";
+                }
           }else{
                $FreshorNot='PENGALAMAN';
                $last_pekerjaan = DB::table('last_Pekerjaan')
@@ -111,7 +116,7 @@ class KandidatController extends Controller
                         ->select('id','proses')
                         ->where('active',1)
                         ->where('deleted',0)
-                        ->whereNotIn('id', [1,7,8])
+                        ->whereNotIn('id', [1])
                         ->get();
           //list_cc
           $list_cc = DB::table('M_User')
@@ -140,6 +145,10 @@ class KandidatController extends Controller
                         ->select('CityId','CityName')
                         ->where('CityCountryId',115)
                         ->get();
+            $state = DB::table('PMState')
+                        ->select('StateId','StateName')
+                        ->where('CountryId',115)
+                        ->get();
             $listPsikotes = DB::table('M_vendor')
                             ->select('id','namaVendor')
                             ->where('jenis','PSIKOTEST')
@@ -147,6 +156,19 @@ class KandidatController extends Controller
                             ->where('deleted',0)
                             ->get();
         // ==========================================
+
+        // ================FPTK=====================
+            $LHW = DB::table('T_DFPTK as A')
+                    ->select('fileLhw')
+                    ->join('T_FPTK as B','A.id_TFPTK','B.id')
+                    ->where('id_TKandidat',$info_kandidat->id)
+                    ->get();
+            if (count($LHW)==0) {
+                $filenameLHW=null;
+            }else{
+                $filenameLHW=$LHW[0]->fileLhw;
+            }
+        // =========================================
           if($info_kandidat){
                return view('detail_kandidat',
                     [
@@ -174,7 +196,9 @@ class KandidatController extends Controller
 
                          'StatusRumah'=>$statusRumah,
                          'kotas'=>$city,
-                         'ListPsikotest'=>$listPsikotes
+                         'states'=>$state,
+                         'ListPsikotest'=>$listPsikotes,
+                         'LHW'=>$filenameLHW
                     ]);
           }else{
                return redirect()->route('home');
@@ -984,10 +1008,10 @@ class KandidatController extends Controller
                 $konten = $request->konten;
             }
                 
-        } else if($schedule==3) {
+        }else if($schedule==3) {
             $konten = $request->konten;
             $subject = 'Psikotest';
-        } else if($schedule==4){
+        }else if($schedule==4){
             $konten = $request->konten;
             $subject = 'tech test';
         }else if($schedule==5){
@@ -1002,15 +1026,37 @@ class KandidatController extends Controller
         }else if($schedule==21){
             $konten = $request->konten;
             $subject = 'Kelengkapan Dokumen';
+        }else if($schedule==7){
+            $id_kandidat = $request->id_kandidat;
+            $addInfo = DB::table('T_DFPTK as A')
+                        ->select('A.tgljoin','B.penempatan','B.lobandsub')
+                        ->join('T_FPTK as B','A.id_TFPTK','B.id')
+                        ->where('id_Tkandidat',$id_kandidat)
+                        ->get();
+            $konten = str_replace(["[JOIN DATE]","[LOCATION]","[TEAM/DIVISION NAME]"],[$addInfo[0]->tgljoin,$addInfo[0]->penempatan,$addInfo[0]->lobandsub],$request->konten);
+            $subject = 'Accepted';
+        }else if($schedule==8){
+            $konten = $request->konten;
+            $subject = 'Rejected';
+        }
+        
+        $rawCC = DB::table("T_logkandidat")
+                ->select('ccEmail')
+                ->where('id',$request->id_email)
+                ->get();
+        if($rawCC[0]->ccEmail!=null){
+            $cc =  explode(',',$rawCC[0]->ccEmail);
+        }else{
+            $cc = [];
         }
         
         
-        Mail::raw($konten, function ($message) use ($email,$subject) {
+        Mail::raw($konten, function ($message) use ($email,$subject,$cc) {
             
             $message
             ->from('mantap@domain.com') //ini buat pengirim
             ->to($email[0]->email)
-            ->cc('kwjwkwkwk@gmail.com')
+            ->cc($cc)
             ->subject($subject);
         });
 
@@ -1145,6 +1191,16 @@ class KandidatController extends Controller
         //                 ->whereIn('id', $id_Tlog)
         //                 ->get();
         // dd($array1);
+        // $rawCC = DB::table("T_logkandidat")
+        //         ->select('ccEmail')
+        //         ->where('id',$request->id_email)
+        //         ->get();
+        // if($rawCC[0]->ccEmail!=null){
+        //     $cc =  explode(',',$rawCC[0]->ccEmail);
+        // }else{
+        //     $cc = [];
+        // }
+
         foreach ($array1 as $key => $value) {
             // return $value["email"];
             $email = $value["email"];
@@ -1157,6 +1213,7 @@ class KandidatController extends Controller
                 ->subject($subject);
             });
         }
+        
         $id_log = DB::table('T_logkandidat_group')
                 ->where('namaGroup',$namagroup)
                 ->pluck('id_Tlogkandidat');

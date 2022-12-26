@@ -369,7 +369,12 @@ if (flag_atasan==1) {
               defaultContent: '',
               render: (data, type, row, meta)=> {
                   // return '<button type="button" class="btn btn-info" onclick="Modal_fptk(value)" data-toggle="modal" data-target=".modal-detail-fptk" value="'+row.id+'">Detail</button>'
-                  return '<a class="btn btn-info" href="/hrdats/detail/kandidat/'+row.id_TKandidat+'/'+row.noidentitas+'">Detail</a>'
+                  // return '<a class="btn btn-info" href="/hrdats/detail/kandidat/'+row.id_TKandidat+'/'+row.noidentitas+'">Detail</a>'
+                  if (row.id_TKandidat==null) {
+                    return '<a class="btn btn-info" disabled>Detail</a>'
+                  } else {
+                    return '<a class="btn btn-info" href="/hrdats/detail/kandidat/'+row.id_TKandidat+'/'+row.noidentitas+'">Detail</a>'
+                  }
               }
           }
       ] 
@@ -457,7 +462,7 @@ if (flag_atasan==1) {
               defaultContent: '',
               render: (data, type, row, meta)=> {
                   // return '<button type="button" class="btn btn-info" onclick="Modal_fptk(value)" data-toggle="modal" data-target=".modal-detail-fptk" value="'+row.id+'">Detail</button>'
-                  if (row.namalengkap==null) {
+                  if (row.id_TKandidat==null) {
                     return '<a class="btn btn-info" disabled>Detail</a>'
                   } else {
                     return '<a class="btn btn-info" href="/hrdats/detail/kandidat/'+row.id_TKandidat+'/'+row.noidentitas+'">Detail</a>'

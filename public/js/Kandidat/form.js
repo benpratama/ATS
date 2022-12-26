@@ -553,8 +553,10 @@ function hideSIM(){
       console.log(obj)
       $('.'+obj).attr('hidden',true)
       $('.'+obj+' :input').val('')
+      $('.'+obj+' :input').attr('required',false)
     }else{
       $('.'+obj).attr('hidden',false)
+      $('.'+obj+' :input').attr('required',true)
     }
   })
 }
