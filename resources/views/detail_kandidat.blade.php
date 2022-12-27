@@ -516,7 +516,8 @@
                         <th>job</th>
                         <th>Tanggal Buat</th>
                         <th>Tanggal Proses</th>
-                        <th>Email terkirim</th>
+                        <th>Status Email</th>
+                        <th>Status WA</th>
                         <th>Summary</th>
                         <th>Notes</th>
                         <th>Update</th>
@@ -529,7 +530,8 @@
                         <th>job</th>
                         <th>Tanggal Buat</th>
                         <th>Tanggal Proses</th>
-                        <th>Email terkirim</th>
+                        <th>Status Email</th>
+                        <th>Status WA</th>
                         <th>Summary</th>
                         <th>Notes</th>
                       </tr>

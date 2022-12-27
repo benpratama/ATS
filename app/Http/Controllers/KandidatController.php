@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables as DataTablesDataTables;
 
@@ -986,14 +987,25 @@ class KandidatController extends Controller
     }
 
     public function SendEmail (Request $request){
-        // return $request;
-        $schedule=$request->schedule;
 
+        $schedule=$request->schedule;
         $email = DB::table('T_kandidat_email_N')
                 ->select('email')
                 ->where('id_Tkandidat',$request->id_kandidat)
                 ->where('emailPrimary','Y')
                 ->get();
+        
+        $phone = DB::table('T_kandidat_phone_N')
+                ->select('phoneNumber')
+                ->where('id_Tkandidat',$request->id_kandidat)
+                ->where('phonePrimary','Y')
+                ->get();
+                
+        $infosender = DB::table('M_device')
+                    ->where('id_Muser',Auth::user()->id)
+                    ->get();
+
+
         if ($schedule==2) {
             $subject = 'MCU';
             if ($request->id_lab!="") {
@@ -1007,7 +1019,6 @@ class KandidatController extends Controller
             }else{
                 $konten = $request->konten;
             }
-                
         }else if($schedule==3) {
             $konten = $request->konten;
             $subject = 'Psikotest';
@@ -1029,45 +1040,63 @@ class KandidatController extends Controller
         }else if($schedule==7){
             $id_kandidat = $request->id_kandidat;
             $addInfo = DB::table('T_DFPTK as A')
-                        ->select('A.tgljoin','B.penempatan','B.lobandsub')
+                        ->select('A.tgljoin','B.penempatan','B.lobandsub','B.namaatasanlangusng')
                         ->join('T_FPTK as B','A.id_TFPTK','B.id')
                         ->where('id_Tkandidat',$id_kandidat)
                         ->get();
-            $konten = str_replace(["[JOIN DATE]","[LOCATION]","[TEAM/DIVISION NAME]"],[$addInfo[0]->tgljoin,$addInfo[0]->penempatan,$addInfo[0]->lobandsub],$request->konten);
+            $konten = str_replace(["[JOIN DATE]","[LOCATION]","[TEAM/DIVISION NAME]","[NAMA ATASAN]"],[$addInfo[0]->tgljoin,$addInfo[0]->penempatan,$addInfo[0]->lobandsub,$addInfo[0]->namaatasanlangusng],$request->konten);
             $subject = 'Accepted';
         }else if($schedule==8){
             $konten = $request->konten;
             $subject = 'Rejected';
         }
-        
         $rawCC = DB::table("T_logkandidat")
                 ->select('ccEmail')
                 ->where('id',$request->id_email)
                 ->get();
-        if($rawCC[0]->ccEmail!=null){
-            $cc =  explode(',',$rawCC[0]->ccEmail);
-        }else{
-            $cc = [];
+        
+        if (count($rawCC)==0) {
+            $cc = Auth::user()->email;
         }
-        
-        
+        else if($rawCC[0]->ccEmail==null){
+            $cc = Auth::user()->email;
+        }
+        else{
+            $cc =  explode(',',$rawCC[0]->ccEmail);
+            array_push($cc,Auth::user()->email);
+        }
+
         Mail::raw($konten, function ($message) use ($email,$subject,$cc) {
-            
             $message
-            ->from('mantap@domain.com') //ini buat pengirim
+            ->from('kalbeKarir@kalbe.co.id') //ini buat pengirim
             ->to($email[0]->email)
             ->cc($cc)
             ->subject($subject);
         });
+        // dd($infosender[0]->sender,$infosender[0]->passcode,trim($phone[0]->phoneNumber," "),$konten);
+        $response = Http::post('Http://10.168.4.14:8080/send-message', [
+            'sender' => $infosender[0]->sender,
+            'passcode' => $infosender[0]->passcode,
+            'number' => trim($phone[0]->phoneNumber," "),
+            'message' => $konten,
+            // 'file' => NULL,
+        ]); 
+        
+        if ($response->status() == 200) {
+            $sendWA = 1;
+        }else{
+            $sendWA = 2;
+        }
 
         DB::table('T_LogKandidat')
             ->where('id',$request->id_email)
             ->update([
-                'sendEmail'=>1
+                'sendEmail'=>1,
+                // 'sendWA'=>$sendWA
             ]);
         $send = 'Yes';
 
-        return $email;
+        return [$infosender[0]->sender,$infosender[0]->passcode,trim($phone[0]->phoneNumber," "),$konten];
     }
 
     public function SendGEmail(Request $request){
@@ -1092,12 +1121,14 @@ class KandidatController extends Controller
         }
 
         $info_kandiat = DB::table('T_kandidat_N as A')
-                        ->select('namalengkap','D.email','C.nama')
+                        ->select('namalengkap','D.email','C.nama','E.phoneNumber','A.id')
                         ->join('T_link as B','B.id','A.id_Tlink')
                         ->join('M_Job as C','C.id','B.id_Tjob')
                         ->join('T_kandidat_email_N as D','A.id','D.id_Tkandidat')
+                        ->leftJoin('T_kandidat_phone_N as E','E.id_Tkandidat','A.id')
                         ->whereIn('A.id',$arrId_kandidat)
                         ->where('D.emailPrimary','Y')
+                        ->where('E.phonePrimary','Y')
                         ->get();
         // dd($info_kandiat);
         $array1=[];
@@ -1113,7 +1144,9 @@ class KandidatController extends Controller
 
                 foreach ($info_kandiat as $key => $value) {
                     $konten= str_replace(["[CLINIC’s / LAB’s NAME]","[CLINIS’s / LAB’s ADDRESS]","[CANDIDAT NAME]","[POSITION]"],[$lab[0]->NamaLab,$lab[0]->alamat,$value->namalengkap,$value->nama],$request->konten);
+                    $array2["id"]=$value->id;
                     $array2["email"]=$value->email;
+                    $array2["phone"]=$value->phoneNumber;
                     $array2["konten"]=$konten;
                     array_push($array1,$array2);
                 }
@@ -1121,7 +1154,9 @@ class KandidatController extends Controller
                 foreach ($info_kandiat as $key => $value) {
                     
                     $konten= str_replace(["[CANDIDAT NAME]","[POSITION]"],[$value->namalengkap,$value->nama],$request->konten);
+                    $array2["id"]=$value->id;
                     $array2["email"]=$value->email;
+                    $array2["phone"]=$value->phoneNumber;
                     $array2["konten"]=$konten;
                     array_push($array1,$array2);
                 }
@@ -1145,7 +1180,9 @@ class KandidatController extends Controller
 
             foreach ($info_kandiat as $key => $value) {
                 $konten= str_replace(["[CANDIDAT NAME]","[POSITION]"],[$value->namalengkap,$value->nama],$request->konten);
+                $array2["id"]=$value->id;
                 $array2["email"]=$value->email;
+                $array2["phone"]=$value->phoneNumber;
                 $array2["konten"]=$konten;
                 array_push($array1,$array2);
             }
@@ -1153,7 +1190,9 @@ class KandidatController extends Controller
             $subject = 'tech test';
             foreach ($info_kandiat as $key => $value) {
                 $konten= str_replace(["[CANDIDAT NAME]","[POSITION]"],[$value->namalengkap,$value->nama],$request->konten);
+                $array2["id"]=$value->id;
                 $array2["email"]=$value->email;
+                $array2["phone"]=$value->phoneNumber;
                 $array2["konten"]=$konten;
                 array_push($array1,$array2);
             }
@@ -1161,7 +1200,9 @@ class KandidatController extends Controller
             $subject = 'interview HR';
             foreach ($info_kandiat as $key => $value) {
                 $konten= str_replace(["[CANDIDAT NAME]","[POSITION]"],[$value->namalengkap,$value->nama],$request->konten);
+                $array2["id"]=$value->id;
                 $array2["email"]=$value->email;
+                $array2["phone"]=$value->phoneNumber;
                 $array2["konten"]=$konten;
                 array_push($array1,$array2);
             }
@@ -1169,7 +1210,9 @@ class KandidatController extends Controller
             $subject = 'interview User';
             foreach ($info_kandiat as $key => $value) {
                 $konten= str_replace(["[CANDIDAT NAME]","[POSITION]"],[$value->namalengkap,$value->nama],$request->konten);
+                $array2["id"]=$value->id;
                 $array2["email"]=$value->email;
+                $array2["phone"]=$value->phoneNumber;
                 $array2["konten"]=$konten;
                 array_push($array1,$array2);
             }
@@ -1177,7 +1220,9 @@ class KandidatController extends Controller
             $subject = 'offer';
             foreach ($info_kandiat as $key => $value) {
                 $konten= str_replace(["[CANDIDAT NAME]","[POSITION]"],[$value->namalengkap,$value->nama],$request->konten);
+                $array2["id"]=$value->id;
                 $array2["email"]=$value->email;
+                $array2["phone"]=$value->phoneNumber;
                 $array2["konten"]=$konten;
                 array_push($array1,$array2);
             }
@@ -1201,29 +1246,67 @@ class KandidatController extends Controller
         //     $cc = [];
         // }
 
+        $rawCC = DB::table('T_logkandidat')
+                ->select('ccEmail')
+                ->where('id_Tkandidat',$arrId_kandidat[0])
+                ->get();
+
+        if($rawCC[0]->ccEmail!=null){
+            $cc =  explode(',',$rawCC[0]->ccEmail);
+        }else{
+            $cc = [];
+        }
+
+        $infosender = DB::table('M_device')
+                    ->where('id_Muser',Auth::user()->id)
+                    ->get();
+
         foreach ($array1 as $key => $value) {
             // return $value["email"];
+            $id = $value["id"];
             $email = $value["email"];
+            $phone = $value["phone"];
             $konten = $value["konten"];
             // return $konten;
-            Mail::raw($konten, function ($message) use ($email,$subject) {
+            Mail::raw($konten, function ($message) use ($email,$subject,$cc) {
                 $message
                 ->to($email)
-                ->cc('kwjwkwkwk@gmail.com')
+                ->cc($cc)
                 ->subject($subject);
             });
+
+            $response = Http::post('Http://10.168.4.14:8080/send-message', [
+                'sender' => $infosender[0]->sender,
+                'passcode' => $infosender[0]->passcode,
+                'number' => trim($phone," "),
+                'message' => $konten,
+                // 'file' => NULL,
+            ]); 
+            if ($response->status() == 200) {
+                $sendWA = 1;
+            }else{
+                $sendWA = 2;
+            }
+
+            DB::table('T_LogKandidat')
+                ->where('id',$id)
+                ->update([
+                    'sendEmail'=>1,
+                    'sendWA'=>$sendWA
+                ]);
+
         }
         
-        $id_log = DB::table('T_logkandidat_group')
-                ->where('namaGroup',$namagroup)
-                ->pluck('id_Tlogkandidat');
-        DB::table('T_logkandidat')
-            ->whereIn('id', $id_log)
-            ->update([
-                'sendEmail'=>1
-            ]);
+        // $id_log = DB::table('T_logkandidat_group')
+        //         ->where('namaGroup',$namagroup)
+        //         ->pluck('id_Tlogkandidat');
+        // DB::table('T_logkandidat')
+        //     ->whereIn('id', $id_log)
+        //     ->update([
+        //         'sendEmail'=>1
+        //     ]);
             
-        return $id_log;
+        return true;
     }
 
     public function GetNotes($id){

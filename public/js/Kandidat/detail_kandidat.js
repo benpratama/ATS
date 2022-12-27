@@ -2124,9 +2124,22 @@ function getSchedule(){
             defaultContent: '',
               render: (data, type, row, meta)=> {
                 if (row.sendEmail==1) {
-                  return 'sdh terkirim'
+                  return 'SUDAH TERKIRIM'
                 } else {
-                  return 'blm terkirim'
+                  return 'BELUM TERKIRIM'
+                }
+                  
+              }
+          },
+          {
+            defaultContent: '',
+              render: (data, type, row, meta)=> {
+                if (row.sendWA==1) {
+                  return 'WA TERKIRIM'
+                } else if(row.sendWA==2){
+                  return 'WA GAGAL'
+                }else {
+                  return 'WA BELUM TERKIRIM'
                 }
                   
               }
@@ -2223,9 +2236,22 @@ function getSchedule(){
             defaultContent: '',
               render: (data, type, row, meta)=> {
                 if (row.sendEmail==1) {
-                  return 'sdh terkirim'
+                  return 'SUDAH TERKIRIM'
                 } else {
-                  return 'blm terkirim'
+                  return 'BELUM TERKIRIM'
+                }
+                  
+              }
+          },
+          {
+            defaultContent: '',
+              render: (data, type, row, meta)=> {
+                if (row.sendWA==1) {
+                  return 'WA TERKIRIM'
+                } else if(row.sendWA==2){
+                  return 'WA GAGAL'
+                }else {
+                  return 'WA BELUM TERKIRIM'
                 }
                   
               }
@@ -3335,6 +3361,10 @@ function kirimEmail(){
         data={konten:konten,id_kandidat:id_kandidat,id_lab:id_lab,schedule:schedule,id_email:id_email}
       }else if(schedule==8 && konfirmasi==0){
         var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
+      }else if(schedule==7 && konfirmasi ==0){
+        var konten = konten.replace('[CANDIDAT NAME]',namaKandidat)
+        var konten = konten.replace('[DATE&TIME]',tglWaktu)
         data={konten:konten,id_kandidat:id_kandidat,schedule:schedule,id_email:id_email}
       }
       else if(schedule==21){

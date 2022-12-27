@@ -134,6 +134,14 @@
                     </a>
                   </li>
 
+                  {{-- WA --}}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ route('hr_wa.index') }}">
+                      <i class="ni ni-shop text-primary"></i>
+                      <span class="nav-link-text">WA</span>
+                    </a>
+                  </li>
+
                   {{-- Master Table --}}
                   <li class="nav-item">
                     <a id="masterTable" class="nav-link collapsed" href="#navbar-mastertable" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-mastertable">

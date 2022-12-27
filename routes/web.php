@@ -234,6 +234,9 @@ Route::middleware('auth')->group(function(){
         Route::Post('/hrdats/menu/active/akses', 'MenuController@ActiveAkses')->name('hr_menu.ActiveAkses');
         Route::Post('/hrdats/menu/del/akses', 'MenuController@DelAkses')->name('hr_menu.DelAkses');
         Route::Post('/hrdats/menu/add/akses', 'MenuController@AddAkses')->name('hr_menu.AddAkses');
+
+        //WA
+        Route::get('/hrdats/menu/wa', 'MenuController@registWA')->name('hr_wa.index');
     });
     Route::group([
         'middleware' => [Atasan::class]

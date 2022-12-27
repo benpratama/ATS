@@ -69,4 +69,7 @@ class MenuController extends Controller
         }
         return true;
     }
+    public function registWA(Request $request){
+        return view('hr/hr_wa');
+    }
 }
