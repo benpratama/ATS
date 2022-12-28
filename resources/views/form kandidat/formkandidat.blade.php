@@ -60,7 +60,7 @@
               <div class="row align-items-center">
                 <div class="col-12">
                   <h3 class="text-uppercase text-muted ls-1 mb-1">DATA PRIBADI</h3>
-                  <label for="">{{ $jobfair }}</label>
+                  <label for="" hidden>{{ $jobfair }}</label>
                 </div>
               </div>
             </div>
@@ -620,7 +620,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="gambarkedudukan">Gambarkan kedudukan Saudara dalam struktur organisasi perusahaan (max 5MB)</label>
+                    <label class="form-control-label" for="gambarkedudukan">Gambarkan kedudukan Saudara dalam struktur organisasi perusahaan (max 1.5MB)</label>
                     <input type="file" class="form-control" name="gambarkedudukan" id="gambarkedudukan" accept="image/png, image/jpeg, image/jpg ">
                   </div>
                 </div>
@@ -728,13 +728,13 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="porto">CV (max 5MB)</label>
+                    <label class="form-control-label" for="porto">CV (max 1.5MB)</label>
                     <input type="file" class="form-control" name="cv" id="cv" accept="application/pdf">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="porto">Foto (max 5MB)</label>
+                    <label class="form-control-label" for="porto">Foto (max 1.5MB)</label>
                     <input type="file" class="form-control" name="foto" id="foto" accept="image/png, image/jpeg, image/jpg ">
                   </div>
                 </div>

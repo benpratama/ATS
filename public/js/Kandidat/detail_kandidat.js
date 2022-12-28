@@ -3068,6 +3068,8 @@ function modalInformasi(){
     }
   }else if(konfirmasi== 1){
     $('#btnAdd-schedule').attr('hidden',true)
+    $('#gen-doc-p').attr('hidden',true)
+    $('#gen-doc').attr('hidden',true)
   }
 
 }
