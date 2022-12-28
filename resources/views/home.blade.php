@@ -834,5 +834,14 @@
 @endsection
 
 @section('script')
+  <script>
+    // global app configuration object
+    var config = {
+        routes: {
+            zone: "{{route('hm.Summary')}}",
+            zone1: "{{route('hm.Detail')}}"
+        }
+    };
+  </script>
   <script language="JavaScript" type="text/javascript" src="{{ asset('js/home.js') }}"></script>
 @endsection

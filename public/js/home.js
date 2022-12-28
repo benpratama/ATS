@@ -64,7 +64,7 @@ function ShowSummary(Speriod,Eperiod){
   });
   $.ajax({
       _token: '{{ csrf_token() }}',
-      url: '/hrdats/dashboard/hrd/summary',
+      url: config.routes.zone,
       type: 'post',
       data: {
         Speriod:Speriod,
@@ -381,7 +381,7 @@ function ShowDetail(Speriod,Eperiod,Sumur,Eumur,pendidikan,jurusan,job,status,do
   // processing: true,
   // serverSide: true,
         ajax: {
-          url: "/hrdats/dashboard/hrd/detail",
+          url: config.routes.zone1,
           type: "POST",
           data:{
             Speriod:Speriod,
